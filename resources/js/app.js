@@ -1,4 +1,7 @@
 import './bootstrap';
+import $ from 'jquery';
+window.$ = $;
+window.jQuery = $;
 
 // Admin profile avatar preview
 document.addEventListener('DOMContentLoaded', function () {
@@ -141,4 +144,20 @@ document.addEventListener('DOMContentLoaded', function () {
 			}
 		});
 	});
+
 });
+
+$(document).ready(function() {
+    $('.vendor-fields').hide();
+    $('#type').on('change', function() {
+        let type = $(this).val();
+        if(type === 'vendor') {
+            $('.vendor-fields').show();
+            $('.vendor-fields input').prop('required', true);
+        } else {
+            $('.vendor-fields').hide();
+            $('.vendor-fields input').prop('required', false);
+        }
+    });
+});
+

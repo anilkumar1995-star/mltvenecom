@@ -1,5 +1,4 @@
-@extends('layouts.app')
-
+@extends('website-layouts.app')
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -10,7 +9,6 @@
                 <div class="card-body">
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
-
                         <div class="row mb-3">
                             <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
 
@@ -60,6 +58,42 @@
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
                             </div>
                         </div>
+
+                        <div class="row mb-3">
+                            <label for="Type" class="col-md-4 col-form-label text-md-end">Type</label>
+
+                            <div class="col-md-6">
+                                <select name="type" id="type" class="form-control" required>
+                                    <option value="" selected>Select Type</option>
+                                    <option value="customer">Customer</option>
+                                    <option value="vendor">Vendor</option>
+                                </select>
+
+                            </div>
+                        </div>
+
+                        <div class="row mb-3 vendor-fields" style="display:none;">
+                            <label for="shop_name" class="col-md-4 col-form-label text-md-end">Shop Name</label>
+                            <div class="col-md-6">
+                                <input id="shop_name" type="text" class="form-control" name="shop_name" required>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3  vendor-fields" style="display:none;">
+                            <label for="website" class="col-md-4 col-form-label text-md-end">Shop Url</label>
+                            <div class="col-md-6">
+                                <input id="website" type="text" class="form-control" name="website" required>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3  vendor-fields" style="display:none;">
+                            <label for="mobile" class="col-md-4 col-form-label text-md-end">Mobile</label>
+                            <div class="col-md-6">
+                                <input id="mobile" type="text" class="form-control" name="mobile" required>
+                            </div>
+                        </div>
+
+
 
                         <div class="row mb-0">
                             <div class="col-md-6 offset-md-4">

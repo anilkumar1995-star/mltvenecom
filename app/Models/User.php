@@ -21,6 +21,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role_id',
+        'shop_name',
+        'shop_url',
+        'mobile',
     ];
 
     protected $appends = ['avatar_url'];

@@ -23,12 +23,12 @@ class ProductController extends Controller
         }
 
         $products = $query->orderBy('id', 'desc')->paginate(20)->withQueryString();
-        return view('admin.products.index', compact('products'));
+        return view('admin-layouts.product.index', compact('products'));
     }
 
     public function create()
     {
-        return view('admin.products.create');
+        return view('admin-layouts.product.create');
     }
 
     public function store(Request $request)
