@@ -29,35 +29,11 @@
                 </div>
             </div>
         </div>
-
-
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $err)
-                        <li>{{ $err }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
         <main class="page-body page-content">
             <div class="container-xl">
-                <form method="POST" action="{{ route('admin.category.update', $category) }}">
+                <form id="editcategoryForm" method="POST" action="{{ route('admin.category.update', $category) }}">
                     @csrf
                     @method('PUT')
-                    <div role="alert" class="alert alert-info">
-                        <div class="d-flex gap-1">
-                            <div>
-                                <svg class="icon alert-icon svg-icon-ti-ti-info-circle" xmlns="http://www.w3.org/2000/svg"
-                                    width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
-                                    <path d="M12 9h.01" />
-                                    <path d="M11 12h1v4h1" />
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
                     <div class="row">
                         <div class="gap-3 col-md-9">
                             <div class="card mb-3">
@@ -68,14 +44,14 @@
                                                 Name
                                             </label>
                                             <input class="form-control" placeholder="Name" name="name" type="text"
-                                                id="name" value="{{ old('name', $category->name) }}">
+                                                id="editname" value="{{ old('name', $category->name) }}">
                                         </div>
                                         <div class="mb-3 position-relative">
                                             <label class="form-label" for="parent_id">
                                                 Parent
                                             </label>
                                             <select class="select-search-full form-select" data-allow-clear="false"
-                                                id="parent_id" name="parent_id"
+                                                id="editparent_id" name="parent_id"
                                                 value="{{ old('parent_id', $category->parent_id) }}">
                                                 <option value="0">None</option>
                                             </select>
@@ -85,9 +61,9 @@
                                                 Description
                                             </label>
                                             <div class="mb-2 btn-list"></div>
-                                            <textarea class="form-control form-control editor-ckeditor ays-ignore" data-counter="100000" rows="4"
-                                                placeholder="Write your content" with-short-code id="description"
-                                                value="{{ old('description', $category->description) }}" name="description" cols="50"></textarea>
+                                            <textarea class="form-control form-control"rows="4"
+                                                placeholder="Write your content" with-short-code id="editdescription"
+                                                value="{{ old('description', $category->description) }}" name="description"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -105,7 +81,7 @@
                                     </h4>
                                 </div>
                                 <div class="card-body">
-                                    <select class="form-select" required="required" id="status" name="status">
+                                    <select class="form-select" required="required" id="editstatus" name="status">
                                         <option value="Pending"
                                             {{ old('status', $category->status) == 'Pending' ? 'selected' : '' }}>Pending
                                         </option>
@@ -132,5 +108,88 @@
                         </div>
                     </div>
                 </form>
+            </div>
+        </main>
 
-            @endsection
+@endsection
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            $("#editcategoryForm").validate({
+                rules: {
+                    editname: {
+                        required: true,
+                    },
+                    editparent_id: {
+                        required: true,
+                    },
+                    editdescription : {
+                        required: true,
+                    },
+                    editstatus : {
+                        required: true,
+                    }
+                },
+                messages: {
+                    editname: {
+                        required: "Please Enter Name",
+                    },
+                    editparent_id: {
+                        required: "Please Select",
+                    },
+                    editdescription : {
+                        required: "Please Enter Description",
+                    },
+                    editstatus : {
+                        required: "Please Select Status",
+                    }
+                },
+                errorElement: "p",
+                errorPlacement: function(error, element) {
+                    if (element.prop("tagName").toLowerCase() === "select") {
+                        error.insertAfter(element.closest(".form-group").find(".select2"));
+                    } else {
+                        error.insertAfter(element);
+                    }
+                },
+               submitHandler: function(form) {
+                    form = $(form);
+                    form.ajaxSubmit({
+                        dataType: 'json',
+                        success: function(data) {
+                            $('.text-danger').html('');
+
+                            if (data.status === true) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success!',
+                                    text: data.message
+                                }).then(() => {
+                                    window.location.href = "{{ route('admin.category.Index') }}";
+                                });
+                            } else {
+                                $.each(data.errors, function(key, value) {
+                                    $('#' + key + '_errors').html(value[0]);
+                                });
+                            }
+                        },error: function(xhr) {
+                            $('.text-danger').html('');
+
+                            if (xhr.status === 422 && xhr.responseJSON.errors) {
+                                $.each(xhr.responseJSON.errors, function(key, value) {
+                                    $('#' + key + '_errors').html(value[0]);
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: 'Something went wrong!'
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+@endpush

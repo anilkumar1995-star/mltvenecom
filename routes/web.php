@@ -86,7 +86,8 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
         Route::post('store',[CategoryController::class,'store'])->name('category.store');
         Route::get('/category/{category}/edit',[CategoryController::class,'Edit'])->name('category.edit');
         Route::put('/category/{category}', [CategoryController::class, 'update'])->name('category.update');
-        Route::delete('/delete/{category}',[CategoryController::class,'destroy'])->name('category.Delete');
+        Route::post('/delete',[CategoryController::class,'destroy'])->name('category.Delete');
+        // Route::delete('/delete/{category}',[CategoryController::class,'approved'])->name('category.Delete');
     });
 
     Route::group(['prefix' => 'brand'], function() {

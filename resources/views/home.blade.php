@@ -793,11 +793,6 @@
                                                                     to the customer portal
 
                                                                 </div>
-                                                                <div class="text-muted">
-                                                                    16 hours ago
-                                                                    (<a href="https://ipinfo.io/::1" target="_blank"
-                                                                        title="::1" rel="nofollow">::1</a>)
-                                                                </div>
                                                             </div>
                                                         </div>
                                                     </td>
@@ -805,5 +800,11 @@
                                             </tbody>
                                         </table>
                                     </div>
-
-                                @endsection
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+@endsection

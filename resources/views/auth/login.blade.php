@@ -147,6 +147,7 @@
 
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -510,6 +511,7 @@
         window.siteUrl = "https://shofy-grocery.botble.com";
     </script>
 </head>
+
 <body class="page-sidebar-closed-hide-logo page-content-white page-container-bg-solid " style=""
     data-bs-theme="dark">
     <div id="app">
@@ -524,7 +526,7 @@
                                 class="navbar-brand-image">
                         </a>
                     </div>
-                      <form method="POST" action="{{ route('login') }}">
+                    <form method="POST" action="{{ route('login') }}">
                         @csrf
                         <div class="form-body">
                             <h2 class="h3 text-center mb-3">Sign In Below</h2>
@@ -545,9 +547,9 @@
                                     </span>
                                 </label>
                                 <div class="input-group">
-                                    <input type="password" name="password" id="password"
-                                        class="form-control" tabindex="2" placeholder="Enter your password"
-                                        required="required" data-bb-password>
+                                    <input type="password" name="password" id="password" class="form-control"
+                                        tabindex="2" placeholder="Enter your password" required="required"
+                                        data-bb-password>
                                     <span class="input-password-toggle" data-bb-toggle-password>
                                         <svg class="icon svg-icon-ti-ti-eye" xmlns="http://www.w3.org/2000/svg"
                                             width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -701,12 +703,17 @@
 
 
     <script src="https://shofy-grocery.botble.com/vendor/core/core/base/js/core-ui.js?v=1.4.4"></script>
-    <script src="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/flatpickr/flatpickr.min.js?v=1.4.4"></script>
+    <script src="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/flatpickr/flatpickr.min.js?v=1.4.4">
+    </script>
     <script src="https://shofy-grocery.botble.com/vendor/core/core/base/js/core.js?v=1.4.4"></script>
-    <script src="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/mcustom-scrollbar/jquery.mCustomScrollbar.js?v=1.4.4"></script>
+    <script
+        src="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/mcustom-scrollbar/jquery.mCustomScrollbar.js?v=1.4.4">
+    </script>
     <script src="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/fslightbox.js?v=1.4.4"></script>
     <script src="https://shofy-grocery.botble.com/vendor/core/core/js-validation/js/js-validation.js?v=1.4.4"></script>
-    <script src="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/jquery.are-you-sure/jquery.are-you-sure.js?v=1.4.4"></script>
+    <script
+        src="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/jquery.are-you-sure/jquery.are-you-sure.js?v=1.4.4">
+    </script>
     <script src="https://shofy-grocery.botble.com/vendor/core/plugins/language/js/language-global.js?v=1.4.4"></script>
 
 </body>

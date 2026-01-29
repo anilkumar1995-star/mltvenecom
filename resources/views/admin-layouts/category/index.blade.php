@@ -10,8 +10,7 @@
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item">
-                                        <a class="mb-0 d-inline-block fs-6 lh-1"
-                                            href="{{ route('home') }}">Dashboard</a>
+                                        <a class="mb-0 d-inline-block fs-6 lh-1" href="{{ route('home') }}">Dashboard</a>
                                     </li>
                                     <li class="breadcrumb-item">
                                         <h1 class="mb-0 d-inline-block fs-6 lh-1">Ecommerce</h1>
@@ -76,43 +75,79 @@
 
                         <div class="card-table">
                             <div class="table-responsive table-has-actions table-has-filter">
-                                <table class="table card-table table-vcenter table-striped table-hover"
-                                    id="botble-ecommerce-tables-product-table">
+                                <table class="table" id="myTable">
                                     <thead>
                                         <tr>
                                             <th title="ID" width="20"
-                                                class="text-center no-column-visibility  column-key-0">ID</th>
+                                                class="text-center no-column-visibility width="50"   column-key-0">ID</th>
                                             <th title="CategoryName" width="50" class=" column-key-1">Name
                                             </th>
-                                            <th title="Description" class="text-start  column-key-2">description
+                                            <th title="Description" class="text-center  column-key-2">description
                                             </th>
-                                            <th title="Created_at" class="text-start  column-key-2">Created At
+                                            <th title="Created_at" class="text-center  column-key-2">Created At
                                             </th>
-                                            <th title="Status" class="text-start  column-key-1">Status</th>
-                                            <th title="Action" class="text-start  column-key-1">Action</th>
+                                            <th title="Status" class="text-center  column-key-1">Status</th>
+                                            <th title="Action" class="text-center  column-key-1">Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        @foreach($categories as $category)
+                                    <tbody class="text-center">
+                                        @php
+                                            $index = 1;
+                                        @endphp
+                                        @foreach ($categories as $category)
                                             <tr>
-                                                <td>{{ $loop->index + 1 }}</td>
-                                                <td>{{ $category->name }}</a></td>
-                                                <td>{{ $category->description }}</td>
-                                                <td>{{ optional($category->created_at)->format('Y-m-d') }}</td>
+                                                <td>{{ $index++ }}</td>
                                                 <td>
-                                                        {!! $category->status == 'Published'
-                                                            ? '<span class="badge bg-success">Published</span>'
-                                                            : '<span class="badge bg-warning">Pending</span>' !!}
+                                                    {{ $category->name }}
                                                 </td>
-                                                <td class="text-end">
-                                                    <a href="{{ route('admin.category.edit', $category) }}" class="btn btn-sm btn-primary btn-icon-square"><i class="fas fa-edit"></i></a>
-                                                    <form action="{{ route('admin.category.Delete', $category) }}" method="POST" style="display:inline-block" class="confirm-delete-form">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-sm btn-danger btn-icon-square btn-delete"><i class="fas fa-trash"></i></button>
-                                                    </form>
+                                                <td>{{ $category->description }}</td>
+                                                <td>{{ $category->created_at }}</td>
+                                                <td>
+                                                    <span
+                                                        class="badge {{ $category->status === 'Published' ? 'badge bg-success text-success-fg' : 'badge bg-danger text-danger-fg' }}">
+                                                        {{ ucwords($category->status) }}
+                                                    </span>
+                                                </td>
+                                                <td class="text-center">
+                                                    <a href="{{ route('admin.category.edit', $category) }}"
+                                                        class="btn btn-sm btn-primary btn-icon-square">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                        <button type="submit" onclick="deleteCategory({{ $category->id }})"
+                                                            class="btn btn-sm btn-danger btn-icon-square">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
                                                 </td>
                                             </tr>
+                                            @if ($category->children->count())
+                                                @foreach ($category->children as $child)
+                                                    <tr>
+                                                        <td>{{ $index++ }}</td>
+                                                        <td>
+                                                            {!! '&nbsp;&nbsp;&nbsp;↳ ' !!}
+                                                            {{ $child->name }}
+                                                        </td>
+                                                        <td>{{ $child->description }}</td>
+                                                        <td>{{ $child->created_at }}</td>
+                                                        <td>
+                                                            <span
+                                                                class="badge {{ $child->status === 'Published' ? 'badge bg-success text-success-fg' : 'badge bg-danger text-danger-fg' }}">
+                                                                {{ ucwords($child->status) }}
+                                                            </span>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <a href="{{ route('admin.category.edit', $child) }}"
+                                                                class="btn btn-sm btn-primary btn-icon-square">
+                                                                <i class="fas fa-edit"></i>
+                                                            </a>
+                                                            <button type="submit" onclick="deleteCategory({{ $category->id }})"
+                                                                class="btn btn-sm btn-danger btn-icon-square">
+                                                                <i class="fas fa-trash"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            @endif
                                         @endforeach
                                     </tbody>
                                 </table>
@@ -121,4 +156,72 @@
                     </div>
                 </div>
             </div>
-        @endsection
+        </main>
+    @endsection
+@push('scripts')
+<script>
+    function deleteCategory(id) {
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Do you really want to delete this category?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "Cancel",
+    }).then((result) => {
+        if (result.isConfirmed) {
+
+            $.ajax({
+                url: '{{ route("admin.category.Delete") }}',
+                type: 'POST',
+                dataType: 'json',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: { id: id },
+
+                beforeSend: function() {
+                    Swal.fire({
+                        title: 'Deleting...',
+                        didOpen: () => Swal.showLoading(),
+                        allowOutsideClick: false
+                    });
+                },
+                success: function(res) {
+                    Swal.close();
+
+                    if (res.status === true) {
+                         Swal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: res.message
+                        }).then(() => {
+                            window.location.href = "{{ route('admin.category.Index') }}";
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: res.message || 'Something went wrong!'
+                        });
+                    }
+                },
+
+                error: function() {
+                    Swal.close();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Something went wrong!'
+                    });
+                }
+            });
+
+        } else {
+            notify('Delete cancelled', 'info');
+        }
+    });
+}
+
+</script>
+@endpush
