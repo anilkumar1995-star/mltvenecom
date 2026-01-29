@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+
 
 
 Route::get('/', function () {
@@ -81,10 +83,20 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::group(['prefix' => 'category'], function() {
         Route::get('index',[CategoryController::class,'index'])->name('category.Index');
         Route::get('create',[CategoryController::class,'create'])->name('category.create');
-        Route::get('edit',[CategoryController::class,'Edit'])->name('category.Edit');
-        Route::get('delete',[CategoryController::class,'delete'])->name('category.Delete');
+        Route::post('store',[CategoryController::class,'store'])->name('category.store');
+        Route::get('/category/{category}/edit',[CategoryController::class,'Edit'])->name('category.edit');
+        Route::put('/category/{category}', [CategoryController::class, 'update'])->name('category.update');
+        Route::delete('/delete/{category}',[CategoryController::class,'destroy'])->name('category.Delete');
     });
 
+    Route::group(['prefix' => 'brand'], function() {
+        Route::get('index',[BrandController::class,'index'])->name('brand.Index');
+        Route::get('create',[BrandController::class,'create'])->name('brand.create');
+        Route::post('store',[BrandController::class,'store'])->name('brand.store');
+        Route::get('/brand/{brand}/edit',[BrandController::class,'Edit'])->name('brand.edit');
+        Route::put('/brand/{brand}', [BrandController::class, 'update'])->name('brand.update');
+        Route::delete('/delete/{brand}',[BrandController::class,'destroy'])->name('brand.Delete');
+    });
 
 });
 

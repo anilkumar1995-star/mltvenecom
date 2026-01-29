@@ -12,6 +12,6 @@ class Category extends Model
         'name',
         'description',
         'status',
-        'cate_image'
+        'parent_id'
     ];
 }

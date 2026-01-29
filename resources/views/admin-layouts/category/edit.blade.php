@@ -1,5 +1,5 @@
 @extends('admin-layouts.app')
-@section('title', 'Category Create')
+@section('title', 'Category Edit')
 @section('content')
 
 
@@ -12,8 +12,7 @@
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item">
-                                        <a class="mb-0 d-inline-block fs-6 lh-1"
-                                            href="https://shofy-grocery.botble.com/admin">Dashboard</a>
+                                        <a class="mb-0 d-inline-block fs-6 lh-1" href="{{ route('home') }}">Dashboard</a>
                                     </li>
                                     <li class="breadcrumb-item">
                                         <h1 class="mb-0 d-inline-block fs-6 lh-1">Ecommerce</h1>
@@ -31,23 +30,21 @@
             </div>
         </div>
 
+
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $err)
+                        <li>{{ $err }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <main class="page-body page-content">
             <div class="container-xl">
-                <form method="POST" action="{{ route('admin.category.store') }}">
+                <form method="POST" action="{{ route('admin.category.update', $category) }}">
                     @csrf
-                    @if ($errors->any())
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <strong>Whoops!</strong> Please fix the errors below.
-                            <ul class="mb-0 mt-2">
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                        </div>
-                    @endif
-
-
+                    @method('PUT')
                     <div role="alert" class="alert alert-info">
                         <div class="d-flex gap-1">
                             <div>
@@ -66,54 +63,31 @@
                             <div class="card mb-3">
                                 <div class="card-body">
                                     <div class="form-body">
-                                        <div class="mb-3">
-                                            <label class="form-label">Name</label>
-                                            <input type="text"
-                                                name="name"
-                                                value="{{ old('name') }}"
-                                                class="form-control @error('name') is-invalid @enderror">
-
-                                            @error('name')
-                                                <div class="invalid-feedback">
-                                                    {{ $message }}
-                                                </div>
-                                            @enderror
+                                        <div class="mb-3 position-relative">
+                                            <label class="form-label" for="name">
+                                                Name
+                                            </label>
+                                            <input class="form-control" placeholder="Name" name="name" type="text"
+                                                id="name" value="{{ old('name', $category->name) }}">
                                         </div>
-
-                                        <div class="mb-3">
-                                            <label class="form-label">Parent</label>
-                                            <select name="parent_id"
-                                                    class="form-select @error('parent_id') is-invalid @enderror">
+                                        <div class="mb-3 position-relative">
+                                            <label class="form-label" for="parent_id">
+                                                Parent
+                                            </label>
+                                            <select class="select-search-full form-select" data-allow-clear="false"
+                                                id="parent_id" name="parent_id"
+                                                value="{{ old('parent_id', $category->parent_id) }}">
                                                 <option value="0">None</option>
-
-                                                @foreach($categories as $row)
-                                                    <option value="{{ $row->id }}"
-                                                        {{ old('parent_id') == $row->id ? 'selected' : '' }}>
-                                                        {{ $row->name }}
-                                                    </option>
-                                                @endforeach
                                             </select>
-
-                                            @error('parent_id')
-                                                <div class="invalid-feedback">
-                                                    {{ $message }}
-                                                </div>
-                                            @enderror
                                         </div>
-
                                         <div class="mb-3 position-relative">
                                             <label class="form-label" for="description">
                                                 Description
                                             </label>
                                             <div class="mb-2 btn-list"></div>
                                             <textarea class="form-control form-control editor-ckeditor ays-ignore" data-counter="100000" rows="4"
-                                                placeholder="Write your content" with-short-code id="description" name="description" cols="50">
-                                            </textarea>
-                                            @error('description')
-                                                <div class="invalid-feedback d-block">
-                                                    {{ $message }}
-                                                </div>
-                                            @enderror
+                                                placeholder="Write your content" with-short-code id="description"
+                                                value="{{ old('description', $category->description) }}" name="description" cols="50"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -131,18 +105,14 @@
                                     </h4>
                                 </div>
                                 <div class="card-body">
-                                    <select class="form-select @error('status') is-invalid @enderror" name="status">
-                                        <option value="">Select Status</option>
-                                        <option value="Pending" {{ old('status')=='Pending'?'selected':'' }}>Pending</option>
-                                        <option value="Published" {{ old('status')=='Published'?'selected':'' }}>Published</option>
+                                    <select class="form-select" required="required" id="status" name="status">
+                                        <option value="Pending"
+                                            {{ old('status', $category->status) == 'Pending' ? 'selected' : '' }}>Pending
+                                        </option>
+                                        <option value="Published"
+                                            {{ old('status', $category->status) == 'Published' ? 'selected' : '' }}>
+                                            Published</option>
                                     </select>
-
-                                    @error('status')
-                                        <div class="invalid-feedback d-block">
-                                            {{ $message }}
-                                        </div>
-                                    @enderror
-
                                 </div>
                             </div>
                             <div class="card">
@@ -163,4 +133,4 @@
                     </div>
                 </form>
 
-        @endsection
+            @endsection

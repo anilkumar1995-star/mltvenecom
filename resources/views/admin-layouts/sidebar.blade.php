@@ -221,21 +221,39 @@
                                     </svg></span><span class="nav-link-title text-truncate"> Product Inventory
                                 </span></a>  --}}
 
-<a class="dropdown-item nav-priority-90"
-                                href="{{ route('admin.category.Index') }}"
-                                id="cms-plugins-product-categories" title="Product categories"><span
-                                    class="nav-link-icon d-md-none d-lg-inline-block" title="Product categories"><svg
-                                        class="icon svg-icon-ti-ti-archive" xmlns="http://www.w3.org/2000/svg"
-                                        width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round">
-                                        <path
-                                            d="M3 4m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z">
-                                        </path>
-                                        <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10"></path>
-                                        <path d="M10 12l4 0"></path>
-                                    </svg></span><span class="nav-link-title text-truncate"> Product categories
-                                </span></a>
+                                <a class="dropdown-item nav-priority-90"
+                                    href="{{ route('admin.category.Index') }}"
+                                    id="cms-plugins-product-categories" title="Product categories">
+                                    <span
+                                        class="nav-link-icon d-md-none d-lg-inline-block" title="Product categories"><svg
+                                            class="icon svg-icon-ti-ti-archive" xmlns="http://www.w3.org/2000/svg"
+                                            width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <path
+                                                d="M3 4m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z">
+                                            </path>
+                                            <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10"></path>
+                                            <path d="M10 12l4 0"></path>
+                                        </svg></span><span class="nav-link-title text-truncate"> Product categories
+                                    </span>
+                                </a>
+
+                                <a class="dropdown-item nav-priority-150"
+                                    href="{{ route('admin.brand.Index') }}" id="cms-plugins-brands"title="Brands">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block"
+                                        title="Brands">
+                                        <svg class="icon svg-icon-ti-ti-registered"
+                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
+                                            <path d="M10 15v-6h2a2 2 0 1 1 0 4h-2"></path>
+                                            <path d="M14 15l-2 -2"></path>
+                                        </svg>
+                                    </span>
+                                    <span class="nav-link-title text-truncate"> Brands </span>
+                                </a>
 {{--  <a class="dropdown-item nav-priority-100"
                                 href="http://127.0.0.1:8000/admin/ecommerce/product-tags" id="cms-plugins-product-tag"
                                 title="Product tags"><span class="nav-link-icon d-md-none d-lg-inline-block"
@@ -300,17 +318,9 @@
                                         <path d="M18 19l1.592 -1.592a4.82 4.82 0 0 0 0 -6.816l-4.592 -4.592"></path>
                                         <path d="M7 10h-.01"></path>
                                     </svg></span><span class="nav-link-title text-truncate"> Product labels
-                                </span></a><a class="dropdown-item nav-priority-150"
-                                href="http://127.0.0.1:8000/admin/ecommerce/brands" id="cms-plugins-brands"
-                                title="Brands"><span class="nav-link-icon d-md-none d-lg-inline-block"
-                                    title="Brands"><svg class="icon svg-icon-ti-ti-registered"
-                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
-                                        <path d="M10 15v-6h2a2 2 0 1 1 0 4h-2"></path>
-                                        <path d="M14 15l-2 -2"></path>
-                                    </svg></span><span class="nav-link-title text-truncate"> Brands </span></a><a
+                                </span></a>
+
+<a
                                 class="dropdown-item nav-priority-160"
                                 href="http://127.0.0.1:8000/admin/ecommerce/reviews" id="cms-ecommerce-review"
                                 title="Reviews"><span class="nav-link-icon d-md-none d-lg-inline-block"

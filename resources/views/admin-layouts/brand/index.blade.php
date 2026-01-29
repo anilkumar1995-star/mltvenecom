@@ -1,5 +1,5 @@
 @extends('admin-layouts.app')
-@section('title', 'Category')
+@section('title', 'Brand')
 @section('content')
     <div class="page-wrapper">
         <div class="page-header d-print-none">
@@ -43,7 +43,7 @@
                                     class="d-flex flex-column flex-sm-row align-items-stretch align-items-sm-center gap-1 table-action-buttons">
 
                                     <div class="dropdown d-inline-block">
-                                        <a href="{{ route('admin.category.create') }}"
+                                        <a href="{{ route('admin.brand.create') }}"
                                             class="btn buttons-collection action-item btn-primary">
                                             <svg class="icon svg-icon-ti-ti-plus" xmlns="http://www.w3.org/2000/svg"
                                                 width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -68,7 +68,6 @@
                                             <path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" />
                                         </svg>
                                         Reload
-
                                     </button>
                                 </div>
                             </div>
@@ -80,20 +79,16 @@
                                     id="botble-ecommerce-tables-product-table">
                                     <thead>
                                         <tr>
-                                            <th title="ID" width="20"
-                                                class="text-center no-column-visibility  column-key-0">ID</th>
-                                            <th title="CategoryName" width="50" class=" column-key-1">Name
-                                            </th>
-                                            <th title="Description" class="text-start  column-key-2">description
-                                            </th>
-                                            <th title="Created_at" class="text-start  column-key-2">Created At
-                                            </th>
+                                            <th title="ID" width="20"class="text-center no-column-visibility  column-key-0">ID</th>
+                                            <th title="Logo" width="20" class="text-center no-column-visibility  column-key-0">Logo</th>
+                                            <th title="CategoryName" width="50" class=" column-key-1">Name</th>
+                                            <th title="Created_at" class="text-start  column-key-2">Created At</th>
                                             <th title="Status" class="text-start  column-key-1">Status</th>
-                                            <th title="Action" class="text-start  column-key-1">Action</th>
+                                            <th title="Action" class="text-start  column-key-1">Oerations</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($categories as $category)
+                                        {{--  @foreach($categories as $category)
                                             <tr>
                                                 <td>{{ $loop->index + 1 }}</td>
                                                 <td>{{ $category->name }}</a></td>
@@ -113,7 +108,7 @@
                                                     </form>
                                                 </td>
                                             </tr>
-                                        @endforeach
+                                        @endforeach  --}}
                                     </tbody>
                                 </table>
                             </div>

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('description');
+            $table->string('parent_id')->nullable();
             $table->enum('status',['Published','Pending']);
             // $table->string('cate_image');
             $table->softDeletes();
