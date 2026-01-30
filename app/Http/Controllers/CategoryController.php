@@ -13,7 +13,6 @@ class CategoryController extends Controller
 {
     public function index(){
        $data['categories'] = EcProductCategory::with('children')
-        ->whereNull('deleted_at')
         ->where('parent_id', 0)
         ->orderBy('id', 'desc')
         ->get();
