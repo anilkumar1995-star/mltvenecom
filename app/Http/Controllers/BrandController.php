@@ -2,20 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
+use App\Models\EcProductCategory;
+use App\Models\EcBrand;
 use Illuminate\Http\Request;
 
 class BrandController extends Controller
 {
-    //  public function index(){
-    //     $data['categories'] = Category::whereNull('deleted_at')->where('status','!=','Pending')->orderBy('id','desc')->get();
-    //     return view('admin-layouts.brand.index',$data);
-    // }
+     public function index(){
+        $data['categories'] = EcProductCategory::where('status','!=','Pending')->orderBy('id','desc')->get();
+        $data['brands'] = EcBrand::orderBy('id','desc')->get();
+        return view('admin-layouts.brand.index',$data);
+    }
 
-    // public function create(){
-    //     $data['categories'] = Category::whereNull('deleted_at')->where('status','!=','Pending')->orderBy('id','desc')->get();
-    //     return view('admin-layouts.brand.create',$data);
-    // }
+    public function create(){
+        $data['categories'] = EcProductCategory::where('status','!=','Pending')->orderBy('id','desc')->get();
+        return view('admin-layouts.brand.create',$data);
+    }
 
     // public function store(Request $post)
     // {
