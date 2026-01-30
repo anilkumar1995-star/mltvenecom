@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class EcProductCategory extends Model
 {
-    use SoftDeletes;
     protected $fillable = [
         'name',
         'slug',
@@ -31,7 +30,6 @@ class EcProductCategory extends Model
         return $this->hasMany(self::class, 'parent_id');
     }
 
-    protected $date = ['deleted_at'];
 
     public function getUpdatedAtAttribute($value)
     {

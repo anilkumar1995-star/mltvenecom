@@ -14,7 +14,7 @@ class CategoryController extends Controller
     public function index(){
        $data['categories'] = EcProductCategory::with('children')
         ->whereNull('deleted_at')
-        ->where('parent_id', 0)     // root categories only
+        ->where('parent_id', 0)
         ->orderBy('id', 'desc')
         ->get();
 
@@ -22,7 +22,7 @@ class CategoryController extends Controller
     }
 
     public function create(){
-        $data['categories'] = EcProductCategory::whereNull('deleted_at')->where('parent_id','=','0')->orderBy('id','desc')->get();
+        $data['categories'] = EcProductCategory::where('parent_id','=','0')->orderBy('id','desc')->get();
         return view('admin-layouts.category.create',$data);
     }
 
@@ -106,7 +106,7 @@ class CategoryController extends Controller
         $validator = Validator::make($post->all(),$rules);
         if($validator->fails()) return response()->json(['status' => false,'errors' => $validator->errors()]);
 
-        $category = EcProductCategory::whereNull('deleted_at')->where('id',$post->id)->first();
+        $category = EcProductCategory::where('id',$post->id)->first();
         if(!$category) return response()->json(['status' => false,'message' => "Record Not Found"]);
 
         if($category->parent_id == null){
