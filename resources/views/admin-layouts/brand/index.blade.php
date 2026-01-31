@@ -103,8 +103,6 @@
                                         </div>
 
                                         <form method="GET" action="https://shofy-grocery.botble.com/admin/ecommerce/brands" accept-charset="UTF-8" class="filter-form">
-                                            <input type="hidden" name="filter_table_id" class="filter-data-table-id" value="botble-ecommerce-tables-brand-table">
-                                            <input type="hidden" name="class" class="filter-data-class" value="Botble\Ecommerce\Tables\BrandTable">
                                             <div class="filter_list inline-block filter-items-wrap">
                                                 <div class="row filter-item form-filter filter-item-default">
                                                     <div class="col-auto w-50 w-sm-auto">
