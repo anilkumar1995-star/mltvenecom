@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0027)http://127.0.0.1:8000/admin -->
+<!-- saved from url=(0027){{ url("/") }}/admin -->
 <html lang="en"
     class="js flexbox flexboxlegacy canvas canvastext webgl no-touch geolocation postmessage no-websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers no-applicationcache svg inlinesvg smil svgclippaths">
 
@@ -12,61 +12,14 @@
     <title>@yield('title', 'Default')</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <link href="http://127.0.0.1:8000/storage/main/general/favicon.png" rel="icon shortcut" type="image/x-icon">
-    <meta property="og:image" content="http://127.0.0.1:8000/storage/main/general/favicon.png">
+    <link href="{{ asset('storage/main/general/favicon.png') }}" rel="icon shortcut" type="image/x-icon">
+    <meta property="og:image" content="{{ asset('storage/main/general/favicon.png') }}">
 
     <meta name="description" content="Copyright 2026 © Your App. Version 1.4.3">
     <meta property="og:description" content="Copyright 2026 © Your App. Version 1.4.3">
-    <link media="all" type="text/css" rel="stylesheet"
-        href="https://shofy-grocery.botble.com/vendor/core/core/base/css/tree-category.css?v=1.4.4">
-
-
-    <link media="all" type="text/css" rel="stylesheet"
-        href="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/font-awesome/css/fontawesome.min.css?v=1.4.4">
-    <link media="all" type="text/css" rel="stylesheet"
-        href="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/select2/css/select2.min.css?v=1.4.4">
-    <link media="all" type="text/css" rel="stylesheet"
-        href="https://shofy-grocery.botble.com/vendor/core/core/base/css/libraries/select2.css?v=1.4.4">
-    <link media="all" type="text/css" rel="stylesheet"
-        href="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/toastr/toastr.min.css?v=1.4.4">
-    <link media="all" type="text/css" rel="stylesheet"
-        href="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/mcustom-scrollbar/jquery.mCustomScrollbar.css?v=1.4.4">
-    <link media="all" type="text/css" rel="stylesheet"
-        href="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/flatpickr/flatpickr.min.css?v=1.4.4">
-    <link media="all" type="text/css" rel="stylesheet"
-        href="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/spectrum/spectrum.css?v=1.4.4">
-    <link media="all" type="text/css" rel="stylesheet"
-        href="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/fancybox/jquery.fancybox.min.css?v=1.4.4">
-    <link media="all" type="text/css" rel="stylesheet"
-        href="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/jquery-nestable/jquery.nestable.min.css?v=1.4.4">
-    <link media="all" type="text/css" rel="stylesheet"
-        href="https://shofy-grocery.botble.com/vendor/core/core/base/css/core.css?v=1.4.4">
-    <link media="all" type="text/css" rel="stylesheet"
-        href="https://shofy-grocery.botble.com/vendor/core/plugins/language/css/language.css?v=1.4.4">
-    <link media="all" type="text/css" rel="stylesheet"
-        href="https://shofy-grocery.botble.com/vendor/core/core/base/css/tree-category.css?v=1.4.4">
-    <link media="all" type="text/css" rel="stylesheet"
-        href="https://shofy-grocery.botble.com/vendor/core/packages/slug/css/slug.css?v=1.4.4">
-    <link media="all" type="text/css" rel="stylesheet"
-        href="https://shofy-grocery.botble.com/vendor/core/packages/shortcode/css/shortcode.css?v=1.4.4">
-    <link media="all" type="text/css" rel="stylesheet"
-        href="https://shofy-grocery.botble.com/vendor/core/packages/seo-helper/css/seo-helper.css?v=1.4.4">
-        <link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-<link rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/simple-notify@0.5.5/dist/simple-notify.min.css">
-
-
-    <script src="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/jquery.min.js?v=1.4.4"></script>
-    <script src="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/jquery-compat/jquery4-compat.js?v=1.4.4">
-    </script>
-    <script src="https://shofy-grocery.botble.com/vendor/core/core/base/js/app.js?v=1.4.4"></script>
-
-
 
     <link rel="stylesheet" href="https://cdn.datatables.net/2.3.6/css/dataTables.dataTables.css" />
 
-    <script src="https://cdn.datatables.net/2.3.6/js/dataTables.js"></script>
     <style>
         [v-cloak],
         [x-cloak] {
@@ -91,20 +44,83 @@
         }
     </style>
 
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/fontawesome.min.css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/select2.min.css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/select2.css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/toastr.min.css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/jquery.mCustomScrollbar.css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/flatpickr.min.css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/spectrum.css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/jquery.fancybox.min.css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/core.css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/language.css">
-    <script src="{{ asset('/') }}js/jquery.min.js.download"></script>
-    <script src="{{ asset('/') }}js/app.js.download"></script>
-    <script src="{{ asset('/') }}js/vue.global.min.js.download"></script>
-    <script src="{{ asset('/') }}js/vue-app.js.download"></script>
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('css/fontawesome.min.css') }}">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('css/select2.min.css') }}">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('css/select2.css') }}">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('css/toastr.min.css') }}">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('css/jquery.mCustomScrollbar.css') }}">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('css/flatpickr.min.css') }}">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('css/spectrum.css') }}">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('css/jquery.fancybox.min.css') }}">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('css/core.css') }}">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('css/language.css') }}">
+
+    <script src="{{ asset('js/jquery.min.js.download') }}"></script>
+    <script src="{{ asset('js/app.js.download') }}"></script>
+    <script src="{{ asset('js/vue.global.min.js.download') }}"></script>
+    <script src="{{ asset('js/vue-app.js.download') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            NProgress.configure({ showSpinner: true });
+            
+            // Initial load
+            NProgress.start();
+            $(window).on('load', function() {
+                NProgress.done();
+                $('#page-loader').fadeOut();
+            });
+
+            // AJAX handling
+            $(document).ajaxStart(function() {
+                NProgress.start();
+                $('#page-loader').fadeIn();
+            });
+            $(document).ajaxStop(function() {
+                NProgress.done();
+                $('#page-loader').fadeOut();
+            });
+        });
+    </script>
+
+    <script>
+        window.BotbleVariables = {
+            languages: {
+                notices_msg: 'Success!',
+                error_msg: 'Error!',
+            }
+        };
+        window.Botble = {
+            showNotice: function(type, message) {
+                if (typeof toastr !== 'undefined') {
+                    toastr[type](message);
+                } else {
+                    console.log(type + ': ' + message);
+                }
+            }
+        };
+        window.route = function(name) {
+            console.warn('Legacy script called route("' + name + '") which is not defined.');
+            return '#';
+        };
+
+        // Fix accessibility warning: Blocked aria-hidden on an element because its descendant retained focus.
+        $(document).ready(function() {
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.type === "attributes" && mutation.attributeName === "aria-hidden") {
+                        if ($('#app').attr('aria-hidden') === 'true') {
+                            $('#app').removeAttr('aria-hidden');
+                        }
+                    }
+                });
+            });
+            const appEl = document.getElementById('app');
+            if (appEl) {
+                observer.observe(appEl, { attributes: true });
+            }
+        });
+    </script>
 
     <style>
         #nprogress {
@@ -112,15 +128,13 @@
         }
 
         #nprogress .bar {
-            background: #007bff;
-
+            background: var(--primary-color, #206bc4);
             position: fixed;
-            z-index: 1031;
+            z-index: 10310;
             top: 0;
             left: 0;
-
             width: 100%;
-            height: 2px;
+            height: 3px;
         }
 
         #nprogress .peg {
@@ -129,9 +143,8 @@
             right: 0px;
             width: 100px;
             height: 100%;
-            box-shadow: 0 0 10px #007bff, 0 0 5px #007bff;
+            box-shadow: 0 0 10px var(--primary-color, #206bc4), 0 0 5px var(--primary-color, #206bc4);
             opacity: 1.0;
-
             -webkit-transform: rotate(3deg) translate(0px, -4px);
             -ms-transform: rotate(3deg) translate(0px, -4px);
             transform: rotate(3deg) translate(0px, -4px);
@@ -140,7 +153,7 @@
         #nprogress .spinner {
             display: block;
             position: fixed;
-            z-index: 1031;
+            z-index: 10310;
             top: 15px;
             right: 15px;
         }
@@ -149,12 +162,10 @@
             width: 18px;
             height: 18px;
             box-sizing: border-box;
-
             border: solid 2px transparent;
-            border-top-color: #007bff;
-            border-left-color: #007bff;
+            border-top-color: var(--primary-color, #206bc4);
+            border-left-color: var(--primary-color, #206bc4);
             border-radius: 50%;
-
             -webkit-animation: nprogress-spinner 400ms linear infinite;
             animation: nprogress-spinner 400ms linear infinite;
         }
@@ -170,106 +181,42 @@
         }
 
         @-webkit-keyframes nprogress-spinner {
-            0% {
-                -webkit-transform: rotate(0deg);
-            }
-
-            100% {
-                -webkit-transform: rotate(360deg);
-            }
+            0% { -webkit-transform: rotate(0deg); }
+            100% { -webkit-transform: rotate(360deg); }
         }
-
         @keyframes nprogress-spinner {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-    </style>
-    <style>
-        #nprogress {
-            pointer-events: none;
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        #nprogress .bar {
-            background: var(--bb-primary);
-
+        /* Global Page Loader Overlay */
+        #page-loader {
             position: fixed;
-            z-index: 1031;
             top: 0;
             left: 0;
-
             width: 100%;
-            height: 2px;
-        }
-
-        #nprogress .peg {
-            display: block;
-            position: absolute;
-            right: 0px;
-            width: 100px;
             height: 100%;
-            box-shadow: 0 0 10px var(--bb-primary), 0 0 5px var(--bb-primary);
-            opacity: 1.0;
-
-            -webkit-transform: rotate(3deg) translate(0px, -4px);
-            -ms-transform: rotate(3deg) translate(0px, -4px);
-            transform: rotate(3deg) translate(0px, -4px);
+            background: rgba(255, 255, 255, 0.5); /* Semi-transparent white */
+            backdrop-filter: blur(1.5px);
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s ease;
         }
 
-        #nprogress .spinner {
-            display: block;
-            position: fixed;
-            z-index: 1031;
-            top: 15px;
-            right: 15px;
-        }
-
-        #nprogress .spinner-icon {
-            width: 18px;
-            height: 18px;
-            box-sizing: border-box;
-
-            border: solid 2px transparent;
-            border-top-color: var(--bb-primary);
-            border-left-color: var(--bb-primary);
+        .loader-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(var(--primary-color-rgb, 32, 107, 196), 0.15);
+            border-top: 3px solid var(--primary-color, #206bc4);
             border-radius: 50%;
-
-            -webkit-animation: nprogress-spinner 400ms linear infinite;
-            animation: nprogress-spinner 400ms linear infinite;
+            animation: spin 0.6s linear infinite;
         }
 
-        .nprogress-custom-parent {
-            overflow: hidden;
-            position: relative;
-        }
-
-        .nprogress-custom-parent #nprogress .spinner,
-        .nprogress-custom-parent #nprogress .bar {
-            position: absolute;
-        }
-
-        @-webkit-keyframes nprogress-spinner {
-            0% {
-                -webkit-transform: rotate(0deg);
-            }
-
-            100% {
-                -webkit-transform: rotate(360deg);
-            }
-        }
-
-        @keyframes nprogress-spinner {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
     <style>
@@ -703,6 +650,9 @@
 </head>
 
 <body class="page-sidebar-closed-hide-logo page-content-white page-container-bg-solid " style="">
+    <div id="page-loader">
+        <div class="loader-spinner"></div>
+    </div>
 
 
 
@@ -711,40 +661,31 @@
     @yield('content')
     @include('admin-layouts.footer')
 
-    <script src="{{ asset('/') }}js/notification.js.download"></script>
-    <script src="{{ asset('/') }}js/core-ui.js.download"></script>
-    <script src="{{ asset('/') }}js/excanvas.min.js.download"></script>
-    <script src="{{ asset('/') }}js/ie8.fix.min.js.download"></script>
-    <script src="{{ asset('/') }}js/modernizr.min.js.download"></script>
-    <script src="{{ asset('/') }}js/select2.min.js.download"></script>
-    <script src="{{ asset('/') }}js/flatpickr.min.js.download"></script>
-    <script src="{{ asset('/') }}js/jquery.cookie.js.download"></script>
-    <script src="{{ asset('/') }}js/core.js.download"></script>
-    <script src="{{ asset('/') }}js/toastr.min.js.download"></script>
-    <script src="{{ asset('/') }}js/jquery.mCustomScrollbar.js.download"></script>
-    <script src="{{ asset('/') }}js/jquery.stickytableheaders.js.download"></script>
-    <script src="{{ asset('/') }}js/jquery.waypoints.min.js.download"></script>
-    <script src="{{ asset('/') }}js/spectrum.js.download"></script>
-    <script src="{{ asset('/') }}js/jquery.fancybox.min.js.download"></script>
-    <script src="{{ asset('/') }}js/fslightbox.js.download"></script>
-    <script src="{{ asset('/') }}js/sortable.min.js.download"></script>
-    <script src="{{ asset('/') }}js/jquery.counterup.min.js.download"></script>
-    <script src="{{ asset('/') }}js/language-global.js.download"></script>
-    <script src="{{ asset('/') }}js/dashboard.js.download"></script>
-    <script src="{{ asset('/') }}js/check-for-updates.js.download"></script>
-    <script src="{{ asset('/') }}js/blog.js.download"></script>
-    <script src="{{ asset('/') }}js/audit-log.js.download"></script>
-    <script src="{{ asset('/') }}js/request-log.js.download"></script>
-    <script src="{{ asset('/') }}js/dashboard-widgets.js.download"></script>
-    <script src="{{ asset('/') }}js/global-search.js.download"></script>
-    <script src="{{ asset('/') }}js/license-activation.js.download"></script>
+    <script src="{{ asset('js/notification.js.download') }}"></script>
+    <script src="{{ asset('js/core-ui.js.download') }}"></script>
+    <script src="{{ asset('js/modernizr.min.js.download') }}"></script>
+    <script src="{{ asset('js/select2.min.js.download') }}"></script>
+    <script src="{{ asset('js/flatpickr.min.js.download') }}"></script>
+    <script src="{{ asset('js/jquery.cookie.js.download') }}"></script>
+    <script src="{{ asset('js/core.js.download') }}"></script>
+    <script src="{{ asset('js/toastr.min.js.download') }}"></script>
+    <script src="{{ asset('js/jquery.mCustomScrollbar.js.download') }}"></script>
+    <script src="{{ asset('js/jquery.stickytableheaders.js.download') }}"></script>
+    <script src="{{ asset('js/jquery.waypoints.min.js.download') }}"></script>
+    <script src="{{ asset('js/spectrum.js.download') }}"></script>
+    <script src="{{ asset('js/jquery.fancybox.min.js.download') }}"></script>
+    <script src="{{ asset('js/fslightbox.js.download') }}"></script>
+    <script src="{{ asset('js/sortable.min.js.download') }}"></script>
+    <script src="{{ asset('js/jquery.counterup.min.js.download') }}"></script>
+    <script src="{{ asset('js/language-global.js.download') }}"></script>
+    <script src="{{ asset('js/dashboard.js.download') }}"></script>
+    <script src="{{ asset('js/global-search.js.download') }}"></script>
     <script src="https://shofy-grocery.botble.com/vendor/core/packages/slug/js/slug.js?v=1.4.4"></script>
     <script src="https://shofy-grocery.botble.com/vendor/core/packages/shortcode/js/shortcode.js?v=1.4.4"></script>
     <script src="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/ckeditor/ckeditor.js?v=1.4.4"></script>
     <script src="https://shofy-grocery.botble.com/vendor/core/core/base/js/editor.js?v=1.4.4"></script>
     <script src="https://shofy-grocery.botble.com/vendor/core/packages/seo-helper/js/seo-helper.js?v=1.4.4"></script>
 
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.19.2/jquery.validate.min.js"></script>
@@ -786,3 +727,4 @@
 </body>
 
 </html>
+

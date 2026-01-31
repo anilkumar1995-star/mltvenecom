@@ -40,4 +40,9 @@ class EcProductCategory extends Model
     {
         return date('d M y - h:i A', strtotime($value));
     }
+
+    public function brands()
+    {
+        return $this->belongsToMany(EcBrand::class, 'ec_brand_categories', 'category_id', 'brand_id');
+    }
 }

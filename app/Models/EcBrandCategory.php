@@ -4,17 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class EcBrand extends Model
+class EcBrandCategory extends Model
 {
+    // protected $table = 'ec_brand_categories';
+
     protected $fillable = [
-        'name',
-        'slug',
-        'description',
-        'website',
-        'logo',
-        'status',
-        'order',
-        'is_featured',
+        'brand_id',
+        'category_id',
     ];
 
     public function getUpdatedAtAttribute($value)
@@ -25,10 +21,5 @@ class EcBrand extends Model
     public function getCreatedAtAttribute($value)
     {
         return date('d M y - h:i A', strtotime($value));
-    }
-
-    public function categories()
-    {
-        return $this->belongsToMany(EcProductCategory::class, 'ec_brand_categories', 'brand_id', 'category_id');
     }
 }

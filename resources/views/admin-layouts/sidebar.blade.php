@@ -9,12 +9,12 @@
                     <path d="M4 12l16 0"></path>
                     <path d="M4 18l16 0"></path>
                 </svg></button>
-            <h2 class="d-block d-lg-none navbar-brand navbar-brand-autodark"><a href="http://127.0.0.1:8000/admin"><img
+            <h2 class="d-block d-lg-none navbar-brand navbar-brand-autodark"><a href="{{ url("/") }}/admin"><img
                         src="{{ asset('/') }}js/logo-white.png" alt="Your App" class="navbar-brand-image"
                         style="max-height: 32px; height: auto;"></a>
             </h2>
             <div class="navbar-nav flex-row d-lg-none">
-                <div class="dropdown nav-item"><a href="http://127.0.0.1:8000/admin#"
+                <div class="dropdown nav-item"><a href="{{ url("/") }}/admin#"
                         class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown"
                         aria-label="Open user menu"><span class="crop-image-original avatar avatar-sm"
                             style="background-image: url(&quot;data:image/jpeg;base64,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&quot;);"></span>
@@ -24,13 +24,13 @@
                         </div>
                     </a>
                     <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-end"><a class="dropdown-item"
-                            href="http://127.0.0.1:8000/admin/system/users/profile/1"><svg
+                            href="{{ url("/") }}/admin/system/users/profile/1"><svg
                                 class="icon dropdown-item-icon svg-icon-ti-ti-user" xmlns="http://www.w3.org/2000/svg"
                                 width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path>
                                 <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
-                            </svg> Profile </a><a class="dropdown-item" href="http://127.0.0.1:8000/admin/logout"><svg
+                            </svg> Profile </a><a class="dropdown-item" href="{{ url("/") }}/admin/logout"><svg
                                 class="icon dropdown-item-icon svg-icon-ti-ti-logout" xmlns="http://www.w3.org/2000/svg"
                                 width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -45,7 +45,7 @@
             <div class="collapse navbar-collapse" id="sidebar-menu">
                 <ul class="navbar-nav">
                     <li class="nav-item active"><a class="nav-link nav-priority--9999 active show"
-                            href="http://127.0.0.1:8000/admin" id="cms-core-dashboard" title="Dashboard"><span
+                            href="{{ url("/") }}/admin" id="cms-core-dashboard" title="Dashboard"><span
                                 class="nav-link-icon d-md-none d-lg-inline-block" title="Dashboard"><svg
                                     class="icon svg-icon-ti-ti-home" xmlns="http://www.w3.org/2000/svg" width="24"
                                     height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -55,7 +55,7 @@
                                     <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"></path>
                                 </svg></span><span class="nav-link-title text-truncate"> Dashboard </span></a></li>
                     <li class="nav-item dropdown"><a class="nav-link dropdown-toggle nav-priority-0"
-                            href="http://127.0.0.1:8000/admin#cms-plugins-ecommerce" id="cms-plugins-ecommerce"
+                            href="{{ url("/") }}/admin#cms-plugins-ecommerce" id="cms-plugins-ecommerce"
                             data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false"
                             title="Ecommerce"><span class="nav-link-icon d-md-none d-lg-inline-block"
                                 title="Ecommerce"><svg class="icon svg-icon-ti-ti-shopping-bag"
@@ -68,12 +68,12 @@
                                     <path d="M9 11v-5a3 3 0 0 1 6 0v5"></path>
                                 </svg></span><span class="nav-link-title text-truncate"> Ecommerce <span
                                     class="badge badge-sm bg-primary text-primary-fg badge-pill menu-item-count ecommerce-count"
-                                    data-url="http://127.0.0.1:8000/admin/menu-items-count"
+                                    data-url="{{ url("/") }}/admin/menu-items-count"
                                     style="display: none;"></span></span></a>
                         <div class="dropdown-menu animate slideIn dropdown-menu-start">
                                 {{--  <a
                                 class="dropdown-item nav-priority-0"
-                                href="http://127.0.0.1:8000/admin/ecommerce/reports" id="cms-plugins-ecommerce-report"
+                                href="{{ url("/") }}/admin/ecommerce/reports" id="cms-plugins-ecommerce-report"
                                 title="Report"><span class="nav-link-icon d-md-none d-lg-inline-block"
                                     title="Report"><svg class="icon svg-icon-ti-ti-report-analytics"
                                         xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -91,7 +91,7 @@
                                     </svg></span><span class="nav-link-title text-truncate"> Report </span></a>
 <a
                                 class="dropdown-item nav-priority-10"
-                                href="http://127.0.0.1:8000/admin/ecommerce/orders" id="cms-plugins-ecommerce-order"
+                                href="{{ url("/") }}/admin/ecommerce/orders" id="cms-plugins-ecommerce-order"
                                 title="Orders"><span class="nav-link-icon d-md-none d-lg-inline-block"
                                     title="Orders"><svg class="icon svg-icon-ti-ti-truck-delivery"
                                         xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -103,10 +103,10 @@
                                         <path d="M3 9l4 0"></path>
                                     </svg></span><span class="nav-link-title text-truncate"> Orders <span
                                         class="badge badge-sm bg-primary text-primary-fg badge-pill menu-item-count pending-orders"
-                                        data-url="http://127.0.0.1:8000/admin/menu-items-count"
+                                        data-url="{{ url("/") }}/admin/menu-items-count"
                                         style="display: none;"></span></span></a><a
                                 class="dropdown-item nav-priority-20"
-                                href="http://127.0.0.1:8000/admin/ecommerce/incomplete-orders"
+                                href="{{ url("/") }}/admin/ecommerce/incomplete-orders"
                                 id="cms-plugins-ecommerce-incomplete-order" title="Incomplete orders"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Incomplete orders"><svg
                                         class="icon svg-icon-ti-ti-basket-cancel" xmlns="http://www.w3.org/2000/svg"
@@ -123,7 +123,7 @@
                                         <path d="M17 21l4 -4"></path>
                                     </svg></span><span class="nav-link-title text-truncate"> Incomplete orders
                                 </span></a><a class="dropdown-item nav-priority-30"
-                                href="http://127.0.0.1:8000/admin/ecommerce/order-returns"
+                                href="{{ url("/") }}/admin/ecommerce/order-returns"
                                 id="cms-plugins-ecommerce-order-return" title="Order returns"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Order returns"><svg
                                         class="icon svg-icon-ti-ti-basket-down" xmlns="http://www.w3.org/2000/svg"
@@ -140,10 +140,10 @@
                                         <path d="M22 19l-3 3l-3 -3"></path>
                                     </svg></span><span class="nav-link-title text-truncate"> Order returns <span
                                         class="badge badge-sm bg-primary text-primary-fg badge-pill menu-item-count pending-order-returns"
-                                        data-url="http://127.0.0.1:8000/admin/menu-items-count"
+                                        data-url="{{ url("/") }}/admin/menu-items-count"
                                         style="display: none;"></span></span></a><a
                                 class="dropdown-item nav-priority-40"
-                                href="http://127.0.0.1:8000/admin/ecommerce/shipments"
+                                href="{{ url("/") }}/admin/ecommerce/shipments"
                                 id="cms-plugins-ecommerce-shipping-shipments" title="Shipments"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Shipments"><svg
                                         class="icon svg-icon-ti-ti-truck-loading" xmlns="http://www.w3.org/2000/svg"
@@ -158,7 +158,7 @@
                                         <path d="M18 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
                                     </svg></span><span class="nav-link-title text-truncate"> Shipments
                                 </span></a><a class="dropdown-item nav-priority-50"
-                                href="http://127.0.0.1:8000/admin/ecommerce/invoices"
+                                href="{{ url("/") }}/admin/ecommerce/invoices"
                                 id="cms-plugins-ecommerce-invoice" title="Invoices"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Invoices"><svg
                                         class="icon svg-icon-ti-ti-file-invoice" xmlns="http://www.w3.org/2000/svg"
@@ -191,11 +191,11 @@
                                     </svg></span>
 <span class="nav-link-title text-truncate"> Products <span
                                         class="badge badge-sm bg-primary text-primary-fg badge-pill menu-item-count pending-products"
-                                        data-url="http://127.0.0.1:8000/admin/menu-items-count"
+                                        data-url="{{ url("/") }}/admin/menu-items-count"
                                         style="display: none;"></span></span></a>
 {{--  <a
                                 class="dropdown-item nav-priority-70"
-                                href="http://127.0.0.1:8000/admin/ecommerce/product-prices"
+                                href="{{ url("/") }}/admin/ecommerce/product-prices"
                                 id="cms-plugins-ecommerce-product-price" title="Product Prices"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Product Prices"><svg
                                         class="icon svg-icon-ti-ti-currency-dollar" xmlns="http://www.w3.org/2000/svg"
@@ -208,7 +208,7 @@
                                         <path d="M12 3v3m0 12v3"></path>
                                     </svg></span><span class="nav-link-title text-truncate"> Product Prices
                                 </span></a><a class="dropdown-item nav-priority-80"
-                                href="http://127.0.0.1:8000/admin/ecommerce/product-inventory"
+                                href="{{ url("/") }}/admin/ecommerce/product-inventory"
                                 id="cms-plugins-ecommerce-product-inventory" title="Product Inventory"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Product Inventory"><svg
                                         class="icon svg-icon-ti-ti-home-check" xmlns="http://www.w3.org/2000/svg"
@@ -255,7 +255,7 @@
                                     <span class="nav-link-title text-truncate"> Brands </span>
                                 </a>
 {{--  <a class="dropdown-item nav-priority-100"
-                                href="http://127.0.0.1:8000/admin/ecommerce/product-tags" id="cms-plugins-product-tag"
+                                href="{{ url("/") }}/admin/ecommerce/product-tags" id="cms-plugins-product-tag"
                                 title="Product tags"><span class="nav-link-icon d-md-none d-lg-inline-block"
                                     title="Product tags"><svg class="icon svg-icon-ti-ti-tag"
                                         xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -267,7 +267,7 @@
                                         </path>
                                     </svg></span><span class="nav-link-title text-truncate"> Product tags
                                 </span></a><a class="dropdown-item nav-priority-110"
-                                href="http://127.0.0.1:8000/admin/ecommerce/product-attribute-sets"
+                                href="{{ url("/") }}/admin/ecommerce/product-attribute-sets"
                                 id="cms-plugins-product-attribute" title="Product attributes"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Product attributes"><svg
                                         class="icon svg-icon-ti-ti-album" xmlns="http://www.w3.org/2000/svg"
@@ -280,7 +280,7 @@
                                         <path d="M12 4v7l2 -2l2 2v-7"></path>
                                     </svg></span><span class="nav-link-title text-truncate"> Product attributes
                                 </span></a><a class="dropdown-item nav-priority-120"
-                                href="http://127.0.0.1:8000/admin/ecommerce/options"
+                                href="{{ url("/") }}/admin/ecommerce/options"
                                 id="cms-plugins-ecommerce-global-options" title="Product options"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Product options"><svg
                                         class="icon svg-icon-ti-ti-database" xmlns="http://www.w3.org/2000/svg"
@@ -292,7 +292,7 @@
                                         <path d="M4 12v6a8 3 0 0 0 16 0v-6"></path>
                                     </svg></span><span class="nav-link-title text-truncate"> Product options
                                 </span></a><a class="dropdown-item nav-priority-130"
-                                href="http://127.0.0.1:8000/admin/ecommerce/product-collections"
+                                href="{{ url("/") }}/admin/ecommerce/product-collections"
                                 id="cms-plugins-product-collections" title="Product collections"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Product collections"><svg
                                         class="icon svg-icon-ti-ti-album" xmlns="http://www.w3.org/2000/svg"
@@ -305,7 +305,7 @@
                                         <path d="M12 4v7l2 -2l2 2v-7"></path>
                                     </svg></span><span class="nav-link-title text-truncate"> Product collections
                                 </span></a><a class="dropdown-item nav-priority-140"
-                                href="http://127.0.0.1:8000/admin/ecommerce/product-labels"
+                                href="{{ url("/") }}/admin/ecommerce/product-labels"
                                 id="cms-plugins-product-label" title="Product labels"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Product labels"><svg
                                         class="icon svg-icon-ti-ti-tags" xmlns="http://www.w3.org/2000/svg"
@@ -322,7 +322,7 @@
 
 <a
                                 class="dropdown-item nav-priority-160"
-                                href="http://127.0.0.1:8000/admin/ecommerce/reviews" id="cms-ecommerce-review"
+                                href="{{ url("/") }}/admin/ecommerce/reviews" id="cms-ecommerce-review"
                                 title="Reviews"><span class="nav-link-icon d-md-none d-lg-inline-block"
                                     title="Reviews"><svg class="icon svg-icon-ti-ti-star"
                                         xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -333,7 +333,7 @@
                                         </path>
                                     </svg></span><span class="nav-link-title text-truncate"> Reviews </span></a><a
                                 class="dropdown-item nav-priority-170"
-                                href="http://127.0.0.1:8000/admin/ecommerce/flash-sales" id="cms-plugins-flash-sale"
+                                href="{{ url("/") }}/admin/ecommerce/flash-sales" id="cms-plugins-flash-sale"
                                 title="Flash sales"><span class="nav-link-icon d-md-none d-lg-inline-block"
                                     title="Flash sales"><svg class="icon svg-icon-ti-ti-bolt"
                                         xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -342,7 +342,7 @@
                                         <path d="M13 3l0 7l6 0l-8 11l0 -7l-6 0l8 -11"></path>
                                     </svg></span><span class="nav-link-title text-truncate"> Flash sales
                                 </span></a><a class="dropdown-item nav-priority-180"
-                                href="http://127.0.0.1:8000/admin/ecommerce/discounts"
+                                href="{{ url("/") }}/admin/ecommerce/discounts"
                                 id="cms-plugins-ecommerce-discount" title="Discounts"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Discounts"><svg
                                         class="icon svg-icon-ti-ti-discount" xmlns="http://www.w3.org/2000/svg"
@@ -357,7 +357,7 @@
                                         <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
                                     </svg></span><span class="nav-link-title text-truncate"> Discounts
                                 </span></a><a class="dropdown-item nav-priority-190"
-                                href="http://127.0.0.1:8000/admin/customers" id="cms-plugins-ecommerce-customer"
+                                href="{{ url("/") }}/admin/customers" id="cms-plugins-ecommerce-customer"
                                 title="Customers"><span class="nav-link-icon d-md-none d-lg-inline-block"
                                     title="Customers"><svg class="icon svg-icon-ti-ti-users"
                                         xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -370,8 +370,8 @@
                                     </svg></span><span class="nav-link-title text-truncate"> Customers </span></a>  --}}
                         </div>
                     </li>
-                    {{--  <li class="nav-item dropdown"><a class="nav-link dropdown-toggle nav-priority-0"
-                            href="http://127.0.0.1:8000/admin#cms-plugins-product-specification"
+                    <li class="nav-item dropdown"><a class="nav-link dropdown-toggle nav-priority-0"
+                            href="{{ url("/") }}/admin#cms-plugins-product-specification"
                             id="cms-plugins-product-specification" data-bs-toggle="dropdown"
                             data-bs-auto-close="false" role="button" aria-expanded="false"
                             title="Product Specification"><span class="nav-link-icon d-md-none d-lg-inline-block"
@@ -394,7 +394,7 @@
                             </span></a>
                         <div class="dropdown-menu animate slideIn dropdown-menu-start"><a
                                 class="dropdown-item nav-priority-0"
-                                href="http://127.0.0.1:8000/admin/ecommerce/specification-groups"
+                                href="{{ route('admin.group.Index')}}"
                                 id="cms-plugins-product-specification-groups" title="Groups"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Groups"><svg
                                         class="icon svg-icon-ti-ti-folder" xmlns="http://www.w3.org/2000/svg"
@@ -406,7 +406,7 @@
                                         </path>
                                     </svg></span><span class="nav-link-title text-truncate"> Groups </span></a><a
                                 class="dropdown-item nav-priority-10"
-                                href="http://127.0.0.1:8000/admin/ecommerce/specification-attributes"
+                                href="{{ route('admin.productattributes.Index') }}"
                                 id="cms-plugins-product-specification-attributes" title="Attributes"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Attributes"><svg
                                         class="icon svg-icon-ti-ti-list-details" xmlns="http://www.w3.org/2000/svg"
@@ -425,7 +425,7 @@
                                         </path>
                                     </svg></span><span class="nav-link-title text-truncate"> Attributes
                                 </span></a><a class="dropdown-item nav-priority-20"
-                                href="http://127.0.0.1:8000/admin/ecommerce/specification-tables"
+                                href="{{ url("/") }}/admin/ecommerce/specification-tables"
                                 id="cms-plugins-product-specification-tables" title="Tables"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Tables"><svg
                                         class="icon svg-icon-ti-ti-table" xmlns="http://www.w3.org/2000/svg"
@@ -439,9 +439,9 @@
                                         <path d="M10 3v18"></path>
                                     </svg></span><span class="nav-link-title text-truncate"> Tables </span></a>
                         </div>
-                    </li> --}}
+                    </li>
                     <li class="nav-item dropdown"><a class="nav-link dropdown-toggle nav-priority-0"
-                            href="http://127.0.0.1:8000/admin#cms-plugins-marketplace" id="cms-plugins-marketplace"
+                            href="{{ url("/") }}/admin#cms-plugins-marketplace" id="cms-plugins-marketplace"
                             data-bs-toggle="dropdown" data-bs-auto-close="false" role="button"
                             aria-expanded="false" title="Marketplace"><span
                                 class="nav-link-icon d-md-none d-lg-inline-block" title="Marketplace"><svg
@@ -458,11 +458,11 @@
                                     <path d="M9 21v-4a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v4"></path>
                                 </svg></span><span class="nav-link-title text-truncate"> Marketplace <span
                                     class="badge badge-sm bg-primary text-primary-fg badge-pill menu-item-count marketplace-notifications-count"
-                                    data-url="http://127.0.0.1:8000/admin/menu-items-count"
+                                    data-url="{{ url("/") }}/admin/menu-items-count"
                                     style="display: none;"></span></span></a>
                         <div class="dropdown-menu animate slideIn dropdown-menu-start"><a
                                 class="dropdown-item nav-priority-0"
-                                href="http://127.0.0.1:8000/admin/marketplaces/reports"
+                                href="{{ url("/") }}/admin/marketplaces/reports"
                                 id="cms-plugins-marketplace-reports" title="Reports"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Reports"><svg
                                         class="icon svg-icon-ti-ti-chart-bar" xmlns="http://www.w3.org/2000/svg"
@@ -511,7 +511,7 @@
                                         <path d="M6 12h.01"></path>
                                     </svg></span><span class="nav-link-title text-truncate"> Withdrawals <span
                                         class="badge badge-sm bg-primary text-primary-fg badge-pill menu-item-count pending-withdrawals"
-                                        data-url="http://127.0.0.1:8000/admin/menu-items-count"
+                                        data-url="{{ url("/") }}/admin/menu-items-count"
                                         style="display: none;"></span></span></a><a
                                 class="dropdown-item nav-priority-4"
                                 href="{{ route('admin.marketplace.vendors') }}"
@@ -541,10 +541,10 @@
                                     </svg></span><span class="nav-link-title text-truncate"> Unverified vendors
                                     <span
                                         class="badge badge-sm bg-primary text-primary-fg badge-pill menu-item-count unverified-vendors"
-                                        data-url="http://127.0.0.1:8000/admin/menu-items-count"
+                                        data-url="{{ url("/") }}/admin/menu-items-count"
                                         style="display: none;"></span></span></a><a
                                 class="dropdown-item nav-priority-10"
-                                href="http://127.0.0.1:8000/admin/marketplaces/messages"
+                                href="{{ url("/") }}/admin/marketplaces/messages"
                                 id="cms-plugins-marketplace-messages" title="Messages"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Messages"><svg
                                         class="icon svg-icon-ti-ti-messages" xmlns="http://www.w3.org/2000/svg"
@@ -558,7 +558,7 @@
                         </div>
                     </li>
 
-               {{--   <li class="nav-item"><a class="nav-link nav-priority-2" href="http://127.0.0.1:8000/admin/pages"
+               {{--   <li class="nav-item"><a class="nav-link nav-priority-2" href="{{ url("/") }}/admin/pages"
                             id="cms-core-page" title="Pages"><span class="nav-link-icon d-md-none d-lg-inline-block"
                                 title="Pages"><svg class="icon svg-icon-ti-ti-notebook"
                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -571,7 +571,7 @@
                                     <path d="M13 12l2 0"></path>
                                 </svg></span><span class="nav-link-title text-truncate"> Pages </span></a></li>
                     <li class="nav-item dropdown"><a class="nav-link dropdown-toggle nav-priority-3"
-                            href="http://127.0.0.1:8000/admin#cms-plugins-blog" id="cms-plugins-blog"
+                            href="{{ url("/") }}/admin#cms-plugins-blog" id="cms-plugins-blog"
                             data-bs-toggle="dropdown" data-bs-auto-close="false" role="button"
                             aria-expanded="false" title="Blog"><span
                                 class="nav-link-icon d-md-none d-lg-inline-block" title="Blog"><svg
@@ -587,7 +587,7 @@
                                     <path d="M7 16h10"></path>
                                 </svg></span><span class="nav-link-title text-truncate"> Blog </span></a>
                         <div class="dropdown-menu animate slideIn dropdown-menu-start"><a
-                                class="dropdown-item nav-priority-10" href="http://127.0.0.1:8000/admin/blog/posts"
+                                class="dropdown-item nav-priority-10" href="{{ url("/") }}/admin/blog/posts"
                                 id="cms-plugins-blog-post" title="Posts"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Posts"><svg
                                         class="icon svg-icon-ti-ti-file-text" xmlns="http://www.w3.org/2000/svg"
@@ -603,7 +603,7 @@
                                         <path d="M9 17l6 0"></path>
                                     </svg></span><span class="nav-link-title text-truncate"> Posts </span></a><a
                                 class="dropdown-item nav-priority-20"
-                                href="http://127.0.0.1:8000/admin/blog/categories" id="cms-plugins-blog-categories"
+                                href="{{ url("/") }}/admin/blog/categories" id="cms-plugins-blog-categories"
                                 title="Categories"><span class="nav-link-icon d-md-none d-lg-inline-block"
                                     title="Categories"><svg class="icon svg-icon-ti-ti-folder"
                                         xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -614,7 +614,7 @@
                                         </path>
                                     </svg></span><span class="nav-link-title text-truncate"> Categories
                                 </span></a><a class="dropdown-item nav-priority-30"
-                                href="http://127.0.0.1:8000/admin/blog/tags" id="cms-plugins-blog-tags"
+                                href="{{ url("/") }}/admin/blog/tags" id="cms-plugins-blog-tags"
                                 title="Tags"><span class="nav-link-icon d-md-none d-lg-inline-block"
                                     title="Tags"><svg class="icon svg-icon-ti-ti-tag"
                                         xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -625,7 +625,7 @@
                                             d="M3 6v5.172a2 2 0 0 0 .586 1.414l7.71 7.71a2.41 2.41 0 0 0 3.408 0l5.592 -5.592a2.41 2.41 0 0 0 0 -3.408l-7.71 -7.71a2 2 0 0 0 -1.414 -.586h-5.172a3 3 0 0 0 -3 3z">
                                         </path>
                                     </svg></span><span class="nav-link-title text-truncate"> Tags </span></a><a
-                                class="dropdown-item nav-priority-40" href="http://127.0.0.1:8000/admin/blog/reports"
+                                class="dropdown-item nav-priority-40" href="{{ url("/") }}/admin/blog/reports"
                                 id="cms-plugins-blog-reports" title="Reports"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Reports"><svg
                                         class="icon svg-icon-ti-ti-chart-bar" xmlns="http://www.w3.org/2000/svg"
@@ -646,7 +646,7 @@
                         </div>
                     </li>
                     <li class="nav-item dropdown"><a class="nav-link dropdown-toggle nav-priority-3"
-                            href="http://127.0.0.1:8000/admin#cms-plugins-payments" id="cms-plugins-payments"
+                            href="{{ url("/") }}/admin#cms-plugins-payments" id="cms-plugins-payments"
                             data-bs-toggle="dropdown" data-bs-auto-close="false" role="button"
                             aria-expanded="false" title="Payments"><span
                                 class="nav-link-icon d-md-none d-lg-inline-block" title="Payments"><svg
@@ -662,11 +662,11 @@
                                     <path d="M11 15l2 0"></path>
                                 </svg></span><span class="nav-link-title text-truncate"> Payments <span
                                     class="badge badge-sm bg-primary text-primary-fg badge-pill menu-item-count payment-count"
-                                    data-url="http://127.0.0.1:8000/admin/menu-items-count"
+                                    data-url="{{ url("/") }}/admin/menu-items-count"
                                     style="display: none;"></span></span></a>
                         <div class="dropdown-menu animate slideIn dropdown-menu-start"><a
                                 class="dropdown-item nav-priority-0"
-                                href="http://127.0.0.1:8000/admin/payments/transactions" id="cms-plugins-payments-all"
+                                href="{{ url("/") }}/admin/payments/transactions" id="cms-plugins-payments-all"
                                 title="Transactions"><span class="nav-link-icon d-md-none d-lg-inline-block"
                                     title="Transactions"><svg class="icon svg-icon-ti-ti-list"
                                         xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -680,9 +680,9 @@
                                         <path d="M5 18l0 .01"></path>
                                     </svg></span><span class="nav-link-title text-truncate"> Transactions <span
                                         class="badge badge-sm bg-primary text-primary-fg badge-pill menu-item-count pending-payments"
-                                        data-url="http://127.0.0.1:8000/admin/menu-items-count"
+                                        data-url="{{ url("/") }}/admin/menu-items-count"
                                         style="display: none;"></span></span></a><a
-                                class="dropdown-item nav-priority-1" href="http://127.0.0.1:8000/admin/payments/logs"
+                                class="dropdown-item nav-priority-1" href="{{ url("/") }}/admin/payments/logs"
                                 id="cms-plugins-payment-logs" title="Payment Logs"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Payment Logs"><svg
                                         class="icon svg-icon-ti-ti-file-text" xmlns="http://www.w3.org/2000/svg"
@@ -698,7 +698,7 @@
                                         <path d="M9 17l6 0"></path>
                                     </svg></span><span class="nav-link-title text-truncate"> Payment Logs
                                 </span></a><a class="dropdown-item nav-priority-1"
-                                href="http://127.0.0.1:8000/admin/payments/methods" id="cms-plugins-payment-methods"
+                                href="{{ url("/") }}/admin/payments/methods" id="cms-plugins-payment-methods"
                                 title="Payment methods">
                                 <span class="nav-link-icon d-md-none d-lg-inline-block" title="Payment methods"><svg
                                         class="icon svg-icon-ti-ti-settings" xmlns="http://www.w3.org/2000/svg"
@@ -713,7 +713,7 @@
                                 </span></a></div>
                     </li>
                     <li class="nav-item"><a class="nav-link nav-priority-5"
-                            href="http://127.0.0.1:8000/admin/galleries" id="cms-plugins-gallery"
+                            href="{{ url("/") }}/admin/galleries" id="cms-plugins-gallery"
                             title="Galleries"><span class="nav-link-icon d-md-none d-lg-inline-block"
                                 title="Galleries"><svg class="icon svg-icon-ti-ti-camera"
                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -726,7 +726,7 @@
                                 </svg></span><span class="nav-link-title text-truncate"> Galleries </span></a>
                     </li>
                     <li class="nav-item"><a class="nav-link nav-priority-5"
-                            href="http://127.0.0.1:8000/admin/testimonials" id="cms-plugins-testimonial"
+                            href="{{ url("/") }}/admin/testimonials" id="cms-plugins-testimonial"
                             title="Testimonials"><span class="nav-link-icon d-md-none d-lg-inline-block"
                                 title="Testimonials"><svg class="icon svg-icon-ti-ti-user-star"
                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -740,7 +740,7 @@
                                 </svg></span><span class="nav-link-title text-truncate"> Testimonials </span></a>
                     </li>
                     <li class="nav-item dropdown"><a class="nav-link dropdown-toggle nav-priority-8"
-                            href="http://127.0.0.1:8000/admin#cms-plugins-ads" id="cms-plugins-ads"
+                            href="{{ url("/") }}/admin#cms-plugins-ads" id="cms-plugins-ads"
                             data-bs-toggle="dropdown" data-bs-auto-close="false" role="button"
                             aria-expanded="false" title="Ads"><span
                                 class="nav-link-icon d-md-none d-lg-inline-block" title="Ads"><svg
@@ -754,7 +754,7 @@
                                     <path d="M14 9v6h1a2 2 0 0 0 2 -2v-2a2 2 0 0 0 -2 -2h-1z"></path>
                                 </svg></span><span class="nav-link-title text-truncate"> Ads </span></a>
                         <div class="dropdown-menu animate slideIn dropdown-menu-start"><a
-                                class="dropdown-item nav-priority-1" href="http://127.0.0.1:8000/admin/ads"
+                                class="dropdown-item nav-priority-1" href="{{ url("/") }}/admin/ads"
                                 id="cms-plugins-ads-list" title="Ads"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Ads"><svg
                                         class="icon svg-icon-ti-ti-list" xmlns="http://www.w3.org/2000/svg"
@@ -768,7 +768,7 @@
                                         <path d="M5 12l0 .01"></path>
                                         <path d="M5 18l0 .01"></path>
                                     </svg></span><span class="nav-link-title text-truncate"> Ads </span></a><a
-                                class="dropdown-item nav-priority-2" href="http://127.0.0.1:8000/admin/settings/ads"
+                                class="dropdown-item nav-priority-2" href="{{ url("/") }}/admin/settings/ads"
                                 id="cms-plugins-ads-setting" title="Ads Settings"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Ads Settings"><svg
                                         class="icon svg-icon-ti-ti-settings" xmlns="http://www.w3.org/2000/svg"
@@ -783,7 +783,7 @@
                                 </span></a></div>
                     </li>
                     <li class="nav-item"><a class="nav-link nav-priority-10"
-                            href="http://127.0.0.1:8000/admin/announcements" id="cms-plugins-announcement"
+                            href="{{ url("/") }}/admin/announcements" id="cms-plugins-announcement"
                             title="Announcements"><span class="nav-link-icon d-md-none d-lg-inline-block"
                                 title="Announcements"><svg class="icon svg-icon-ti-ti-speakerphone"
                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -797,7 +797,7 @@
                                 </svg></span><span class="nav-link-title text-truncate"> Announcements </span></a>
                     </li>
                     <li class="nav-item dropdown"><a class="nav-link dropdown-toggle nav-priority-120"
-                            href="http://127.0.0.1:8000/admin#cms-plugins-contact" id="cms-plugins-contact"
+                            href="{{ url("/") }}/admin#cms-plugins-contact" id="cms-plugins-contact"
                             data-bs-toggle="dropdown" data-bs-auto-close="false" role="button"
                             aria-expanded="false" title="Contact"><span
                                 class="nav-link-icon d-md-none d-lg-inline-block" title="Contact"><svg
@@ -811,10 +811,10 @@
                                     <path d="M3 7l9 6l9 -6"></path>
                                 </svg></span><span class="nav-link-title text-truncate"> Contact <span
                                     class="badge badge-sm bg-primary text-primary-fg badge-pill menu-item-count unread-contacts"
-                                    data-url="http://127.0.0.1:8000/admin/menu-items-count"
+                                    data-url="{{ url("/") }}/admin/menu-items-count"
                                     style="">5</span></span></a>
                         <div class="dropdown-menu animate slideIn dropdown-menu-start"><a
-                                class="dropdown-item nav-priority-120" href="http://127.0.0.1:8000/admin/contacts"
+                                class="dropdown-item nav-priority-120" href="{{ url("/") }}/admin/contacts"
                                 id="cms-plugins-contact-list" title="Contacts"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Contacts"><svg
                                         class="icon svg-icon-ti-ti-cube" xmlns="http://www.w3.org/2000/svg"
@@ -829,7 +829,7 @@
                                         <path d="M3.27 6.96l8.73 5.04"></path>
                                     </svg></span><span class="nav-link-title text-truncate"> Contacts
                                 </span></a><a class="dropdown-item nav-priority-130"
-                                href="http://127.0.0.1:8000/admin/contacts/custom-fields"
+                                href="{{ url("/") }}/admin/contacts/custom-fields"
                                 id="cms-plugins-contact-custom-fields" title="Custom Fields"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Custom Fields"><svg
                                         class="icon svg-icon-ti-ti-cube-plus" xmlns="http://www.w3.org/2000/svg"
@@ -848,7 +848,7 @@
                                 </span></a></div>
                     </li>
                     <li class="nav-item"><a class="nav-link nav-priority-390"
-                            href="http://127.0.0.1:8000/admin/simple-sliders" id="cms-plugins-simple-slider"
+                            href="{{ url("/") }}/admin/simple-sliders" id="cms-plugins-simple-slider"
                             title="Simple Sliders"><span class="nav-link-icon d-md-none d-lg-inline-block"
                                 title="Simple Sliders"><svg class="icon svg-icon-ti-ti-slideshow"
                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -866,7 +866,7 @@
                                 </svg></span><span class="nav-link-title text-truncate"> Simple Sliders
                             </span></a></li>
                     <li class="nav-item dropdown"><a class="nav-link dropdown-toggle nav-priority-420"
-                            href="http://127.0.0.1:8000/admin#cms-plugins-faq" id="cms-plugins-faq"
+                            href="{{ url("/") }}/admin#cms-plugins-faq" id="cms-plugins-faq"
                             data-bs-toggle="dropdown" data-bs-auto-close="false" role="button"
                             aria-expanded="false" title="FAQs"><span
                                 class="nav-link-icon d-md-none d-lg-inline-block" title="FAQs"><svg
@@ -881,7 +881,7 @@
                                     <path d="M12 13a2 2 0 0 0 .914 -3.782a1.98 1.98 0 0 0 -2.414 .483"></path>
                                 </svg></span><span class="nav-link-title text-truncate"> FAQs </span></a>
                         <div class="dropdown-menu animate slideIn dropdown-menu-start"><a
-                                class="dropdown-item nav-priority-0" href="http://127.0.0.1:8000/admin/faqs"
+                                class="dropdown-item nav-priority-0" href="{{ url("/") }}/admin/faqs"
                                 id="cms-plugins-faq-list" title="FAQs"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="FAQs"><svg
                                         class="icon svg-icon-ti-ti-list-check" xmlns="http://www.w3.org/2000/svg"
@@ -896,7 +896,7 @@
                                         <path d="M11 18l9 0"></path>
                                     </svg></span><span class="nav-link-title text-truncate"> FAQs </span></a><a
                                 class="dropdown-item nav-priority-10"
-                                href="http://127.0.0.1:8000/admin/faq-categories" id="cms-plugins-faq-category"
+                                href="{{ url("/") }}/admin/faq-categories" id="cms-plugins-faq-category"
                                 title="Categories"><span class="nav-link-icon d-md-none d-lg-inline-block"
                                     title="Categories"><svg class="icon svg-icon-ti-ti-folder"
                                         xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -909,7 +909,7 @@
                                 </span></a></div>
                     </li>
                     <li class="nav-item"><a class="nav-link nav-priority-430"
-                            href="http://127.0.0.1:8000/admin/newsletters" id="cms-plugins-newsletter"
+                            href="{{ url("/") }}/admin/newsletters" id="cms-plugins-newsletter"
                             title="Newsletters"><span class="nav-link-icon d-md-none d-lg-inline-block"
                                 title="Newsletters"><svg class="icon svg-icon-ti-ti-mail"
                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -922,7 +922,7 @@
                                 </svg></span><span class="nav-link-title text-truncate"> Newsletters </span></a>
                     </li>
                     <li class="nav-item dropdown"><a class="nav-link dropdown-toggle nav-priority-900"
-                            href="http://127.0.0.1:8000/admin#cms-plugins-location" id="cms-plugins-location"
+                            href="{{ url("/") }}/admin#cms-plugins-location" id="cms-plugins-location"
                             data-bs-toggle="dropdown" data-bs-auto-close="false" role="button"
                             aria-expanded="false" title="Locations"><span
                                 class="nav-link-icon d-md-none d-lg-inline-block" title="Locations"><svg
@@ -937,7 +937,7 @@
                                     <path d="M12.5 3a17 17 0 0 1 0 18"></path>
                                 </svg></span><span class="nav-link-title text-truncate"> Locations </span></a>
                         <div class="dropdown-menu animate slideIn dropdown-menu-start"><a
-                                class="dropdown-item nav-priority-0" href="http://127.0.0.1:8000/admin/countries"
+                                class="dropdown-item nav-priority-0" href="{{ url("/") }}/admin/countries"
                                 id="cms-plugins-country" title="Countries"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Countries"><svg
                                         class="icon svg-icon-ti-ti-flag" xmlns="http://www.w3.org/2000/svg"
@@ -949,7 +949,7 @@
                                         <path d="M5 21v-7"></path>
                                     </svg></span><span class="nav-link-title text-truncate"> Countries
                                 </span></a><a class="dropdown-item nav-priority-10"
-                                href="http://127.0.0.1:8000/admin/states" id="cms-plugins-state"
+                                href="{{ url("/") }}/admin/states" id="cms-plugins-state"
                                 title="States"><span class="nav-link-icon d-md-none d-lg-inline-block"
                                     title="States"><svg class="icon svg-icon-ti-ti-map"
                                         xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -959,7 +959,7 @@
                                         <path d="M9 4v13"></path>
                                         <path d="M15 7v13"></path>
                                     </svg></span><span class="nav-link-title text-truncate"> States </span></a><a
-                                class="dropdown-item nav-priority-20" href="http://127.0.0.1:8000/admin/cities"
+                                class="dropdown-item nav-priority-20" href="{{ url("/") }}/admin/cities"
                                 id="cms-plugins-city" title="Cities"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Cities"><svg
                                         class="icon svg-icon-ti-ti-location-pin" xmlns="http://www.w3.org/2000/svg"
@@ -974,7 +974,7 @@
                                         <path d="M19 18v.01"></path>
                                     </svg></span><span class="nav-link-title text-truncate"> Cities </span></a><a
                                 class="dropdown-item nav-priority-30"
-                                href="http://127.0.0.1:8000/admin/locations/bulk-import"
+                                href="{{ url("/") }}/admin/locations/bulk-import"
                                 id="cms-plugins-location-bulk-import" title="Location Importer"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Location Importer"><svg
                                         class="icon svg-icon-ti-ti-package-import"
@@ -989,7 +989,7 @@
                                         <path d="M18 15l-3 3l3 3"></path>
                                     </svg></span><span class="nav-link-title text-truncate"> Location Importer
                                 </span></a><a class="dropdown-item nav-priority-40"
-                                href="http://127.0.0.1:8000/admin/locations/export" id="cms-plugins-location-export"
+                                href="{{ url("/") }}/admin/locations/export" id="cms-plugins-location-export"
                                 title="Location Exporter"><span class="nav-link-icon d-md-none d-lg-inline-block"
                                     title="Location Exporter"><svg class="icon svg-icon-ti-ti-package-export"
                                         xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -1005,7 +1005,7 @@
                                 </span></a></div>
                     </li>
                     <li class="nav-item"><a class="nav-link nav-priority-999"
-                            href="http://127.0.0.1:8000/admin/media" id="cms-core-media" title="Media"><span
+                            href="{{ url("/") }}/admin/media" id="cms-core-media" title="Media"><span
                                 class="nav-link-icon d-md-none d-lg-inline-block" title="Media"><svg
                                     class="icon svg-icon-ti-ti-folder" xmlns="http://www.w3.org/2000/svg"
                                     width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -1016,7 +1016,7 @@
                                     </path>
                                 </svg></span><span class="nav-link-title text-truncate"> Media </span></a></li>
                     <li class="nav-item dropdown"><a class="nav-link dropdown-toggle nav-priority-2000"
-                            href="http://127.0.0.1:8000/admin#cms-core-appearance" id="cms-core-appearance"
+                            href="{{ url("/") }}/admin#cms-core-appearance" id="cms-core-appearance"
                             data-bs-toggle="dropdown" data-bs-auto-close="false" role="button"
                             aria-expanded="false" title="Appearance"><span
                                 class="nav-link-icon d-md-none d-lg-inline-block" title="Appearance"><svg
@@ -1030,7 +1030,7 @@
                                     <path d="M10.6 9a9 9 0 0 1 4.4 4.4"></path>
                                 </svg></span><span class="nav-link-title text-truncate"> Appearance </span></a>
                         <div class="dropdown-menu animate slideIn dropdown-menu-start"><a
-                                class="dropdown-item nav-priority-1" href="http://127.0.0.1:8000/admin/theme/all"
+                                class="dropdown-item nav-priority-1" href="{{ url("/") }}/admin/theme/all"
                                 id="cms-core-theme" title="Themes"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Themes"><svg
                                         class="icon svg-icon-ti-ti-palette" xmlns="http://www.w3.org/2000/svg"
@@ -1044,7 +1044,7 @@
                                         <path d="M12.5 7.5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
                                         <path d="M16.5 10.5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
                                     </svg></span><span class="nav-link-title text-truncate"> Themes </span></a><a
-                                class="dropdown-item nav-priority-2" href="http://127.0.0.1:8000/admin/menus"
+                                class="dropdown-item nav-priority-2" href="{{ url("/") }}/admin/menus"
                                 id="cms-core-menu" title="Menus"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Menus"><svg
                                         class="icon svg-icon-ti-ti-tournament" xmlns="http://www.w3.org/2000/svg"
@@ -1059,7 +1059,7 @@
                                         <path d="M6 4h7a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-2"></path>
                                         <path d="M14 10h4"></path>
                                     </svg></span><span class="nav-link-title text-truncate"> Menus </span></a><a
-                                class="dropdown-item nav-priority-3" href="http://127.0.0.1:8000/admin/widgets"
+                                class="dropdown-item nav-priority-3" href="{{ url("/") }}/admin/widgets"
                                 id="cms-core-widget" title="Widgets"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Widgets"><svg
                                         class="icon svg-icon-ti-ti-layout" xmlns="http://www.w3.org/2000/svg"
@@ -1077,7 +1077,7 @@
                                         </path>
                                     </svg></span><span class="nav-link-title text-truncate"> Widgets </span></a><a
                                 class="dropdown-item nav-priority-4"
-                                href="http://127.0.0.1:8000/admin/theme/options" id="cms-core-theme-option"
+                                href="{{ url("/") }}/admin/theme/options" id="cms-core-theme-option"
                                 title="Theme Options"><span class="nav-link-icon d-md-none d-lg-inline-block"
                                     title="Theme Options"><svg class="icon svg-icon-ti-ti-list-tree"
                                         xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -1091,7 +1091,7 @@
                                         <path d="M11 18v.01"></path>
                                     </svg></span><span class="nav-link-title text-truncate"> Theme Options
                                 </span></a><a class="dropdown-item nav-priority-5"
-                                href="http://127.0.0.1:8000/admin/theme/custom-css"
+                                href="{{ url("/") }}/admin/theme/custom-css"
                                 id="cms-core-appearance-custom-css" title="Custom CSS"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Custom CSS"><svg
                                         class="icon svg-icon-ti-ti-file-type-css" xmlns="http://www.w3.org/2000/svg"
@@ -1109,7 +1109,7 @@
                                         </path>
                                     </svg></span><span class="nav-link-title text-truncate"> Custom CSS
                                 </span></a><a class="dropdown-item nav-priority-6"
-                                href="http://127.0.0.1:8000/admin/theme/custom-js"
+                                href="{{ url("/") }}/admin/theme/custom-js"
                                 id="cms-core-appearance-custom-js" title="Custom JS"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Custom JS"><svg
                                         class="icon svg-icon-ti-ti-file-type-js" xmlns="http://www.w3.org/2000/svg"
@@ -1124,7 +1124,7 @@
                                         <path d="M5 12v-7a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2h-1"></path>
                                     </svg></span><span class="nav-link-title text-truncate"> Custom JS
                                 </span></a><a class="dropdown-item nav-priority-6"
-                                href="http://127.0.0.1:8000/admin/theme/custom-html"
+                                href="{{ url("/") }}/admin/theme/custom-html"
                                 id="cms-core-appearance-custom-html" title="Custom HTML"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Custom HTML"><svg
                                         class="icon svg-icon-ti-ti-file-type-html"
@@ -1143,7 +1143,7 @@
                                     </svg></span><span class="nav-link-title text-truncate"> Custom HTML
                                 </span></a>
                             <a class="dropdown-item nav-priority-6"
-                                href="http://127.0.0.1:8000/admin/theme/robots-txt"
+                                href="{{ url("/") }}/admin/theme/robots-txt"
                                 id="cms-core-appearance-robots-txt" title="Robots.txt Editor">
                                 <span class="nav-link-icon d-md-none d-lg-inline-block"
                                     title="Robots.txt Editor"><svg class="icon svg-icon-ti-ti-file-type-txt"
@@ -1164,7 +1164,7 @@
                         </div>
                     </li>
                     <li class="nav-item dropdown"><a class="nav-link dropdown-toggle nav-priority-3000"
-                            href="http://127.0.0.1:8000/admin#cms-core-plugins" id="cms-core-plugins"
+                            href="{{ url("/") }}/admin#cms-core-plugins" id="cms-core-plugins"
                             data-bs-toggle="dropdown" data-bs-auto-close="false" role="button"
                             aria-expanded="false" title="Plugins"><span
                                 class="nav-link-icon d-md-none d-lg-inline-block" title="Plugins"><svg
@@ -1181,7 +1181,7 @@
                                 </svg></span><span class="nav-link-title text-truncate"> Plugins </span></a>
                         <div class="dropdown-menu animate slideIn dropdown-menu-start"><a
                                 class="dropdown-item nav-priority-1"
-                                href="http://127.0.0.1:8000/admin/plugins/installed" id="cms-core-plugins-installed"
+                                href="{{ url("/") }}/admin/plugins/installed" id="cms-core-plugins-installed"
                                 title="Installed Plugins"><span class="nav-link-icon d-md-none d-lg-inline-block"
                                     title="Installed Plugins"><svg class="icon svg-icon-ti-ti-square-check"
                                         xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -1193,7 +1193,7 @@
                                         <path d="M9 12l2 2l4 -4"></path>
                                     </svg></span><span class="nav-link-title text-truncate"> Installed Plugins
                                 </span></a><a class="dropdown-item nav-priority-2"
-                                href="http://127.0.0.1:8000/admin/plugins/new" id="cms-core-plugins-marketplace"
+                                href="{{ url("/") }}/admin/plugins/new" id="cms-core-plugins-marketplace"
                                 title="Add New Plugin"><span class="nav-link-icon d-md-none d-lg-inline-block"
                                     title="Add New Plugin"><svg class="icon svg-icon-ti-ti-square-rounded-plus"
                                         xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -1207,7 +1207,7 @@
                                 </span></a></div>
                     </li>
                     <li class="nav-item dropdown"><a class="nav-link dropdown-toggle nav-priority-9000"
-                            href="http://127.0.0.1:8000/admin#cms-core-tools" id="cms-core-tools"
+                            href="{{ url("/") }}/admin#cms-core-tools" id="cms-core-tools"
                             data-bs-toggle="dropdown" data-bs-auto-close="false" role="button"
                             aria-expanded="false" title="Tools"><span
                                 class="nav-link-icon d-md-none d-lg-inline-block" title="Tools"><svg
@@ -1221,7 +1221,7 @@
                                 </svg></span><span class="nav-link-title text-truncate"> Tools </span></a>
                         <div class="dropdown-menu animate slideIn dropdown-menu-start"><a
                                 class="dropdown-item nav-priority-9000"
-                                href="http://127.0.0.1:8000/admin/tools/data-synchronize"
+                                href="{{ url("/") }}/admin/tools/data-synchronize"
                                 id="cms-packages-data-synchronize" title="Export/Import Data"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block"
                                     title="Export/Import Data"><svg class="icon svg-icon-ti-ti-package-import"
@@ -1238,7 +1238,7 @@
                                 </span></a></div>
                     </li>
                     <li class="nav-item"><a class="nav-link nav-priority-9999"
-                            href="http://127.0.0.1:8000/admin/settings" id="cms-core-settings"
+                            href="{{ url("/") }}/admin/settings" id="cms-core-settings"
                             title="Settings"><span class="nav-link-icon d-md-none d-lg-inline-block"
                                 title="Settings"><svg class="icon svg-icon-ti-ti-settings"
                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -1250,7 +1250,7 @@
                                     <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"></path>
                                 </svg></span><span class="nav-link-title text-truncate"> Settings </span></a></li>
                     <li class="nav-item"><a class="nav-link nav-priority-10000"  --}}
-                            {{--  href="http://127.0.0.1:8000/admin/system" id="cms-core-system"
+                            {{--  href="{{ url("/") }}/admin/system" id="cms-core-system"
                             title="Platform Administration"><span class="nav-link-icon d-md-none d-lg-inline-block"
                                 title="Platform Administration"><svg class="icon svg-icon-ti-ti-user-shield"
                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -1267,3 +1267,4 @@
             </div>
         </div>
     </aside>
+

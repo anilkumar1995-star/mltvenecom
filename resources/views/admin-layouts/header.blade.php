@@ -3,7 +3,7 @@
         <div class="container-fluid"><button class="navbar-toggler d-none d-lg-block me-2 ms-n1" type="button"
                 data-bb-toggle="navbar-minimal" data-bb-target="#sidebar-menu-main" aria-controls="navbar-menu"
                 aria-expanded="false" aria-label="Toggle navigation"
-                data-url="http://127.0.0.1:8000/admin/system/users/profile/1/preferences" data-method="PATCH">
+                data-url="{{ url("/") }}/admin/system/users/profile/1/preferences" data-method="PATCH">
                 <svg class="icon svg-icon-ti-ti-menu-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                     stroke-linejoin="round">
@@ -12,7 +12,7 @@
                     <path d="M4 18l16 0"></path>
                 </svg></button>
             <h1 class="navbar-brand navbar-brand-autodark me-4">
-                <a href="http://127.0.0.1:8000/admin"><img src="{{ asset('/') }}js/logo-white.png" alt="Your App"
+                <a href="{{ url("/") }}/admin"><img src="{{ asset('/') }}js/logo-white.png" alt="Your App"
                         class="navbar-brand-image" style="max-height: 32px; height: auto;"></a>
             </h1>
             <div class="flex-row navbar-nav order-md-last">
@@ -27,7 +27,7 @@
                     </div>
                 </div>
                 <div class="d-flex align-items-center me-3"><a class="btn" type="button"
-                        href="http://127.0.0.1:8000/" target="_blank">
+                        href="{{ url("/") }}/" target="_blank">
                         <svg class="icon icon-left svg-icon-ti-ti-world" xmlns="http://www.w3.org/2000/svg"
                             width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -37,7 +37,7 @@
                             <path d="M11.5 3a17 17 0 0 0 0 18"></path>
                             <path d="M12.5 3a17 17 0 0 1 0 18"></path>
                         </svg> View website </a></div>
-                <div class="d-none d-md-flex me-2"><a href="http://127.0.0.1:8000/admin/toggle-theme-mode?theme=dark"
+                <div class="d-none d-md-flex me-2"><a href="{{ url("/") }}/admin/toggle-theme-mode?theme=dark"
                         class="px-0 nav-link" data-bs-toggle="tooltip" data-bs-placement="bottom"
                         aria-label="Enable dark mode" data-bs-original-title="Enable dark mode"><svg
                             class="icon svg-icon-ti-ti-moon" xmlns="http://www.w3.org/2000/svg" width="24"
@@ -47,7 +47,7 @@
                             </path>
                         </svg></a>
                     <div class="nav-item d-none d-md-flex me-2"><a class="px-0 nav-link" data-bs-toggle="offcanvas"
-                            href="http://127.0.0.1:8000/admin#notification-sidebar" role="button"
+                            href="{{ url("/") }}/admin#notification-sidebar" role="button"
                             aria-controls="notification-sidebar"><svg class="icon svg-icon-ti-ti-bell"
                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -74,12 +74,12 @@
                                 <div class="card-header">
                                     <h4 class="card-title"> You have <span class="bold">5</span> New Messages </h4>
                                     <div class="card-actions">
-                                        <a href="http://127.0.0.1:8000/admin/contacts">View all</a>
+                                        <a href="{{ url("/") }}/admin/contacts">View all</a>
                                     </div>
                                 </div>
                                 <div class="list-group list-group-flush list-group-hoverable overflow-auto"
                                     style="max-height: 35rem;">
-                                    <a href="http://127.0.0.1:8000/admin/contacts/edit/3"
+                                    <a href="{{ url("/") }}/admin/contacts/edit/3"
                                         class="text-decoration-none">
                                         <div class="list-group-item">
                                             <div class="row">
@@ -98,7 +98,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </a><a href="http://127.0.0.1:8000/admin/contacts/edit/4"
+                                    </a><a href="{{ url("/") }}/admin/contacts/edit/4"
                                         class="text-decoration-none">
                                         <div class="list-group-item">
                                             <div class="row">
@@ -117,7 +117,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </a><a href="http://127.0.0.1:8000/admin/contacts/edit/5"
+                                    </a><a href="{{ url("/") }}/admin/contacts/edit/5"
                                         class="text-decoration-none">
                                         <div class="list-group-item">
                                             <div class="row">
@@ -137,7 +137,7 @@
                                             </div>
                                         </div>
                                     </a>
-                                    <a href="http://127.0.0.1:8000/admin/contacts/edit/6"
+                                    <a href="{{ url("/") }}/admin/contacts/edit/6"
                                         class="text-decoration-none">
                                         <div class="list-group-item">
                                             <div class="row">
@@ -154,7 +154,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </a><a href="http://127.0.0.1:8000/admin/contacts/edit/9"
+                                    </a><a href="{{ url("/") }}/admin/contacts/edit/9"
                                         class="text-decoration-none">
                                         <div class="list-group-item">
                                             <div class="row">
@@ -177,7 +177,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="dropdown nav-item"><a href="http://127.0.0.1:8000/admin/system/users/profile/1"
+                <div class="dropdown nav-item"><a href="{{ url("/") }}/admin/system/users/profile/1"
                         class="p-0 nav-link d-flex lh-1 text-reset" data-bs-toggle="dropdown"
                         aria-label="Open user menu"><span class="crop-image-original avatar avatar-sm"
                             style="background-image: url(&quot;data:image/jpeg;base64,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&quot;);"></span>
@@ -187,7 +187,7 @@
                         </div>
                     </a>
                     <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-end"><a class="dropdown-item"
-                            href="http://127.0.0.1:8000/admin/system/users/profile/1"><svg
+                            href="{{ url("/") }}/admin/system/users/profile/1"><svg
                                 class="icon dropdown-item-icon svg-icon-ti-ti-user" xmlns="http://www.w3.org/2000/svg"
                                 width="24" height="24" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -210,3 +210,4 @@
             <div class="collapse navbar-collapse" id="navbar-menu"></div>
         </div>
     </header>
+
