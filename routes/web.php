@@ -29,7 +29,7 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 // Admin demo route
 Route::get('/admin', function () {
     return view('admin.dashboard');
-});
+})->name('admin.dashboard');
 
 // Admin profile routes
 // Route::middleware(['auth', 'role_id:1'])->prefix('admin')->name('admin.')->group(function () {
@@ -119,9 +119,13 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
         Route::get('unverified-vendors', [VendorController::class,'unverifiedVendors'])->name('marketplace.unverified-vendors');
         Route::get('messages', [VendorController::class,'messages'])->name('marketplace.messages');
         Route::get('stores/create', [AdminStoreController::class,'create'])->name('marketplace.store.create');
-        Route::get('stores/{store}/edit', [AdminStoreController::class,'edit'])->name('marketplace.store.edit');
+        Route::post('stores', [AdminStoreController::class, 'store'])->name('marketplace.store.store');
+    Route::get('stores/{store}', [AdminStoreController::class, 'show'])->name('marketplace.store.show');
+    Route::get('stores/{store}/edit', [AdminStoreController::class,'edit'])->name('marketplace.store.edit');
+Route::put('stores/{store}', [AdminStoreController::class, 'update'])
+    ->name('marketplace.store.update');
+
         Route::delete('stores/{store}', [AdminStoreController::class,'destroy'])->name('marketplace.store.destroy');
         });
 
 });
-

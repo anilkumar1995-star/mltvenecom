@@ -66,7 +66,9 @@
                             <div class="card-body">
                                 <div class="tab-content">
                                     <div class="tab-pane active show" id="information-tab">
-                                        <form method="POST" action="https://shofy-grocery.botble.com/admin/marketplaces/stores/create" accept-charset="UTF-8" id="botble-marketplace-forms-store-form" class="js-base-form dirty-check" enctype="multipart/form-data"><input name="_token" type="hidden" value="yGl1A8OUs6211JKLHbJhH6YzvhXy0RyoZF4sevlC">
+                                        <form method="POST" action="{{ route('admin.marketplace.store.update', $store->id) }}" accept-charset="UTF-8" id="botble-marketplace-forms-store-form" class="js-base-form dirty-check" enctype="multipart/form-data">
+                                            @method('PUT')
+                                            <input name="_token" type="hidden" value="{{ csrf_token() }}">
 
                                             <div
                                                 role="alert"
@@ -114,7 +116,7 @@
                                                         </label>
 
 
-                                                        <input class="form-control" data-counter="250" placeholder="Name" required="required" name="name" type="text" id="name">
+                                                        <input class="form-control" data-counter="250" value="{{ old('name', $store->name) }}" placeholder="Name" required="required" name="name" type="text" id="name">
 
 
 
@@ -177,7 +179,7 @@
                                                         </label>
 
 
-                                                        <input class="form-control" data-counter="60" placeholder="e.g: example@domain.com" required="required" name="email" type="email" id="email">
+                                                        <input class="form-control" data-counter="60" value="{{ old('email', $store->email) }}" placeholder="e.g: example@domain.com" required="required" name="email" type="email" id="email">
 
 
 
@@ -197,7 +199,7 @@
                                                         </label>
 
 
-                                                        <input class="form-control" placeholder="Phone" data-counter="15" required="required" name="phone" type="text" id="phone">
+                                                        <input class="form-control" value="{{ old('phone', $store->phone) }}" placeholder="Phone" data-counter="15" required="required" name="phone" type="text" id="phone">
 
 
 
@@ -934,9 +936,10 @@
 
 
                                                         <select class="form-select" required="required" id="status-select-92989" name="status">
-                                                            <option value="published">Published</option>
-                                                            <option value="draft">Draft</option>
-                                                            <option value="pending">Pending</option>
+                                                          <option value="published" {{ $store->status == 'published' ? 'selected' : '' }}>Published</option>
+<option value="draft" {{ $store->status == 'draft' ? 'selected' : '' }}>Draft</option>
+<option value="pending" {{ $store->status == 'pending' ? 'selected' : '' }}>Pending</option>
+
                                                         </select>
 
 
@@ -958,14 +961,13 @@
 
 
                                                         <select class="form-select" required="required" id="customer_id-select-34191" name="customer_id">
-                                                            <option value="0">Select a store owner...</option>
-                                                            <option value="2">Juvenal Bins</option>
-                                                            <option value="3">Bettie Wolf</option>
-                                                            <option value="4">Linnea Rodriguez</option>
-                                                            <option value="5">Mrs. Sister Ondricka</option>
-                                                            <option value="6">Jailyn Mosciski</option>
-                                                            <option value="7">Garth Hegmann</option>
-                                                            <option value="8">Ena Buckridge</option>
+                                                           <option value="">Select a store owner...</option>
+                                                            @foreach($customers as $customer)
+                                                                <option value="{{ $customer->id }}"
+                                                                    {{ old('customer_id', $store->customer_id) == $customer->id ? 'selected' : '' }}>
+                                                                    {{ $customer->name }}
+                                                                </option>
+                                                            @endforeach
                                                         </select>
 
 
@@ -1743,4 +1745,74 @@
 
 @endsection
 @push('scripts')
+<script>
+    $(document).ready(function() {
+        $('#botble-marketplace-forms-store-form').on('submit', function(e) {
+            e.preventDefault();
+            var form = this;
+            var formData = new FormData(form);
+            var submitBtn = $(form).find('button[type="submit"]');
+            
+            // Clear previous errors
+            $('.invalid-feedback').remove();
+            $('.is-invalid').removeClass('is-invalid');
+            
+            $.ajax({
+                url: $(form).attr('action'),
+                method: 'POST', // Laravel treats PUT/PATCH as POST with _method field
+                data: formData,
+                processData: false,
+                contentType: false,
+                beforeSend: function() {
+                    submitBtn.prop('disabled', true).addClass('btn-loading');
+                },
+                success: function(response) {
+                    if (response.status) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: response.message,
+                            timer: 1500,
+                            showConfirmButton: false
+                        }).then(function() {
+                            if (response.redirect_url) {
+                                window.location.href = response.redirect_url;
+                            }
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: response.message || 'Something went wrong!'
+                        });
+                    }
+                },
+                error: function(xhr) {
+                    if (xhr.status === 422) {
+                        var errors = xhr.responseJSON.errors;
+                        $.each(errors, function(key, value) {
+                            var input = $('[name="' + key + '"]');
+                            input.addClass('is-invalid');
+                            input.after('<div class="invalid-feedback">' + value[0] + '</div>');
+                        });
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Validation Error',
+                            text: 'Please check the form for errors.'
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'An unexpected error occurred. Please try again.'
+                        });
+                    }
+                },
+                complete: function() {
+                    submitBtn.prop('disabled', false).removeClass('btn-loading');
+                }
+            });
+        });
+    });
+</script>
 @endpush

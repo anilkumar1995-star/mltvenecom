@@ -308,72 +308,64 @@
 
                                             </button>
 
-                                            <div class="table-search-input">
-                                                <label>
-                                                    <input
-                                                        type="search"
-                                                        class="form-control input-sm"
-                                                        placeholder="Search..."
-                                                        style="min-width: 120px">
-                                                    <button
-                                                        type="button"
-                                                        title="Search..."
-                                                        class="search-icon"><svg class="icon svg-icon-ti-ti-search"
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            width="24"
-                                                            height="24"
-                                                            viewBox="0 0 24 24"
-                                                            fill="none"
-                                                            stroke="currentColor"
-                                                            stroke-width="2"
-                                                            stroke-linecap="round"
-                                                            stroke-linejoin="round">
-                                                            <path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
-                                                            <path d="M21 21l-6 -6" />
-                                                        </svg></button>
-                                                    <button
-                                                        type="button"
-                                                        title="Clear"
-                                                        class="search-reset-icon"><svg class="icon svg-icon-ti-ti-x"
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            width="24"
-                                                            height="24"
-                                                            viewBox="0 0 24 24"
-                                                            fill="none"
-                                                            stroke="currentColor"
-                                                            stroke-width="2"
-                                                            stroke-linecap="round"
-                                                            stroke-linejoin="round">
-                                                            <path d="M18 6l-12 12" />
-                                                            <path d="M6 6l12 12" />
-                                                        </svg></button>
-                                                </label>
+                                            <div class="input-group">
+                                                <input
+                                                    type="search"
+                                                    class="form-control input-sm"
+                                                    placeholder="Search..."
+                                                    style="min-width: 120px">
+                                                <button
+                                                    type="button"
+                                                    title="Search..."
+                                                    class="btn btn-icon btn-outline-secondary search-icon">
+                                                    <svg class="icon svg-icon-ti-ti-search"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        width="24"
+                                                        height="24"
+                                                        viewBox="0 0 24 24"
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        stroke-width="2"
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round">
+                                                        <path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
+                                                        <path d="M21 21l-6 -6" />
+                                                    </svg>
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    title="Clear"
+                                                    class="btn btn-icon btn-outline-secondary search-reset-icon">
+                                                    <svg class="icon svg-icon-ti-ti-x"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        width="24"
+                                                        height="24"
+                                                        viewBox="0 0 24 24"
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        stroke-width="2"
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round">
+                                                        <path d="M18 6l-12 12" />
+                                                        <path d="M6 6l12 12" />
+                                                    </svg>
+                                                </button>
                                             </div>
                                         </div>
                                         <div
                                             class="d-flex flex-column flex-sm-row align-items-stretch align-items-sm-center gap-1 table-action-buttons">
-                                           <button
-                                                    class="btn action-item btn-primary"
-                                                    type="button"
-                                                    data-href="{{ route('admin.marketplace.store.create') }}"
-                                                >
-                                                    <span data-action="create">
-                                                        <svg class="icon svg-icon-ti-ti-plus"
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            width="24"
-                                                            height="24"
-                                                            viewBox="0 0 24 24"
-                                                            fill="none"
-                                                            stroke="currentColor"
-                                                            stroke-width="2"
-                                                            stroke-linecap="round"
-                                                            stroke-linejoin="round">
-                                                            <path d="M12 5l0 14" />
-                                                            <path d="M5 12l14 0" />
-                                                        </svg>
-                                                        Create
-                                                    </span>
-                                                </button>
+                                           <a href="{{ route('admin.marketplace.store.create') }}"
+   class="btn action-item btn-primary">
+    <svg class="icon svg-icon-ti-ti-plus" xmlns="http://www.w3.org/2000/svg"
+        width="24" height="24" viewBox="0 0 24 24"
+        fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 5l0 14" />
+        <path d="M5 12l14 0" />
+    </svg>
+    Create
+</a>
+
 
                                             <button
                                                 class="btn" type="button" data-bb-toggle="dt-buttons" data-bb-target=".buttons-reload" tabindex="0" aria-controls="botble-marketplace-tables-store-table">
@@ -435,10 +427,17 @@
                                                             @endif
                                                         </td>
                                                         <td class="text-center">
+                                                            <a href="{{ route('admin.marketplace.store.show', $store->id) }}" class="btn btn-icon btn-sm btn-info" data-bs-toggle="tooltip" data-bs-original-title="View">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                   <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                                   <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
+                                                                   <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"></path>
+                                                                </svg>
+                                                            </a>
                                                             <a href="{{ route('admin.marketplace.store.edit', $store->id) }}" class="btn btn-icon btn-primary btn-sm">
                                                                 <svg class="icon svg-icon-ti-ti-edit" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4" /><path d="M13.5 6.5l4 4" /></svg>
                                                             </a>
-                                                            <form action="{{ route('admin.marketplace.store.destroy', $store->id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Are you sure?');">
+                                                           <form action="{{ route('admin.marketplace.store.destroy', $store->id) }}"method="POST"class="delete-store-form"style="display:inline-block;">
                                                                 @csrf
                                                                 @method('DELETE')
                                                                 <button type="submit" class="btn btn-icon btn-danger btn-sm">
@@ -467,5 +466,73 @@
 
 @endsection
 @push('scripts')
+<script>
+    $(document).ready(function () {
+        $(document).on('click', '.action-item[data-href]', function () {
+            window.location.href = $(this).data('href');
+        });
+
+        $(document).on('submit', '.delete-store-form', function (e) {
+            e.preventDefault();
+
+            let form = this;
+            let $form = $(this);
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "This store will be permanently deleted!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: $form.attr('action'),
+                        type: 'POST',
+                        data: $form.serialize(),
+                        success: function (response) {
+                            if (response.status) {
+                                Swal.fire(
+                                    'Deleted!',
+                                    response.message,
+                                    'success'
+                                );
+                                $form.closest('tr').fadeOut(500, function() {
+                                    $(this).remove();
+                                });
+                            } else {
+                                Swal.fire(
+                                    'Error!',
+                                    'Something went wrong.',
+                                    'error'
+                                );
+                            }
+                        },
+                        error: function () {
+                            Swal.fire(
+                                'Error!',
+                                'Could not delete store.',
+                                'error'
+                            );
+                        }
+                    });
+                }
+            });
+        });
+
+        @if(session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: "{{ session('success') }}",
+                timer: 2500,
+                showConfirmButton: false
+            });
+        @endif
+    });
+</script>
 
 @endpush
