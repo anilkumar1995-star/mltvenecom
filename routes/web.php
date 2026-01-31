@@ -125,14 +125,3 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 
 });
 
-
-Route::middleware(['auth', 'user_type:vendor'])
-    ->prefix('vendor')
-    ->name('vendor.')
-    ->group(function () {
-
-        Route::get('/dashboard', function () {
-            return view('vendor.dashboard');
-        })->name('dashboard');
-
-});
