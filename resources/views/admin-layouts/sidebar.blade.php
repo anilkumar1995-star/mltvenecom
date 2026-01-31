@@ -370,7 +370,7 @@
                                     </svg></span><span class="nav-link-title text-truncate"> Customers </span></a>  --}}
                         </div>
                     </li>
-                    {{--  <li class="nav-item dropdown"><a class="nav-link dropdown-toggle nav-priority-0"
+                    <li class="nav-item dropdown"><a class="nav-link dropdown-toggle nav-priority-0"
                             href="{{ url("/") }}/admin#cms-plugins-product-specification"
                             id="cms-plugins-product-specification" data-bs-toggle="dropdown"
                             data-bs-auto-close="false" role="button" aria-expanded="false"
@@ -394,7 +394,7 @@
                             </span></a>
                         <div class="dropdown-menu animate slideIn dropdown-menu-start"><a
                                 class="dropdown-item nav-priority-0"
-                                href="{{ url("/") }}/admin/ecommerce/specification-groups"
+                                href="{{ route('admin.group.Index')}}"
                                 id="cms-plugins-product-specification-groups" title="Groups"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Groups"><svg
                                         class="icon svg-icon-ti-ti-folder" xmlns="http://www.w3.org/2000/svg"
@@ -406,7 +406,7 @@
                                         </path>
                                     </svg></span><span class="nav-link-title text-truncate"> Groups </span></a><a
                                 class="dropdown-item nav-priority-10"
-                                href="{{ url("/") }}/admin/ecommerce/specification-attributes"
+                                href="{{ route('admin.productattributes.Index') }}"
                                 id="cms-plugins-product-specification-attributes" title="Attributes"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Attributes"><svg
                                         class="icon svg-icon-ti-ti-list-details" xmlns="http://www.w3.org/2000/svg"
@@ -439,7 +439,7 @@
                                         <path d="M10 3v18"></path>
                                     </svg></span><span class="nav-link-title text-truncate"> Tables </span></a>
                         </div>
-                    </li> --}}
+                    </li>
                     <li class="nav-item dropdown"><a class="nav-link dropdown-toggle nav-priority-0"
                             href="{{ url("/") }}/admin#cms-plugins-marketplace" id="cms-plugins-marketplace"
                             data-bs-toggle="dropdown" data-bs-auto-close="false" role="button"

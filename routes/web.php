@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ProductSpecification\GroupController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ReportsController;
 use App\Http\Controllers\Admin\SpecificationAttributeController;
@@ -15,6 +16,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\StoreController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+
 
 
 
@@ -112,6 +114,28 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
         Route::post('bulk-change', [BrandController::class, 'bulkChange'])->name('brand.bulk-change');
     });
 
+    Route::group(['prefix' => 'group'], function() {
+        Route::get('index',[GroupController::class,'index'])->name('group.Index');
+        Route::get('create',[GroupController::class,'create'])->name('group.create');
+        // Route::post('store',[BrandController::class,'store'])->name('brand.store');
+        // Route::get('/{brand}/edit',[BrandController::class,'Edit'])->name('brand.edit');
+        // Route::put('/{brand}', [BrandController::class, 'update'])->name('brand.update');
+        // Route::post('/delete',[BrandController::class,'destroy'])->name('brand.Delete');
+        // Route::post('bulk-delete', [BrandController::class, 'bulkDelete'])->name('brand.bulk-delete');
+        // Route::post('bulk-change', [BrandController::class, 'bulkChange'])->name('brand.bulk-change');
+    });
+
+    Route::group(['prefix' => 'product-attributes'], function() {
+        Route::get('index',[GroupController::class,'productIndex'])->name('productattributes.Index');
+        // Route::get('create',[BrandController::class,'create'])->name('brand.create');
+        // Route::post('store',[BrandController::class,'store'])->name('brand.store');
+        // Route::get('/{brand}/edit',[BrandController::class,'Edit'])->name('brand.edit');
+        // Route::put('/{brand}', [BrandController::class, 'update'])->name('brand.update');
+        // Route::post('/delete',[BrandController::class,'destroy'])->name('brand.Delete');
+        // Route::post('bulk-delete', [BrandController::class, 'bulkDelete'])->name('brand.bulk-delete');
+        // Route::post('bulk-change', [BrandController::class, 'bulkChange'])->name('brand.bulk-change');
+    });
+
 
   Route::group(['prefix' => 'marketplaces'], function() {
         Route::get('stores', [AdminStoreController::class,'index'])->name('marketplace.store.index');
@@ -126,4 +150,3 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
         });
 
 });
-

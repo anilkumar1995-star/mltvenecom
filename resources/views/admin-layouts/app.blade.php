@@ -63,7 +63,7 @@
     <script>
         $(document).ready(function() {
             NProgress.configure({ showSpinner: true });
-
+            
             // Initial load
             NProgress.start();
             $(window).on('load', function() {
@@ -196,8 +196,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(0.5px);
+            background: rgba(255, 255, 255, 0.5); /* Semi-transparent white */
+            backdrop-filter: blur(1.5px);
             z-index: 99999;
             display: flex;
             align-items: center;
@@ -206,12 +206,12 @@
         }
 
         .loader-spinner {
-            width: 80px;
-            height: 80px;
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid var(--primary-color, #206bc4);
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(var(--primary-color-rgb, 32, 107, 196), 0.15);
+            border-top: 3px solid var(--primary-color, #206bc4);
             border-radius: 50%;
-            animation: spin 0.8s linear infinite;
+            animation: spin 0.6s linear infinite;
         }
 
         @keyframes spin {
