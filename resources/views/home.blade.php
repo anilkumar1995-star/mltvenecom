@@ -407,7 +407,7 @@
                                 </div>
                                 <div class="d-flex flex-column justify-content-between h-100 widget-content scroll-table"
                                     style="min-height: 10rem;">
-                                    <link type="text/css" rel="stylesheet" href="{{ asset('/') }}js/widget.css">
+                                    <link type="text/css" rel="stylesheet" href="{{ asset('/') }}css/widget.css">
 
                                     <ul class="ecommerce-status-list list-unstyled">
                                         <li class="sales-this-month">

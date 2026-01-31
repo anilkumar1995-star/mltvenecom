@@ -1,4 +1,4 @@
-    <div id="app">
+
         <header>
             <div id="header-sticky" class="tp-header-area p-relative tp-header-sticky tp-header-height" data-sticky=""
                 data-mobile-sticky="" style="height: 98px;">

@@ -439,7 +439,7 @@
                                         <path d="M10 3v18"></path>
                                     </svg></span><span class="nav-link-title text-truncate"> Tables </span></a>
                         </div>
-                    </li>
+                    </li> --}}
                     <li class="nav-item dropdown"><a class="nav-link dropdown-toggle nav-priority-0"
                             href="http://127.0.0.1:8000/admin#cms-plugins-marketplace" id="cms-plugins-marketplace"
                             data-bs-toggle="dropdown" data-bs-auto-close="false" role="button"
@@ -481,7 +481,7 @@
                                         <path d="M4 20h14"></path>
                                     </svg></span><span class="nav-link-title text-truncate"> Reports </span></a><a
                                 class="dropdown-item nav-priority-1"
-                                href="http://127.0.0.1:8000/admin/marketplaces/stores" id="cms-plugins-store"
+                                href="{{ route('admin.marketplace.store.index') }}" id="cms-plugins-store"
                                 title="Stores"><span class="nav-link-icon d-md-none d-lg-inline-block"
                                     title="Stores"><svg class="icon svg-icon-ti-ti-building-store"
                                         xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -496,7 +496,7 @@
                                         <path d="M9 21v-4a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v4"></path>
                                     </svg></span><span class="nav-link-title text-truncate"> Stores </span></a><a
                                 class="dropdown-item nav-priority-2"
-                                href="http://127.0.0.1:8000/admin/marketplaces/withdrawals"
+                                href="{{ route('admin.marketplace.withdrawls') }}"
                                 id="cms-plugins-withdrawal" title="Withdrawals"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Withdrawals"><svg
                                         class="icon svg-icon-ti-ti-cash-banknote" xmlns="http://www.w3.org/2000/svg"
@@ -514,7 +514,7 @@
                                         data-url="http://127.0.0.1:8000/admin/menu-items-count"
                                         style="display: none;"></span></span></a><a
                                 class="dropdown-item nav-priority-4"
-                                href="http://127.0.0.1:8000/admin/marketplaces/vendors"
+                                href="{{ route('admin.marketplace.vendors') }}"
                                 id="cms-plugins-marketplace-vendors" title="Vendors"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Vendors"><svg
                                         class="icon svg-icon-ti-ti-users" xmlns="http://www.w3.org/2000/svg"
@@ -526,8 +526,7 @@
                                         <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                                         <path d="M21 21v-2a4 4 0 0 0 -3 -3.85"></path>
                                     </svg></span><span class="nav-link-title text-truncate"> Vendors </span></a><a
-                                class="dropdown-item nav-priority-5"
-                                href="http://127.0.0.1:8000/admin/marketplaces/unverified-vendors"
+                                class="dropdown-item nav-priority-5" href="{{ route('admin.marketplace.unverified-vendors') }}"
                                 id="cms-plugins-marketplace-unverified-vendor" title="Unverified vendors"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Unverified vendors"><svg
                                         class="icon svg-icon-ti-ti-user-question" xmlns="http://www.w3.org/2000/svg"
@@ -558,7 +557,8 @@
                                     </svg></span><span class="nav-link-title text-truncate"> Messages </span></a>
                         </div>
                     </li>
-                    <li class="nav-item"><a class="nav-link nav-priority-2" href="http://127.0.0.1:8000/admin/pages"
+
+               {{--   <li class="nav-item"><a class="nav-link nav-priority-2" href="http://127.0.0.1:8000/admin/pages"
                             id="cms-core-page" title="Pages"><span class="nav-link-icon d-md-none d-lg-inline-block"
                                 title="Pages"><svg class="icon svg-icon-ti-ti-notebook"
                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24"
