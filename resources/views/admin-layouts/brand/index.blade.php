@@ -1,5 +1,5 @@
-@extends('admin-layouts.app') 
-@section('title', 'Brand') 
+@extends('admin-layouts.app')
+@section('title', 'Brand')
     @section('content')
 
 
@@ -12,7 +12,7 @@
                                     <nav aria-label="breadcrumb">
                                         <ol class="breadcrumb">
                                             <li class="breadcrumb-item">
-                                                <a class="mb-0 d-inline-block fs-6 lh-1" href="https://shofy-grocery.botble.com/admin">Dashboard</a>
+                                                <a class="mb-0 d-inline-block fs-6 lh-1" href="{{ route('home') }}">Dashboard</a>
                                             </li>
                                             <li class="breadcrumb-item">
                                                 <h1 class="mb-0 d-inline-block fs-6 lh-1">Ecommerce</h1>
@@ -204,7 +204,7 @@
                                                     <a class="dropdown-item" href="https://shofy-grocery.botble.com/admin/tables/bulk-actions" data-trigger-bulk-action="data-trigger-bulk-action" data-method="POST" data-table-target="Botble\Ecommerce\Tables\BrandTable" data-target="Botble\Table\BulkActions\DeleteBulkAction"
                                                     data-confirmation-modal-title="Confirm to perform this action" data-confirmation-modal-message="Are you sure you want to do this action? This cannot be undone." data-confirmation-modal-button="Delete"
                                                     data-confirmation-modal-cancel-button="Cancel">
-    
+
                                                     Delete
 
                                                         </a>
@@ -236,23 +236,19 @@
                                             </div>
                                         </div>
                                         <div class="d-flex flex-column flex-sm-row align-items-stretch align-items-sm-center gap-1 table-action-buttons">
-                                            <button class="btn action-item btn-primary" tabindex="0" aria-controls="botble-ecommerce-tables-brand-table" type="button" aria-haspopup="dialog" aria-expanded="false">
-                                                <span data-action="create" data-href="{{route('admin.brand.create')}}"><svg class="icon svg-icon-ti-ti-plus"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="24"
-                                                    height="24"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    stroke-width="2"
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    >
-                                                    <path d="M12 5l0 14" />
-                                                    <path d="M5 12l14 0" />
-                                                    </svg>Create
-                                                </span>
-                                            </button>
+                                            <div class="dropdown d-inline-block">
+                                                <a href="{{ route('admin.brand.create') }}"
+                                                    class="btn buttons-collection action-item btn-primary">
+                                                    <svg class="icon svg-icon-ti-ti-plus" xmlns="http://www.w3.org/2000/svg"
+                                                        width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round">
+                                                        <path d="M12 5l0 14" />
+                                                        <path d="M5 12l14 0" />
+                                                    </svg>
+                                                    <span class="ms-1">Create</span>
+                                                </a>
+                                            </div>
 
                                             <button class="btn" type="button" data-bb-toggle="dt-buttons" data-bb-target=".buttons-reload" tabindex="0" aria-controls="botble-ecommerce-tables-brand-table">
                                                 <svg class="icon icon-left svg-icon-ti-ti-refresh" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -277,7 +273,7 @@
                                                     <th title="Is featured" width="100" class="text-start  column-key-3">Is featured</th>
                                                     <th title="Created At" width="100" class=" column-key-4">Created At</th>
                                                     <th title="Status" width="100" class="text-center  column-key-5">Status</th>
-                                                    <th title="Operations">Operations</th>
+                                                    <th title="Operations" class="text-center">Operations</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -296,18 +292,18 @@
                                                             </span></td>
                                                         <td>{{ $brand->created_at }}</td>
                                                         <td>
-                                                
+
                                                             <span
                                                                 class="badge {{ $brand->status == 'published' ? 'badge bg-success text-success-fg' : 'badge bg-danger text-danger-fg' }}">
                                                                 {{ ucwords($brand->status) }}
                                                             </span>
                                                         </td>
                                                         <td class="text-center">
-                                                            <a href="{{ route('admin.category.edit', $brand) }}"
+                                                            <a href="{{ route('admin.brand.edit', $brand) }}"
                                                                 class="btn btn-sm btn-primary btn-icon-square">
                                                                 <i class="fas fa-edit"></i>
                                                             </a>
-                                                                <button type="submit" onclick="deleteCategory({{ $brand->id }})"
+                                                                <button type="submit" onclick="deleteBrand({{ $brand->id }})"
                                                                     class="btn btn-sm btn-danger btn-icon-square">
                                                                     <i class="fas fa-trash"></i>
                                                                 </button>
@@ -333,3 +329,39 @@
 
 
 @endsection
+@push('scripts')
+<script>
+function deleteBrand(id) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: "{{ route('admin.brand.Delete', ':id') }}".replace(':id', id),
+                type: 'DELETE',
+                data: {
+                    _token: "{{ csrf_token() }}"
+                },
+                success: function(response) {
+                    if (response.status) {
+                        Swal.fire(
+                            'Deleted!',
+                            response.message,
+                            'success'
+                        ).then(() => {
+                            location.reload();
+                        });
+                    }
+                }
+            });
+        }
+    })
+}
+</script>
+@endpush

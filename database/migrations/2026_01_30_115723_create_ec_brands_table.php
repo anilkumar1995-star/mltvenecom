@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('ec_brands', function (Blueprint $table) {
             $table->id();
+            $table->string('name', 191);
+            $table->string('slug', 191)->unique()->nullable();
             $table->mediumText('description')->nullable();
             $table->string('website', 191)->nullable();
             $table->string('logo', 191)->nullable();

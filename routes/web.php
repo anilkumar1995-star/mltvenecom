@@ -105,9 +105,9 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
         Route::get('index',[BrandController::class,'index'])->name('brand.Index');
         Route::get('create',[BrandController::class,'create'])->name('brand.create');
         Route::post('store',[BrandController::class,'store'])->name('brand.store');
-        Route::get('/brand/{brand}/edit',[BrandController::class,'Edit'])->name('brand.edit');
-        Route::put('/brand/{brand}', [BrandController::class, 'update'])->name('brand.update');
-        Route::delete('/delete/{brand}',[BrandController::class,'destroy'])->name('brand.Delete');
+        Route::get('/{brand}/edit',[BrandController::class,'Edit'])->name('brand.edit');
+        Route::put('/{brand}', [BrandController::class, 'update'])->name('brand.update');
+        Route::delete('/{brand}',[BrandController::class,'destroy'])->name('brand.Delete');
     });
 
      
