@@ -107,10 +107,12 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
         Route::post('store',[BrandController::class,'store'])->name('brand.store');
         Route::get('/{brand}/edit',[BrandController::class,'Edit'])->name('brand.edit');
         Route::put('/{brand}', [BrandController::class, 'update'])->name('brand.update');
-        Route::delete('/{brand}',[BrandController::class,'destroy'])->name('brand.Delete');
+        Route::post('/delete',[BrandController::class,'destroy'])->name('brand.Delete');
+        Route::post('bulk-delete', [BrandController::class, 'bulkDelete'])->name('brand.bulk-delete');
+        Route::post('bulk-change', [BrandController::class, 'bulkChange'])->name('brand.bulk-change');
     });
 
-     
+
   Route::group(['prefix' => 'marketplaces'], function() {
         Route::get('stores', [AdminStoreController::class,'index'])->name('marketplace.store.index');
         Route::get('reports', [ReportsController::class,'reports'])->name('marketplace.reports');

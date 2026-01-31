@@ -7,13 +7,35 @@ use App\Models\EcProductCategory;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class BrandController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $query = EcBrand::query();
+
+        if ($request->has('search') && !empty($request->search)) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        if ($request->has('filter_columns')) {
+            foreach ($request->filter_columns as $key => $column) {
+                if (!empty($column) && isset($request->filter_values[$key]) && $request->filter_values[$key] !== '') {
+                    $operator = $request->filter_operators[$key] ?? '=';
+                    $value = $request->filter_values[$key];
+
+                    if ($operator == 'like') {
+                        $value = '%' . $value . '%';
+                    }
+
+                    $query->where($column, $operator, $value);
+                }
+            }
+        }
+
         $data['categories'] = EcProductCategory::where('status', '!=', 'Pending')->orderBy('id', 'desc')->get();
-        $data['brands'] = EcBrand::orderBy('id', 'desc')->get();
+        $data['brands'] = $query->orderBy('id', 'desc')->get();
         return view('admin-layouts.brand.index', $data);
     }
 
@@ -98,7 +120,6 @@ class BrandController extends Controller
             }
 
             if ($post->hasFile('logo')) {
-                // Delete old logo if exists
                 if ($brand->logo && file_exists(public_path($brand->logo))) {
                     unlink(public_path($brand->logo));
                 }
@@ -124,8 +145,17 @@ class BrandController extends Controller
         }
     }
 
-    public function destroy(EcBrand $brand)
-    {
+
+    public function destroy(Request $post){
+        $rules = array([
+            "id" => "required|exists:ec_brands,id",
+        ]);
+
+        $validator = Validator::make($post->all(),$rules);
+        if($validator->fails()) return response()->json(['status' => false,'errors' => $validator->errors()]);
+        $brand = EcBrand::where('id',$post->id)->first();
+        if(!$brand) return response()->json(['status' => false,'message' => "Record Not Found"]);
+
         DB::beginTransaction();
         try {
             if ($brand->logo && file_exists(public_path($brand->logo))) {
@@ -133,7 +163,6 @@ class BrandController extends Controller
             }
 
             $brand->categories()->detach();
-
             $brand->delete();
 
             DB::commit();
@@ -142,5 +171,54 @@ class BrandController extends Controller
             DB::rollback();
             return response()->json(['status' => false, 'message' => $e->getMessage(), 'line' => $e->getLine()]);
         }
+    }
+
+
+    public function bulkDelete(Request $request)
+    {
+        $ids = $request->ids;
+        if (!empty($ids)) {
+            DB::beginTransaction();
+            try {
+                $brands = EcBrand::whereIn('id', $ids)->get();
+                foreach ($brands as $brand) {
+                    if ($brand->logo && file_exists(public_path($brand->logo))) {
+                        unlink(public_path($brand->logo));
+                    }
+                    $brand->categories()->detach();
+                    $brand->delete();
+                }
+                DB::commit();
+                return response()->json(['status' => true, 'message' => 'Selected brands deleted successfully.']);
+            } catch (Exception $e) {
+                DB::rollback();
+                return response()->json(['status' => false, 'message' => $e->getMessage()]);
+            }
+        }
+        return response()->json(['status' => false, 'message' => 'No brands selected.']);
+    }
+
+    public function bulkChange(Request $request)
+    {
+        $ids = $request->ids;
+        $column = $request->column;
+        $value = $request->value;
+
+        if (!empty($ids) && !empty($column)) {
+            if (!in_array($column, ['status', 'is_featured'])) {
+                return response()->json(['status' => false, 'message' => 'Invalid column for bulk change.']);
+            }
+
+            DB::beginTransaction();
+            try {
+                EcBrand::whereIn('id', $ids)->update([$column => $value]);
+                DB::commit();
+                return response()->json(['status' => true, 'message' => 'Selected brands updated successfully.']);
+            } catch (Exception $e) {
+                DB::rollback();
+                return response()->json(['status' => false, 'message' => $e->getMessage()]);
+            }
+        }
+        return response()->json(['status' => false, 'message' => 'Invalid data.']);
     }
 }
