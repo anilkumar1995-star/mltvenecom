@@ -1,5 +1,5 @@
 @extends('admin-layouts.app')
-@section('title', 'Specification Groups')
+@section('title','Table')
 @section('content')
 
 <div class="page-wrapper">
@@ -18,7 +18,7 @@
                                     <h1 class="mb-0 d-inline-block fs-6 lh-1">Ecommerce</h1>
                                 </li>
                                 <li class="breadcrumb-item active" aria-current="page">
-                                    <h1 class="mb-0 d-inline-block fs-6 lh-1">Specification Groups</h1>
+                                    <h1 class="mb-0 d-inline-block fs-6 lh-1">Specification Tables</h1>
                                 </li>
                             </ol>
                         </nav>
@@ -47,13 +47,13 @@
                                 </div>
 
                                 <div class="table-search-input">
-                                    <form action="{{ route('admin.group.Index') }}" method="GET">
+                                    <form action="{{ route('admin.producttable.Index') }}" method="GET">
                                         <input type="search" name="q" class="form-control input-sm" placeholder="Search..." value="{{ request('q') }}" style="min-width: 120px">
                                     </form>
                                 </div>
                             </div>
                             <div class="d-flex flex-column flex-sm-row align-items-stretch align-items-sm-center gap-1 table-action-buttons">
-                                <a href="{{ route('admin.group.create') }}" class="btn btn-primary">
+                                <a href="{{ route('admin.producttable.create') }}" class="btn btn-primary">
                                     <svg class="icon svg-icon-ti-ti-plus" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M12 5l0 14" />
                                         <path d="M5 12l14 0" />
@@ -74,45 +74,47 @@
 
                     <div class="card-table">
                         <div class="table-responsive table-has-actions">
-                            <table class="table card-table table-vcenter table-hover datatable" id="myTable">
-
+                            <table class="table card-table table-vcenter table-striped table-hover">
                                 <thead>
                                     <tr>
-                                        <th width="40" class="text-center"><input type="checkbox"
-                                                class="form-check-input" id="checkAll"></th>
-                                        <th width="40" class="text-secondary text-uppercase fs-6">ID <i
-                                                class="fas fa-sort-amount-up ms-1 small opa-5"></i></th>
-                                        <th class="text-secondary text-uppercase fs-6">NAME <i
-                                                class="fas fa-sort-amount-up ms-1 small opa-5"></i></th>
-                                        <th width="120" class="text-secondary text-uppercase fs-6">Description</th>
-                                        <th width="150" class="text-secondary text-uppercase fs-6 text-center">CREATED
-                                            AT</th>
-                                        <th width="100" class="text-center text-secondary text-uppercase fs-6">
-                                            OPERATIONS</th>
+                                        <th width="40"><input class="form-check-input m-0 align-middle" id="checkAll" type="checkbox"></th>
+                                        <th width="40" class="text-center">ID</th>
+                                        <th class="text-start">Name</th>
+                                        <th>Description</th>
+                                        <th>Assigned Groups</th>
+                                        <th width="100">Created At</th>
+                                        <th width="100" class="text-center">Operations</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if(!empty($groups))
-                                    @foreach($groups as $row)
+                                    @forelse($tables as $table)
                                     <tr>
-                                        <td><input type="checkbox" class="form-check-input row-checkbox" value="{{ $row->id }}"></td>
+                                        <td><input type="checkbox" class="form-check-input row-checkbox" value="{{ $table->id }}"></td>
                                         <td class="text-center">{{ $loop->index + 1 }}</td>
-                                        <td class="text-start"><a href="{{ route('admin.group.edit', $row->id) }}">{{ $row->name }}</a></td>
-                                        <td>{{ $row->description }}</td>
-                                        <td>{{ $row->created_at }}</td>
+                                        <td class="text-start"><a href="{{ route('admin.producttable.edit', $table->id) }}">{{ $table->name }}</a></td>
+                                        <td>{{ $table->description }}</td>
+                                        <td>
+                                            @foreach($table->groups as $group)
+                                                <span class="badge bg-blue-lt">{{ $group->id }}</span>
+                                            @endforeach
+                                        </td>
+                                        <td>{{ $table->created_at }}</td>
                                         <td class="text-center">
                                             <div class="btn-list flex-nowrap">
-                                                <a href="{{ route('admin.group.edit', $row->id) }}" class="btn btn-icon btn-primary btn-sm">
+                                                <a href="{{ route('admin.producttable.edit', $table->id) }}" class="btn btn-icon btn-primary btn-sm">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
-                                                <button onclick="deleteItem({{ $row->id }})" class="btn btn-icon btn-danger btn-sm">
+                                                <button onclick="deleteItem({{ $table->id }})" class="btn btn-icon btn-danger btn-sm">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
                                             </div>
                                         </td>
                                     </tr>
-                                    @endforeach
-                                    @endif
+                                    @empty
+                                    <tr>
+                                        <td colspan="7" class="text-center">No tables found.</td>
+                                    </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
@@ -129,14 +131,14 @@
     function deleteItem(id) {
         Swal.fire({
             title: "Are you sure?",
-            text: "Do you really want to delete this group?",
+            text: "Do you really want to delete this table?",
             icon: "warning",
             showCancelButton: true,
             confirmButtonText: "Yes, delete it!",
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: '{{ route("admin.group.Delete") }}',
+                    url: '{{ route("admin.producttable.Delete") }}',
                     type: 'POST',
                     data: { id: id, _token: '{{ csrf_token() }}' },
                     success: function(res) {
@@ -171,7 +173,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: '{{ route("admin.group.bulk-delete") }}',
+                    url: '{{ route("admin.producttable.bulk-delete") }}',
                     type: 'POST',
                     data: { ids: ids, _token: '{{ csrf_token() }}' },
                     success: function(res) {
@@ -186,8 +188,10 @@
         });
     }
 
-    $('#checkAll').on('change', function() {
-        $('.row-checkbox').prop('checked', $(this).prop('checked'));
+    $(document).ready(function() {
+        $(document).on('change', '#checkAll', function() {
+            $('.row-checkbox').prop('checked', $(this).prop('checked'));
+        });
     });
 </script>
 @endpush
