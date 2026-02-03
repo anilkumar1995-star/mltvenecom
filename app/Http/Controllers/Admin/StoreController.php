@@ -43,10 +43,13 @@ public function store(Request $request)
         'email'       => 'required|email|max:255',
         'phone'       => 'required|max:20',
         'status'      => 'required|in:published,draft,pending',
-        'customer_id' => 'required|exists:ec_customers,id', 
+        'customer_id' => 'required|exists:ec_customers,id',
+        'logo'        => 'nullable|image|max:2048',
+        'logo_square' => 'nullable|image|max:2048',
+        'cover_image' => 'nullable|image|max:2048',
     ]);
 
-    $store = Store::create([
+    $data = [
         'name'        => $request->name,
         'email'       => $request->email,
         'phone'       => $request->phone,
@@ -60,10 +63,30 @@ public function store(Request $request)
         'content'     => $request->content,
         'status'      => $request->status,
         'customer_id' => $request->customer_id,
-        'logo'        => $request->logo,
-        'logo_square' => $request->logo_square,
-        'cover_image' => $request->cover_image,
-    ]);
+    ];
+
+    if ($request->hasFile('logo')) {
+        $path = $request->file('logo')->store('stores', 'public');
+        $data['logo'] = 'storage/' . $path;
+    } elseif ($request->logo) {
+        $data['logo'] = $request->logo;
+    }
+
+    if ($request->hasFile('logo_square')) {
+        $path = $request->file('logo_square')->store('stores', 'public');
+        $data['logo_square'] = 'storage/' . $path;
+    } elseif ($request->logo_square) {
+        $data['logo_square'] = $request->logo_square;
+    }
+
+    if ($request->hasFile('cover_image')) {
+        $path = $request->file('cover_image')->store('stores', 'public');
+        $data['cover_image'] = 'storage/' . $path;
+    } elseif ($request->cover_image) {
+        $data['cover_image'] = $request->cover_image;
+    }
+
+    $store = Store::create($data);
 
     return response()->json([
         'status'  => true,
@@ -83,7 +106,7 @@ public function store(Request $request)
 }
 
 
-       public function update(Request $request, $id)
+    public function update(Request $request, $id)
     {
         $store = Store::findOrFail($id);
 
@@ -93,9 +116,12 @@ public function store(Request $request)
             'phone'       => 'required|string|max:20',
             'customer_id' => 'required|exists:ec_customers,id',
             'status'      => 'required',
+            'logo'        => 'nullable|image|max:2048',
+            'logo_square' => 'nullable|image|max:2048',
+            'cover_image' => 'nullable|image|max:2048',
         ]);
 
-        $store->update([
+        $data = [
             'name'        => $request->name,
             'email'       => $request->email,
             'phone'       => $request->phone,
@@ -109,10 +135,24 @@ public function store(Request $request)
             'tax_id'      => $request->tax_id,
             'status'      => $request->status,
             'customer_id' => $request->customer_id,
-            'logo'        => $request->logo,
-            'logo_square' => $request->logo_square,
-            'cover_image' => $request->cover_image,
-        ]);
+        ];
+
+        if ($request->hasFile('logo')) {
+            $path = $request->file('logo')->store('stores', 'public');
+            $data['logo'] = 'storage/' . $path;
+        }
+
+        if ($request->hasFile('logo_square')) {
+            $path = $request->file('logo_square')->store('stores', 'public');
+            $data['logo_square'] = 'storage/' . $path;
+        }
+
+        if ($request->hasFile('cover_image')) {
+            $path = $request->file('cover_image')->store('stores', 'public');
+            $data['cover_image'] = 'storage/' . $path;
+        }
+
+        $store->update($data);
 
         return response()->json([
             'status' => true,
@@ -125,7 +165,12 @@ public function store(Request $request)
     {
         $store->load('customer');
         $store->loadCount('products');
-        return view('admin-layouts.marketplace.store.show', compact('store'));
+        
+        $statements = \App\Models\Withdrawal::where('customer_id', $store->customer_id)
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        return view('admin-layouts.marketplace.store.show', compact('store', 'statements'));
     }
 
     public function destroy(Store $store)
@@ -135,6 +180,20 @@ public function store(Request $request)
         return response()->json([
             'status' => true,
             'message' => 'Store deleted successfully.'
+        ]);
+    }
+    public function verify(Store $store)
+    {
+        $store->update([
+            'is_verified' => 1,
+            'verified_at' => now(),
+            'verified_by' => auth()->id(),
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Store verified successfully',
+            'reload' => true
         ]);
     }
 }

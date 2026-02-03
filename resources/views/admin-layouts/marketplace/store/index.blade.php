@@ -355,16 +355,16 @@
                                         <div
                                             class="d-flex flex-column flex-sm-row align-items-stretch align-items-sm-center gap-1 table-action-buttons">
                                            <a href="{{ route('admin.marketplace.store.create') }}"
-   class="btn action-item btn-primary">
-    <svg class="icon svg-icon-ti-ti-plus" xmlns="http://www.w3.org/2000/svg"
-        width="24" height="24" viewBox="0 0 24 24"
-        fill="none" stroke="currentColor" stroke-width="2"
-        stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 5l0 14" />
-        <path d="M5 12l14 0" />
-    </svg>
-    Create
-</a>
+                                                class="btn action-item btn-primary">
+                                                    <svg class="icon svg-icon-ti-ti-plus" xmlns="http://www.w3.org/2000/svg"
+                                                        width="24" height="24" viewBox="0 0 24 24"
+                                                        fill="none" stroke="currentColor" stroke-width="2"
+                                                        stroke-linecap="round" stroke-linejoin="round">
+                                                        <path d="M12 5l0 14" />
+                                                        <path d="M5 12l14 0" />
+                                                    </svg>
+                                                    Create
+                                                </a>
 
 
                                             <button
@@ -419,31 +419,33 @@
                                                         <td>{{ $store->created_at->format('Y-m-d') }}</td>
                                                         <td class="text-center">
                                                             @if($store->status == 'published')
-                                                                <span class="badge bg-success">Published</span>
+                                                                <span class="badge bg-success text-white">Published</span>
                                                             @elseif($store->status == 'draft')
-                                                                <span class="badge bg-secondary">Draft</span>
+                                                                <span class="badge bg-secondary text-white">Draft</span>
                                                             @else
-                                                                <span class="badge bg-warning">Pending</span>
+                                                                <span class="badge bg-warning text-white">Pending</span>
                                                             @endif
                                                         </td>
                                                         <td class="text-center">
-                                                            <a href="{{ route('admin.marketplace.store.show', $store->id) }}" class="btn btn-icon btn-sm btn-info" data-bs-toggle="tooltip" data-bs-original-title="View">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                                   <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                                   <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
-                                                                   <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"></path>
-                                                                </svg>
-                                                            </a>
-                                                            <a href="{{ route('admin.marketplace.store.edit', $store->id) }}" class="btn btn-icon btn-primary btn-sm">
-                                                                <svg class="icon svg-icon-ti-ti-edit" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4" /><path d="M13.5 6.5l4 4" /></svg>
-                                                            </a>
-                                                           <form action="{{ route('admin.marketplace.store.destroy', $store->id) }}"method="POST"class="delete-store-form"style="display:inline-block;">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="submit" class="btn btn-icon btn-danger btn-sm">
-                                                                    <svg class="icon svg-icon-ti-ti-trash" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7l16 0" /><path d="M10 11l0 6" /><path d="M14 11l0 6" /><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" /><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" /></svg>
-                                                                </button>
-                                                            </form>
+                                                            <div class="btn-list flex-nowrap justify-content-center">
+                                                                <a href="{{ route('admin.marketplace.store.show', $store->id) }}" class="btn btn-icon btn-sm btn-info" data-bs-toggle="tooltip" data-bs-original-title="View">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                       <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                                       <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
+                                                                       <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"></path>
+                                                                    </svg>
+                                                                </a>
+                                                                <a href="{{ route('admin.marketplace.store.edit', $store->id) }}" class="btn btn-icon btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-original-title="Edit">
+                                                                    <svg class="icon svg-icon-ti-ti-edit" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4" /><path d="M13.5 6.5l4 4" /></svg>
+                                                                </a>
+                                                                <form action="{{ route('admin.marketplace.store.destroy', $store->id) }}" method="POST" class="delete-store-form">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="submit" class="btn btn-icon btn-danger btn-sm" data-bs-toggle="tooltip" data-bs-original-title="Delete">
+                                                                        <svg class="icon svg-icon-ti-ti-trash" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7l16 0" /><path d="M10 11l0 6" /><path d="M14 11l0 6" /><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" /><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" /></svg>
+                                                                    </button>
+                                                                </form>
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 @endforeach
@@ -475,63 +477,51 @@
         $(document).on('submit', '.delete-store-form', function (e) {
             e.preventDefault();
 
-            let form = this;
             let $form = $(this);
 
             Swal.fire({
-                title: 'Are you sure?',
-                text: "This store will be permanently deleted!",
-                icon: 'warning',
+                title: "Are you sure?",
+                text: "Do you really want to delete this store?",
+                icon: "warning",
                 showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Yes, delete it!',
-                cancelButtonText: 'Cancel'
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Yes, Delete it !",
+                cancelButtonText: "Cancel"
             }).then((result) => {
                 if (result.isConfirmed) {
+                    Swal.fire({
+                        title: "Please wait...",
+                        text: "Deleting store...",
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+
                     $.ajax({
                         url: $form.attr('action'),
                         type: 'POST',
                         data: $form.serialize(),
-                        success: function (response) {
-                            if (response.status) {
-                                Swal.fire(
-                                    'Deleted!',
-                                    response.message,
-                                    'success'
-                                );
+                        success: function (res) {
+                            if (res.status) {
+                                Swal.fire("Deleted!", res.message, "success");
                                 $form.closest('tr').fadeOut(500, function() {
                                     $(this).remove();
                                 });
                             } else {
-                                Swal.fire(
-                                    'Error!',
-                                    'Something went wrong.',
-                                    'error'
-                                );
+                                Swal.fire("Error!", res.message, "error");
                             }
                         },
-                        error: function () {
-                            Swal.fire(
-                                'Error!',
-                                'Could not delete store.',
-                                'error'
-                            );
+                        error: function (xhr) {
+                            Swal.fire("Error!", xhr?.responseJSON?.message || "Something went wrong", "error");
                         }
                     });
                 }
             });
         });
 
-        @if(session('success'))
-            Swal.fire({
-                icon: 'success',
-                title: 'Success',
-                text: "{{ session('success') }}",
-                timer: 2500,
-                showConfirmButton: false
-            });
-        @endif
+       
     });
 </script>
 
