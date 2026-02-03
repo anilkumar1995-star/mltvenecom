@@ -37,7 +37,7 @@
                                     <div class="card-body p-0">
                                         <div class="text-center p-3">
                                             <div class="mb-2">
-                                                <img src="{{ $store->logo ? asset('storage/' . $store->logo) : asset('vendor/core/core/base/images/placeholder.png') }}"
+                                                <img src="{{ $store->logo ? asset('/' . $store->logo) : asset('vendor/core/core/base/images/placeholder.png') }}"
                                                      alt="{{ $store->name }}"
                                                      class="avatar avatar-rounded avatar-xl" />
                                             </div>
@@ -74,43 +74,71 @@
                                     </div>
                                 </div>
 
-                                <div class="card mt-3">
-                                    <div class="card-status-top bg-{{ $store->is_verified ? 'success' : 'warning' }}"></div>
+                                  <div class="card mt-3">
+                                    <div class="card-status-top bg-warning"></div>
+
                                     <div class="card-header">
                                         <h3 class="card-title">
-                                            <svg class="icon svg-icon-ti-ti-shield-check" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.46 20.846a12 12 0 0 1 -7.96 -14.846a12 12 0 0 0 8.5 -3a12 12 0 0 0 8.5 3a12 12 0 0 1 -.09 7.06" /><path d="M15 19l2 2l4 -4" /></svg>
-                                            Store Verification
+                                            <svg class="icon svg-icon-ti-ti-shield-check"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="24"
+                                                height="24"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <path d="M11.46 20.846a12 12 0 0 1 -7.96 -14.846a12 12 0 0 0 8.5 -3a12 12 0 0 0 8.5 3a12 12 0 0 1 -.09 7.06" />
+                                                <path d="M15 19l2 2l4 -4" />
+                                            </svg> Store Verification
                                         </h3>
                                     </div>
+
                                     <div class="card-body">
-                                        @if($store->is_verified)
-                                            <div class="alert alert-success" role="alert">
-                                                <div class="d-flex">
-                                                    <div>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l5 5l10 -10" /></svg>
-                                                    </div>
-                                                    <div>
-                                                        <h4 class="alert-title">Verified</h4>
-                                                        <div class="text-secondary">This store is verified.</div>
-                                                    </div>
+                                        <div class="alert alert-warning" role="alert">
+                                            <div class="d-flex">
+                                                <div>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                        <circle cx="12" cy="12" r="9"></circle>
+                                                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                                                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                                                    </svg>
+                                                </div>
+                                                <div>
+                                                    <h4 class="alert-title">Not Verified</h4>
+                                                    <div class="text-secondary">This store has not been verified yet.</div>
                                                 </div>
                                             </div>
-                                        @else
-                                            <div class="alert alert-warning" role="alert">
-                                                <div class="d-flex">
-                                                    <div>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                                                    </div>
-                                                    <div>
-                                                        <h4 class="alert-title">Not Verified</h4>
-                                                        <div class="text-secondary">This store has not been verified yet.</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="text-center py-4">
-                                                <h3>Verification Pending</h3>
-                                            </div>
-                                        @endif
+                                        </div>
+
+                                        <div class="text-center py-4">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-lg text-muted mb-3" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                <path d="M12 3a12 12 0 0 0 8.5 3a12 12 0 0 1 -8.5 15a12 12 0 0 1 -8.5 -15a12 12 0 0 0 8.5 -3"></path>
+                                                <circle cx="12" cy="11" r="1"></circle>
+                                                <line x1="12" y1="12" x2="12" y2="14.5"></line>
+                                            </svg>
+                                            <h3>Verification Pending</h3>
+                                            <p class="text-muted">Click the button below to verify this store and display the verified badge.</p>
+
+                                            <button type="button" class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#verify-store-modal">
+                                                <svg class="icon svg-icon-ti-ti-shield-check"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="24"
+                                                    height="24"
+                                                    viewBox="0 0 24 24"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    stroke-width="2"
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round">
+                                                    <path d="M11.46 20.846a12 12 0 0 1 -7.96 -14.846a12 12 0 0 0 8.5 -3a12 12 0 0 0 8.5 3a12 12 0 0 1 -.09 7.06" />
+                                                    <path d="M15 19l2 2l4 -4" />
+                                                </svg> Verify Store
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -137,9 +165,23 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <tr>
-                                                                <td colspan="7" class="text-center">No statements found</td>
-                                                            </tr>
+                                                            @forelse($statements as $statement)
+                                                                <tr>
+                                                                    <td>{{ $statement->id }}</td>
+                                                                    <td>{{ Str::limit($statement->description, 50) }}</td>
+                                                                    <td>{{ number_format($statement->fee, 2) }}</td>
+                                                                    <td>{{ number_format($statement->amount, 2) }}</td>
+                                                                    <td>{{ number_format($statement->amount - $statement->fee, 2) }}</td>
+                                                                    <td>
+                                                                        <span class="badge bg-secondary text-secondary-fg">Withdrawal</span>
+                                                                    </td>
+                                                                    <td>{{ $statement->created_at->format('Y-m-d') }}</td>
+                                                                </tr>
+                                                            @empty
+                                                                <tr>
+                                                                    <td colspan="7" class="text-center">No statements found</td>
+                                                                </tr>
+                                                            @endforelse
                                                         </tbody>
                                                     </table>
                                                 </div>

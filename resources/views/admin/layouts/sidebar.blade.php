@@ -47,7 +47,7 @@
                     </div>
                     <div class="collapse navbar-collapse" id="sidebar-menu">
                         <ul class="navbar-nav">
-                            <li class="nav-item active"><a class="nav-link nav-priority--9999 active show"
+                            <li class="nav-item {{ Request::is('admin') ? 'active' : '' }}"><a class="nav-link nav-priority--9999 {{ Request::is('admin') ? 'active show' : '' }}"
                                     href="{{asset('/')}}admin" id="cms-core-dashboard" title="Dashboard"><span
                                         class="nav-link-icon d-md-none d-lg-inline-block" title="Dashboard"><svg
                                             class="icon svg-icon-ti-ti-home" xmlns="http://www.w3.org/2000/svg"
@@ -58,7 +58,7 @@
                                             <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"></path>
                                         </svg></span><span class="nav-link-title text-truncate"> Dashboard </span></a>
                             </li>
-                            <li class="nav-item dropdown"><a class="nav-link dropdown-toggle nav-priority-0"
+                            <li class="nav-item dropdown {{ Request::is('admin/ecommerce*') ? 'active' : '' }}"><a class="nav-link dropdown-toggle nav-priority-0 {{ Request::is('admin/ecommerce*') ? 'active show' : '' }}"
                                     href="{{asset('/')}}admin#cms-plugins-ecommerce" id="cms-plugins-ecommerce"
                                     data-bs-toggle="dropdown" data-bs-auto-close="false" role="button"
                                     aria-expanded="false" title="Ecommerce"><span
@@ -74,8 +74,8 @@
                                             class="badge badge-sm bg-primary text-primary-fg badge-pill menu-item-count ecommerce-count"
                                             data-url="{{asset('/')}}admin/menu-items-count"
                                             style="display: none;"></span></span></a>
-                                <div class="dropdown-menu animate slideIn dropdown-menu-start"><a
-                                        class="dropdown-item nav-priority-0"
+                                <div class="dropdown-menu animate slideIn dropdown-menu-start {{ Request::is('admin/ecommerce*') ? 'show' : '' }}"><a
+                                        class="dropdown-item nav-priority-0 {{ Request::is('admin/ecommerce/reports*') ? 'active' : '' }}"
                                         href="{{asset('/')}}admin/ecommerce/reports"
                                         id="cms-plugins-ecommerce-report" title="Report"><span
                                             class="nav-link-icon d-md-none d-lg-inline-block" title="Report"><svg
@@ -93,7 +93,7 @@
                                                 <path d="M12 17v-1"></path>
                                                 <path d="M15 17v-3"></path>
                                             </svg></span><span class="nav-link-title text-truncate"> Report
-                                        </span></a><a class="dropdown-item nav-priority-10"
+                                        </span></a><a class="dropdown-item nav-priority-10 {{ Request::is('admin/ecommerce/orders*') ? 'active' : '' }}"
                                         href="{{asset('/')}}admin/ecommerce/orders"
                                         id="cms-plugins-ecommerce-order" title="Orders"><span
                                             class="nav-link-icon d-md-none d-lg-inline-block" title="Orders"><svg
@@ -109,7 +109,7 @@
                                                 class="badge badge-sm bg-primary text-primary-fg badge-pill menu-item-count pending-orders"
                                                 data-url="{{asset('/')}}admin/menu-items-count"
                                                 style="display: none;"></span></span></a><a
-                                        class="dropdown-item nav-priority-20"
+                                        class="dropdown-item nav-priority-20 {{ Request::is('admin/ecommerce/incomplete-orders*') ? 'active' : '' }}"
                                         href="{{asset('/')}}admin/ecommerce/incomplete-orders"
                                         id="cms-plugins-ecommerce-incomplete-order" title="Incomplete orders"><span
                                             class="nav-link-icon d-md-none d-lg-inline-block"
@@ -126,7 +126,7 @@
                                                 <path d="M19 19m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
                                                 <path d="M17 21l4 -4"></path>
                                             </svg></span><span class="nav-link-title text-truncate"> Incomplete orders
-                                        </span></a><a class="dropdown-item nav-priority-30"
+                                        </span></a><a class="dropdown-item nav-priority-30 {{ Request::is('admin/ecommerce/order-returns*') ? 'active' : '' }}"
                                         href="{{asset('/')}}admin/ecommerce/order-returns"
                                         id="cms-plugins-ecommerce-order-return" title="Order returns"><span
                                             class="nav-link-icon d-md-none d-lg-inline-block" title="Order returns"><svg
@@ -146,7 +146,7 @@
                                                 class="badge badge-sm bg-primary text-primary-fg badge-pill menu-item-count pending-order-returns"
                                                 data-url="{{asset('/')}}admin/menu-items-count"
                                                 style="display: none;"></span></span></a><a
-                                        class="dropdown-item nav-priority-40"
+                                        class="dropdown-item nav-priority-40 {{ Request::is('admin/ecommerce/shipments*') ? 'active' : '' }}"
                                         href="{{asset('/')}}admin/ecommerce/shipments"
                                         id="cms-plugins-ecommerce-shipping-shipments" title="Shipments"><span
                                             class="nav-link-icon d-md-none d-lg-inline-block" title="Shipments"><svg
@@ -161,7 +161,7 @@
                                                 <path d="M9 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
                                                 <path d="M18 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
                                             </svg></span><span class="nav-link-title text-truncate"> Shipments
-                                        </span></a><a class="dropdown-item nav-priority-50"
+                                        </span></a><a class="dropdown-item nav-priority-50 {{ Request::is('admin/ecommerce/invoices*') ? 'active' : '' }}"
                                         href="{{asset('/')}}admin/ecommerce/invoices"
                                         id="cms-plugins-ecommerce-invoice" title="Invoices"><span
                                             class="nav-link-icon d-md-none d-lg-inline-block" title="Invoices"><svg
@@ -177,7 +177,7 @@
                                                 <path d="M9 13l6 0"></path>
                                                 <path d="M13 17l2 0"></path>
                                             </svg></span><span class="nav-link-title text-truncate"> Invoices
-                                        </span></a><a class="dropdown-item nav-priority-60"
+                                        </span></a><a class="dropdown-item nav-priority-60 {{ Request::is('admin/ecommerce/products*') ? 'active' : '' }}"
                                         href="{{asset('/')}}admin/ecommerce/products"
                                         id="cms-plugins-ecommerce-product" title="Products"><span
                                             class="nav-link-icon d-md-none d-lg-inline-block" title="Products"><svg
@@ -194,7 +194,7 @@
                                                 class="badge badge-sm bg-primary text-primary-fg badge-pill menu-item-count pending-products"
                                                 data-url="{{asset('/')}}admin/menu-items-count"
                                                 style="display: none;"></span></span></a><a
-                                        class="dropdown-item nav-priority-70"
+                                        class="dropdown-item nav-priority-70 {{ Request::is('admin/ecommerce/product-prices*') ? 'active' : '' }}"
                                         href="{{asset('/')}}admin/ecommerce/product-prices"
                                         id="cms-plugins-ecommerce-product-price" title="Product Prices"><span
                                             class="nav-link-icon d-md-none d-lg-inline-block"
@@ -207,7 +207,7 @@
                                                 </path>
                                                 <path d="M12 3v3m0 12v3"></path>
                                             </svg></span><span class="nav-link-title text-truncate"> Product Prices
-                                        </span></a><a class="dropdown-item nav-priority-80"
+                                        </span></a><a class="dropdown-item nav-priority-80 {{ Request::is('admin/ecommerce/product-inventory*') ? 'active' : '' }}"
                                         href="{{asset('/')}}admin/ecommerce/product-inventory"
                                         id="cms-plugins-ecommerce-product-inventory" title="Product Inventory"><span
                                             class="nav-link-icon d-md-none d-lg-inline-block"
@@ -219,7 +219,7 @@
                                                 <path d="M19 13.488v-1.488h2l-9 -9l-9 9h2v7a2 2 0 0 0 2 2h4.525"></path>
                                                 <path d="M15 19l2 2l4 -4"></path>
                                             </svg></span><span class="nav-link-title text-truncate"> Product Inventory
-                                        </span></a><a class="dropdown-item nav-priority-90"
+                                        </span></a><a class="dropdown-item nav-priority-90 {{ Request::is('admin/ecommerce/product-categories*') ? 'active' : '' }}"
                                         href="{{asset('/')}}admin/ecommerce/product-categories"
                                         id="cms-plugins-product-categories" title="Product categories"><span
                                             class="nav-link-icon d-md-none d-lg-inline-block"
@@ -233,7 +233,7 @@
                                                 <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10"></path>
                                                 <path d="M10 12l4 0"></path>
                                             </svg></span><span class="nav-link-title text-truncate"> Product categories
-                                        </span></a><a class="dropdown-item nav-priority-100"
+                                        </span></a><a class="dropdown-item nav-priority-100 {{ Request::is('admin/ecommerce/product-tags*') ? 'active' : '' }}"
                                         href="{{asset('/')}}admin/ecommerce/product-tags"
                                         id="cms-plugins-product-tag" title="Product tags"><span
                                             class="nav-link-icon d-md-none d-lg-inline-block" title="Product tags"><svg
@@ -246,7 +246,7 @@
                                                     d="M3 6v5.172a2 2 0 0 0 .586 1.414l7.71 7.71a2.41 2.41 0 0 0 3.408 0l5.592 -5.592a2.41 2.41 0 0 0 0 -3.408l-7.71 -7.71a2 2 0 0 0 -1.414 -.586h-5.172a3 3 0 0 0 -3 3z">
                                                 </path>
                                             </svg></span><span class="nav-link-title text-truncate"> Product tags
-                                        </span></a><a class="dropdown-item nav-priority-110"
+                                        </span></a><a class="dropdown-item nav-priority-110 {{ Request::is('admin/ecommerce/product-attribute-sets*') ? 'active' : '' }}"
                                         href="{{asset('/')}}admin/ecommerce/product-attribute-sets"
                                         id="cms-plugins-product-attribute" title="Product attributes"><span
                                             class="nav-link-icon d-md-none d-lg-inline-block"
@@ -259,7 +259,7 @@
                                                 </path>
                                                 <path d="M12 4v7l2 -2l2 2v-7"></path>
                                             </svg></span><span class="nav-link-title text-truncate"> Product attributes
-                                        </span></a><a class="dropdown-item nav-priority-120"
+                                        </span></a><a class="dropdown-item nav-priority-120 {{ Request::is('admin/ecommerce/options*') ? 'active' : '' }}"
                                         href="{{asset('/')}}admin/ecommerce/options"
                                         id="cms-plugins-ecommerce-global-options" title="Product options"><span
                                             class="nav-link-icon d-md-none d-lg-inline-block"
@@ -271,7 +271,7 @@
                                                 <path d="M4 6v6a8 3 0 0 0 16 0v-6"></path>
                                                 <path d="M4 12v6a8 3 0 0 0 16 0v-6"></path>
                                             </svg></span><span class="nav-link-title text-truncate"> Product options
-                                        </span></a><a class="dropdown-item nav-priority-130"
+                                        </span></a><a class="dropdown-item nav-priority-130 {{ Request::is('admin/ecommerce/product-collections*') ? 'active' : '' }}"
                                         href="{{asset('/')}}admin/ecommerce/product-collections"
                                         id="cms-plugins-product-collections" title="Product collections"><span
                                             class="nav-link-icon d-md-none d-lg-inline-block"
@@ -284,7 +284,7 @@
                                                 </path>
                                                 <path d="M12 4v7l2 -2l2 2v-7"></path>
                                             </svg></span><span class="nav-link-title text-truncate"> Product collections
-                                        </span></a><a class="dropdown-item nav-priority-140"
+                                        </span></a><a class="dropdown-item nav-priority-140 {{ Request::is('admin/ecommerce/product-labels*') ? 'active' : '' }}"
                                         href="{{asset('/')}}admin/ecommerce/product-labels"
                                         id="cms-plugins-product-label" title="Product labels"><span
                                             class="nav-link-icon d-md-none d-lg-inline-block"
@@ -299,7 +299,7 @@
                                                 </path>
                                                 <path d="M7 10h-.01"></path>
                                             </svg></span><span class="nav-link-title text-truncate"> Product labels
-                                        </span></a><a class="dropdown-item nav-priority-150"
+                                        </span></a><a class="dropdown-item nav-priority-150 {{ Request::is('admin/ecommerce/brands*') ? 'active' : '' }}"
                                         href="{{asset('/')}}admin/ecommerce/brands" id="cms-plugins-brands"
                                         title="Brands"><span class="nav-link-icon d-md-none d-lg-inline-block"
                                             title="Brands"><svg class="icon svg-icon-ti-ti-registered"
@@ -310,7 +310,7 @@
                                                 <path d="M10 15v-6h2a2 2 0 1 1 0 4h-2"></path>
                                                 <path d="M14 15l-2 -2"></path>
                                             </svg></span><span class="nav-link-title text-truncate"> Brands
-                                        </span></a><a class="dropdown-item nav-priority-160"
+                                        </span></a><a class="dropdown-item nav-priority-160 {{ Request::is('admin/ecommerce/reviews*') ? 'active' : '' }}"
                                         href="{{asset('/')}}admin/ecommerce/reviews" id="cms-ecommerce-review"
                                         title="Reviews"><span class="nav-link-icon d-md-none d-lg-inline-block"
                                             title="Reviews"><svg class="icon svg-icon-ti-ti-star"
@@ -321,7 +321,7 @@
                                                     d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z">
                                                 </path>
                                             </svg></span><span class="nav-link-title text-truncate"> Reviews
-                                        </span></a><a class="dropdown-item nav-priority-170"
+                                        </span></a><a class="dropdown-item nav-priority-170 {{ Request::is('admin/ecommerce/flash-sales*') ? 'active' : '' }}"
                                         href="{{asset('/')}}admin/ecommerce/flash-sales"
                                         id="cms-plugins-flash-sale" title="Flash sales"><span
                                             class="nav-link-icon d-md-none d-lg-inline-block" title="Flash sales"><svg
@@ -331,7 +331,7 @@
                                                 stroke-linejoin="round">
                                                 <path d="M13 3l0 7l6 0l-8 11l0 -7l-6 0l8 -11"></path>
                                             </svg></span><span class="nav-link-title text-truncate"> Flash sales
-                                        </span></a><a class="dropdown-item nav-priority-180"
+                                        </span></a><a class="dropdown-item nav-priority-180 {{ Request::is('admin/ecommerce/discounts*') ? 'active' : '' }}"
                                         href="{{asset('/')}}admin/ecommerce/discounts"
                                         id="cms-plugins-ecommerce-discount" title="Discounts"><span
                                             class="nav-link-icon d-md-none d-lg-inline-block" title="Discounts"><svg
@@ -344,7 +344,7 @@
                                                 <circle cx="14.5" cy="14.5" r=".5" fill="currentColor"></circle>
                                                 <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
                                             </svg></span><span class="nav-link-title text-truncate"> Discounts
-                                        </span></a><a class="dropdown-item nav-priority-190"
+                                        </span></a><a class="dropdown-item nav-priority-190 {{ Request::is('admin/customers*') ? 'active' : '' }}"
                                         href="{{asset('/')}}admin/customers" id="cms-plugins-ecommerce-customer"
                                         title="Customers"><span class="nav-link-icon d-md-none d-lg-inline-block"
                                             title="Customers"><svg class="icon svg-icon-ti-ti-users"

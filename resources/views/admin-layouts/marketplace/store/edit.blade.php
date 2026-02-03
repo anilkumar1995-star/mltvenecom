@@ -665,75 +665,30 @@
                                                         </label>
 
 
-                                                        <div class="image-box image-box-logo" action="select-image" data-counter="250">
-                                                            <input
-                                                                class="image-data"
-                                                                name="logo"
-                                                                type="hidden"
-                                                                value=""
-                                                                class="" data-counter="250" />
-
-
-                                                            <div
-                                                                style="width: 8rem"
-                                                                class="preview-image-wrapper mb-1">
+                                                        <div class="image-box image-box-logo">
+                                                            <input type="file" name="logo" id="logo-input" style="display:none" accept="image/*" onchange="previewImage(this, '.preview-logo', '.remove-logo-btn')">
+                                                            <div class="preview-image-wrapper mb-1" style="width: 8rem">
                                                                 <div class="preview-image-inner">
-                                                                    <a
-                                                                        data-bb-toggle="image-picker-choose"
-                                                                        data-target="popup" class="image-box-actions"
-                                                                        data-result="logo"
-                                                                        data-action="select-image"
-                                                                        data-allow-thumb="1"
-                                                                        href="#">
-                                                                        <img
-                                                                            class="preview-image default-image" data-default="https://shofy-grocery.botble.com/vendor/core/core/base/images/placeholder.png"
-                                                                            src="https://shofy-grocery.botble.com/vendor/core/core/base/images/placeholder.png"
-                                                                            alt="Preview image" />
+                                                                    <a href="javascript:void(0)" onclick="$('#logo-input').trigger('click')" class="image-box-actions">
+                                                                        <img class="preview-logo preview-image default-image" 
+                                                                             data-default="https://shofy-grocery.botble.com/vendor/core/core/base/images/placeholder.png"
+                                                                             src="{{ $store->logo ? asset($store->logo) : 'https://shofy-grocery.botble.com/vendor/core/core/base/images/placeholder.png' }}"
+                                                                             alt="Preview image" style="width: 8rem; height: 8rem; object-fit: cover;" />
                                                                         <span class="image-picker-backdrop"></span>
                                                                     </a>
-                                                                    <button
-                                                                        class="btn btn-pill btn-icon  btn-sm image-picker-remove-button p-0" style="display: none; --bb-btn-font-size: 0.5rem;" type="button" data-bb-toggle="image-picker-remove"
-                                                                        data-bs-toggle="tooltip"
-                                                                        data-bs-placement="top"
-                                                                        title="Remove image">
-                                                                        <svg class="icon icon-sm  icon-left svg-icon-ti-ti-x"
-                                                                            xmlns="http://www.w3.org/2000/svg"
-                                                                            width="24"
-                                                                            height="24"
-                                                                            viewBox="0 0 24 24"
-                                                                            fill="none"
-                                                                            stroke="currentColor"
-                                                                            stroke-width="2"
-                                                                            stroke-linecap="round"
-                                                                            stroke-linejoin="round">
+                                                                    <button class="btn btn-pill btn-icon btn-sm image-picker-remove-button p-0 remove-logo-btn" 
+                                                                            style="{{ $store->logo ? '' : 'display: none;' }} --bb-btn-font-size: 0.5rem;" 
+                                                                            type="button" 
+                                                                            onclick="removeImage('.preview-logo', '#logo-input', this)"
+                                                                            title="Remove image">
+                                                                        <svg class="icon icon-sm icon-left svg-icon-ti-ti-x" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                                                             <path d="M18 6l-12 12" />
                                                                             <path d="M6 6l12 12" />
                                                                         </svg>
-
                                                                     </button>
                                                                 </div>
                                                             </div>
-
-                                                            <a
-                                                                data-bb-toggle="image-picker-choose"
-                                                                data-target="popup" data-result="logo"
-                                                                data-action="select-image"
-                                                                data-allow-thumb="1"
-                                                                href="#">
-                                                                Choose image
-                                                            </a>
-
-                                                            <div data-bb-toggle="upload-from-url">
-                                                                <span class="text-muted">or</span>
-                                                                <a
-                                                                    href="javascript:void(0)"
-                                                                    class="mt-1"
-                                                                    data-bs-toggle="modal"
-                                                                    data-bs-target="#image-picker-add-from-url"
-                                                                    data-bb-target=".image-box-logo">
-                                                                    Add from URL
-                                                                </a>
-                                                            </div>
+                                                            <a href="javascript:void(0)" onclick="$('#logo-input').trigger('click')">Choose image</a>
                                                         </div>
 
 
@@ -754,75 +709,30 @@
                                                         </label>
 
 
-                                                        <div class="image-box image-box-logo_square" action="select-image" data-counter="250">
-                                                            <input
-                                                                class="image-data"
-                                                                name="logo_square"
-                                                                type="hidden"
-                                                                value=""
-                                                                class="" data-counter="250" />
-
-
-                                                            <div
-                                                                style="width: 8rem"
-                                                                class="preview-image-wrapper mb-1">
+                                                        <div class="image-box image-box-logo_square">
+                                                            <input type="file" name="logo_square" id="logo-square-input" style="display:none" accept="image/*" onchange="previewImage(this, '.preview-logo-square', '.remove-logo-square-btn')">
+                                                            <div class="preview-image-wrapper mb-1" style="width: 8rem">
                                                                 <div class="preview-image-inner">
-                                                                    <a
-                                                                        data-bb-toggle="image-picker-choose"
-                                                                        data-target="popup" class="image-box-actions"
-                                                                        data-result="logo_square"
-                                                                        data-action="select-image"
-                                                                        data-allow-thumb="1"
-                                                                        href="#">
-                                                                        <img
-                                                                            class="preview-image default-image" data-default="https://shofy-grocery.botble.com/vendor/core/core/base/images/placeholder.png"
-                                                                            src="https://shofy-grocery.botble.com/vendor/core/core/base/images/placeholder.png"
-                                                                            alt="Preview image" />
+                                                                    <a href="javascript:void(0)" onclick="$('#logo-square-input').trigger('click')" class="image-box-actions">
+                                                                        <img class="preview-logo-square preview-image default-image" 
+                                                                             data-default="https://shofy-grocery.botble.com/vendor/core/core/base/images/placeholder.png"
+                                                                             src="{{ $store->logo_square ? asset($store->logo_square) : 'https://shofy-grocery.botble.com/vendor/core/core/base/images/placeholder.png' }}"
+                                                                             alt="Preview image" style="width: 8rem; height: 8rem; object-fit: cover;" />
                                                                         <span class="image-picker-backdrop"></span>
                                                                     </a>
-                                                                    <button
-                                                                        class="btn btn-pill btn-icon  btn-sm image-picker-remove-button p-0" style="display: none; --bb-btn-font-size: 0.5rem;" type="button" data-bb-toggle="image-picker-remove"
-                                                                        data-bs-toggle="tooltip"
-                                                                        data-bs-placement="top"
-                                                                        title="Remove image">
-                                                                        <svg class="icon icon-sm  icon-left svg-icon-ti-ti-x"
-                                                                            xmlns="http://www.w3.org/2000/svg"
-                                                                            width="24"
-                                                                            height="24"
-                                                                            viewBox="0 0 24 24"
-                                                                            fill="none"
-                                                                            stroke="currentColor"
-                                                                            stroke-width="2"
-                                                                            stroke-linecap="round"
-                                                                            stroke-linejoin="round">
+                                                                    <button class="btn btn-pill btn-icon btn-sm image-picker-remove-button p-0 remove-logo-square-btn" 
+                                                                            style="{{ $store->logo_square ? '' : 'display: none;' }} --bb-btn-font-size: 0.5rem;" 
+                                                                            type="button" 
+                                                                            onclick="removeImage('.preview-logo-square', '#logo-square-input', this)"
+                                                                            title="Remove image">
+                                                                        <svg class="icon icon-sm icon-left svg-icon-ti-ti-x" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                                                             <path d="M18 6l-12 12" />
                                                                             <path d="M6 6l12 12" />
                                                                         </svg>
-
                                                                     </button>
                                                                 </div>
                                                             </div>
-
-                                                            <a
-                                                                data-bb-toggle="image-picker-choose"
-                                                                data-target="popup" data-result="logo_square"
-                                                                data-action="select-image"
-                                                                data-allow-thumb="1"
-                                                                href="#">
-                                                                Choose image
-                                                            </a>
-
-                                                            <div data-bb-toggle="upload-from-url">
-                                                                <span class="text-muted">or</span>
-                                                                <a
-                                                                    href="javascript:void(0)"
-                                                                    class="mt-1"
-                                                                    data-bs-toggle="modal"
-                                                                    data-bs-target="#image-picker-add-from-url"
-                                                                    data-bb-target=".image-box-logo_square">
-                                                                    Add from URL
-                                                                </a>
-                                                            </div>
+                                                            <a href="javascript:void(0)" onclick="$('#logo-square-input').trigger('click')">Choose image</a>
                                                         </div>
 
 
@@ -846,75 +756,30 @@
                                                         </label>
 
 
-                                                        <div class="image-box image-box-cover_image" action="select-image" data-counter="250">
-                                                            <input
-                                                                class="image-data"
-                                                                name="cover_image"
-                                                                type="hidden"
-                                                                value=""
-                                                                class="" data-counter="250" />
-
-
-                                                            <div
-                                                                style="width: 8rem"
-                                                                class="preview-image-wrapper mb-1">
+                                                        <div class="image-box image-box-cover_image">
+                                                            <input type="file" name="cover_image" id="cover-image-input" style="display:none" accept="image/*" onchange="previewImage(this, '.preview-cover-image', '.remove-cover-image-btn')">
+                                                            <div class="preview-image-wrapper mb-1" style="width: 8rem">
                                                                 <div class="preview-image-inner">
-                                                                    <a
-                                                                        data-bb-toggle="image-picker-choose"
-                                                                        data-target="popup" class="image-box-actions"
-                                                                        data-result="cover_image"
-                                                                        data-action="select-image"
-                                                                        data-allow-thumb="1"
-                                                                        href="#">
-                                                                        <img
-                                                                            class="preview-image default-image" data-default="https://shofy-grocery.botble.com/vendor/core/core/base/images/placeholder.png"
-                                                                            src="https://shofy-grocery.botble.com/vendor/core/core/base/images/placeholder.png"
-                                                                            alt="Preview image" />
+                                                                    <a href="javascript:void(0)" onclick="$('#cover-image-input').trigger('click')" class="image-box-actions">
+                                                                        <img class="preview-cover-image preview-image default-image" 
+                                                                             data-default="https://shofy-grocery.botble.com/vendor/core/core/base/images/placeholder.png"
+                                                                             src="{{ $store->cover_image ? asset($store->cover_image) : 'https://shofy-grocery.botble.com/vendor/core/core/base/images/placeholder.png' }}"
+                                                                             alt="Preview image" style="width: 8rem; height: 8rem; object-fit: cover;" />
                                                                         <span class="image-picker-backdrop"></span>
                                                                     </a>
-                                                                    <button
-                                                                        class="btn btn-pill btn-icon  btn-sm image-picker-remove-button p-0" style="display: none; --bb-btn-font-size: 0.5rem;" type="button" data-bb-toggle="image-picker-remove"
-                                                                        data-bs-toggle="tooltip"
-                                                                        data-bs-placement="top"
-                                                                        title="Remove image">
-                                                                        <svg class="icon icon-sm  icon-left svg-icon-ti-ti-x"
-                                                                            xmlns="http://www.w3.org/2000/svg"
-                                                                            width="24"
-                                                                            height="24"
-                                                                            viewBox="0 0 24 24"
-                                                                            fill="none"
-                                                                            stroke="currentColor"
-                                                                            stroke-width="2"
-                                                                            stroke-linecap="round"
-                                                                            stroke-linejoin="round">
+                                                                    <button class="btn btn-pill btn-icon btn-sm image-picker-remove-button p-0 remove-cover-image-btn" 
+                                                                            style="{{ $store->cover_image ? '' : 'display: none;' }} --bb-btn-font-size: 0.5rem;" 
+                                                                            type="button" 
+                                                                            onclick="removeImage('.preview-cover-image', '#cover-image-input', this)"
+                                                                            title="Remove image">
+                                                                        <svg class="icon icon-sm icon-left svg-icon-ti-ti-x" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                                                             <path d="M18 6l-12 12" />
                                                                             <path d="M6 6l12 12" />
                                                                         </svg>
-
                                                                     </button>
                                                                 </div>
                                                             </div>
-
-                                                            <a
-                                                                data-bb-toggle="image-picker-choose"
-                                                                data-target="popup" data-result="cover_image"
-                                                                data-action="select-image"
-                                                                data-allow-thumb="1"
-                                                                href="#">
-                                                                Choose image
-                                                            </a>
-
-                                                            <div data-bb-toggle="upload-from-url">
-                                                                <span class="text-muted">or</span>
-                                                                <a
-                                                                    href="javascript:void(0)"
-                                                                    class="mt-1"
-                                                                    data-bs-toggle="modal"
-                                                                    data-bs-target="#image-picker-add-from-url"
-                                                                    data-bb-target=".image-box-cover_image">
-                                                                    Add from URL
-                                                                </a>
-                                                            </div>
+                                                            <a href="javascript:void(0)" onclick="$('#cover-image-input').trigger('click')">Choose image</a>
                                                         </div>
 
 
@@ -1475,75 +1340,30 @@
                                                                 </label>
 
 
-                                                                <div class="image-box image-box-seo_meta_image" action="select-image" data-counter="250">
-                                                                    <input
-                                                                        class="image-data"
-                                                                        name="seo_meta_image"
-                                                                        type="hidden"
-                                                                        value=""
-                                                                        class="" data-counter="250" />
-
-
-                                                                    <div
-                                                                        style="width: 8rem"
-                                                                        class="preview-image-wrapper mb-1">
+                                                                <div class="image-box image-box-seo_meta_image">
+                                                                    <input type="file" name="seo_meta_image" id="seo-meta-image-input" style="display:none" accept="image/*" onchange="previewImage(this, '.preview-seo-meta-image', '.remove-seo-meta-image-btn')">
+                                                                    <div class="preview-image-wrapper mb-1" style="width: 8rem">
                                                                         <div class="preview-image-inner">
-                                                                            <a
-                                                                                data-bb-toggle="image-picker-choose"
-                                                                                data-target="popup" class="image-box-actions"
-                                                                                data-result="seo_meta_image"
-                                                                                data-action="select-image"
-                                                                                data-allow-thumb="1"
-                                                                                href="#">
-                                                                                <img
-                                                                                    class="preview-image default-image" data-default="https://shofy-grocery.botble.com/vendor/core/core/base/images/placeholder.png"
-                                                                                    src="https://shofy-grocery.botble.com/vendor/core/core/base/images/placeholder.png"
-                                                                                    alt="Preview image" />
+                                                                            <a href="javascript:void(0)" onclick="$('#seo-meta-image-input').trigger('click')" class="image-box-actions">
+                                                                                <img class="preview-seo-meta-image preview-image default-image" 
+                                                                                     data-default="https://shofy-grocery.botble.com/vendor/core/core/base/images/placeholder.png"
+                                                                                     src="https://shofy-grocery.botble.com/vendor/core/core/base/images/placeholder.png"
+                                                                                     alt="Preview image" style="width: 8rem; height: 8rem; object-fit: cover;" />
                                                                                 <span class="image-picker-backdrop"></span>
                                                                             </a>
-                                                                            <button
-                                                                                class="btn btn-pill btn-icon  btn-sm image-picker-remove-button p-0" style="display: none; --bb-btn-font-size: 0.5rem;" type="button" data-bb-toggle="image-picker-remove"
-                                                                                data-bs-toggle="tooltip"
-                                                                                data-bs-placement="top"
-                                                                                title="Remove image">
-                                                                                <svg class="icon icon-sm  icon-left svg-icon-ti-ti-x"
-                                                                                    xmlns="http://www.w3.org/2000/svg"
-                                                                                    width="24"
-                                                                                    height="24"
-                                                                                    viewBox="0 0 24 24"
-                                                                                    fill="none"
-                                                                                    stroke="currentColor"
-                                                                                    stroke-width="2"
-                                                                                    stroke-linecap="round"
-                                                                                    stroke-linejoin="round">
+                                                                            <button class="btn btn-pill btn-icon btn-sm image-picker-remove-button p-0 remove-seo-meta-image-btn" 
+                                                                                    style="display: none; --bb-btn-font-size: 0.5rem;" 
+                                                                                    type="button" 
+                                                                                    onclick="removeImage('.preview-seo-meta-image', '#seo-meta-image-input', this)"
+                                                                                    title="Remove image">
+                                                                                <svg class="icon icon-sm icon-left svg-icon-ti-ti-x" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                                                                     <path d="M18 6l-12 12" />
                                                                                     <path d="M6 6l12 12" />
                                                                                 </svg>
-
                                                                             </button>
                                                                         </div>
                                                                     </div>
-
-                                                                    <a
-                                                                        data-bb-toggle="image-picker-choose"
-                                                                        data-target="popup" data-result="seo_meta_image"
-                                                                        data-action="select-image"
-                                                                        data-allow-thumb="1"
-                                                                        href="#">
-                                                                        Choose image
-                                                                    </a>
-
-                                                                    <div data-bb-toggle="upload-from-url">
-                                                                        <span class="text-muted">or</span>
-                                                                        <a
-                                                                            href="javascript:void(0)"
-                                                                            class="mt-1"
-                                                                            data-bs-toggle="modal"
-                                                                            data-bs-target="#image-picker-add-from-url"
-                                                                            data-bb-target=".image-box-seo_meta_image">
-                                                                            Add from URL
-                                                                        </a>
-                                                                    </div>
+                                                                    <a href="javascript:void(0)" onclick="$('#seo-meta-image-input').trigger('click')">Choose image</a>
                                                                 </div>
 
 
@@ -1746,11 +1566,45 @@
 @endsection
 @push('scripts')
 <script>
+    function previewImage(input, selector, btnSelector) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $(selector).attr('src', e.target.result);
+                if(btnSelector) $(btnSelector).show();
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function removeImage(imageSelector, inputSelector, btn) {
+        if (confirm('Are you sure you want to remove this image?')) {
+            $(imageSelector).attr('src', $(imageSelector).data('default'));
+            $(inputSelector).val('');
+            $(btn).hide();
+        }
+    }
+
     $(document).ready(function() {
         $('#botble-marketplace-forms-store-form').on('submit', function(e) {
             e.preventDefault();
             var form = this;
             var formData = new FormData(form);
+            
+            // Manually append files to ensure they are captured
+            if ($('#logo-input')[0].files[0]) {
+                formData.append('logo', $('#logo-input')[0].files[0]);
+            }
+            if ($('#logo-square-input')[0].files[0]) {
+                formData.append('logo_square', $('#logo-square-input')[0].files[0]);
+            }
+            if ($('#cover-image-input')[0].files[0]) {
+                formData.append('cover_image', $('#cover-image-input')[0].files[0]);
+            }
+            if ($('#seo-meta-image-input')[0].files[0]) {
+                formData.append('seo_meta_image', $('#seo-meta-image-input')[0].files[0]);
+            }
+            
             var submitBtn = $(form).find('button[type="submit"]');
             
             // Clear previous errors

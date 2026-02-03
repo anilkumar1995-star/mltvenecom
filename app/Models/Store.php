@@ -22,18 +22,27 @@ class Store extends Model
         'cover_image',
         'description',
         'content',
-        'status',
+        'status', // published, locked, etc.
         'company',
-        'tax_id',
         'zip_code',
+        'tax_id',
+        'is_verified',
+        'verified_at',
+        'verified_by',
     ];
+
     public function customer()
     {
-        return $this->belongsTo(User::class, 'customer_id');
+        return $this->belongsTo(Customer::class, 'customer_id');
     }
 
     public function products()
     {
         return $this->hasMany(Product::class, 'store_id');
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'store_id');
     }
 }
