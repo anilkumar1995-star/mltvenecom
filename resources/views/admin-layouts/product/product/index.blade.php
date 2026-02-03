@@ -1,7 +1,6 @@
 @extends('admin-layouts.app')
-@section('title', 'Product')
+@section('title', 'Products')
 @section('content')
-
 
     <div class="page-wrapper">
         <div class="page-header d-print-none">
@@ -13,7 +12,7 @@
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item">
                                         <a class="mb-0 d-inline-block fs-6 lh-1"
-                                            href="https://shofy-grocery.botble.com/admin">Dashboard</a>
+                                            href="{{ route('home') }}">Dashboard</a>
                                     </li>
                                     <li class="breadcrumb-item">
                                         <h1 class="mb-0 d-inline-block fs-6 lh-1">Ecommerce</h1>
@@ -46,12 +45,10 @@
                                     <path d="M18 6l-12 12" />
                                     <path d="M6 6l12 12" />
                                 </svg>
-
                             </button>
 
                             <div class="wrapper-filter">
                                 <p>Filters</p>
-
                                 <input type="hidden" class="filter-data-url"
                                     value="https://shofy-grocery.botble.com/admin/tables/filters" />
 
@@ -101,8 +98,8 @@
                                                 title="Delete">
                                                 <svg class="icon icon-left svg-icon-ti-ti-trash"
                                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                    stroke-linecap="round" stroke-linejoin="round">
                                                     <path d="M4 7l16 0" />
                                                     <path d="M10 11l0 6" />
                                                     <path d="M14 11l0 6" />
@@ -182,8 +179,8 @@
                                             data-bb-toggle="datatable-reset-filter">
                                             <svg class="icon icon-left svg-icon-ti-ti-refresh"
                                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round">
                                                 <path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" />
                                                 <path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" />
                                             </svg>
@@ -201,12 +198,17 @@
                                 <div class="d-flex flex-wrap flex-md-nowrap align-items-center gap-1">
                                     <div class="dropdown d-inline-block">
                                         <button class="btn   dropdown-toggle" type="button" data-bs-toggle="dropdown">
+
                                             Bulk Actions
+
                                         </button>
+
                                         <div class="dropdown-menu">
                                             <div class="dropdown-submenu">
                                                 <button class="dropdown-item">
+
                                                     Bulk changes
+
                                                     <svg class="icon dropdown-item-icon ms-auto me-0 svg-icon-ti-ti-chevron-right"
                                                         xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                         viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -224,37 +226,51 @@
                                                     <button class="dropdown-item bulk-change-item" data-key="brand_id"
                                                         data-class-item="Botble\Ecommerce\Tables\ProductTable"
                                                         data-save-url="https://shofy-grocery.botble.com/admin/tables/bulk-changes/save">
+
                                                         Brand
+
                                                     </button>
                                                     <button class="dropdown-item bulk-change-item" data-key="name"
                                                         data-class-item="Botble\Ecommerce\Tables\ProductTable"
                                                         data-save-url="https://shofy-grocery.botble.com/admin/tables/bulk-changes/save">
+
                                                         Name
+
                                                     </button>
                                                     <button class="dropdown-item bulk-change-item" data-key="order"
                                                         data-class-item="Botble\Ecommerce\Tables\ProductTable"
                                                         data-save-url="https://shofy-grocery.botble.com/admin/tables/bulk-changes/save">
+
                                                         Sort order
+
                                                     </button>
                                                     <button class="dropdown-item bulk-change-item" data-key="status"
                                                         data-class-item="Botble\Ecommerce\Tables\ProductTable"
                                                         data-save-url="https://shofy-grocery.botble.com/admin/tables/bulk-changes/save">
+
                                                         Status
+
                                                     </button>
                                                     <button class="dropdown-item bulk-change-item" data-key="stock_status"
                                                         data-class-item="Botble\Ecommerce\Tables\ProductTable"
                                                         data-save-url="https://shofy-grocery.botble.com/admin/tables/bulk-changes/save">
+
                                                         Stock status
+
                                                     </button>
                                                     <button class="dropdown-item bulk-change-item" data-key="created_at"
                                                         data-class-item="Botble\Ecommerce\Tables\ProductTable"
                                                         data-save-url="https://shofy-grocery.botble.com/admin/tables/bulk-changes/save">
+
                                                         Created At
+
                                                     </button>
                                                     <button class="dropdown-item bulk-change-item" data-key="is_featured"
                                                         data-class-item="Botble\Ecommerce\Tables\ProductTable"
                                                         data-save-url="https://shofy-grocery.botble.com/admin/tables/bulk-changes/save">
+
                                                         Is featured?
+
                                                     </button>
                                                 </div>
                                             </div>
@@ -268,7 +284,9 @@
                                                 data-confirmation-modal-message="Are you sure you want to do this action? This cannot be undone."
                                                 data-confirmation-modal-button="Delete"
                                                 data-confirmation-modal-cancel-button="Cancel">
+
                                                 Delete
+
                                             </a>
                                         </div>
                                     </div>
@@ -281,7 +299,6 @@
                                         <label>
                                             <input type="search" class="form-control input-sm" placeholder="Search..."
                                                 style="min-width: 120px">
-
                                         </label>
                                     </div>
                                 </div>
@@ -292,9 +309,8 @@
                                         aria-haspopup="dialog" aria-expanded="false">
                                         <span data-action="export"
                                             data-href="https://shofy-grocery.botble.com/admin/tools/data-synchronize/export/products">
-                                            <svg class="icon svg-icon-ti-ti-file-export"
-                                                xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            <svg class="icon svg-icon-ti-ti-file-export" xmlns="http://www.w3.org/2000/svg"
+                                                width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                                 <path d="M14 3v4a1 1 0 0 0 1 1h4" />
                                                 <path
@@ -304,14 +320,13 @@
                                         </span>
 
                                     </button>
-                                    <button class="btn action-item " tabindex="0"
+                                    <button class="btn action-item  " tabindex="0"
                                         aria-controls="botble-ecommerce-tables-product-table" type="button"
                                         aria-haspopup="dialog" aria-expanded="false">
                                         <span data-action="import"
                                             data-href="https://shofy-grocery.botble.com/admin/tools/data-synchronize/import/products">
-                                            <svg class="icon svg-icon-ti-ti-file-import"
-                                                xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            <svg class="icon svg-icon-ti-ti-file-import" xmlns="http://www.w3.org/2000/svg"
+                                                width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                                 <path d="M14 3v4a1 1 0 0 0 1 1h4" />
                                                 <path
@@ -319,35 +334,58 @@
                                             </svg>
                                             Import
                                         </span>
-                                    </button>
-                                   <div class="dropdown d-inline-block">
-                                    <a href="{{ route('admin.products.create') }}"
-                                    class="btn buttons-collection action-item btn-primary">
-                                        <svg class="icon svg-icon-ti-ti-plus"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="24" height="24" viewBox="0 0 24 24"
-                                            fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M12 5l0 14" />
-                                            <path d="M5 12l14 0" />
-                                        </svg>
-                                        <span class="ms-1">Create</span>
-                                    </a>
-                                </div>
 
+                                    </button>
+                                    <div class="dropdown d-inline-block">
+                                        <button
+                                            class="btn btn-primary dropdown-toggle d-flex align-items-center"
+                                            type="button"
+                                            data-bs-toggle="dropdown"
+                                            aria-expanded="false"
+                                        >
+                                            <svg class="me-1" xmlns="http://www.w3.org/2000/svg"
+                                                width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M12 5v14" />
+                                                <path d="M5 12h14" />
+                                            </svg>
+                                            Create
+                                        </button>
+
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <!-- Physical product -->
+                                            <li>
+                                                <a
+                                                    href="{{ route('admin.products.create') }}"
+                                                    class="dropdown-item d-flex align-items-center"
+                                                >
+                                                    <svg class="me-2" xmlns="http://www.w3.org/2000/svg"
+                                                        width="18" height="18" viewBox="0 0 24 24"
+                                                        fill="none" stroke="currentColor" stroke-width="2">
+                                                        <path d="M12 3l8 4.5v9l-8 4.5-8-4.5v-9z"/>
+                                                        <path d="M12 12l8-4.5"/>
+                                                        <path d="M12 12v9"/>
+                                                        <path d="M12 12l-8-4.5"/>
+                                                    </svg>
+                                                    Physical
+                                                </a>
+                                            </li>
+
+                                        </ul>
+                                    </div>
 
                                     <button class="btn" type="button" data-bb-toggle="dt-buttons"
                                         data-bb-target=".buttons-reload" tabindex="0"
                                         aria-controls="botble-ecommerce-tables-product-table">
                                         <svg class="icon icon-left svg-icon-ti-ti-refresh"
-                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round">
+                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
                                             <path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" />
                                             <path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" />
                                         </svg>
                                         Reload
-
                                     </button>
                                 </div>
                             </div>
@@ -355,8 +393,7 @@
 
                         <div class="card-table">
                             <div class="table-responsive table-has-actions table-has-filter">
-                                <table class="table card-table table-vcenter table-striped table-hover"
-                                    id="botble-ecommerce-tables-product-table">
+                                <table class="table card-table table-vcenter table-hover datatable" id="myTable">
                                     <thead>
                                         <tr>
                                             <th title="Checkbox"><input
@@ -365,32 +402,187 @@
                                             </th>
                                             <th title="ID" width="20"
                                                 class="text-center no-column-visibility  column-key-0">ID</th>
-                                            <th title="Image" width="50" class=" column-key-1">Image
-                                            </th>
-                                            <th title="Products" class="text-start  column-key-2">Products
-                                            </th>
+                                            <th title="Image" width="50" class=" column-key-1">Image</th>
+                                            <th title="Products" class="text-start  column-key-2">Products</th>
                                             <th title="Price" class="text-start  column-key-3">Price</th>
                                             <th title="Stock status" class=" column-key-4">Stock status</th>
-                                            <th title="Quantity" class="text-start  column-key-5">Quantity
-                                            </th>
+                                            <th title="Quantity" class="text-start  column-key-5">Quantity</th>
                                             <th title="SKU" class="text-start  column-key-6">SKU</th>
-                                            <th title="Sort order" width="50" class=" column-key-7">
-                                                Sort order</th>
-                                            <th title="Created At" width="100" class=" column-key-8">
-                                                Created At</th>
-                                            <th title="Status" width="100" class="text-center  column-key-9">Status
+                                            <th title="Sort order" width="50" class=" column-key-7">Sort order
                                             </th>
-                                            <th title="Store">Store</th>
+                                            <th title="Created At" width="100" class=" column-key-8">Created At
+                                            </th>
+                                            <th title="Status" width="100" class="text-center  column-key-9">
+                                                Status</th>
                                             <th title="Operations">Operations</th>
                                         </tr>
                                     </thead>
+                                    <tbody>
+                                        @foreach($products as $product)
+                                    <tr>
+                                        <td class="text-center">
+                                            <input type="checkbox" class="form-check-input bulk-checkbox" value="{{ $product->id }}">
+                                        </td>
+                                        <td>{{ $product->id }}</td>
+                                        <td>
+                                            <!-- <div class="d-flex align-items-center"> -->
+                                                @php
+                                                    $displayImage = null;
+                                                    if ($product->image) {
+                                                        $displayImage = $product->image;
+                                                    } elseif (is_array($product->images) && !empty($product->images)) {
+                                                        $displayImage = $product->images[0];
+                                                    }
+                                                @endphp
+
+                                                @if($displayImage)
+                                                    <a data-fslightbox="gallery" href="{{ asset('storage/' . $displayImage) }}">
+                                                        <img src="{{ asset('storage/' . $displayImage) }}" alt="{{ $product->name }}" class="img-thumbnail me-2" style="width: 50px; height: 50px; object-fit: cover;">
+                                                    </a>
+                                                @else
+                                                    <div class="bg-light text-muted d-flex align-items-center justify-content-center me-2" style="width: 50px; height: 50px; border-radius: 4px;">
+                                                        <i class="fa fa-image"></i>
+                                                    </div>
+                                                @endif
+                                                <!-- <div>
+                                                    <a href="{{ route('admin.products.edit', $product->id) }}" class="fw-bold text-decoration-none text-dark">{{ $product->name }}</a>
+                                                    <div class="small text-muted">{{ $product->sku }}</div>
+                                                </div> -->
+                                            <!-- </div> -->
+                                        </td>
+                                        <td>{{ $product->name }}</td>
+                                        <td>{{ number_format($product->price ?? 0, 2) }}</td>
+                                        <td>{{ $product->stock_status  }}</td>
+                                        <td>{{ $product->quantity   }}</td>
+                                        <td>{{ $product->sku }}</td>
+                                        <td>{{ $product->order  }}</td>
+                                        <td>{{ $product->created_at ? $product->created_at->format('M d, Y') : '' }}</td>
+                                        <td>
+                                            <span class="badge {{ $product->status == 'published' ? 'badge bg-success text-success-fg' : ($product->status == 'draft' ? 'badge bg-danger text-danger-fg' : 'bg-warning') }}">
+                                                {{ ucfirst($product->status) }}
+                                            </span>
+                                        </td>
+                                    
+                                        <td class="text-end">
+                                            <div class="btn-group">
+                                                <a href="{{ route('admin.products.edit', $product->id) }}" class="btn btn-sm btn-outline-primary" title="Edit">
+                                                    <i class="fa fa-edit"></i>
+                                                </a>
+                                                <button type="button" class="btn btn-sm btn-outline-danger delete-btn" data-id="{{ $product->id }}" data-url="{{ route('admin.products.destroy', $product->id) }}" title="Delete">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                    </tbody>
+
                                 </table>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-
-
+        </main>
 @endsection
+    @push('scripts')
+        <script>
+            $(document).ready(function () {
+                // Check all functionality
+                $('#check-all').on('change', function () {
+                    $('.bulk-checkbox').prop('checked', $(this).is(':checked'));
+                    updateBulkDeleteButton();
+                });
+
+                $(document).on('change', '.bulk-checkbox', function () {
+                    updateBulkDeleteButton();
+                });
+
+                function updateBulkDeleteButton() {
+                    let checkedCount = $('.bulk-checkbox:checked').length;
+                    if (checkedCount > 0) {
+                        $('#bulk-delete').removeClass('d-none').text(`Bulk Delete (${checkedCount})`);
+                    } else {
+                        $('#bulk-delete').addClass('d-none');
+                    }
+                }
+
+                // Individual Delete
+                $(document).on('click', '.delete-btn', function () {
+                    let btn = $(this);
+                    let url = btn.data('url');
+
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                url: url,
+                                type: 'DELETE',
+                                data: { _token: '{{ csrf_token() }}' },
+                                success: function (response) {
+                                    if (response.success) {
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Deleted!',
+                                            text: response.message,
+                                            timer: 1500
+                                        }).then(() => {
+                                            window.location.reload();
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    });
+                });
+
+                // Bulk Delete
+                $('#bulk-delete').on('click', function () {
+                    let ids = [];
+                    $('.bulk-checkbox:checked').each(function () {
+                        ids.push($(this).val());
+                    });
+
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: `You are about to delete ${ids.length} products!`,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Yes, delete selected!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                url: "{{ route('admin.products.bulk_delete') }}",
+                                type: 'POST',
+                                data: {
+                                    _token: '{{ csrf_token() }}',
+                                    ids: ids
+                                },
+                                success: function (response) {
+                                    if (response.success) {
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Deleted!',
+                                            text: response.message,
+                                            timer: 1500
+                                        }).then(() => {
+                                            window.location.reload();
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    });
+                });
+            });
+        </script>
+    @endpush
