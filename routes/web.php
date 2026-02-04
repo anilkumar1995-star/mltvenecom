@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\MenuCountController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\admin\ProductLabelConntroller;
 use App\Http\Controllers\Admin\ProductSpecification\GroupController;
@@ -185,14 +186,18 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 
 
 
-    Route::group(['prefix' => 'marketplaces'], function () {
-        Route::get('stores', [AdminStoreController::class, 'index'])->name('marketplace.store.index');
-        Route::get('reports', [ReportsController::class, 'reports'])->name('marketplace.reports');
-        Route::get('withdrawls', [WithdrawlsController::class, 'withdrawls'])->name('marketplace.withdrawls');
-        Route::get('vendors', [VendorController::class, 'vendors'])->name('marketplace.vendors');
-        Route::get('unverified-vendors', [VendorController::class, 'unverifiedVendors'])->name('marketplace.unverified-vendors');
-        Route::get('messages', [VendorController::class, 'messages'])->name('marketplace.messages');
-        Route::get('stores/create', [AdminStoreController::class, 'create'])->name('marketplace.store.create');
+  Route::group(['prefix' => 'marketplaces'], function() {
+        Route::get('stores', [AdminStoreController::class,'index'])->name('marketplace.store.index');
+        Route::get('reports', [ReportsController::class,'reports'])->name('marketplace.reports');
+        Route::get('withdrawls', [WithdrawlsController::class,'withdrawls'])->name('marketplace.withdrawls');
+        Route::get('vendors', [VendorController::class,'vendors'])->name('marketplace.vendors');
+        Route::get('vendors/{id}', [VendorController::class, 'show'])->name('marketplace.vendors.show');
+        Route::get('vendors/{id}/edit', [VendorController::class, 'edit'])->name('marketplace.vendors.edit');
+        Route::put('vendors/{id}', [VendorController::class, 'update'])->name('marketplace.vendors.update');
+        Route::delete('vendors/{id}', [VendorController::class, 'destroy'])->name('marketplace.vendors.destroy');
+        Route::get('unverified-vendors', [VendorController::class,'unverifiedVendors'])->name('marketplace.unverified-vendors');
+        Route::get('messages', [VendorController::class,'messages'])->name('marketplace.messages');
+        Route::get('stores/create', [AdminStoreController::class,'create'])->name('marketplace.store.create');
         Route::post('stores', [AdminStoreController::class, 'store'])->name('marketplace.store.store');
         Route::get('stores/{store}', [AdminStoreController::class, 'show'])->name('marketplace.store.show');
         Route::get('stores/{store}/edit', [AdminStoreController::class, 'edit'])->name('marketplace.store.edit');
@@ -200,5 +205,8 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 
         Route::delete('stores/{store}', [AdminStoreController::class, 'destroy'])->name('marketplace.store.destroy');
         Route::post('stores/{store}/verify', [AdminStoreController::class, 'verify'])->name('marketplace.store.verify');
-    });
+        });
+
+    Route::get('/menu-items-count', [MenuCountController::class, 'getCounts'])->name('menu-items-count');
+
 });

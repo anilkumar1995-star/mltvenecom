@@ -16,6 +16,7 @@ class Customer extends Model
         'dob',
         'avatar',
         'status',
+        'is_vendor',
     ];
 
     protected $hidden = [
