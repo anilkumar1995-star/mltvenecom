@@ -22,7 +22,7 @@ class Store extends Model
         'cover_image',
         'description',
         'content',
-        'status', // published, locked, etc.
+        'status', 
         'company',
         'zip_code',
         'tax_id',

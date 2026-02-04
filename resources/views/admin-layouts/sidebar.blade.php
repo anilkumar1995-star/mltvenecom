@@ -233,6 +233,51 @@
                                 </span>
                                 <span class="nav-link-title text-truncate"> Brands </span>
                             </a>
+                            <a class="dropdown-item nav-priority-100" href="{{route('admin.producttags.Index') }}" title="Product tags"><span
+                                    class="nav-link-icon d-md-none d-lg-inline-block" title="Product tags"><svg
+                                        class="icon svg-icon-ti-ti-tag" xmlns="http://www.w3.org/2000/svg" width="24"
+                                        height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M7.5 7.5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                                        <path
+                                            d="M3 6v5.172a2 2 0 0 0 .586 1.414l7.71 7.71a2.41 2.41 0 0 0 3.408 0l5.592 -5.592a2.41 2.41 0 0 0 0 -3.408l-7.71 -7.71a2 2 0 0 0 -1.414 -.586h-5.172a3 3 0 0 0 -3 3z">
+                                        </path>
+                                    </svg></span><span class="nav-link-title text-truncate"> Product tags
+                                </span>
+                            </a>
+
+                             <a class="dropdown-item nav-priority-140" href="{{ route('admin.productlables.Index') }}"
+                                title="Product labels"><span class="nav-link-icon d-md-none d-lg-inline-block"
+                                    title="Product labels"><svg class="icon svg-icon-ti-ti-tags"
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path
+                                            d="M3 8v4.172a2 2 0 0 0 .586 1.414l5.71 5.71a2.41 2.41 0 0 0 3.408 0l3.592 -3.592a2.41 2.41 0 0 0 0 -3.408l-5.71 -5.71a2 2 0 0 0 -1.414 -.586h-4.172a2 2 0 0 0 -2 2z">
+                                        </path>
+                                        <path d="M18 19l1.592 -1.592a4.82 4.82 0 0 0 0 -6.816l-4.592 -4.592"></path>
+                                        <path d="M7 10h-.01"></path>
+                                    </svg></span><span class="nav-link-title text-truncate"> Product labels
+                                </span>
+                            </a>
+
+
+                            {{--  <a class="dropdown-item nav-priority-190" href="{{route('admin.producttaxes.Index') }}" title="Customers">
+                                <span class="nav-link-icon d-md-none d-lg-inline-block" title="Customers">
+                                    <svg
+                                        class="icon svg-icon-ti-ti-users" xmlns="http://www.w3.org/2000/svg" width="24"
+                                        height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path>
+                                        <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
+                                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                        <path d="M21 21v-2a4 4 0 0 0 -3 -3.85"></path>
+                                    </svg>
+                                </span>
+                                <span class="nav-link-title text-truncate">Taxes</span>
+                            </a>  --}}
+
+
                             {{-- <a class="dropdown-item nav-priority-100" href="{{ url("/")
                                 }}/admin/ecommerce/product-tags" id="cms-plugins-product-tag" title="Product tags"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Product tags"><svg
@@ -244,7 +289,9 @@
                                             d="M3 6v5.172a2 2 0 0 0 .586 1.414l7.71 7.71a2.41 2.41 0 0 0 3.408 0l5.592 -5.592a2.41 2.41 0 0 0 0 -3.408l-7.71 -7.71a2 2 0 0 0 -1.414 -.586h-5.172a3 3 0 0 0 -3 3z">
                                         </path>
                                     </svg></span><span class="nav-link-title text-truncate"> Product tags
-                                </span></a><a class="dropdown-item nav-priority-110" href="{{ url("/")
+                                </span></a>
+
+                                <a class="dropdown-item nav-priority-110" href="{{ url("/")
                                 }}/admin/ecommerce/product-attribute-sets" id="cms-plugins-product-attribute"
                                 title="Product attributes"><span class="nav-link-icon d-md-none d-lg-inline-block"
                                     title="Product attributes"><svg class="icon svg-icon-ti-ti-album"
@@ -279,7 +326,8 @@
                                         </path>
                                         <path d="M12 4v7l2 -2l2 2v-7"></path>
                                     </svg></span><span class="nav-link-title text-truncate"> Product collections
-                                </span></a><a class="dropdown-item nav-priority-140" href="{{ url("/")
+                                </span></a>
+                                <a class="dropdown-item nav-priority-140" href="{{ url("/")
                                 }}/admin/ecommerce/product-labels" id="cms-plugins-product-label"
                                 title="Product labels"><span class="nav-link-icon d-md-none d-lg-inline-block"
                                     title="Product labels"><svg class="icon svg-icon-ti-ti-tags"
@@ -303,7 +351,8 @@
                                         <path
                                             d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z">
                                         </path>
-                                    </svg></span><span class="nav-link-title text-truncate"> Reviews </span></a><a
+                                    </svg></span><span class="nav-link-title text-truncate"> Reviews </span></a>
+                                    <a
                                 class="dropdown-item nav-priority-170" href="{{ url("/")
                                 }}/admin/ecommerce/flash-sales" id="cms-plugins-flash-sale" title="Flash sales"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Flash sales"><svg
@@ -326,7 +375,9 @@
                                         </circle>
                                         <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
                                     </svg></span><span class="nav-link-title text-truncate"> Discounts
-                                </span></a><a class="dropdown-item nav-priority-190" href="{{ url("/")
+                                </span></a>
+
+                                <a class="dropdown-item nav-priority-190" href="{{ url("/")
                                 }}/admin/customers" id="cms-plugins-ecommerce-customer" title="Customers"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Customers"><svg
                                         class="icon svg-icon-ti-ti-users" xmlns="http://www.w3.org/2000/svg" width="24"
@@ -336,7 +387,10 @@
                                         <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
                                         <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                                         <path d="M21 21v-2a4 4 0 0 0 -3 -3.85"></path>
-                                    </svg></span><span class="nav-link-title text-truncate"> Customers </span></a> --}}
+                                    </svg></span><span class="nav-link-title text-truncate"> Customers </span></a>
+
+
+                                    --}}
                         </div>
                     </li>
                     <li class="nav-item dropdown"><a class="nav-link dropdown-toggle nav-priority-0" href="{{ url("/")
