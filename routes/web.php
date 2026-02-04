@@ -2,7 +2,10 @@
 
 use App\Http\Controllers\Admin\MenuCountController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\admin\ProductLabelConntroller;
 use App\Http\Controllers\Admin\ProductSpecification\GroupController;
+use App\Http\Controllers\admin\ProductTagConntroller;
+use App\Http\Controllers\admin\ProductTaxesConntroller;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ReportsController;
 use App\Http\Controllers\Admin\SpecificationAttributeController;
@@ -17,6 +20,9 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\StoreController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+
+
+
 
 
 
@@ -94,56 +100,87 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
 
 
-    Route::group(['prefix' => 'category'], function() {
-        Route::get('index',[CategoryController::class,'index'])->name('category.Index');
-        Route::get('create',[CategoryController::class,'create'])->name('category.create');
-        Route::post('store',[CategoryController::class,'store'])->name('category.store');
-        Route::get('/category/{category}/edit',[CategoryController::class,'Edit'])->name('category.edit');
+    Route::group(['prefix' => 'category'], function () {
+        Route::get('index', [CategoryController::class, 'index'])->name('category.Index');
+        Route::get('create', [CategoryController::class, 'create'])->name('category.create');
+        Route::post('store', [CategoryController::class, 'store'])->name('category.store');
+        Route::get('/category/{category}/edit', [CategoryController::class, 'Edit'])->name('category.edit');
         Route::put('/category/{category}', [CategoryController::class, 'update'])->name('category.update');
-        Route::post('/delete',[CategoryController::class,'destroy'])->name('category.Delete');
+        Route::post('/delete', [CategoryController::class, 'destroy'])->name('category.Delete');
         // Route::delete('/delete/{category}',[CategoryController::class,'approved'])->name('category.Delete');
     });
 
-    Route::group(['prefix' => 'brand'], function() {
-        Route::get('index',[BrandController::class,'index'])->name('brand.Index');
-        Route::get('create',[BrandController::class,'create'])->name('brand.create');
-        Route::post('store',[BrandController::class,'store'])->name('brand.store');
-        Route::get('/{brand}/edit',[BrandController::class,'Edit'])->name('brand.edit');
+    Route::group(['prefix' => 'brand'], function () {
+        Route::get('index', [BrandController::class, 'index'])->name('brand.Index');
+        Route::get('create', [BrandController::class, 'create'])->name('brand.create');
+        Route::post('store', [BrandController::class, 'store'])->name('brand.store');
+        Route::get('/{brand}/edit', [BrandController::class, 'Edit'])->name('brand.edit');
         Route::put('/{brand}', [BrandController::class, 'update'])->name('brand.update');
-        Route::post('/delete',[BrandController::class,'destroy'])->name('brand.Delete');
+        Route::post('/delete', [BrandController::class, 'destroy'])->name('brand.Delete');
         Route::post('bulk-delete', [BrandController::class, 'bulkDelete'])->name('brand.bulk-delete');
         Route::post('bulk-change', [BrandController::class, 'bulkChange'])->name('brand.bulk-change');
     });
 
 
-      Route::group(['prefix' => 'group'], function() {
-        Route::get('index',[GroupController::class,'index'])->name('group.Index');
-        Route::get('create',[GroupController::class,'create'])->name('group.create');
-        Route::post('store',[GroupController::class,'store'])->name('group.store');
-        Route::get('/{id}/edit',[GroupController::class,'Edit'])->name('group.edit');
+    Route::group(['prefix' => 'group'], function () {
+        Route::get('index', [GroupController::class, 'index'])->name('group.Index');
+        Route::get('create', [GroupController::class, 'create'])->name('group.create');
+        Route::post('store', [GroupController::class, 'store'])->name('group.store');
+        Route::get('/{id}/edit', [GroupController::class, 'Edit'])->name('group.edit');
         Route::put('/{id}', [GroupController::class, 'update'])->name('group.update');
-        Route::post('/delete',[GroupController::class,'destroy'])->name('group.Delete');
+        Route::post('/delete', [GroupController::class, 'destroy'])->name('group.Delete');
         Route::post('bulk-delete', [GroupController::class, 'bulkDelete'])->name('group.bulk-delete');
     });
 
-    Route::group(['prefix' => 'product-attributes'], function() {
-        Route::get('index',[GroupController::class,'productIndex'])->name('productattributes.Index');
-        Route::get('create',[GroupController::class,'productAttributeCreate'])->name('productAttribute.create');
-        Route::post('store',[GroupController::class,'productAttributeStore'])->name('productAttribute.store');
-        Route::get('/{id}/edit',[GroupController::class,'productAttributeEdit'])->name('productAttribute.edit');
+    Route::group(['prefix' => 'product-attributes'], function () {
+        Route::get('index', [GroupController::class, 'productIndex'])->name('productattributes.Index');
+        Route::get('create', [GroupController::class, 'productAttributeCreate'])->name('productAttribute.create');
+        Route::post('store', [GroupController::class, 'productAttributeStore'])->name('productAttribute.store');
+        Route::get('/{id}/edit', [GroupController::class, 'productAttributeEdit'])->name('productAttribute.edit');
         Route::put('/{id}', [GroupController::class, 'productAttributeupdate'])->name('productAttribute.update');
-        Route::post('/delete',[GroupController::class,'productAttributedestroy'])->name('productAttribute.Delete');
+        Route::post('/delete', [GroupController::class, 'productAttributedestroy'])->name('productAttribute.Delete');
         Route::post('bulk-delete', [GroupController::class, 'productAttributebulkDelete'])->name('productAttribute.bulk-delete');
     });
 
-    Route::group(['prefix' => 'product-table'], function() {
-        Route::get('index',[GroupController::class,'productTable'])->name('producttable.Index');
-        Route::get('create',[GroupController::class,'productTablecreate'])->name('producttable.create');
-        Route::post('store',[GroupController::class,'productTablestore'])->name('producttable.store');
-        Route::get('/{id}/edit',[GroupController::class,'productTableEdit'])->name('producttable.edit');
+    Route::group(['prefix' => 'product-table'], function () {
+        Route::get('index', [GroupController::class, 'productTable'])->name('producttable.Index');
+        Route::get('create', [GroupController::class, 'productTablecreate'])->name('producttable.create');
+        Route::post('store', [GroupController::class, 'productTablestore'])->name('producttable.store');
+        Route::get('/{id}/edit', [GroupController::class, 'productTableEdit'])->name('producttable.edit');
         Route::put('/{id}', [GroupController::class, 'productTableupdate'])->name('producttable.update');
-        Route::post('/delete',[GroupController::class,'productTabledestroy'])->name('producttable.Delete');
-        Route::post('bulk-delete', [GroupController::class,'productTablebulkDelete'])->name('producttable.bulk-delete');
+        Route::post('/delete', [GroupController::class, 'productTabledestroy'])->name('producttable.Delete');
+        Route::post('bulk-delete', [GroupController::class, 'productTablebulkDelete'])->name('producttable.bulk-delete');
+    });
+
+
+    Route::group(['prefix' => 'product-tags'], function () {
+        Route::get('index', [ProductTagConntroller::class, 'Index'])->name('producttags.Index');
+        Route::get('create', [ProductTagConntroller::class, 'create'])->name('producttags.create');
+        Route::post('store', [ProductTagConntroller::class, 'store'])->name('producttags.store');
+        Route::get('/{id}/edit', [ProductTagConntroller::class, 'Edit'])->name('producttags.edit');
+        Route::put('/{id}', [ProductTagConntroller::class, 'update'])->name('producttags.update');
+        Route::post('/delete', [ProductTagConntroller::class, 'destroy'])->name('producttags.Delete');
+        Route::post('bulk-delete', [ProductTagConntroller::class, 'bulkDelete'])->name('producttags.bulk-delete');
+    });
+
+    // Route::group(['prefix' => 'product-taxes'], function () {
+    //     Route::get('index', [ProductTaxesConntroller::class, 'Index'])->name('producttaxes.Index');
+    //     Route::post('store', [ProductTaxesConntroller::class, 'productTablestore'])->name('producttaxes.store');
+    //     Route::get('/{id}/edit', [ProductTaxesConntroller::class, 'productTableEdit'])->name('producttaxes.edit');
+    //     Route::put('/{id}', [ProductTaxesConntroller::class, 'productTableupdate'])->name('producttaxes.update');
+    //     Route::post('/delete', [ProductTaxesConntroller::class, 'productTabledestroy'])->name('producttaxes.Delete');
+    //     Route::post('bulk-delete', [ProductTaxesConntroller::class, 'productTablebulkDelete'])->name('producttaxes.bulk-delete');
+    // });
+
+
+    Route::group(['prefix' => 'product-labels'], function () {
+        Route::get('index', [ProductLabelConntroller::class, 'Index'])->name('productlables.Index');
+        Route::get('create', [ProductLabelConntroller::class, 'create'])->name('productlables.create');
+        Route::post('store', [ProductLabelConntroller::class, 'store'])->name('productlables.store');
+        Route::get('/{id}/edit', [ProductLabelConntroller::class, 'Edit'])->name('productlables.edit');
+        Route::put('/{id}', [ProductLabelConntroller::class, 'update'])->name('productlables.update');
+        Route::post('/delete', [ProductLabelConntroller::class, 'destroy'])->name('productlables.Delete');
+        Route::post('bulk-delete', [ProductLabelConntroller::class, 'bulkDelete'])->name('productlables.bulk-delete');
     });
 
 
@@ -163,10 +200,10 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
         Route::get('stores/create', [AdminStoreController::class,'create'])->name('marketplace.store.create');
         Route::post('stores', [AdminStoreController::class, 'store'])->name('marketplace.store.store');
         Route::get('stores/{store}', [AdminStoreController::class, 'show'])->name('marketplace.store.show');
-        Route::get('stores/{store}/edit', [AdminStoreController::class,'edit'])->name('marketplace.store.edit');
+        Route::get('stores/{store}/edit', [AdminStoreController::class, 'edit'])->name('marketplace.store.edit');
         Route::put('stores/{store}', [AdminStoreController::class, 'update'])->name('marketplace.store.update');
 
-        Route::delete('stores/{store}', [AdminStoreController::class,'destroy'])->name('marketplace.store.destroy');
+        Route::delete('stores/{store}', [AdminStoreController::class, 'destroy'])->name('marketplace.store.destroy');
         Route::post('stores/{store}/verify', [AdminStoreController::class, 'verify'])->name('marketplace.store.verify');
         });
 

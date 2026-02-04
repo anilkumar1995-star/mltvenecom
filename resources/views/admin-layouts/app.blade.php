@@ -14,6 +14,7 @@
 
     <link href="{{ asset('storage/main/general/favicon.png') }}" rel="icon shortcut" type="image/x-icon">
     <meta property="og:image" content="{{ asset('storage/main/general/favicon.png') }}">
+    
 
     <meta name="description" content="Copyright 2026 © Your App. Version 1.4.3">
     <meta property="og:description" content="Copyright 2026 © Your App. Version 1.4.3">
@@ -44,7 +45,7 @@
         }
     </style>
 
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('css/fontawesome.min.css') }}">
+    {{--  <link media="all" type="text/css" rel="stylesheet" href="{{ asset('css/fontawesome.min.css') }}">
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('css/select2.min.css') }}">
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('css/select2.css') }}">
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('css/toastr.min.css') }}">
@@ -53,35 +54,66 @@
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('css/spectrum.css') }}">
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('css/jquery.fancybox.min.css') }}">
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('css/core.css') }}">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('css/language.css') }}">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('css/language.css') }}">  --}}
+
+
+    
+    <link media="all" type="text/css" rel="stylesheet" href="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/font-awesome/css/fontawesome.min.css?v=1.4.4">
+    <link media="all" type="text/css" rel="stylesheet" href="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/select2/css/select2.min.css?v=1.4.4">
+    <link media="all" type="text/css" rel="stylesheet" href="https://shofy-grocery.botble.com/vendor/core/core/base/css/libraries/select2.css?v=1.4.4">
+    <link media="all" type="text/css" rel="stylesheet" href="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/toastr/toastr.min.css?v=1.4.4">
+    <link media="all" type="text/css" rel="stylesheet" href="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/mcustom-scrollbar/jquery.mCustomScrollbar.css?v=1.4.4">
+    <link media="all" type="text/css" rel="stylesheet" href="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/flatpickr/flatpickr.min.css?v=1.4.4">
+    <link media="all" type="text/css" rel="stylesheet" href="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/spectrum/spectrum.css?v=1.4.4">
+    <link media="all" type="text/css" rel="stylesheet" href="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/fancybox/jquery.fancybox.min.css?v=1.4.4">
+    <link media="all" type="text/css" rel="stylesheet" href="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css?v=1.4.4">
+    <link media="all" type="text/css" rel="stylesheet" href="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/tagify/tagify.css?v=1.4.4">
+    <link media="all" type="text/css" rel="stylesheet" href="https://shofy-grocery.botble.com/vendor/core/core/base/css/core.css?v=1.4.4">
+    <link media="all" type="text/css" rel="stylesheet" href="https://shofy-grocery.botble.com/vendor/core/plugins/language/css/language.css?v=1.4.4">
+    <link media="all" type="text/css" rel="stylesheet" href="https://shofy-grocery.botble.com/vendor/core/plugins/ecommerce/css/ecommerce.css?v=1.4.4">
+    <link media="all" type="text/css" rel="stylesheet" href="https://shofy-grocery.botble.com/vendor/core/packages/slug/css/slug.css?v=1.4.4">
+    <link media="all" type="text/css" rel="stylesheet" href="https://shofy-grocery.botble.com/vendor/core/packages/shortcode/css/shortcode.css?v=1.4.4">
+    <link media="all" type="text/css" rel="stylesheet" href="https://shofy-grocery.botble.com/vendor/core/packages/seo-helper/css/seo-helper.css?v=1.4.4">
+    <link media="all" type="text/css" rel="stylesheet" href="https://shofy-grocery.botble.com/vendor/core/plugins/faq/css/faq.css?v=1.4.4">
+
+    <script src="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/jquery.min.js?v=1.4.4"></script>
+    <script src="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/jquery-compat/jquery4-compat.js?v=1.4.4"></script>
+    <script src="https://shofy-grocery.botble.com/vendor/core/core/base/js/app.js?v=1.4.4"></script>
+    
 
     <script src="{{ asset('js/jquery.min.js.download') }}"></script>
     <script src="{{ asset('js/app.js.download') }}"></script>
     <script src="{{ asset('js/vue.global.min.js.download') }}"></script>
     <script src="{{ asset('js/vue-app.js.download') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
-    <script>
+   <script>
         $(document).ready(function() {
-            NProgress.configure({ showSpinner: true });
-            
-            // Initial load
-            NProgress.start();
-            $(window).on('load', function() {
-                NProgress.done();
-                $('#page-loader').fadeOut();
-            });
 
-            // AJAX handling
-            $(document).ajaxStart(function() {
-                NProgress.start();
-                $('#page-loader').fadeIn();
-            });
-            $(document).ajaxStop(function() {
-                NProgress.done();
-                $('#page-loader').fadeOut();
-            });
-        });
+    // Start NProgress & show loader instantly
+    NProgress.start();
+    $('#page-loader').fadeIn(50); // show spinner fast
+
+    // Page ready → hide loader after short delay
+    setTimeout(() => {
+        NProgress.done();
+        $('#page-loader').fadeOut(150); // smooth fade
+    }, 500); // 0.5s wait, spinner visible
+
+    // AJAX handling
+    $(document).ajaxStart(function () {
+        NProgress.start();
+        $('#page-loader').fadeIn(100);
+    });
+
+    $(document).ajaxStop(function () {
+        NProgress.done();
+        $('#page-loader').fadeOut(150);
+    });
+
+});
+
     </script>
+
 
     <script>
         window.BotbleVariables = {
@@ -192,32 +224,29 @@
         /* Global Page Loader Overlay */
         #page-loader {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.5); /* Semi-transparent white */
-            backdrop-filter: blur(1.5px);
+            inset: 0; /* top:0; left:0; right:0; bottom:0 */
+            background: rgba(0, 0, 0, 0.0); /* fully transparent */
             z-index: 99999;
-            display: flex;
+            display: flex; /* flex for centering spinner */
             align-items: center;
             justify-content: center;
-            transition: opacity 0.3s ease;
+            pointer-events: none; /* page interactable even loader shows */
         }
 
         .loader-spinner {
             width: 40px;
             height: 40px;
-            border: 3px solid rgba(var(--primary-color-rgb, 32, 107, 196), 0.15);
-            border-top: 3px solid var(--primary-color, #206bc4);
+            border: 4px solid rgba(var(--primary-color-rgb, 32,107,196), 0.2); /* light border */
+            border-top-color: var(--primary-color, #206bc4); /* colored spinner */
             border-radius: 50%;
-            animation: spin 0.6s linear infinite;
+            animation: spin 0.8s linear infinite;
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% { transform: rotate(0deg);}
+            100% { transform: rotate(360deg);}
         }
+
     </style>
     <style>
         .toastify {
@@ -656,52 +685,65 @@
 
 
 
+
     @include('admin-layouts.header')
     @include('admin-layouts.sidebar')
     @yield('content')
     @include('admin-layouts.footer')
 
     <script src="{{ asset('js/notification.js.download') }}"></script>
-    <script src="{{ asset('js/core-ui.js.download') }}"></script>
-    <script src="{{ asset('js/modernizr.min.js.download') }}"></script>
-    <script src="{{ asset('js/select2.min.js.download') }}"></script>
-    <script src="{{ asset('js/flatpickr.min.js.download') }}"></script>
-    <script src="{{ asset('js/jquery.cookie.js.download') }}"></script>
-    <script src="{{ asset('js/core.js.download') }}"></script>
-    <script src="{{ asset('js/toastr.min.js.download') }}"></script>
-    <script src="{{ asset('js/jquery.mCustomScrollbar.js.download') }}"></script>
-    <script src="{{ asset('js/jquery.stickytableheaders.js.download') }}"></script>
-    <script src="{{ asset('js/jquery.waypoints.min.js.download') }}"></script>
-    <script src="{{ asset('js/spectrum.js.download') }}"></script>
-    <script src="{{ asset('js/jquery.fancybox.min.js.download') }}"></script>
-    <script src="{{ asset('js/fslightbox.js.download') }}"></script>
+    <script src="https://shofy-grocery.botble.com/vendor/core/core/base/js/core-ui.js?v=1.4.4"></script>
+    <script src="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/excanvas.min.js?v=1.4.4"></script>
+    <script src="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/ie8.fix.min.js?v=1.4.4"></script>
+    <script src="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/modernizr/modernizr.min.js?v=1.4.4"></script>
+    <script src="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/select2/js/select2.min.js?v=1.4.4"></script>
+    <script src="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/flatpickr/flatpickr.min.js?v=1.4.4"></script>
+    <script src="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/jquery-cookie/jquery.cookie.js?v=1.4.4"></script>
+    <script src="https://shofy-grocery.botble.com/vendor/core/core/base/js/core.js?v=1.4.4"></script>
+    <script src="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/toastr/toastr.min.js?v=1.4.4"></script>
+    <script src="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/mcustom-scrollbar/jquery.mCustomScrollbar.js?v=1.4.4"></script>
+    <script src="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/stickytableheaders/jquery.stickytableheaders.js?v=1.4.4"></script>
+    <script src="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/jquery-waypoints/jquery.waypoints.min.js?v=1.4.4"></script>
+    <script src="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/spectrum/spectrum.js?v=1.4.4"></script>
+    <script src="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/fancybox/jquery.fancybox.min.js?v=1.4.4"></script>
+    <script src="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/fslightbox.js?v=1.4.4"></script>
     <script src="{{ asset('js/sortable.min.js.download') }}"></script>
     <script src="{{ asset('js/jquery.counterup.min.js.download') }}"></script>
-    <script src="{{ asset('js/language-global.js.download') }}"></script>
-    <script src="{{ asset('js/dashboard.js.download') }}"></script>
-    <script src="{{ asset('js/global-search.js.download') }}"></script>
+    <script src="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/moment-with-locales.min.js?v=1.4.4"></script>
+    <script src="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js?v=1.4.4"></script>
+    <script src="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/jquery-inputmask/jquery.inputmask.bundle.min.js?v=1.4.4"></script>
+    <script src="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/jquery-ui/jquery-ui.min.js?v=1.4.4"></script>
+    <script src="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/tagify/tagify.js?v=1.4.4"></script>
+    <script src="https://shofy-grocery.botble.com/vendor/core/core/js-validation/js/js-validation.js?v=1.4.4"></script>
+    <script src="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/jquery.are-you-sure/jquery.are-you-sure.js?v=1.4.4"></script>
+    <script src="https://shofy-grocery.botble.com/vendor/core/plugins/language/js/language-global.js?v=1.4.4"></script>
+    <script src="https://shofy-grocery.botble.com/vendor/core/plugins/ecommerce/js/edit-product.js?v=1.4.4"></script>
+    <script src="https://shofy-grocery.botble.com/vendor/core/core/base/js/tags.js?v=1.4.4"></script>
     <script src="https://shofy-grocery.botble.com/vendor/core/packages/slug/js/slug.js?v=1.4.4"></script>
-    <script src="https://shofy-grocery.botble.com/vendor/core/packages/shortcode/js/shortcode.js?v=1.4.4"></script>
     <script src="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/ckeditor/ckeditor.js?v=1.4.4"></script>
     <script src="https://shofy-grocery.botble.com/vendor/core/core/base/js/editor.js?v=1.4.4"></script>
+    <script src="https://shofy-grocery.botble.com/vendor/core/packages/shortcode/js/shortcode.js?v=1.4.4"></script>
+    <script src="https://shofy-grocery.botble.com/vendor/core/core/base/js/repeater-field.js?v=1.4.4"></script>
+    <script src="https://shofy-grocery.botble.com/vendor/core/plugins/ecommerce/js/product-option.js?v=1.4.4"></script>
     <script src="https://shofy-grocery.botble.com/vendor/core/packages/seo-helper/js/seo-helper.js?v=1.4.4"></script>
-
-
+    <script src="https://shofy-grocery.botble.com/vendor/core/plugins/faq/js/faq.js?v=1.4.4"></script>
+    <script src="{{ asset('js/dashboard.js.download') }}"></script>
+    <script src="{{ asset('js/global-search.js.download') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.19.2/jquery.validate.min.js"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.19.2/additional-methods.min.js"></script>
-
-
     <script src="https://cdn.datatables.net/2.3.6/js/dataTables.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
-    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.19.2/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/simple-notify@0.5.5/dist/simple-notify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-notify@0.5.5/dist/simple-notify.min.js"></script>
 
     <script>
         $(document).ready(function() {
-            $('#myTable').DataTable();
+            $('#myTable').DataTable({
+                "processing": true,
+                "language": {
+                    "processing": '<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>'
+                }
+            });
         });
 
         function notify(text, status) {
@@ -749,4 +791,3 @@
 </body>
 
 </html>
-
