@@ -465,18 +465,80 @@
                                         <th title="Name" class="text-start  column-key-2">Name</th>
                                         <th title="Email" class="text-start  column-key-3">Email</th>
                                         <th title="Store name" class=" column-key-4">Store name</th>
-                                        <th title="Store phone" class=" column-key-5">Store phone</th>
-                                        <th title="Products" class=" column-key-6">Products</th>
                                         <th title="Total Revenue" class=" column-key-7">Total Revenue</th>
                                         <th title="Balance" class=" column-key-8">Balance</th>
                                         <th title="Verified" width="100" class="text-center  column-key-9">Verified</th>
                                         <th title="Store Status" class=" column-key-10">Store Status</th>
                                         <th title="Status" width="100" class="text-center  column-key-11">Status</th>
-                                        <th title="Created At" width="100" class=" column-key-12">Created At</th>
                                         <th title="Operations">Operations</th>
                                     </tr>
                                 </thead>
+                                <tbody>
+                                    @foreach($vendors as $vendor)
+                                        <tr>
+                                            <td><input class="form-check-input m-0 align-middle checkboxes" type="checkbox" value="{{ $vendor->id }}"></td>
+                                            <td class="text-center">{{ $vendor->id }}</td>
+                                            <td>
+                                                <a href="{{ route('admin.marketplace.vendors.edit', $vendor->id) }}">
+                                                    <img src="{{ $vendor->avatar ? asset('storage/' . $vendor->avatar) : asset('vendor/core/core/base/images/placeholder.png') }}" class="avatar" style="width: 30px; height: 30px; object-fit: cover;" alt="{{ $vendor->name }}">
+                                                </a>
+                                            </td>
+                                            <td><a href="{{ route('admin.marketplace.vendors.edit', $vendor->id) }}">{{ $vendor->name }}</a></td>
+                                            <td>{{ $vendor->email }}</td>
+                                            <td>{{ $vendor->store->name ?? 'N/A' }}</td>
+                                            <td>{{ number_format($vendor->store->earnings ?? 0, 2) }}</td>
+                                            <td>{{ number_format($vendor->store->balance ?? 0, 2) }}</td>
+                                            <td class="text-center">
+                                                @if($vendor->vendor_verified_at)
+                                                    <span class="badge bg-success text-white">Verified</span>
+                                                @else
+                                                    <span class="badge bg-warning text-white">Unverified</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if(optional($vendor->store)->status == 'published')
+                                                    <span class="badge bg-success text-white">Published</span>
+                                                @elseif(optional($vendor->store)->status == 'draft')
+                                                    <span class="badge bg-secondary text-white">Draft</span>
+                                                @else
+                                                    <span class="badge bg-warning text-white">Pending</span>
+                                                @endif
+                                            </td>
+                                            <td class="text-center">
+                                                @if($vendor->status == 'activated')
+                                                    <span class="badge bg-success text-white">Activated</span>
+                                                @else
+                                                    <span class="badge bg-secondary text-white">{{ ucfirst($vendor->status) }}</span>
+                                                @endif
+                                            </td>
+                                            <td class="text-center">
+                                                <div class="btn-list flex-nowrap justify-content-center">
+                                                    <a href="{{ route('admin.marketplace.vendors.show', $vendor->id) }}" class="btn btn-icon btn-sm btn-info" data-bs-toggle="tooltip" data-bs-original-title="View">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                           <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                           <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
+                                                           <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"></path>
+                                                        </svg>
+                                                    </a>
+                                                    <a href="{{ route('admin.marketplace.vendors.edit', $vendor->id) }}" class="btn btn-icon btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-original-title="Edit">
+                                                        <svg class="icon svg-icon-ti-ti-edit" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4" /><path d="M13.5 6.5l4 4" /></svg>
+                                                    </a>
+                                                    <form action="{{ route('admin.marketplace.vendors.destroy', $vendor->id) }}" method="POST" class="delete-vendor-form" style="display:inline-block">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-icon btn-danger btn-sm" data-bs-toggle="tooltip" data-bs-original-title="Delete">
+                                                            <svg class="icon svg-icon-ti-ti-trash" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7l16 0" /><path d="M10 11l0 6" /><path d="M14 11l0 6" /><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" /><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" /></svg>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
                             </table>
+                        </div>
+                        <div class="card-footer d-flex align-items-center">
+                            {{ $vendors->withQueryString()->links('pagination::bootstrap-5') }}
                         </div>
                     </div>
                 </div>
@@ -494,5 +556,53 @@
 
 @endsection
 @push('scripts')
+<script>
+    $(document).ready(function () {
+        $(document).on('submit', '.delete-vendor-form', function (e) {
+            e.preventDefault();
+            let $form = $(this);
 
+            Swal.fire({
+                title: "Are you sure?",
+                text: "Do you really want to delete this vendor?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Yes, Delete it !",
+                cancelButtonText: "Cancel"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: "Please wait...",
+                        text: "Deleting vendor...",
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+
+                    $.ajax({
+                        url: $form.attr('action'),
+                        type: 'POST',
+                        data: $form.serialize(),
+                        success: function (res) {
+                            if (res.status) {
+                                Swal.fire("Deleted!", res.message, "success");
+                                $form.closest('tr').fadeOut(500, function() {
+                                    $(this).remove();
+                                });
+                            } else {
+                                Swal.fire("Error!", res.message, "error");
+                            }
+                        },
+                        error: function (xhr) {
+                            Swal.fire("Error!", xhr?.responseJSON?.message || "Something went wrong", "error");
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
 @endpush

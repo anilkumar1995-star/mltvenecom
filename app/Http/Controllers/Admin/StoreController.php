@@ -22,17 +22,18 @@ class StoreController extends Controller
             $query->where('name', 'like', "%{$q}%");
         }
 
-        $stores = $query->orderBy('id', 'desc')->paginate(20)->withQueryString();
+        $stores = $query->with('customer')->orderBy('id', 'desc')->paginate(20)->withQueryString();
         return view('admin-layouts.marketplace.store.index', compact('stores'));
     }
 
     public function create()
     {
         $countries = Countries::where('status', 'published')
-        ->orderBy('order')
-        ->get();
+            ->orderBy('order')
+            ->get();
+        $customers = \DB::table('ec_customers')->get();
 
-    return view('admin-layouts.marketplace.store.create', compact('countries'));
+        return view('admin-layouts.marketplace.store.create', compact('countries', 'customers'));
     }
 
   
@@ -40,6 +41,7 @@ public function store(Request $request)
 {
     $request->validate([
         'name'        => 'required|max:191',
+        'slug'        => 'required|max:191|unique:mp_stores,slug',
         'email'       => 'required|email|max:255',
         'phone'       => 'required|max:20',
         'status'      => 'required|in:published,draft,pending',
@@ -51,6 +53,7 @@ public function store(Request $request)
 
     $data = [
         'name'        => $request->name,
+        'slug'        => $request->slug,
         'email'       => $request->email,
         'phone'       => $request->phone,
         'address'     => $request->address,
@@ -63,6 +66,10 @@ public function store(Request $request)
         'content'     => $request->content,
         'status'      => $request->status,
         'customer_id' => $request->customer_id,
+        'social_links' => $request->social_links,
+        'seo_title'   => $request->input('seo_meta.seo_title'),
+        'seo_description' => $request->input('seo_meta.seo_description'),
+        'seo_index'   => $request->input('seo_meta.index', 'index'),
     ];
 
     if ($request->hasFile('logo')) {
@@ -101,8 +108,10 @@ public function store(Request $request)
 {
     $store = Store::findOrFail($id);
     $customers = \DB::table('ec_customers')->get();
-// dd($customers,$store);
-    return view('admin-layouts.marketplace.store.edit', compact('store', 'customers'));
+    $countries = Countries::where('status', 'published')
+        ->orderBy('order')
+        ->get();
+    return view('admin-layouts.marketplace.store.edit', compact('store', 'customers', 'countries'));
 }
 
 
@@ -112,6 +121,7 @@ public function store(Request $request)
 
         $request->validate([
             'name'        => 'required|string|max:255',
+            'slug'        => 'required|max:191|unique:mp_stores,slug,' . $id,
             'email'       => 'required|email',
             'phone'       => 'required|string|max:20',
             'customer_id' => 'required|exists:ec_customers,id',
@@ -123,6 +133,7 @@ public function store(Request $request)
 
         $data = [
             'name'        => $request->name,
+            'slug'        => $request->slug,
             'email'       => $request->email,
             'phone'       => $request->phone,
             'description' => $request->description,
@@ -135,6 +146,10 @@ public function store(Request $request)
             'tax_id'      => $request->tax_id,
             'status'      => $request->status,
             'customer_id' => $request->customer_id,
+            'social_links' => $request->social_links,
+            'seo_title'   => $request->input('seo_meta.seo_title'),
+            'seo_description' => $request->input('seo_meta.seo_description'),
+            'seo_index'   => $request->input('seo_meta.index', 'index'),
         ];
 
         if ($request->hasFile('logo')) {
