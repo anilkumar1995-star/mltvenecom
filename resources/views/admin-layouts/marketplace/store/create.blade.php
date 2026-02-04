@@ -14,7 +14,7 @@
                                     class="breadcrumb-item">
                                     <a
                                         class="mb-0 d-inline-block fs-6 lh-1"
-                                        href="https://shofy-grocery.botble.com/admin">Dashboard</a>
+                                        href="{{ url('/admin') }}">Dashboard</a>
                                 </li>
                                 <li
                                     class="breadcrumb-item">
@@ -24,7 +24,7 @@
                                     class="breadcrumb-item">
                                     <a
                                         class="mb-0 d-inline-block fs-6 lh-1"
-                                        href="https://shofy-grocery.botble.com/admin/marketplaces/stores">Stores</a>
+                                        href="{{ route('admin.marketplace.store.index') }}">Stores</a>
                                 </li>
                                 <li
                                     class="breadcrumb-item active"
@@ -112,9 +112,9 @@
 
 
                                                     <input
-                                                        class="form-control" style="direction: ltr; text-align: left;" type="text" name="slug" id="shop-url" value="" required="required" data-url="https://shofy-grocery.botble.com/ajax/stores/check-store-url" placeholder="Shop URL" dir="ltr" />
+                                                        class="form-control" style="direction: ltr; text-align: left;" type="text" name="slug" id="shop-url" value="" required="required" data-url="{{ url('/ajax/stores/check-store-url') }}" placeholder="Shop URL" dir="ltr" />
 
-                                                    <small class="form-hint" data-base-url="https://shofy-grocery.botble.com/stores">https://shofy-grocery.botble.com/stores</small>
+                                                    <small class="form-hint" data-base-url="{{ url('/stores') }}">{{ url('/stores') }}</small>
                                                     <small class="form-hint">This will be your store&#039;s unique URL. Only letters, numbers, and hyphens are allowed. Example: my-awesome-store</small>
                                                 </div>
                                             </div>
@@ -252,14 +252,11 @@
 
 
                                             <select class="form-select" name="country" id="country">
-                                                <option value="">Select country...</option>
+                                                <!-- <option value="">Select country...</option> -->
+                                                <option value="India">India</option>
+                                              
 
-                                                @foreach($countries as $country)
-                                                <option value="{{ $country->code }}"
-                                                    {{ $country->is_default ? 'selected' : '' }}>
-                                                    {{ $country->name }}
-                                                </option>
-                                                @endforeach
+                                              
                                             </select>
 
 
@@ -375,8 +372,8 @@
                                                     <div class="preview-image-inner">
                                                         <a href="javascript:void(0)" onclick="$('#logo-input').trigger('click')" class="image-box-actions">
                                                             <img class="preview-logo preview-image default-image" 
-                                                                 data-default="https://shofy-grocery.botble.com/vendor/core/core/base/images/placeholder.png"
-                                                                 src="https://shofy-grocery.botble.com/vendor/core/core/base/images/placeholder.png"
+                                                                 data-default="{{ asset('images/placeholder.png') }}"
+                                                                 src="{{ asset('images/placeholder.png') }}"
                                                                  alt="Preview image" style="width: 8rem; height: 8rem; object-fit: cover;" />
                                                             <span class="image-picker-backdrop"></span>
                                                         </a>
@@ -419,8 +416,8 @@
                                                     <div class="preview-image-inner">
                                                         <a href="javascript:void(0)" onclick="$('#logo-square-input').trigger('click')" class="image-box-actions">
                                                             <img class="preview-logo-square preview-image default-image" 
-                                                                 data-default="https://shofy-grocery.botble.com/vendor/core/core/base/images/placeholder.png"
-                                                                 src="https://shofy-grocery.botble.com/vendor/core/core/base/images/placeholder.png"
+                                                                 data-default="{{ asset('images/placeholder.png') }}"
+                                                                 src="{{ asset('images/placeholder.png') }}"
                                                                  alt="Preview image" style="width: 8rem; height: 8rem; object-fit: cover;" />
                                                             <span class="image-picker-backdrop"></span>
                                                         </a>
@@ -466,8 +463,8 @@
                                                     <div class="preview-image-inner">
                                                         <a href="javascript:void(0)" onclick="$('#cover-image-input').trigger('click')" class="image-box-actions">
                                                             <img class="preview-cover-image preview-image default-image" 
-                                                                 data-default="https://shofy-grocery.botble.com/vendor/core/core/base/images/placeholder.png"
-                                                                 src="https://shofy-grocery.botble.com/vendor/core/core/base/images/placeholder.png"
+                                                                 data-default="{{ asset('images/placeholder.png') }}"
+                                                                 src="{{ asset('images/placeholder.png') }}"
                                                                  alt="Preview image" style="width: 8rem; height: 8rem; object-fit: cover;" />
                                                             <span class="image-picker-backdrop"></span>
                                                         </a>
@@ -529,20 +526,20 @@
 
 
                                             <select class="form-select" required="required" id="customer_id-select-34191" name="customer_id">
-                                                <option value="0">Select a store owner...</option>
-                                                <option value="2">Juvenal Bins</option>
-                                                <option value="3">Bettie Wolf</option>
-                                                <option value="4">Linnea Rodriguez</option>
-                                                <option value="5">Mrs. Sister Ondricka</option>
-                                                <option value="6">Jailyn Mosciski</option>
-                                                <option value="7">Garth Hegmann</option>
-                                                <option value="8">Ena Buckridge</option>
+                                                <option value="">Select a store owner...</option>
+                                                @foreach($customers as $customer)
+                                                    <option value="{{ $customer->id }}"
+                                                        {{ old('customer_id') == $customer->id ? 'selected' : '' }}>
+                                                        {{ $customer->name }}
+                                                    </option>
+                                                @endforeach
                                             </select>
 
 
 
 
                                         </div>
+
 
                                     </div>
 
@@ -852,8 +849,8 @@
                                                             <div class="preview-image-inner">
                                                                 <a href="javascript:void(0)" onclick="$('#seo-meta-image-input').trigger('click')" class="image-box-actions">
                                                                     <img class="preview-seo-meta-image preview-image default-image" 
-                                                                         data-default="https://shofy-grocery.botble.com/vendor/core/core/base/images/placeholder.png"
-                                                                         src="https://shofy-grocery.botble.com/vendor/core/core/base/images/placeholder.png"
+                                                                         data-default="{{ asset('images/placeholder.png') }}"
+                                                                         src="{{ asset('images/placeholder.png') }}"
                                                                          alt="Preview image" style="width: 8rem; height: 8rem; object-fit: cover;" />
                                                                     <span class="image-picker-backdrop"></span>
                                                                 </a>

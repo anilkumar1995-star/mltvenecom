@@ -415,7 +415,7 @@
                                                         <td>{{ $store->name }}</td>
                                                         <td>{{ $store->earnings ?? 0 }}</td>
                                                         <td>{{ $store->products_count ?? 0 }}</td>
-                                                        <td>{{ $store->customer_name ?? 'N/A' }}</td>
+                                                        <td>{{ $store->customer->name ?? 'N/A' }}</td>
                                                         <td>{{ $store->created_at->format('Y-m-d') }}</td>
                                                         <td class="text-center">
                                                             @if($store->status == 'published')

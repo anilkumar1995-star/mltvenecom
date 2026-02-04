@@ -723,6 +723,28 @@
             })
         }
     </script>
+    <script>
+        $(document).ready(function() {
+            var $menuItemsCount = $('.menu-item-count');
+            if ($menuItemsCount.length > 0) {
+                var url = $menuItemsCount.first().data('url');
+                $.ajax({
+                    url: url,
+                    method: 'GET',
+                    success: function(response) {
+                        $.each(response, function(key, value) {
+                            var $badge = $('.' + key);
+                            if ($badge.length > 0 && value > 0) {
+                                $badge.text(value).show();
+                            } else {
+                                $badge.hide();
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    </script>
     @stack('scripts')
 </body>
 

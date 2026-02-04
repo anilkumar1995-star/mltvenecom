@@ -741,7 +741,7 @@
                                     <path d="M3 7l9 6l9 -6"></path>
                                 </svg></span><span class="nav-link-title text-truncate"> Contact <span
                                     class="badge badge-sm bg-primary text-primary-fg badge-pill menu-item-count unread-contacts"
-                                    data-url="{{ url("/") }}/admin/menu-items-count" style="">5</span></span></a>
+                                    data-url="{{ url("/") }}/admin/menu-items-count" style="display: none;"></span></span></a>
                         <div class="dropdown-menu animate slideIn dropdown-menu-start"><a
                                 class="dropdown-item nav-priority-120" href="{{ url("/") }}/admin/contacts"
                                 id="cms-plugins-contact-list" title="Contacts"><span
