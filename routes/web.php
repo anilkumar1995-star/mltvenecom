@@ -302,6 +302,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 
         Route::delete('stores/{store}', [AdminStoreController::class, 'destroy'])->name('marketplace.store.destroy');
         Route::post('stores/{store}/verify', [AdminStoreController::class, 'verify'])->name('marketplace.store.verify');
+        Route::delete('messages/{id}', [VendorController::class, 'destroyMessage'])->name('marketplace.vendors.destroy-message');
         });
 
     Route::get('/menu-items-count', [MenuCountController::class, 'getCounts'])->name('menu-items-count');

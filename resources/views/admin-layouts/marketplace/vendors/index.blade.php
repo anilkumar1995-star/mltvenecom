@@ -14,7 +14,7 @@
                                     class="breadcrumb-item">
                                     <a
                                         class="mb-0 d-inline-block fs-6 lh-1"
-                                        href="https://shofy-grocery.botble.com/admin">Dashboard</a>
+                                        href="{{ route('admin.dashboard') }}">Dashboard</a>
                                 </li>
                                 <li
                                     class="breadcrumb-item">
@@ -69,7 +69,7 @@
                             <input
                                 type="hidden"
                                 class="filter-data-url"
-                                value="https://shofy-grocery.botble.com/admin/tables/filters" />
+                                value="{{ route('admin.marketplace.vendors') }}" />
 
                             <div class="sample-filter-item-wrap hidden">
                                 <div class="row filter-item form-filter">
@@ -141,7 +141,7 @@
                                 </div>
                             </div>
 
-                            <form method="GET" action="https://shofy-grocery.botble.com/admin/marketplaces/vendors" accept-charset="UTF-8" class="filter-form">
+                            <form method="GET" action="{{ route('admin.marketplace.vendors') }}" accept-charset="UTF-8" class="filter-form">
                                 <input
                                     type="hidden"
                                     name="filter_table_id"
@@ -217,7 +217,7 @@
 
                                     </button>
                                     <a
-                                        class="btn btn-icon   w-6" style="display: none;" type="button" href="https://shofy-grocery.botble.com/admin/marketplaces/vendors" data-bb-toggle="datatable-reset-filter">
+                                        class="btn btn-icon   w-6" style="display: none;" type="button" href="{{ route('admin.marketplace.vendors') }}" data-bb-toggle="datatable-reset-filter">
                                         <svg class="icon icon-left svg-icon-ti-ti-refresh"
                                             xmlns="http://www.w3.org/2000/svg"
                                             width="24"
@@ -270,22 +270,22 @@
                                                     <path d="M9 6l6 6l-6 6" />
                                                 </svg> </button>
                                             <div class="dropdown-menu">
-                                                <button class="dropdown-item bulk-change-item" data-key="name" data-class-item="Botble\Marketplace\Tables\VendorTable" data-save-url="https://shofy-grocery.botble.com/admin/tables/bulk-changes/save">
+                                                <button class="dropdown-item bulk-change-item" data-key="name" data-class-item="Botble\Marketplace\Tables\VendorTable" data-save-url="#">
 
                                                     Name
 
                                                 </button>
-                                                <button class="dropdown-item bulk-change-item" data-key="email" data-class-item="Botble\Marketplace\Tables\VendorTable" data-save-url="https://shofy-grocery.botble.com/admin/tables/bulk-changes/save">
+                                                <button class="dropdown-item bulk-change-item" data-key="email" data-class-item="Botble\Marketplace\Tables\VendorTable" data-save-url="#">
 
                                                     Email
 
                                                 </button>
-                                                <button class="dropdown-item bulk-change-item" data-key="status" data-class-item="Botble\Marketplace\Tables\VendorTable" data-save-url="https://shofy-grocery.botble.com/admin/tables/bulk-changes/save">
+                                                <button class="dropdown-item bulk-change-item" data-key="status" data-class-item="Botble\Marketplace\Tables\VendorTable" data-save-url="#">
 
                                                     Status
 
                                                 </button>
-                                                <button class="dropdown-item bulk-change-item" data-key="created_at" data-class-item="Botble\Marketplace\Tables\VendorTable" data-save-url="https://shofy-grocery.botble.com/admin/tables/bulk-changes/save">
+                                                <button class="dropdown-item bulk-change-item" data-key="created_at" data-class-item="Botble\Marketplace\Tables\VendorTable" data-save-url="#">
 
                                                     Created At
 
@@ -293,7 +293,7 @@
                                             </div>
                                         </div>
 
-                                        <a class="dropdown-item" href="https://shofy-grocery.botble.com/admin/tables/bulk-actions" data-trigger-bulk-action="data-trigger-bulk-action" data-method="POST" data-table-target="Botble\Marketplace\Tables\VendorTable" data-target="Botble\Table\BulkActions\DeleteBulkAction" data-confirmation-modal-title="Confirm to perform this action" data-confirmation-modal-message="Are you sure you want to do this action? This cannot be undone." data-confirmation-modal-button="Delete" data-confirmation-modal-cancel-button="Cancel">
+                                        <a class="dropdown-item" href="#" data-trigger-bulk-action="data-trigger-bulk-action" data-method="POST" data-table-target="Botble\Marketplace\Tables\VendorTable" data-target="Botble\Table\BulkActions\DeleteBulkAction" data-confirmation-modal-title="Confirm to perform this action" data-confirmation-modal-message="Are you sure you want to do this action? This cannot be undone." data-confirmation-modal-button="Delete" data-confirmation-modal-cancel-button="Cancel">
 
                                             Delete
 
