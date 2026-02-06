@@ -20,16 +20,113 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\StoreController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\LoginController;
 
 
+use App\Http\Controllers\Frontend\CheckoutController;
+use App\Http\Controllers\Frontend\CustomerController;
+use App\Http\Controllers\Frontend\HomeController as FrontendHomeController;
+use App\Http\Controllers\Frontend\ProductController as FrontendProductController;
 
 
+// FIX FOR LEGACY BOTBLE PACKAGES
+Route::get('/admin/dashboard-index', [DashboardController::class, 'index'])->name('dashboard.index');
+
+/*
+|--------------------------------------------------------------------------
+| AUTH ROUTES
+|--------------------------------------------------------------------------
+*/
+
+// Customer Auth
+// Route::get('/', [LoginController::class, 'home'])->name('home');
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+// Route::post('/login', [LoginController::class, 'login']);
+
+Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [App\Http\Controllers\Auth\RegisterController::class, 'register']);
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('/password/reset', function () {return 'Password reset is currently disabled.';})->name('password.request');
+
+// Placeholder routes to prevent rendering errors
+Route::get('/admin/login', [LoginController::class, 'showLoginForm'])->name('admin.login');
+Route::post('/admin/login', [LoginController::class, 'login']);
 
 
+Route::post('/admin/logout', [LoginController::class, 'logout'])->name('admin.logout');
+// Route::get('/vendor/login', [VendorLoginController::class, 'showLoginForm'])->name('vendor.login');
+// Route::post('/vendor/login', [VendorLoginController::class, 'login']);
+// Route::post('/vendor/logout', [VendorLoginController::class, 'logout'])->name('vendor.logout');
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/admin/dashboard-redirect', [DashboardController::class, 'index'])->name('dashboard.index');
+
+/*
+|--------------------------------------------------------------------------
+| FRONTEND ROUTES
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware('auth:customer,web')->prefix('customer')->name('customer.')->group(function () {
+    Route::get('/dashboard', [CustomerController::class, 'dashboard'])->name('dashboard');
 });
+
+
+Route::name('frontend.')->group(function () {
+    
+    // Vendor Dashboard
+    Route::middleware(['auth', 'role:vendor'])->prefix('vendor')->name('vendor.')->group(function () {
+        Route::get('/dashboard', function () {
+            return view('frontend.vendor.dashboard');
+        })->name('dashboard');
+    });
+
+    // Home
+    Route::get('/', [FrontendHomeController::class, 'index'])->name('home');
+    // Route::get('/', [App\Http\Controllers\Auth\LoginController::class, 'showLoginForm']);
+
+
+    // Products
+    Route::get('/products', [FrontendProductController::class, 'index'])->name('products.index');
+    Route::get('/products/{slug}', [FrontendProductController::class, 'show'])->name('products.show');
+    Route::get('/categories/{slug}', [FrontendProductController::class, 'category'])->name('categories.show');
+    Route::get('/brands/{slug}', [FrontendProductController::class, 'brand'])->name('brands.show');
+
+    // Cart
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+    Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
+    Route::delete('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
+
+    // Checkout
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+    Route::post('/checkout/process', [CheckoutController::class, 'process'])->name('checkout.process');
+    Route::get('/checkout/success', [CheckoutController::class, 'success'])->name('checkout.success');
+
+    // Account Deletion Confirmation
+    Route::get('/account/delete/confirm/{token}', [App\Http\Controllers\Frontend\AccountDeletionController::class, 'confirm'])->name('account.deletion.confirm');
+
+    // Customer Area (requires auth)
+    // Customer Area (requires auth:customer or auth:web for vendors)
+    Route::middleware('auth:customer,web')->prefix('customer')->name('customer.')->group(function () {
+        Route::get('/dashboard', [CustomerController::class, 'dashboard'])->name('dashboard');
+        Route::get('/orders', [CustomerController::class, 'orders'])->name('orders');
+        Route::get('/orders/{id}', [CustomerController::class, 'orderDetail'])->name('orders.detail');
+        Route::get('/profile', [CustomerController::class, 'profile'])->name('profile');
+        Route::post('/profile/update', [CustomerController::class, 'updateProfile'])->name('profile.update');
+        Route::get('/addresses', [CustomerController::class, 'addresses'])->name('addresses');
+        Route::post('/addresses/store', [CustomerController::class, 'storeAddress'])->name('addresses.store');
+
+        // Account Deletion Request
+        Route::post('/account/delete', [App\Http\Controllers\Frontend\AccountDeletionController::class, 'store'])->name('account.deletion.request');
+    });
+});
+
+
+
+
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Auth::routes();
 
@@ -205,6 +302,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 
         Route::delete('stores/{store}', [AdminStoreController::class, 'destroy'])->name('marketplace.store.destroy');
         Route::post('stores/{store}/verify', [AdminStoreController::class, 'verify'])->name('marketplace.store.verify');
+        Route::delete('messages/{id}', [VendorController::class, 'destroyMessage'])->name('marketplace.vendors.destroy-message');
         });
 
     Route::get('/menu-items-count', [MenuCountController::class, 'getCounts'])->name('menu-items-count');
