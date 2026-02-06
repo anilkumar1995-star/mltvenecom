@@ -12,16 +12,27 @@ class ReportsController extends Controller
 {
    public function reports()
    {
-    
         $storeCount = Store::count();
         $vendorCount = Customer::whereHas('store')->count();
         $withdrawalCount = Withdrawal::where('status', 'pending')->count();
         
-        $latestWithdrawals = Withdrawal::with('store')->latest()->limit(5)->get();
+        $latestWithdrawals = Withdrawal::with('customer.store')->latest()->limit(5)->get();
         $topStores = Store::withCount('products')->orderBy('products_count', 'desc')->limit(5)->get();
 
-        return view('admin-layouts.marketplace.reports.index', compact('storeCount', 'vendorCount', 'withdrawalCount', 'latestWithdrawals', 'topStores'));
+        $totalFee = Withdrawal::sum('fee');
+        $totalAmount = Withdrawal::sum('amount');
+        $commissionRate = $totalAmount > 0 ? ($totalFee / $totalAmount) * 100 : 0;
 
+        return view('admin-layouts.marketplace.reports.index', compact(
+            'storeCount', 
+            'vendorCount', 
+            'withdrawalCount', 
+            'latestWithdrawals', 
+            'topStores',
+            'totalFee',
+            'totalAmount',
+            'commissionRate'
+        ));
    }
 
    

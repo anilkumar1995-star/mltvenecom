@@ -4,7 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
-
+use App\Models\Message;
+use App\Models\Store;
 use Illuminate\Http\Request;
 
 class VendorController extends Controller
@@ -18,12 +19,15 @@ class VendorController extends Controller
 
     public function unverifiedVendors()
    {
-       return view('admin-layouts.marketplace.vendors.unverified_vendors');
+
+       $stores = Store::where('is_verified', 0)->with('customer')->orderBy('created_at', 'desc')->paginate(10);
+       return view('admin-layouts.marketplace.vendors.unverified_vendors', compact('stores'));
    }
 
     public function messages()
    {
-       return view('admin-layouts.marketplace.vendors.messages');
+      $messages = Message::with(['store', 'customer'])->orderBy('created_at', 'desc')->paginate(15);
+       return view('admin-layouts.marketplace.vendors.messages', compact('messages'));
    }
 
     public function show($id)
@@ -95,6 +99,17 @@ class VendorController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'Vendor deleted successfully.'
+        ]);
+    }
+
+    public function destroyMessage($id)
+    {
+        $message = Message::findOrFail($id);
+        $message->delete();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Message deleted successfully.'
         ]);
     }
 }

@@ -47,7 +47,7 @@ class Store extends Model
 
     public function products()
     {
-        return $this->hasMany(Product::class, 'store_id');
+        return $this->hasMany(EcProduct::class, 'store_id');
     }
 
     public function orders()
