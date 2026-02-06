@@ -21,8 +21,14 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
+    
     public function index()
     {
+        $user = auth()->user();
+        if ($user->role !== 'admin') {
+            return redirect()->route('frontend.customer.dashboard');
+        }
+
         return view('home');
     }
 }

@@ -14,7 +14,7 @@
                                                 class="breadcrumb-item">
                                                 <a
                                                     class="mb-0 d-inline-block fs-6 lh-1"
-                                                    href="https://shofy-grocery.botble.com/admin">Dashboard</a>
+                                                    href="{{ route('admin.dashboard') }}">Dashboard</a>
                                             </li>
                                             <li
                                                 class="breadcrumb-item">
@@ -135,7 +135,7 @@
                                             </div>
                                         </div>
 
-                                        <form method="GET" action="https://shofy-grocery.botble.com/admin/marketplaces/withdrawals" accept-charset="UTF-8" class="filter-form">
+                                        <form method="GET" action="{{ route('admin.marketplace.withdrawls') }}" accept-charset="UTF-8" class="filter-form">
                                             <input
                                                 type="hidden"
                                                 name="filter_table_id"
@@ -320,8 +320,8 @@
                                         <div
                                             class="d-flex flex-column flex-sm-row align-items-stretch align-items-sm-center gap-1 table-action-buttons">
 
-                                            <button
-                                                class="btn" type="button" data-bb-toggle="dt-buttons" data-bb-target=".buttons-reload" tabindex="0" aria-controls="botble-marketplace-tables-withdrawal-table">
+                                            <a
+                                                class="btn" href="{{ route('admin.marketplace.withdrawls') }}">
                                                 <svg class="icon icon-left svg-icon-ti-ti-refresh"
                                                     xmlns="http://www.w3.org/2000/svg"
                                                     width="24"
@@ -337,7 +337,7 @@
                                                 </svg>
                                                 Reload
 
-                                            </button>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -357,9 +357,51 @@
                                                     <th title="Operations">Operations</th>
                                                 </tr>
                                             </thead>
+                                            <tbody>
+                                                @forelse($withdrawals as $withdrawal)
+                                                <tr>
+                                                    <td class="text-start">
+                                                        <input class="form-check-input m-0 align-middle checkboxes" type="checkbox" name="id[]" value="{{ $withdrawal->id }}">
+                                                    </td>
+                                                    <td class="text-center">{{ $withdrawal->id }}</td>
+                                                    <td class="text-start">
+                                                        @if($withdrawal->customer && $withdrawal->customer->store)
+                                                            <a href="{{ route('admin.marketplace.store.show', $withdrawal->customer->store->id) }}">
+                                                                {{ $withdrawal->customer->store->name }}
+                                                            </a>
+                                                        @else
+                                                            N/A
+                                                        @endif
+                                                    </td>
+                                                    <td>{{ number_format($withdrawal->amount, 2) }}</td>
+                                                    <td>{{ number_format($withdrawal->fee, 2) }}</td>
+                                                    <td>{{ $withdrawal->created_at ? $withdrawal->created_at->format('Y-m-d') : 'N/A' }}</td>
+                                                    <td class="text-center">
+                                                        <span class="badge bg-{{ $withdrawal->status == 'pending' ? 'warning' : ($withdrawal->status == 'completed' ? 'success' : 'secondary') }} {{ $withdrawal->status == 'pending' ? 'text-white' : '' }}">
+                                                            {{ ucfirst($withdrawal->status) }}
+                                                        </span>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <div class="table-actions">
+                                                            <a href="#" class="btn btn-icon btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-original-title="Edit">
+                                                                <svg class="icon svg-icon-ti-ti-edit" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4"></path><path d="M13.5 6.5l4 4"></path></svg>
+                                                            </a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                @empty
+                                                <tr>
+                                                    <td colspan="8" class="text-center">No withdrawals found.</td>
+                                                </tr>
+                                                @endforelse
+                                            </tbody>
                                         </table>
                                     </div>
                                 </div>
+                            </div>
+
+                            <div class="card-footer d-flex align-items-center">
+                                {!! $withdrawals->withQueryString()->links('pagination::bootstrap-5') !!}
                             </div>
                         </div>
 

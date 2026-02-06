@@ -12,6 +12,8 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
+    // protected $connection = 'mysql_users';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -21,27 +23,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role_id',
-        'shop_name',
-        'shop_url',
-        'mobile',
+        'user_type',
+        'role',
     ];
-
-    protected $appends = ['avatar_url'];
-
-    public function getAvatarUrlAttribute()
-    {
-        if ($this->avatar) {
-            // stored path in storage/app/public
-            if (str_starts_with($this->avatar, 'http')) {
-                return $this->avatar;
-            }
-
-            return asset('storage/' . $this->avatar);
-        }
-
-        return null;
-    }
 
     /**
      * The attributes that should be hidden for serialization.

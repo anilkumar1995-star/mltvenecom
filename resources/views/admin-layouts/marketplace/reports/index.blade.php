@@ -13,7 +13,7 @@
                                     class="breadcrumb-item">
                                     <a
                                         class="mb-0 d-inline-block fs-6 lh-1"
-                                        href="https://shofy-grocery.botble.com/admin">Dashboard</a>
+                                        href="{{ route('admin.dashboard') }}">Dashboard</a>
                                 </li>
                                 <li
                                     class="breadcrumb-item">
@@ -32,7 +32,7 @@
                 <div class="col-auto ms-auto d-print-none">
                     <div class="btn-list">
                         <button
-                            class="btn btn-outline-primary  date-range-picker" type="button" data-format-value="From __from__ to __to__" data-format="YYYY-MM-DD" data-href="https://shofy-grocery.botble.com/admin/marketplaces/reports" data-start-date="2026-01-01 08:21:26" data-end-date="2026-01-30 08:21:26">
+                            class="btn btn-outline-primary  date-range-picker" type="button" data-format-value="From __from__ to __to__" data-format="YYYY-MM-DD" data-href="{{ route('admin.marketplace.reports') }}" data-start-date="{{ now()->startOfMonth() }}" data-end-date="{{ now() }}">
                             <svg class="icon icon-left svg-icon-ti-ti-calendar"
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="24"
@@ -50,7 +50,7 @@
                                 <path d="M11 15h1" />
                                 <path d="M12 15v3" />
                             </svg>
-                            From 2026-01-01 to 2026-01-30
+                            From {{ now()->startOfMonth()->format('Y-m-d') }} to {{ now()->format('Y-m-d') }}
 
                         </button>
                     </div>
@@ -93,13 +93,13 @@
                                                 Average Commission Rate
                                             </p>
                                             <h3 class="mb-n1 fs-1">
-                                                0.00%
+                                                {{ number_format($commissionRate, 2) }}%
                                             </h3>
                                         </div>
                                     </div>
                                     <div class="mt-3">
                                         <p class="text-secondary mb-0">
-                                            Total fee: $0.00
+                                            Total fee: ${{ number_format($totalFee, 2) }}
                                         </p>
                                     </div>
                                 </div>
@@ -142,7 +142,7 @@
                                                     stroke-linejoin="round">
                                                     <path d="M17 8v-3a1 1 0 0 0 -1 -1h-10a2 2 0 0 0 0 4h12a1 1 0 0 1 1 1v3m0 4v3a1 1 0 0 1 -1 1h-12a2 2 0 0 1 -2 -2v-12" />
                                                     <path d="M20 12v4h-4a2 2 0 0 1 0 -4h4" />
-                                                </svg> <strong>$0.00</strong>
+                                                </svg> <strong>${{ number_format($totalAmount - $totalFee, 2) }}</strong>
                                                 <small>Total Earnings</small>
                                             </div>
                                         </div>
@@ -151,14 +151,14 @@
                                                 <svg class="icon icon-sm  mb-0 me-1 svg-icon-ti-ti-circle-filled" style="color: #80bc00" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                                     <path d="M7 3.34a10 10 0 1 1 -4.995 8.984l-.005 -.324l.005 -.324a10 10 0 0 1 4.995 -8.336z" stroke-width="0" fill="currentColor" />
-                                                </svg> <strong>$0.00</strong>
+                                                </svg> <strong>${{ number_format($totalFee, 2) }}</strong>
                                                 <span>Total fee</span>
                                             </p>
                                             <p>
                                                 <svg class="icon icon-sm  mb-0 me-1 svg-icon-ti-ti-circle-filled" style="color: #E91E63" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                                     <path d="M7 3.34a10 10 0 1 1 -4.995 8.984l-.005 -.324l.005 -.324a10 10 0 0 1 4.995 -8.336z" stroke-width="0" fill="currentColor" />
-                                                </svg> <strong>$0.00</strong>
+                                                </svg> <strong>${{ number_format($totalAmount, 2) }}</strong>
                                                 <span>Total amount</span>
                                             </p>
                                         </div>
@@ -203,7 +203,7 @@
 
                     <div
                         id="top-performing-stores-card-widget-parent"
-                        class="widget-item col-md-3">
+                        class="widget-item col-md-4">
                         <div class="h-100 position-relative">
                             <div class="card analytic-card">
                                 <div class="card-body p-3">
@@ -234,12 +234,24 @@
                                     </div>
 
                                     <div class="mt-3">
-                                        <div class="px-3">
-                                            <p
-                                                class="smiley"
-                                                aria-hidden="true"></p>
-                                            <p>No data to display</p>
-                                        </div>
+                                        @if($topStores->count() > 0)
+                                            <ul class="list-group list-group-flush">
+                                                @foreach($topStores as $store)
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        <div>
+                                                            <div class="fw-bold">{{ $store->name }}</div>
+                                                            <div class="text-muted small">{{ $store->products_count }} products</div>
+                                                        </div>
+                                                        <a href="{{ route('admin.marketplace.store.show', $store->id) }}" class="btn btn-sm btn-outline-secondary">View</a>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        @else
+                                            <div class="px-3">
+                                                <p class="smiley" aria-hidden="true"></p>
+                                                <p>No data to display</p>
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -250,7 +262,7 @@
 
                     <div
                         id="withdrawal-status-chart-widget-parent"
-                        class="d-flex widget-item col-md-6">
+                        class="d-flex widget-item col-md-8">
                         <div class="card flex-fill">
                             <div class="card-header">
                                 <h4 class="card-title">
@@ -299,6 +311,34 @@
                                                             <th title="Created At" width="100">Created At</th>
                                                         </tr>
                                                     </thead>
+                                                    <tbody>
+                                                        @forelse($latestWithdrawals as $transaction)
+                                                            <tr>
+                                                                <td>{{ $transaction->id }}</td>
+                                                                <td>{{ $transaction->description ?? 'N/A' }}</td>
+                                                                <td>
+                                                                    @if($transaction->customer && $transaction->customer->store)
+                                                                        <a href="{{ route('admin.marketplace.store.show', $transaction->customer->store->id) }}">
+                                                                            {{ $transaction->customer->store->name }}
+                                                                        </a>
+                                                                    @else
+                                                                        N/A
+                                                                    @endif
+                                                                </td>
+                                                                <td>${{ number_format($transaction->fee, 2) }}</td>
+                                                                <td>${{ number_format($transaction->amount - $transaction->fee, 2) }}</td>
+                                                                <td>${{ number_format($transaction->amount, 2) }}</td>
+                                                                <td>
+                                                                    <span class="badge bg-secondary">Withdrawal</span>
+                                                                </td>
+                                                                <td>{{ $transaction->created_at ? $transaction->created_at->format('Y-m-d') : 'N/A' }}</td>
+                                                            </tr>
+                                                        @empty
+                                                            <tr>
+                                                                <td colspan="8" class="text-center">No recent transactions</td>
+                                                            </tr>
+                                                        @endforelse
+                                                    </tbody>
                                                 </table>
                                             </div>
                                         </div>
@@ -344,6 +384,34 @@
                                                             <th title="Created At" width="100">Created At</th>
                                                         </tr>
                                                     </thead>
+                                                    <tbody>
+                                                        @forelse($latestWithdrawals as $withdrawal)
+                                                            <tr>
+                                                                <td>{{ $withdrawal->id }}</td>
+                                                                <td>
+                                                                    @if($withdrawal->customer && $withdrawal->customer->store)
+                                                                        <a href="{{ route('admin.marketplace.store.show', $withdrawal->customer->store->id) }}">
+                                                                            {{ $withdrawal->customer->store->name }}
+                                                                        </a>
+                                                                    @else
+                                                                        N/A
+                                                                    @endif
+                                                                </td>
+                                                                <td>${{ number_format($withdrawal->amount, 2) }}</td>
+                                                                <td>${{ number_format($withdrawal->fee, 2) }}</td>
+                                                                <td>
+                                                                    <span class="badge bg-{{ $withdrawal->status == 'pending' ? 'warning' : ($withdrawal->status == 'completed' ? 'success' : 'secondary') }} {{ $withdrawal->status == 'pending' ? 'text-white' : '' }}">
+                                                                        {{ ucfirst($withdrawal->status) }}
+                                                                    </span>
+                                                                </td>
+                                                                <td>{{ $withdrawal->created_at ? $withdrawal->created_at->format('Y-m-d') : 'N/A' }}</td>
+                                                            </tr>
+                                                        @empty
+                                                            <tr>
+                                                                <td colspan="6" class="text-center">No recent withdrawals</td>
+                                                            </tr>
+                                                        @endforelse
+                                                    </tbody>
                                                 </table>
                                             </div>
                                         </div>
