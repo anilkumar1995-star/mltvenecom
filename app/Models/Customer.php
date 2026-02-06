@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Notifications\Notifiable;
 
-class Customer extends Model
+class Customer extends Authenticatable
 {
+    use Notifiable;
     protected $table = 'ec_customers';
 
     protected $fillable = [
@@ -16,7 +19,6 @@ class Customer extends Model
         'dob',
         'avatar',
         'status',
-        'is_vendor',
     ];
 
     protected $hidden = [
@@ -24,8 +26,30 @@ class Customer extends Model
         'remember_token',
     ];
 
-    public function store()
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'dob' => 'date',
+    ];
+
+    // Relationships
+    public function orders(): HasMany
     {
-        return $this->hasOne(Store::class, 'customer_id');
+        return $this->hasMany(Order::class, 'user_id');
+    }
+
+    public function addresses(): HasMany
+    {
+        return $this->hasMany(Address::class, 'customer_id');
+    }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class, 'customer_id');
+    }
+
+    // Scopes
+    public function scopeActive($query)
+    {
+        return $query->where('status', 'activated');
     }
 }
