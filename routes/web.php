@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\WithdrawlsController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Admin\PageController as AdminPageController;
 use App\Http\Controllers\StoreController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -34,6 +35,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/page/{id}', [AdminPageController::class, 'show'])->name('pages.show');
 
 // Admin demo route
 Route::get('/admin', function () {
@@ -207,6 +209,14 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
         Route::post('stores/{store}/verify', [AdminStoreController::class, 'verify'])->name('marketplace.store.verify');
         Route::delete('messages/{id}', [VendorController::class, 'destroyMessage'])->name('marketplace.vendors.destroy-message');
         });
+
+         
+          Route::get('pages', [AdminPageController::class, 'index'])->name('pages.index');
+          Route::get('pages/create', [AdminPageController::class, 'create'])->name('pages.create');
+          Route::post('pages', [AdminPageController::class, 'store'])->name('pages.store');
+          Route::get('pages/{id}/edit', [AdminPageController::class, 'edit'])->name('pages.edit');
+          Route::put('pages/{id}', [AdminPageController::class, 'update'])->name('pages.update');
+          Route::delete('pages/{id}', [AdminPageController::class, 'destroy'])->name('pages.destroy');
 
     Route::get('/menu-items-count', [MenuCountController::class, 'getCounts'])->name('menu-items-count');
 
