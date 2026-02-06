@@ -564,7 +564,7 @@
                         </div>
                     </li>
 
-                    {{-- <li class="nav-item"><a class="nav-link nav-priority-2" href="{{ url("/") }}/admin/pages"
+                     <li class="nav-item"><a class="nav-link nav-priority-2" href="{{ url("/") }}/admin/pages"
                             id="cms-core-page" title="Pages"><span class="nav-link-icon d-md-none d-lg-inline-block"
                                 title="Pages"><svg class="icon svg-icon-ti-ti-notebook"
                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -576,7 +576,7 @@
                                     <path d="M13 8l2 0"></path>
                                     <path d="M13 12l2 0"></path>
                                 </svg></span><span class="nav-link-title text-truncate"> Pages </span></a></li>
-                    <li class="nav-item dropdown"><a class="nav-link dropdown-toggle nav-priority-3" href="{{ url("/")
+                  {{--  <li class="nav-item dropdown"><a class="nav-link dropdown-toggle nav-priority-3" href="{{ url("/")
                             }}/admin#cms-plugins-blog" id="cms-plugins-blog" data-bs-toggle="dropdown"
                             data-bs-auto-close="false" role="button" aria-expanded="false" title="Blog"><span
                                 class="nav-link-icon d-md-none d-lg-inline-block" title="Blog"><svg
