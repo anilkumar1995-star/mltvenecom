@@ -6,6 +6,11 @@ use App\Http\Controllers\admin\ProductLabelConntroller;
 use App\Http\Controllers\Admin\ProductSpecification\GroupController;
 use App\Http\Controllers\admin\ProductTagConntroller;
 use App\Http\Controllers\admin\ProductTaxesConntroller;
+use App\Http\Controllers\Admin\GlobalOptionController;
+use App\Http\Controllers\Admin\ProductAttributeSetController;
+use App\Http\Controllers\Admin\ProductCollectionController;
+use App\Http\Controllers\Admin\TaxController;
+use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ReportsController;
 use App\Http\Controllers\Admin\SpecificationAttributeController;
@@ -30,8 +35,8 @@ use App\Http\Controllers\Frontend\HomeController as FrontendHomeController;
 use App\Http\Controllers\Frontend\ProductController as FrontendProductController;
 
 
-// FIX FOR LEGACY BOTBLE PACKAGES
-Route::get('/admin/dashboard-index', [DashboardController::class, 'index'])->name('dashboard.index');
+// FIX FOR LEGACY BOTBLE PACKAGES - Commented out as DashboardController doesn't exist
+// Route::get('/admin/dashboard-index', [DashboardController::class, 'index'])->name('dashboard.index');
 
 /*
 |--------------------------------------------------------------------------
@@ -59,7 +64,7 @@ Route::post('/admin/logout', [LoginController::class, 'logout'])->name('admin.lo
 // Route::post('/vendor/login', [VendorLoginController::class, 'login']);
 // Route::post('/vendor/logout', [VendorLoginController::class, 'logout'])->name('vendor.logout');
 
-Route::get('/admin/dashboard-redirect', [DashboardController::class, 'index'])->name('dashboard.index');
+// Route::get('/admin/dashboard-redirect', [DashboardController::class, 'index'])->name('dashboard.index');
 
 /*
 |--------------------------------------------------------------------------
@@ -73,7 +78,7 @@ Route::middleware('auth:customer,web')->prefix('customer')->name('customer.')->g
 
 
 Route::name('frontend.')->group(function () {
-    
+
     // Vendor Dashboard
     Route::middleware(['auth', 'role:vendor'])->prefix('vendor')->name('vendor.')->group(function () {
         Route::get('/dashboard', function () {
@@ -144,46 +149,7 @@ Route::get('/admin', function () {
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    // Product specification groups
-    Route::prefix('product-spec')->name('spec.')->group(function () {
-        // Specification attributes CRUD
-        Route::get('/attributes', [SpecificationAttributeController::class, 'index'])->name('attributes.index');
-        Route::get('/attributes/create', [SpecificationAttributeController::class, 'create'])->name('attributes.create');
-        Route::post('/attributes', [SpecificationAttributeController::class, 'store'])->name('attributes.store');
-        // static bulk-delete routes placed before parameterized ones
-        Route::get('/attributes/bulk-delete', function () {
-            return redirect()->route('admin.spec.attributes.index');
-        });
-        Route::post('/attributes/bulk-delete', [SpecificationAttributeController::class, 'bulkDelete'])->name('attributes.bulk_delete');
-        Route::get('/attributes/{attribute}/edit', [SpecificationAttributeController::class, 'edit'])->name('attributes.edit');
-        Route::put('/attributes/{attribute}', [SpecificationAttributeController::class, 'update'])->name('attributes.update');
-        Route::delete('/attributes/{attribute}', [SpecificationAttributeController::class, 'destroy'])->name('attributes.destroy');
 
-        // Specification tables CRUD
-        Route::get('/tables', [SpecificationTableController::class, 'index'])->name('tables.index');
-        Route::get('/tables/create', [SpecificationTableController::class, 'create'])->name('tables.create');
-        Route::post('/tables', [SpecificationTableController::class, 'store'])->name('tables.store');
-        // static bulk-delete before parameterized routes
-        Route::get('/tables/bulk-delete', function () {
-            return redirect()->route('admin.spec.tables.index');
-        });
-        Route::post('/tables/bulk-delete', [SpecificationTableController::class, 'bulkDelete'])->name('tables.bulk_delete');
-        Route::get('/tables/{table}/edit', [SpecificationTableController::class, 'edit'])->name('tables.edit');
-        Route::put('/tables/{table}', [SpecificationTableController::class, 'update'])->name('tables.update');
-        Route::delete('/tables/{table}', [SpecificationTableController::class, 'destroy'])->name('tables.destroy');
-        Route::get('/groups', [SpecificationGroupController::class, 'index'])->name('groups.index');
-        Route::get('/groups/create', [SpecificationGroupController::class, 'create'])->name('groups.create');
-        Route::post('/groups', [SpecificationGroupController::class, 'store'])->name('groups.store');
-        // If someone visits the bulk-delete URL directly with GET, redirect back to index
-        Route::get('/groups/bulk-delete', function () {
-            return redirect()->route('admin.spec.groups.index');
-        });
-        Route::post('/groups/bulk-delete', [SpecificationGroupController::class, 'bulkDelete'])->name('groups.bulk_delete');
-
-        Route::get('/groups/{group}/edit', [SpecificationGroupController::class, 'edit'])->name('groups.edit');
-        Route::put('/groups/{group}', [SpecificationGroupController::class, 'update'])->name('groups.update');
-        Route::delete('/groups/{group}', [SpecificationGroupController::class, 'destroy'])->name('groups.destroy');
-    });
 
     // Products CRUD
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
@@ -193,6 +159,13 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/products/bulk-delete', function () {
         return redirect()->route('admin.products.index');
     });
+
+    Route::get('/products/get-relations', [ProductController::class, 'getRelationProducts'])->name('products.get-relations');
+    Route::post('getatablesData',[ProductController::class,'getSpecificationtablesData'])->name('getatablesData');
+    Route::post('/get-attribute-values', [ProductController::class, 'getAttributeValues'])
+    ->name('getAttributeValues');
+
+    Route::get('/product-tags/all', [ProductController::class, 'getAllTags'])->name('product-tags.all');
     Route::post('/products/bulk-delete', [ProductController::class, 'bulkDelete'])->name('products.bulk_delete');
     Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
     Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
@@ -282,10 +255,63 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
         Route::post('bulk-delete', [ProductLabelConntroller::class, 'bulkDelete'])->name('productlables.bulk-delete');
     });
 
+    // Global Options Routes
+    Route::group(['prefix' => 'global-options'], function () {
+        Route::get('/', [GlobalOptionController::class, 'index'])->name('global-options.index');
+        Route::get('/create', [GlobalOptionController::class, 'create'])->name('global-options.create');
+        Route::post('/store', [GlobalOptionController::class, 'store'])->name('global-options.store');
+        Route::get('/{id}/edit', [GlobalOptionController::class, 'edit'])->name('global-options.edit');
+        Route::put('/{id}', [GlobalOptionController::class, 'update'])->name('global-options.update');
+        Route::post('/delete', [GlobalOptionController::class, 'destroy'])->name('global-options.delete');
+        Route::post('/bulk-delete', [GlobalOptionController::class, 'bulkDelete'])->name('global-options.bulk-delete');
+    });
+
+    // Product Attribute Sets Routes
+    Route::group(['prefix' => 'attribute-sets'], function () {
+        Route::get('/', [ProductAttributeSetController::class, 'index'])->name('attribute-sets.index');
+        Route::get('/create', [ProductAttributeSetController::class, 'create'])->name('attribute-sets.create');
+        Route::post('/store', [ProductAttributeSetController::class, 'store'])->name('attribute-sets.store');
+        Route::get('/{id}/edit', [ProductAttributeSetController::class, 'edit'])->name('attribute-sets.edit');
+        Route::put('/{id}', [ProductAttributeSetController::class, 'update'])->name('attribute-sets.update');
+        Route::post('/delete', [ProductAttributeSetController::class, 'destroy'])->name('attribute-sets.delete');
+        Route::post('/bulk-delete', [ProductAttributeSetController::class, 'bulkDelete'])->name('attribute-sets.bulk-delete');
+    });
+
+    // Product Collections Routes
+    Route::group(['prefix' => 'collections'], function () {
+        Route::get('/', [ProductCollectionController::class, 'index'])->name('collections.index');
+        Route::get('/create', [ProductCollectionController::class, 'create'])->name('collections.create');
+        Route::post('/store', [ProductCollectionController::class, 'store'])->name('collections.store');
+        Route::get('/{id}/edit', [ProductCollectionController::class, 'edit'])->name('collections.edit');
+        Route::put('/{id}', [ProductCollectionController::class, 'update'])->name('collections.update');
+        Route::post('/delete', [ProductCollectionController::class, 'destroy'])->name('collections.delete');
+        Route::post('/bulk-delete', [ProductCollectionController::class, 'bulkDelete'])->name('collections.bulk-delete');
+    });
+
+    // Taxes Routes
+    Route::group(['prefix' => 'taxes'], function () {
+        Route::get('/', [TaxController::class, 'index'])->name('taxes.index');
+        Route::get('/create', [TaxController::class, 'create'])->name('taxes.create');
+        Route::post('/store', [TaxController::class, 'store'])->name('taxes.store');
+        Route::get('/{id}/edit', [TaxController::class, 'edit'])->name('taxes.edit');
+        Route::put('/{id}', [TaxController::class, 'update'])->name('taxes.update');
+        Route::post('/delete', [TaxController::class, 'destroy'])->name('taxes.delete');
+        Route::post('/bulk-delete', [TaxController::class, 'bulkDelete'])->name('taxes.bulk-delete');
+    });
+
+    // FAQs Routes
+    Route::group(['prefix' => 'faqs'], function () {
+        Route::get('/', [FaqController::class, 'index'])->name('faqs.index');
+        Route::get('/create', [FaqController::class, 'create'])->name('faqs.create');
+        Route::post('/store', [FaqController::class, 'store'])->name('faqs.store');
+        Route::get('/{id}/edit', [FaqController::class, 'edit'])->name('faqs.edit');
+        Route::put('/{id}', [FaqController::class, 'update'])->name('faqs.update');
+        Route::post('/delete', [FaqController::class, 'destroy'])->name('faqs.delete');
+        Route::post('/bulk-delete', [FaqController::class, 'bulkDelete'])->name('faqs.bulk-delete');
+    });
 
 
-
-  Route::group(['prefix' => 'marketplaces'], function() {
+    Route::group(['prefix' => 'marketplaces'], function() {
         Route::get('stores', [AdminStoreController::class,'index'])->name('marketplace.store.index');
         Route::get('reports', [ReportsController::class,'reports'])->name('marketplace.reports');
         Route::get('withdrawls', [WithdrawlsController::class,'withdrawls'])->name('marketplace.withdrawls');
@@ -294,6 +320,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
         Route::get('vendors/{id}/edit', [VendorController::class, 'edit'])->name('marketplace.vendors.edit');
         Route::put('vendors/{id}', [VendorController::class, 'update'])->name('marketplace.vendors.update');
         Route::delete('vendors/{id}', [VendorController::class, 'destroy'])->name('marketplace.vendors.destroy');
+        Route::post('vendors/{id}/approve', [VendorController::class, 'approve'])->name('marketplace.vendors.approve');
         Route::get('unverified-vendors', [VendorController::class,'unverifiedVendors'])->name('marketplace.unverified-vendors');
         Route::get('messages', [VendorController::class,'messages'])->name('marketplace.messages');
         Route::get('stores/create', [AdminStoreController::class,'create'])->name('marketplace.store.create');
@@ -305,9 +332,9 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
         Route::delete('stores/{store}', [AdminStoreController::class, 'destroy'])->name('marketplace.store.destroy');
         Route::post('stores/{store}/verify', [AdminStoreController::class, 'verify'])->name('marketplace.store.verify');
         Route::delete('messages/{id}', [VendorController::class, 'destroyMessage'])->name('marketplace.vendors.destroy-message');
-        });
+    });
 
-         
+
           Route::get('pages', [AdminPageController::class, 'index'])->name('pages.index');
           Route::get('pages/create', [AdminPageController::class, 'create'])->name('pages.create');
           Route::post('pages', [AdminPageController::class, 'store'])->name('pages.store');

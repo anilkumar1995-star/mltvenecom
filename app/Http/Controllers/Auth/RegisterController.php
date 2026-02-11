@@ -53,9 +53,11 @@ class RegisterController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'type' => ['required', 'string'],
-            'shop_name' => ['required', 'string'],
-            'website' => ['required', 'string'],
-            'mobile' => ['required', 'string'],
+            'shop_name' => ['required_if:type,vendor', 'nullable', 'string'],
+            'website' => ['nullable', 'string'],
+            'mobile' => ['required_if:type,vendor', 'nullable', 'string'],
+            'pan_number' => ['required_if:type,vendor', 'nullable', 'string'],
+            'aadhar_number' => ['required_if:type,vendor', 'nullable', 'string'],
         ]);
     }
 
@@ -70,11 +72,15 @@ class RegisterController extends Controller
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'user_type' => $data['type'],
+            'role' => $data['type'], // 'vendor' or 'customer'
             'password' => Hash::make($data['password']),
-            'shop_name' => $data['shop_name'],
-            'website' => $data['website'],
-            'mobile' => $data['mobile'],
+            'shop_name' => $data['shop_name'] ?? null,
+            'website' => $data['website'] ?? null,
+            'mobile' => $data['mobile'] ?? null,
+            'pan_number' => $data['pan_number'] ?? null,
+            'aadhar_number' => $data['aadhar_number'] ?? null,
+            'status' => $data['type'] === 'vendor' ? 'pending' : 'active',
+            'is_approved' => $data['type'] === 'vendor' ? false : true,
         ]);
     }
 }

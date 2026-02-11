@@ -1,17 +1,16 @@
 <?php
 
-namespace Botble\Ecommerce\Models;
+namespace App\Models;
 
-use Botble\Base\Models\BaseModel;
-use Botble\Base\Models\Concerns\HasSlug;
-use Botble\Media\Facades\RvMedia;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
-class ProductAttribute extends BaseModel
+class ProductAttribute extends Model
 {
-    use HasSlug;
+    use HasFactory;
 
     protected $table = 'ec_product_attributes';
 
@@ -25,9 +24,22 @@ class ProductAttribute extends BaseModel
         'is_default',
     ];
 
-    public function getAttributeSetIdAttribute(int|string|null $value): int|string|null
+    protected $casts = [
+        'order' => 'integer',
+        'is_default' => 'boolean',
+    ];
+
+    protected static function booted()
     {
-        return $value;
+        static::saving(function ($model) {
+            if (empty($model->slug)) {
+                $model->slug = Str::slug($model->title);
+            }
+        });
+
+        static::deleted(function ($attribute) {
+            $attribute->productVariationItems()->delete();
+        });
     }
 
     public function productAttributeSet(): BelongsTo
@@ -35,53 +47,25 @@ class ProductAttribute extends BaseModel
         return $this->belongsTo(ProductAttributeSet::class, 'attribute_set_id');
     }
 
-    public function getGroupIdAttribute(int|string|null $value): int|string|null
-    {
-        return $value;
-    }
-
-    protected static function booted(): void
-    {
-        self::saving(function (self $model): void {
-            $model->slug = self::createSlug($model->title, $model->getKey());
-        });
-
-        static::deleted(
-            fn (ProductAttribute $productAttribute) => $productAttribute->productVariationItems()->delete()
-        );
-    }
-
     public function productVariationItems(): HasMany
     {
         return $this->hasMany(ProductVariationItem::class, 'attribute_id');
     }
 
-    public function getAttributeImageUrl(?ProductAttributeSet $attributeSet = null, array|Collection $productVariations = []): ?string
+    public function getImageUrl(): ?string
     {
-        if ($attributeSet && $attributeSet->use_image_from_product_variation) {
-            foreach ($productVariations as $productVariation) {
-                $attribute = $productVariation->productAttributes->where('attribute_set_id', $attributeSet->getKey())->first();
-                if ($attribute && $attribute->id == $this->getKey() && ($image = $productVariation->product->image)) {
-                    return RvMedia::getImageUrl($image);
-                }
-            }
-        }
-
-        if ($this->image) {
-            return RvMedia::getImageUrl($this->image);
-        }
-
-        return null;
+        return $this->image
+            ? asset('storage/' . $this->image)
+            : null;
     }
 
-    public function getAttributeStyle(?ProductAttributeSet $attributeSet = null, array|Collection $productVariations = []): string
+    public function getStyle(): string
     {
-        $imageUrl = $this->getAttributeImageUrl($attributeSet, $productVariations);
-
-        if ($imageUrl) {
-            return 'background-image: url(' . $imageUrl . '); background-size: cover; background-repeat: no-repeat; background-position: center;';
+        if ($this->image) {
+            $url = $this->getImageUrl();
+            return "background-image:url('$url');background-size:cover;background-position:center;";
         }
 
-        return 'background-color: ' . ($this->color ?: '#000') . ' !important;';
+        return 'background-color:' . ($this->color ?: '#000') . ';';
     }
 }

@@ -3,52 +3,49 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
-use App\Models\Product;
-use App\Models\ProductCategory;
-use App\Models\Brand;
+use App\Models\EcProduct;
+use App\Models\EcProductCategory;
+use App\Models\EcBrand;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        $featured_products = Product::published()
+        $featured_EcProducts = EcProduct::published()
             ->featured()
-            ->inStock()
             ->with(['brand', 'categories'])
             ->take(8)
             ->get();
 
-        $new_arrivals = Product::published()
-            ->inStock()
+        $new_arrivals = EcProduct::published()
             ->with(['brand', 'categories'])
             ->latest()
             ->take(8)
             ->get();
 
-        $on_sale = Product::published()
+        $on_sale = EcProduct::published()
             ->onSale()
-            ->inStock()
             ->with(['brand', 'categories'])
             ->take(8)
             ->get();
 
-        $categories = ProductCategory::published()
+        $categories = EcProductCategory::published()
             ->parent()
             ->featured()
             ->take(8)
             ->get();
 
-        $brands = Brand::published()
+        $EcBrands = EcBrand::published()
             ->featured()
             ->take(6)
             ->get();
 
         return view('frontend.home', compact(
-            'featured_products',
+            'featured_EcProducts',
             'new_arrivals',
             'on_sale',
             'categories',
-            'brands'
+            'EcBrands'
         ));
     }
 }

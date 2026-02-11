@@ -14,7 +14,7 @@
 
     <link href="{{ asset('storage/main/general/favicon.png') }}" rel="icon shortcut" type="image/x-icon">
     <meta property="og:image" content="{{ asset('storage/main/general/favicon.png') }}">
-    
+
 
     <meta name="description" content="Copyright 2026 © Your App. Version 1.4.3">
     <meta property="og:description" content="Copyright 2026 © Your App. Version 1.4.3">
@@ -57,7 +57,7 @@
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('css/language.css') }}">  --}}
 
 
-    
+
     <link media="all" type="text/css" rel="stylesheet" href="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/font-awesome/css/fontawesome.min.css?v=1.4.4">
     <link media="all" type="text/css" rel="stylesheet" href="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/select2/css/select2.min.css?v=1.4.4">
     <link media="all" type="text/css" rel="stylesheet" href="https://shofy-grocery.botble.com/vendor/core/core/base/css/libraries/select2.css?v=1.4.4">
@@ -79,7 +79,7 @@
     <script src="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/jquery.min.js?v=1.4.4"></script>
     <script src="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/jquery-compat/jquery4-compat.js?v=1.4.4"></script>
     <script src="https://shofy-grocery.botble.com/vendor/core/core/base/js/app.js?v=1.4.4"></script>
-    
+
 
     <script src="{{ asset('js/jquery.min.js.download') }}"></script>
     <script src="{{ asset('js/app.js.download') }}"></script>
@@ -736,6 +736,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-notify@0.5.5/dist/simple-notify.min.js"></script>
 
+    
     <script>
         $(document).ready(function() {
             $('#myTable').DataTable({

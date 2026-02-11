@@ -153,14 +153,16 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse($tags as $row)
+                                    @forelse($labels as $row)
                                     <tr>
                                         <td><input type="checkbox" class="form-check-input row-checkbox"
                                                 value="{{ $row->id }}"></td>
                                         <td class="text-center">{{ $loop->index + 1 }}</td>
-                                        <td class="text-start"><a
-                                                href="{{ route('admin.productlables.edit', $row->id) }}">{{ $row->name
-                                                }}</a></td>
+                                        <td class="text-start">
+                                            <a href="{{ route('admin.productlables.edit', $row->id) }}">
+                                                {{ $row->name }}
+                                            </a>
+                                        </td>
                                         <td>{{ $row->created_at }}</td>
                                         <td class="text-center">
                                             <span
@@ -183,7 +185,7 @@
                                     </tr>
                                     @empty
                                     <tr>
-                                        <td colspan="6" class="text-center">No tags found.</td>
+                                        <td colspan="6" class="text-center">No labels found.</td>
                                     </tr>
                                     @endforelse
                                 </tbody>

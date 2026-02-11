@@ -57,7 +57,6 @@
             @endif
 
             <!-- Add to Cart -->
-            @if(!$product->isOutOfStock())
             <form action="{{ route('frontend.cart.add') }}" method="POST" class="mb-4">
                 @csrf
                 <input type="hidden" name="product_id" value="{{ $product->id }}">
@@ -73,7 +72,6 @@
                     </div>
                 </div>
             </form>
-            @endif
 
             <!-- Categories -->
             @if($product->categories->count() > 0)

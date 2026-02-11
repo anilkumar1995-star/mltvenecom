@@ -23,8 +23,9 @@
 
     <main class="page-body page-content">
         <div class="container-xl">
-            <form method="POST" action="{{ route('admin.productlables.update') }}" id="labelForm">
+            <form method="POST" action="{{ route('admin.productlables.update', $label->id) }}" id="labelForm">
                 @csrf
+                @method('PUT')
                 <div class="row">
                     <div class="gap-3 col-md-9">
                         <div class="card mb-3">
@@ -35,7 +36,7 @@
                                             Name
                                         </label>
                                         <input class="form-control" data-counter="250" placeholder="Name" name="name"
-                                            type="text" id="name">
+                                            type="text" id="name" value="{{ $label->name }}">
                                     </div>
                                     <div class="mb-3 position-relative">
                                         <label class="form-label" for="color">
@@ -43,7 +44,7 @@
                                         </label>
                                         <div class="mb-3 position-relative">
                                             <input class="form-control" type="text" name="color" id="color"
-                                                value="transparent" data-bb-color-picker="" />
+                                                value="{{ $label->color ?? 'transparent' }}" data-bb-color-picker="" />
                                         </div>
                                     </div>
                                     <div class="mb-3 position-relative">
@@ -52,7 +53,7 @@
                                         </label>
                                         <div class="mb-3 position-relative">
                                             <input class="form-control" type="text" name="text_color" id="text_color"
-                                                value="#ffffff" data-bb-color-picker="" />
+                                                value="{{ $label->text_color ?? '#ffffff' }}" data-bb-color-picker="" />
                                         </div>
                                         <small class="form-hint">
                                             This color will be used for the product label text when the label appears in
@@ -136,9 +137,9 @@
                             </div>
                             <div class=" card-body">
                                 <select class="form-select" required="required" id="status-select-37231" name="status">
-                                    <option value="published">Published</option>
-                                    <option value="draft">Draft</option>
-                                    <option value="pending">Pending</option>
+                                    <option value="published" {{ $label->status == 'published' ? 'selected' : '' }}>Published</option>
+                                    <option value="draft" {{ $label->status == 'draft' ? 'selected' : '' }}>Draft</option>
+                                    <option value="pending" {{ $label->status == 'pending' ? 'selected' : '' }}>Pending</option>
                                 </select>
                             </div>
                         </div>

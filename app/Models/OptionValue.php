@@ -1,13 +1,11 @@
 <?php
 
-namespace Botble\Ecommerce\Models;
+namespace App\Models;
 
-use Botble\Base\Models\BaseModel;
-use Botble\Ecommerce\Option\OptionType\Field;
-use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class OptionValue extends BaseModel
+class OptionValue extends Model
 {
     protected $table = 'ec_option_value';
 
@@ -24,23 +22,18 @@ class OptionValue extends BaseModel
         return $this->belongsTo(Option::class, 'option_id');
     }
 
-    protected function formatPrice(): Attribute
+    // OPTIONAL: simple price calculation
+    public function getPriceAttribute()
     {
-        return Attribute::get(fn () => format_price($this->price));
-    }
+        if (!$this->option || !$this->option->product) {
+            return 0;
+        }
 
-    protected function price(): Attribute
-    {
-        return Attribute::get(function (): float|int {
-            $option = $this->option;
+        $productPrice = $this->option->product->price ?? 0;
 
-            if ($option->option_type == Field::class) {
-                return 0;
-            }
-
-            $product = $option->product;
-
-            return $this->affect_type == 0 ? $this->affect_price : (floatval($this->affect_price) * $product->original_price) / 100;
-        });
+        // affect_type: 0 = fixed, 1 = percentage
+        return $this->affect_type == 0
+            ? (float) $this->affect_price
+            : ($productPrice * $this->affect_price) / 100;
     }
 }
