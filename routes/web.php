@@ -132,7 +132,6 @@ Route::name('frontend.')->group(function () {
 Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
-Route::get('/page/{id}', [AdminPageController::class, 'show'])->name('pages.show');
 
 // Admin demo route
 Route::get('/admin', function () {
@@ -314,6 +313,8 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
           Route::get('pages/{id}/edit', [AdminPageController::class, 'edit'])->name('pages.edit');
           Route::put('pages/{id}', [AdminPageController::class, 'update'])->name('pages.update');
           Route::delete('pages/{id}', [AdminPageController::class, 'destroy'])->name('pages.destroy');
+          Route::get('/page/{id}', [AdminPageController::class, 'show'])->name('pages.show');
+
 
     Route::get('/menu-items-count', [MenuCountController::class, 'getCounts'])->name('menu-items-count');
 
