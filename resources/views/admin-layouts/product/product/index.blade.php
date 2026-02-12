@@ -1,8 +1,6 @@
 @extends('admin-layouts.app')
 @section('title', 'Products')
 @section('content')
-
-    <div class="page-wrapper">
         <div class="page-header d-print-none">
             <div class="container-xl">
                 <div class="row g-2 align-items-center">

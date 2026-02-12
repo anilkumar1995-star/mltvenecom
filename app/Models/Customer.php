@@ -52,4 +52,9 @@ class Customer extends Authenticatable
     {
         return $query->where('status', 'activated');
     }
+    
+    public function store()
+    {
+        return $this->hasOne(Store::class, 'customer_id');
+    }
 }
