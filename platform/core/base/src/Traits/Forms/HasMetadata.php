@@ -2,7 +2,8 @@
 
 namespace Botble\Base\Traits\Forms;
 
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
+els\BaseModel;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Kris\LaravelFormBuilder\Fields\FormField;

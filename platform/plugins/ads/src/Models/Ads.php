@@ -4,7 +4,7 @@ namespace Botble\Ads\Models;
 
 use Botble\Ads\Database\Factories\AdsFactory;
 use Botble\Base\Enums\BaseStatusEnum;
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Media\Facades\RvMedia;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;

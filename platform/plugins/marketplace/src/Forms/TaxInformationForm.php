@@ -3,7 +3,7 @@
 namespace Botble\Marketplace\Forms;
 
 use Botble\Base\Forms\FormAbstract;
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Marketplace\Forms\Concerns\HasSubmitButton;
 use Botble\Marketplace\Http\Requests\TaxInformationSettingRequest;
 use Illuminate\Support\Arr;

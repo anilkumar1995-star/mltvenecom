@@ -23,7 +23,7 @@
             <h1 class="h2">{{ $product->name }}</h1>
             
             @if($product->brand)
-                <p class="text-muted">Brand: <a href="{{ route('frontend.brands.show', $product->brand->slug) }}">{{ $product->brand->name }}</a></p>
+                <p class="text-muted">Brand: <a href="{{ route('frontend.brands.show', $product->brand->slug ?: $product->brand->id) }}">{{ $product->brand->name }}</a></p>
             @endif
 
             <!-- Price -->
@@ -68,6 +68,9 @@
                     <div class="col-auto d-flex align-items-end">
                         <button type="submit" class="btn btn-primary btn-lg">
                             <i class="fas fa-cart-plus"></i> Add to Cart
+                        </button>
+                        <button type="submit" formaction="{{ route('frontend.cart.buyNow') }}" class="btn btn-dark btn-lg ms-2">
+                            Buy Now
                         </button>
                     </div>
                 </div>

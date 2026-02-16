@@ -3,7 +3,7 @@
 namespace Botble\Table\Abstracts;
 
 use Botble\Base\Http\Responses\BaseHttpResponse;
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Base\Supports\Builders\HasLabel;
 use Botble\Base\Supports\Builders\HasPermissions;
 use Botble\Table\Abstracts\Concerns\HasConfirmation;

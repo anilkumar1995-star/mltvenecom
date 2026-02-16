@@ -2,7 +2,7 @@
 
 namespace Botble\Ecommerce\Models;
 
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Base\Models\Concerns\HasPhoneNumber;
 use Botble\Ecommerce\Traits\LocationTrait;
 

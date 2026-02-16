@@ -1,38 +1,38 @@
 <?php
 
+use App\Http\Controllers\Admin\FaqController;
+use App\Http\Controllers\Admin\GlobalOptionController;
 use App\Http\Controllers\Admin\MenuCountController;
+use App\Http\Controllers\Admin\PageController as AdminPageController;
+use App\Http\Controllers\Admin\ProductAttributeSetController;
+use App\Http\Controllers\Admin\ProductCollectionController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\admin\ProductLabelConntroller;
 use App\Http\Controllers\Admin\ProductSpecification\GroupController;
 use App\Http\Controllers\admin\ProductTagConntroller;
 use App\Http\Controllers\admin\ProductTaxesConntroller;
-use App\Http\Controllers\Admin\GlobalOptionController;
-use App\Http\Controllers\Admin\ProductAttributeSetController;
-use App\Http\Controllers\Admin\ProductCollectionController;
-use App\Http\Controllers\Admin\TaxController;
-use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ReportsController;
-use App\Http\Controllers\Admin\SpecificationAttributeController;
-use App\Http\Controllers\Admin\SpecificationGroupController;
-use App\Http\Controllers\Admin\SpecificationTableController;
 use App\Http\Controllers\Admin\StoreController as AdminStoreController;
+use App\Http\Controllers\Admin\TaxController;
 use App\Http\Controllers\Admin\VendorController;
 use App\Http\Controllers\Admin\WithdrawlsController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\Admin\PageController as AdminPageController;
-use App\Http\Controllers\StoreController;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\LoginController;
-
-
+use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\Frontend\CheckoutController;
 use App\Http\Controllers\Frontend\CustomerController;
 use App\Http\Controllers\Frontend\HomeController as FrontendHomeController;
+
 use App\Http\Controllers\Frontend\ProductController as FrontendProductController;
+use App\Http\Controllers\HomeController;
+
+use App\Http\Controllers\StoreController;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
+
 
 
 // FIX FOR LEGACY BOTBLE PACKAGES - Commented out as DashboardController doesn't exist
@@ -100,6 +100,7 @@ Route::name('frontend.')->group(function () {
     // Cart
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+    Route::post('/cart/buy-now', [CartController::class, 'buyNow'])->name('cart.buyNow');
     Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
     Route::delete('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
 
@@ -107,6 +108,8 @@ Route::name('frontend.')->group(function () {
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
     Route::post('/checkout/process', [CheckoutController::class, 'process'])->name('checkout.process');
     Route::get('/checkout/success', [CheckoutController::class, 'success'])->name('checkout.success');
+
+
 
     // Account Deletion Confirmation
     Route::get('/account/delete/confirm/{token}', [App\Http\Controllers\Frontend\AccountDeletionController::class, 'confirm'])->name('account.deletion.confirm');
@@ -140,8 +143,8 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/page/{id}', [AdminPageController::class, 'show'])->name('pages.show');
 
 // Admin demo route
-Route::get('/admin', function () {
-    return view('admin.dashboard');
+Route::get('/admin/dashboard', function () {
+    return view('home');
 })->name('admin.dashboard');
 
 // Admin profile routes

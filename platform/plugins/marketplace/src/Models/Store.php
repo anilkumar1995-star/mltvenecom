@@ -5,7 +5,7 @@ namespace Botble\Marketplace\Models;
 use Botble\ACL\Models\User;
 use Botble\Base\Casts\SafeContent;
 use Botble\Base\Enums\BaseStatusEnum;
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Base\Supports\Avatar;
 use Botble\Ecommerce\Models\Customer;
 use Botble\Ecommerce\Models\Discount;

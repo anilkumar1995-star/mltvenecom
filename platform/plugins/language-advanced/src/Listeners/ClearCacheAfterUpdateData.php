@@ -3,7 +3,7 @@
 namespace Botble\LanguageAdvanced\Listeners;
 
 use Botble\Base\Events\UpdatedContentEvent;
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Support\Services\Cache\Cache;
 
 class ClearCacheAfterUpdateData

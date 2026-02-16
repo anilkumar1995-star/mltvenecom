@@ -2,7 +2,7 @@
 
 namespace Botble\Payment\Models;
 
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Payment\Enums\PaymentMethodEnum;
 
 class PaymentLog extends BaseModel

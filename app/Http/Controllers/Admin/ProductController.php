@@ -100,7 +100,7 @@ class ProductController extends Controller
             }
 
             return response()->json(['success' => true, 'data' => $table->groups], 200);
-        }catch(Exception $e){
+        }catch(\Exception $e){
             return response()->json(['success' => false, 'message' => 'Error fetching data: ' . $e->getMessage()], 500);
         }
     }
@@ -125,7 +125,6 @@ public function getAttributeValues(Request $request)
 
     public function store(Request $request)
     {
-        // 1. Validation
         $request->validate([
             'name' => 'required|string|max:191',
             'sku' => 'nullable|string|max:191|unique:ec_products,sku',
@@ -133,17 +132,16 @@ public function getAttributeValues(Request $request)
             'sale_price' => 'nullable|numeric|min:0',
             'quantity' => 'nullable|integer|min:0',
             'status' => 'required|string|max:60',
-            // ... other validations can remain or be expanded
             'image_file' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validate gallery images
-            'video_file' => 'nullable|mimes:mp4,mov,ogg,qt|max:20000',      // Validate video
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'video_file' => 'nullable|mimes:mp4,mov,ogg,qt|max:20000',
         ]);
 
         DB::beginTransaction();
 
         try {
             $data = $request->except(['image_file', 'images', 'video_file', 'options', 'related_products', 'up_selling_products', 'cross_selling_products', 'selected_existing_faqs']);
-            
+
             $data['slug'] = \Illuminate\Support\Str::slug($request->name);
 
             // Force Pending for Vendors
@@ -162,31 +160,26 @@ public function getAttributeValues(Request $request)
                 foreach ($request->file('images') as $file) {
                     $galleryImages[] = $file->store('products', 'public');
                 }
-                $data['images'] = $galleryImages; // Model should cast this to array/json
+                $data['images'] = $galleryImages;
             }
 
             // 4. Handle Video
             if ($request->hasFile('video_file')) {
-                // Storing as array to mimic repeater structure if necessary, or just path
-                // Assuming simple path for now, or adapt based on model usage
                 $videoPath = $request->file('video_file')->store('products/videos', 'public');
-                 // If previous was repeater, it might expect [[ 'file' => ... ]]
-                 // For now, let's save the path. If model casts to array, Laravel handles string->array? No. 
-                 // Let's safe-guard:
-                 $data['video_media'] = [['file' => $videoPath]]; 
+                 $data['video_media'] = [['file' => $videoPath]];
             }
 
             // Defaults
             $data['created_by_id'] = auth()->id() ?? 0;
             $data['created_by_type'] = 'App\Models\User';
-            
+
             if ($request->has('faq_schema_config')) {
                 $data['faq_schema_config'] = array_values($request->input('faq_schema_config', []));
             }
 
             // Handle Tax ID (Schema has single tax_id, form has taxes[])
             if ($request->has('taxes') && is_array($request->input('taxes'))) {
-                $data['tax_id'] = $request->input('taxes')[0] ?? null; 
+                $data['tax_id'] = $request->input('taxes')[0] ?? null;
             }
 
             // 5. Create Product
@@ -203,7 +196,6 @@ public function getAttributeValues(Request $request)
             return response()->json([
                 'status' => true,
                 'message' => 'Product created successfully.',
-                'redirect' => route('admin.products.index')
             ]);
 
         } catch (\Exception $e) {
@@ -211,12 +203,12 @@ public function getAttributeValues(Request $request)
             return response()->json([
                 'status' => false,
                 'message' => 'Error: ' . $e->getMessage(),
-                'errors' => [$e->getMessage()] 
-            ], 500);
+                'errors' => [$e->getMessage()]
+            ]);
         }
     }
 
-        public function edit(EcProduct $product)
+    public function edit(EcProduct $product)
     {
         $data['categories'] = EcProductCategory::orderBy('id', 'desc')->get();
         $data['brands'] = EcBrand::orderBy('id', 'desc')->get();
@@ -232,11 +224,11 @@ public function getAttributeValues(Request $request)
         $data['collections'] = ProductCollection::orderBy('id', 'desc')->get();
         $data['productionlabels'] = ProductLabel::orderBy('id', 'desc')->get();
         $data['taxes'] = Tax::orderBy('id', 'desc')->get();
-        
+
         $data['product'] = $product;
 
-        return view('admin-layouts.product.product.edit', $data); 
-    }    
+        return view('admin-layouts.product.product.edit', $data);
+    }
 
     public function update(Request $request, EcProduct $product)
     {
@@ -257,7 +249,7 @@ public function getAttributeValues(Request $request)
 
         try {
             $data = $request->except(['image_file', 'images', 'video_file', 'options', 'related_products', 'up_selling_products', 'cross_selling_products', 'selected_existing_faqs']);
-            
+
             $data['slug'] = \Illuminate\Support\Str::slug($request->name);
 
             // Force Pending for Vendors
@@ -269,29 +261,29 @@ public function getAttributeValues(Request $request)
                 $data['image'] = $request->file('image_file')->store('products', 'public');
             }
 
-          
+
             if ($request->hasFile('images')) {
                 $galleryImages = $product->images && is_array($product->images) ? $product->images : [];
                 foreach ($request->file('images') as $file) {
                     $galleryImages[] = $file->store('products', 'public');
                 }
-                $data['images'] = $galleryImages; 
+                $data['images'] = $galleryImages;
             }
 
              if ($request->hasFile('video_file')) {
                  $videoPath = $request->file('video_file')->store('products/videos', 'public');
-                 $data['video_media'] = [['file' => $videoPath]]; 
+                 $data['video_media'] = [['file' => $videoPath]];
             }
 
              if ($request->has('faq_schema_config')) {
                 $data['faq_schema_config'] = array_values($request->input('faq_schema_config', []));
             } else {
-                 $data['faq_schema_config'] = null; 
+                 $data['faq_schema_config'] = null;
             }
 
             // Handle Tax ID
             if ($request->has('taxes') && is_array($request->input('taxes'))) {
-                $data['tax_id'] = $request->input('taxes')[0] ?? null; 
+                $data['tax_id'] = $request->input('taxes')[0] ?? null;
             }
 
             $product->update($data);
@@ -301,6 +293,23 @@ public function getAttributeValues(Request $request)
 
             // Sync Relations & FAQs
             $this->syncProductRelations($product, $request);
+
+            // Handle Tags
+            if ($request->has('tag')) {
+                $tagInput = $request->input('tag');
+                // Check if it is a JSON string
+                $tagsData = json_decode($tagInput, true);
+                if (json_last_error() === JSON_ERROR_NONE && is_array($tagsData)) {
+                     $tagIds = [];
+                     foreach ($tagsData as $tagItem) {
+                         if (!empty($tagItem['value'])) {
+                             $tag = EcProductTag::firstOrCreate(['name' => $tagItem['value']]);
+                             $tagIds[] = $tag->id;
+                         }
+                     }
+                     $product->tags()->sync($tagIds);
+                }
+            }
 
             DB::commit();
 
@@ -374,9 +383,9 @@ public function getAttributeValues(Request $request)
         DB::beginTransaction();
         try {
             $product->delete();
-            
+
             // Optionally delete related data if not handled by foreign keys or model events
-            // $product->options()->delete(); 
+            // $product->options()->delete();
             // $product->relatedProducts()->detach();
             // etc.
 

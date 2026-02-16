@@ -4,7 +4,7 @@ namespace Botble\Ecommerce\Models;
 
 use Botble\Base\Events\CreatedContentEvent;
 use Botble\Base\Events\DeletedContentEvent;
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Ecommerce\Events\ProductQuantityUpdatedEvent;
 use Botble\Ecommerce\Services\Products\UpdateDefaultProductService;
 use Illuminate\Database\Eloquent\Casts\Attribute;

@@ -3,7 +3,7 @@
 namespace Botble\Media\Models;
 
 use Botble\Base\Casts\SafeContent;
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Media\Facades\RvMedia;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;

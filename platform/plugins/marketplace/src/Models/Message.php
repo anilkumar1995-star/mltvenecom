@@ -2,7 +2,7 @@
 
 namespace Botble\Marketplace\Models;
 
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Ecommerce\Models\Customer;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 

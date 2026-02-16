@@ -1,19 +1,27 @@
 <?php
 
-namespace Botble\Ecommerce\Models\QueryBuilders;
+namespace App\Models\QueryBuilders;
 
-use Botble\Base\Models\BaseQueryBuilder;
+use Illuminate\Database\Eloquent\Builder;
 
-class StoreQueryBuilder extends BaseQueryBuilder
+class StoreQueryBuilder extends Builder
 {
-    public function wherePublished($column = 'status'): static
+    /**
+     * Filter only published stores with verified vendors.
+     *
+     * @param string $column
+     * @return $this
+     */
+    public function wherePublished(string $column = 'status'): static
     {
-        parent::wherePublished($column);
+        // Only where published (assuming 'published' status is 1)
+        $this->where($column, 1);
 
-        $this
-            ->whereHas('customer', function ($query): void {
-                $query->where('is_vendor', true)->whereNotNull('vendor_verified_at');
-            });
+        // Only stores whose customer is a verified vendor
+        $this->whereHas('customer', function ($query) {
+            $query->where('is_vendor', true)
+                  ->whereNotNull('vendor_verified_at');
+        });
 
         return $this;
     }

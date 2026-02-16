@@ -2,7 +2,7 @@
 
 namespace Botble\LanguageAdvanced\Models;
 
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 
 class TranslationResolver extends BaseModel
 {

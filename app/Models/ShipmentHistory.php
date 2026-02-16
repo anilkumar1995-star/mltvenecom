@@ -1,12 +1,14 @@
 <?php
 
-namespace Botble\Ecommerce\Models;
 
-use Botble\Base\Models\BaseModel;
+namespace App\Models;
+
+use App\Models\Shipment;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
-class ShipmentHistory extends BaseModel
+class ShipmentHistory extends Model
 {
     protected $table = 'ec_shipment_histories';
 
@@ -34,3 +36,4 @@ class ShipmentHistory extends BaseModel
         return $this->belongsTo(Order::class, 'order_id')->withDefault();
     }
 }
+

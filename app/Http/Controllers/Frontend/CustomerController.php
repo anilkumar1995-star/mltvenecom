@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
-use App\Models\Customer;
+// use App\Models\Customer;
 use App\Models\Order;
 use App\Models\Address;
 use Illuminate\Http\Request;

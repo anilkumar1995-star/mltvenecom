@@ -1,52 +1,42 @@
 <?php
 
-namespace Botble\Ecommerce\Http\Controllers\Fronts;
+namespace App\Http\Controllers\Frontend;
 
-use Botble\Ecommerce\Facades\EcommerceHelper;
-use Botble\Ecommerce\Facades\ProductCategoryHelper;
-use Botble\Ecommerce\Http\Controllers\BaseController;
-use Botble\Ecommerce\Services\Products\GetProductService;
-use Botble\Theme\Facades\Theme;
+use App\Http\Controllers\Controller;
+use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 
-class PublicAjaxController extends BaseController
+class PublicAjaxController extends Controller
 {
-    public function ajaxSearchProducts(Request $request, GetProductService $productService)
+    // 🔎 AJAX Product Search
+    public function ajaxSearchProducts(Request $request)
     {
-        $request->merge(['num' => 12]);
+        $keyword = $request->input('q');
 
-        $with = EcommerceHelper::withProductEagerLoadingRelations();
+        $products = Product::query()
+            ->when($keyword, function ($query) use ($keyword) {
+                $query->where('name', 'like', '%' . $keyword . '%');
+            })
+            ->latest()
+            ->take(12)
+            ->get();
 
-        $products = $productService->getProduct($request, null, null, $with);
-
-        $queries = $request->input();
-
-        foreach ($queries as $key => $query) {
-            if (! $query || $key == 'num' || (is_array($query) && ! Arr::get($query, 0))) {
-                unset($queries[$key]);
-            }
-        }
-
-        $total = $products->count();
-
-        return $this
-            ->httpResponse()
-            ->setData(view(EcommerceHelper::viewPath('includes.ajax-search-results'), compact('products', 'queries'))->render())
-            ->setMessage($total != 1 ? __(':total Products found', compact('total')) : __(':total Product found', compact('total')));
+        return response()->json([
+            'status' => true,
+            'total' => $products->count(),
+            'data' => $products
+        ]);
     }
 
+    // 📂 Categories Dropdown
     public function ajaxGetCategoriesDropdown()
     {
-        $categoriesDropdownView = Theme::getThemeNamespace('partials.product-categories-dropdown');
+        $categories = Category::select('id', 'name')->get();
 
-        return $this
-            ->httpResponse()
-            ->setData([
-                'select' => ProductCategoryHelper::renderProductCategoriesSelect(),
-                'dropdown' => view()->exists($categoriesDropdownView)
-                    ? view($categoriesDropdownView)->render()
-                    : null,
-            ]);
+        return response()->json([
+            'status' => true,
+            'data' => $categories
+        ]);
     }
 }

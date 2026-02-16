@@ -359,9 +359,9 @@
                                         <path d="M4 12v6a8 3 0 0 0 16 0v-6"></path>
                                     </svg></span><span class="nav-link-title text-truncate"> Product options
                                 </span></a>
-                                
-                                
-                                
+
+
+
                                 <a class="dropdown-item nav-priority-140" href="{{ url("/")
                                 }}/admin/ecommerce/product-labels" id="cms-plugins-product-label"
                                 title="Product labels"><span class="nav-link-icon d-md-none d-lg-inline-block"
@@ -642,7 +642,7 @@
                                     </path>
                                     <path d="M12 16v.01"></path>
                                     <path d="M12 13a2 2 0 0 0 .914 -3.782a1.98 1.98 0 0 0 -2.414 .483"></path>
-                                </svg>                            
+                                </svg>
                             </span>
                             <span class="nav-link-title text-truncate"> FAQs </span>
                         </a>
@@ -949,7 +949,7 @@
                                     <path d="M16 21l.01 0"></path>
                                 </svg></span><span class="nav-link-title text-truncate"> Simple Sliders
                             </span></a></li>
-                    
+
                     <li class="nav-item"><a class="nav-link nav-priority-430" href="{{ url("/") }}/admin/newsletters"
                             id="cms-plugins-newsletter" title="Newsletters"><span
                                 class="nav-link-icon d-md-none d-lg-inline-block" title="Newsletters"><svg

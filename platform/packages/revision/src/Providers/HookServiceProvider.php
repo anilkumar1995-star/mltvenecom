@@ -6,7 +6,7 @@ use Botble\Base\Facades\AdminHelper;
 use Botble\Base\Facades\Assets;
 use Botble\Base\Forms\FormAbstract;
 use Botble\Base\Forms\FormTab;
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Base\Supports\ServiceProvider;
 use Illuminate\Database\Eloquent\Model;
 

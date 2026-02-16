@@ -4,7 +4,7 @@ namespace Botble\Blog\Importers;
 
 use Botble\ACL\Models\User;
 use Botble\Base\Enums\BaseStatusEnum;
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Blog\Models\Category;
 use Botble\Blog\Models\Post;
 use Botble\Blog\Services\StoreCategoryService;

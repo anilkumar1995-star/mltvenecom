@@ -3,7 +3,7 @@
 namespace Botble\AuditLog\Models;
 
 use Botble\ACL\Models\User;
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Base\Models\BaseQueryBuilder;
 use Botble\Ecommerce\Models\Customer;
 use Botble\Setting\Enums\DataRetentionPeriod;

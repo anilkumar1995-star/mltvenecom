@@ -2,7 +2,7 @@
 
 namespace Botble\Menu\Repositories\Interfaces;
 
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Support\Repositories\Interfaces\RepositoryInterface;
 
 interface MenuInterface extends RepositoryInterface

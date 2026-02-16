@@ -7,7 +7,6 @@ use App\Http\Requests\Frontend\AccountDeletionRequest;
 use App\Models\CustomerDeletionRequest;
 use App\Notifications\ConfirmDeletionRequestNotification;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 

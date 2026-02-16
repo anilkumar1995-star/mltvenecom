@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class AppFaq extends Model
 {
-    protected $table = 'faqs';
+    protected $table = 'ec_faqs';
 
     protected $fillable = [
         'question',

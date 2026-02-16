@@ -2,7 +2,7 @@
 
 namespace Botble\Menu\Repositories\Eloquent;
 
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Menu\Models\Menu;
 use Botble\Menu\Repositories\Interfaces\MenuInterface;
 use Botble\Support\Repositories\Eloquent\RepositoriesAbstract;

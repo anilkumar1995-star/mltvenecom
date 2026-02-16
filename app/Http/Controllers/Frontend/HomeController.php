@@ -11,7 +11,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $featured_EcProducts = EcProduct::published()
+        $featured_products = EcProduct::published()
             ->featured()
             ->with(['brand', 'categories'])
             ->take(8)
@@ -40,12 +40,37 @@ class HomeController extends Controller
             ->take(6)
             ->get();
 
+        // All Products
+        $all_products = EcProduct::published()
+            ->with(['brand', 'categories'])
+            ->latest()
+            ->take(8)
+            ->get();
+
+        // Trending Products (Most Viewed)
+        $trending_products = EcProduct::published()
+            ->with(['brand', 'categories'])
+            ->orderBy('views', 'desc')
+            ->take(8)
+            ->get();
+
+        // Top Rated Products (Best Reviews)
+        $top_rated_products = EcProduct::published()
+            ->with(['brand', 'categories'])
+            ->orderBy('reviews_avg', 'desc')
+            ->orderBy('reviews_count', 'desc')
+            ->take(8)
+            ->get();
+
         return view('frontend.home', compact(
-            'featured_EcProducts',
+            'featured_products',
             'new_arrivals',
             'on_sale',
             'categories',
-            'EcBrands'
+            'EcBrands',
+            'all_products',
+            'trending_products',
+            'top_rated_products'
         ));
     }
 }

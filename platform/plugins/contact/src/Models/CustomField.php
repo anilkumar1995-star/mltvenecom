@@ -3,7 +3,7 @@
 namespace Botble\Contact\Models;
 
 use Botble\Base\Enums\BaseStatusEnum;
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Contact\Enums\CustomFieldType;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 

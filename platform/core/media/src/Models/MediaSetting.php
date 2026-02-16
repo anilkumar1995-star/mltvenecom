@@ -2,7 +2,7 @@
 
 namespace Botble\Media\Models;
 
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 
 class MediaSetting extends BaseModel
 {

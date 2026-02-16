@@ -82,17 +82,17 @@
                             <strong>${{ number_format($total, 2) }}</strong>
                         </div>
                         <div class="d-flex justify-content-between mb-2">
-                            <span>Tax (10%):</span>
-                            <strong>${{ number_format($total * 0.1, 2) }}</strong>
+                            <span>Tax (15%):</span>
+                            <strong>${{ number_format($total * 0.15, 2) }}</strong>
                         </div>
                         <div class="d-flex justify-content-between mb-2">
                             <span>Shipping:</span>
-                            <strong>$10.00</strong>
+                            <strong>$20.00</strong>
                         </div>
                         <hr>
                         <div class="d-flex justify-content-between mb-3">
                             <strong>Total:</strong>
-                            <strong class="text-primary">${{ number_format($total + ($total * 0.1) + 10, 2) }}</strong>
+                            <strong class="text-primary">${{ number_format($total + ($total * 0.15) + 20, 2) }}</strong>
                         </div>
                         <a href="{{ route('frontend.checkout.index') }}" class="btn btn-primary w-100 mb-2">
                             Proceed to Checkout

@@ -12,7 +12,7 @@ use Botble\Base\Forms\FieldOptions\TextFieldOption;
 use Botble\Base\Forms\Fields\ColorField;
 use Botble\Base\Forms\Fields\CoreIconField;
 use Botble\Base\Forms\Fields\TextField;
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Base\Supports\MetadataCache;
 use Botble\Base\Supports\RepositoryHelper;
 use Botble\Menu\Forms\MenuNodeForm;

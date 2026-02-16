@@ -2,7 +2,8 @@
 
 namespace Botble\Base\Repositories\Eloquent;
 
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
+els\BaseModel;
 use Botble\Base\Models\BaseQueryBuilder;
 use Botble\Base\Models\MetaBox;
 use Botble\Base\Repositories\Interfaces\MetaBoxInterface;

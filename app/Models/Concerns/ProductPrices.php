@@ -1,177 +1,114 @@
 <?php
 
-namespace Botble\Ecommerce\Models\Concerns;
+namespace App\Models\Concerns;
 
-use Botble\Ecommerce\Enums\DiscountTypeOptionEnum;
-use Botble\Ecommerce\Facades\Discount as DiscountFacade;
-use Botble\Ecommerce\Facades\EcommerceHelper;
-use Botble\Ecommerce\Facades\FlashSale as FlashSaleFacade;
-use Botble\Ecommerce\Services\Products\ProductPriceService;
-use Botble\Ecommerce\ValueObjects\ProductPrice;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
 trait ProductPrices
 {
     protected float $originalPrice = 0;
-
     protected float $finalPrice = 0;
 
-    protected ProductPrice $priceObject;
-
-    public function price(): ProductPrice
+    // Accessor for price (final price or original)
+    public function price(): float
     {
-        return $this->priceObject ??= ProductPrice::make($this);
+        return $this->finalPrice ?: $this->originalPrice ?: 0;
     }
 
-    protected function frontSalePrice(): Attribute
+    // Flash sale price (if you manage it yourself)
+    public function getFlashSalePrice(): ?float
     {
-        return Attribute::get(
-            fn () => app(ProductPriceService::class)->getPrice($this)
-        );
+        if (! isset($this->flash_sale_price)) {
+            return $this->price();
+        }
+
+        if (isset($this->flash_sale_quantity, $this->flash_sale_sold) &&
+            $this->flash_sale_quantity > $this->flash_sale_sold) {
+            return $this->flash_sale_price;
+        }
+
+        return $this->price();
     }
 
-    protected function originalPrice(): Attribute
+    // Discounted price
+    public function getDiscountPrice(): float
     {
-        return Attribute::get(
-            fn () => app(ProductPriceService::class)->getOriginalPrice($this)
-        );
+        $price = $this->price();
+
+        if (! isset($this->discount_type, $this->discount_value)) {
+            return $price;
+        }
+
+        return match ($this->discount_type) {
+            'same_price' => $this->discount_value,
+            'amount' => max(0, $price - $this->discount_value),
+            'percentage' => max(0, $price - ($price * $this->discount_value / 100)),
+            default => $price,
+        };
     }
 
-    public function getFlashSalePrice(): float|false|null
+    // Price including taxes
+    public function priceWithTaxes(): float
     {
-        if (! FlashSaleFacade::isEnabled()) {
+        if (! isset($this->tax_percentage) || $this->price_includes_tax) {
+            return $this->price();
+        }
+
+        return $this->price() * (1 + $this->tax_percentage / 100);
+    }
+
+    // Sale percentage
+    public function salePercent(): int
+    {
+        $original = $this->price();
+        $sale = $this->getDiscountPrice();
+
+        if ($original <= 0 || $sale >= $original) {
             return 0;
         }
 
-        $flashSale = FlashSaleFacade::getFacadeRoot()->flashSaleForProduct($this);
-
-        if ($flashSale && $flashSale->pivot->quantity > $flashSale->pivot->sold) {
-            return $flashSale->pivot->price;
-        }
-
-        return $this->price;
+        return (int) round(($original - $sale) / $original * 100);
     }
 
-    public function getDiscountPrice(): float|int|null
-    {
-        $productIds = array_unique([$this->getKey(), $this->original_product->id]);
-
-        $promotion = DiscountFacade::getFacadeRoot()
-            ->promotionForProduct($productIds);
-
-        if (! $promotion) {
-            return $this->price;
-        }
-
-        $price = $this->price;
-        switch ($promotion->type_option) {
-            case DiscountTypeOptionEnum::SAME_PRICE:
-                $price = $promotion->value;
-
-                break;
-            case DiscountTypeOptionEnum::AMOUNT:
-                $price = $price - $promotion->value;
-                if ($price < 0) {
-                    $price = 0;
-                }
-
-                break;
-            case DiscountTypeOptionEnum::PERCENTAGE:
-                $price = $price - ($price * $promotion->value / 100);
-                if ($price < 0) {
-                    $price = 0;
-                }
-
-                break;
-        }
-
-        return $price;
-    }
-
-    protected function frontSalePriceWithTaxes(): Attribute
-    {
-        return Attribute::get(function (): ?float {
-            if ($this->price_includes_tax) {
-                return $this->front_sale_price;
-            }
-
-            if (! EcommerceHelper::isDisplayProductIncludingTaxes()) {
-                return $this->front_sale_price;
-            }
-
-            return $this->front_sale_price + $this->front_sale_price * ($this->total_taxes_percentage / 100);
-        });
-    }
-
-    protected function priceWithTaxes(): Attribute
-    {
-        return Attribute::get(function (): ?float {
-            if ($this->price_includes_tax) {
-                return $this->price;
-            }
-
-            if (! EcommerceHelper::isDisplayProductIncludingTaxes()) {
-                return $this->price;
-            }
-
-            return $this->price + $this->price * ($this->total_taxes_percentage / 100);
-        });
-    }
-
-    protected function priceInTable(): Attribute
-    {
-        return Attribute::get(function () {
-            $price = format_price($this->front_sale_price);
-
-            if ($this->front_sale_price != $this->price) {
-                $price .= sprintf(' <del class="text-danger">%s</del>', format_price($this->price));
-            }
-
-            return $price;
-        });
-    }
-
-    protected function salePercent(): Attribute
-    {
-        return Attribute::get(function (): int {
-            if ($this->front_sale_price == 0 && $this->price !== 0) {
-                return 100;
-            }
-
-            if (! $this->front_sale_price || ! $this->price) {
-                return 0;
-            }
-
-            return (int) round(($this->price - $this->front_sale_price) / $this->price * 100);
-        });
-    }
-
+    // Check if on sale
     public function isOnSale(): bool
     {
-        return $this->front_sale_price !== $this->price;
+        return $this->getDiscountPrice() < $this->price();
     }
 
+    // Get/set original price
     public function getOriginalPrice(): float
     {
         return $this->originalPrice;
     }
 
-    public function setOriginalPrice(?float $price): static
+    public function setOriginalPrice(float $price): static
     {
-        $this->originalPrice = (float) $price;
-
+        $this->originalPrice = $price;
         return $this;
     }
 
+    // Get/set final price
     public function getFinalPrice(): float
     {
-        return $this->finalPrice;
+        return $this->finalPrice ?: $this->price();
     }
 
-    public function setFinalPrice(?float $price): static
+    public function setFinalPrice(float $price): static
     {
-        $this->finalPrice = (float) $price;
-
+        $this->finalPrice = $price;
         return $this;
+    }
+
+    // Accessor for displaying formatted price
+    protected function priceInTable(): Attribute
+    {
+        return Attribute::get(function () {
+            $price = number_format($this->getDiscountPrice(), 2);
+            if ($this->getDiscountPrice() < $this->price()) {
+                $price .= ' <del>' . number_format($this->price(), 2) . '</del>';
+            }
+            return $price;
+        });
     }
 }

@@ -1,16 +1,14 @@
 <?php
 
-namespace Botble\Ecommerce\Models;
 
-use Botble\Base\Models\BaseModel;
-use Botble\Ecommerce\Traits\LocationTrait;
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class ShippingRuleItem extends BaseModel
+class ShippingRuleItem extends Model
 {
-    use LocationTrait;
-
     protected $table = 'ec_shipping_rule_items';
 
     protected $fillable = [
@@ -35,6 +33,7 @@ class ShippingRuleItem extends BaseModel
 
     protected function nameItem(): Attribute
     {
-        return Attribute::get(fn () => trim(implode(', ', array_filter([$this->state_name, $this->city_name, $this->zip_code]))));
+        return Attribute::get(fn () => trim(implode(', ', array_filter([$this->state, $this->city, $this->zip_code]))));
     }
 }
+

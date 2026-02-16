@@ -20,7 +20,7 @@ class ProductTag extends Model
     public function products(): BelongsToMany
     {
         return $this->belongsToMany(
-            Product::class,
+            EcProduct::class,
             'ec_product_tag_product',
             'tag_id',
             'product_id'

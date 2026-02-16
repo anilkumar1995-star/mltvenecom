@@ -1,11 +1,12 @@
 <?php
 
-namespace Botble\Ecommerce\Models;
 
-use Botble\Base\Models\BaseModel;
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class DiscountCustomer extends BaseModel
+class DiscountCustomer extends Model
 {
     protected $table = 'ec_discount_customers';
 
@@ -19,3 +20,4 @@ class DiscountCustomer extends BaseModel
         return $this->belongsTo(Customer::class, 'customer_id')->withDefault();
     }
 }
+

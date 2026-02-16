@@ -3,7 +3,7 @@
 namespace Botble\Ecommerce\Models;
 
 use Botble\ACL\Models\User;
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Ecommerce\Enums\OrderReturnHistoryActionEnum;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 

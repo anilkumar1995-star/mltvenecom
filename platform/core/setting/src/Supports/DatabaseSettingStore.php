@@ -2,7 +2,7 @@
 
 namespace Botble\Setting\Supports;
 
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Base\Supports\Helper;
 use Botble\Setting\Models\Setting;
 use Illuminate\Database\Eloquent\Builder;

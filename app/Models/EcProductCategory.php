@@ -55,7 +55,10 @@ class EcProductCategory extends Model
 
     public function scopeParent(Builder $query)
     {
-        return $query->whereNull('parent_id');
+        return $query->where(function ($q) {
+            $q->whereNull('parent_id')
+              ->orWhere('parent_id', 0);
+        });
     }
 
     public function scopeFeatured(Builder $query)

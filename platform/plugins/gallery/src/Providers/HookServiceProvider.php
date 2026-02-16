@@ -11,7 +11,7 @@ use Botble\Base\Forms\FieldOptions\SelectFieldOption;
 use Botble\Base\Forms\Fields\NumberField;
 use Botble\Base\Forms\Fields\SelectField;
 use Botble\Base\Forms\Fields\TextField;
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Base\Supports\ServiceProvider;
 use Botble\Gallery\Facades\Gallery;
 use Botble\Gallery\Models\Gallery as GalleryModel;

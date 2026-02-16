@@ -2,7 +2,7 @@
 
 namespace Botble\Widget\Models;
 
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Language\Facades\Language;
 use Botble\Theme\Facades\Theme;
 use Illuminate\Database\Eloquent\Casts\Attribute;

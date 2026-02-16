@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\EcProduct;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class ProductLabel extends Model
 {
@@ -20,7 +21,7 @@ class ProductLabel extends Model
     public function products(): BelongsToMany
     {
         return $this->belongsToMany(
-            Product::class,
+            EcProduct::class,
             'ec_product_label_products',
             'product_label_id',
             'product_id'

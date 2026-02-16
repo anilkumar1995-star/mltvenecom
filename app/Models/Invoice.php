@@ -1,16 +1,15 @@
 <?php
 
-namespace Botble\Ecommerce\Models;
 
-use Botble\Base\Models\BaseModel;
-use Botble\Ecommerce\Enums\InvoiceStatusEnum;
-use Botble\Payment\Models\Payment;
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
-class Invoice extends BaseModel
+class Invoice extends Model
 {
     protected $table = 'ec_invoices';
 
@@ -48,7 +47,7 @@ class Invoice extends BaseModel
         'payment_fee' => 'float',
         'discount_amount' => 'float',
         'amount' => 'float',
-        'status' => InvoiceStatusEnum::class,
+        'status' => 'string',
         'paid_at' => 'datetime',
     ];
 
@@ -75,13 +74,13 @@ class Invoice extends BaseModel
 
     public function payment(): BelongsTo
     {
-        return $this->belongsTo(Payment::class)->withDefault();
+        return $this->belongsTo(Payment::class)->withDefault(); // Assuming Payment model exists or will be fixed
     }
 
     public static function generateUniqueCode(): string
     {
-        $prefix = get_ecommerce_setting('invoice_code_prefix', 'INV-');
-        $nextInsertId = BaseModel::determineIfUsingUuidsForId() ? static::query()->count() + 1 : static::query()->max('id') + 1;
+        $prefix = 'INV-';
+        $nextInsertId = static::query()->max('id') + 1;
 
         do {
             $code = sprintf('%s%d', $prefix, $nextInsertId);
@@ -110,3 +109,4 @@ class Invoice extends BaseModel
         });
     }
 }
+

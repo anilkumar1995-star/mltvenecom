@@ -2,7 +2,7 @@
 
 namespace Botble\Marketplace\Models;
 
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Marketplace\Facades\MarketplaceHelper;
 use Exception;
 use Illuminate\Support\Facades\Hash;

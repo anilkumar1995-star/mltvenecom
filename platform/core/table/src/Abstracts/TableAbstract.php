@@ -8,7 +8,7 @@ use Botble\Base\Contracts\Builders\Extensible as ExtensibleContract;
 use Botble\Base\Facades\Assets;
 use Botble\Base\Facades\Form;
 use Botble\Base\Facades\Html;
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Base\Supports\Builders\Extensible;
 use Botble\Base\Supports\Builders\RenderingExtensible;
 use Botble\Support\Repositories\Caches\CacheAbstractDecorator;

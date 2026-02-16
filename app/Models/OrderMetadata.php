@@ -1,11 +1,12 @@
 <?php
 
-namespace Botble\Ecommerce\Models;
 
-use Botble\Base\Models\BaseModel;
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class OrderMetadata extends BaseModel
+class OrderMetadata extends Model
 {
     protected $table = 'ec_order_metadata';
 
@@ -20,3 +21,4 @@ class OrderMetadata extends BaseModel
         return $this->belongsTo(Order::class, 'order_id');
     }
 }
+

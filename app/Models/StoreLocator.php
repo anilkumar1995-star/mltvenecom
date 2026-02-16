@@ -1,14 +1,12 @@
 <?php
 
-namespace Botble\Ecommerce\Models;
 
-use Botble\Base\Models\BaseModel;
-use Botble\Ecommerce\Traits\LocationTrait;
+namespace App\Models;
 
-class StoreLocator extends BaseModel
+use Illuminate\Database\Eloquent\Model;
+
+class StoreLocator extends Model
 {
-    use LocationTrait;
-
     protected $table = 'ec_store_locators';
 
     protected $fillable = [
@@ -24,3 +22,4 @@ class StoreLocator extends BaseModel
         'is_shipping_location',
     ];
 }
+

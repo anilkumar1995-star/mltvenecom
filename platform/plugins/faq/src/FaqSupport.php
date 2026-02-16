@@ -5,7 +5,7 @@ namespace Botble\Faq;
 use Botble\Base\Facades\Assets;
 use Botble\Base\Facades\BaseHelper;
 use Botble\Base\Facades\MetaBox;
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Faq\Contracts\Faq as FaqContract;
 use Botble\Faq\Models\Faq;
 use Botble\Theme\Facades\Theme;

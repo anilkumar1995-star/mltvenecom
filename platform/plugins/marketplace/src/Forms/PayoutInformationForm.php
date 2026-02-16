@@ -7,7 +7,7 @@ use Botble\Base\Forms\Fields\HtmlField;
 use Botble\Base\Forms\Fields\SelectField;
 use Botble\Base\Forms\Fields\TextField;
 use Botble\Base\Forms\FormAbstract;
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Marketplace\Enums\PayoutPaymentMethodsEnum;
 use Botble\Marketplace\Forms\Concerns\HasSubmitButton;
 use Botble\Marketplace\Http\Requests\PayoutInformationSettingRequest;

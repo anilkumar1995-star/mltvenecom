@@ -2,7 +2,7 @@
 
 namespace Botble\Ecommerce\Models;
 
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Ecommerce\Enums\OrderAddressTypeEnum;
 use Botble\Ecommerce\Enums\OrderCancellationReasonEnum;
 use Botble\Ecommerce\Enums\OrderStatusEnum;

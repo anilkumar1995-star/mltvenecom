@@ -6,7 +6,7 @@ use Botble\Base\Casts\SafeContent;
 use Botble\Base\Contracts\HasTreeCategory as HasTreeCategoryContract;
 use Botble\Base\Enums\BaseStatusEnum;
 use Botble\Base\Facades\Html;
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Base\Traits\HasTreeCategory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;

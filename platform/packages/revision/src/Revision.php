@@ -4,7 +4,7 @@ namespace Botble\Revision;
 
 use Botble\ACL\Models\User;
 use Botble\Base\Facades\BaseHelper;
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Exception;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Str;

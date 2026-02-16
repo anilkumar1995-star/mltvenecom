@@ -2,7 +2,7 @@
 
 namespace Botble\Slug;
 
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
 class SlugCompiler

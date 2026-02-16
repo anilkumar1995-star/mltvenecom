@@ -139,6 +139,26 @@ class EcProduct extends Model
         );
     }
 
+    public function productFaqs(): BelongsToMany
+    {
+        return $this->faqs();
+    }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class, 'product_id');
+    }
+
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            EcProductTag::class,
+            'ec_product_tag_product',
+            'product_id',
+            'tag_id'
+        );
+    }
+
  
     public function scopePublished(Builder $query): Builder
     {
@@ -182,5 +202,18 @@ class EcProduct extends Model
     public function getFinalPriceAttribute(): float
     {
         return $this->is_on_sale ? (float) $this->sale_price : (float) $this->price;
+    }
+
+    public function isOutOfStock(): bool
+    {
+        if ($this->with_storehouse_management) {
+             return $this->quantity <= 0 && !$this->allow_checkout_when_out_of_stock;
+        }
+        return $this->stock_status === 'out_of_stock';
+    }
+
+    public function getDiscountPercentage(): int
+    {
+        return $this->discount_percent;
     }
 }

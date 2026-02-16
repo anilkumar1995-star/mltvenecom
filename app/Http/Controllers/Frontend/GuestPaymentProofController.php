@@ -1,115 +1,67 @@
 <?php
 
-namespace Botble\Ecommerce\Http\Controllers\Fronts;
+namespace App\Http\Controllers\Frontend;
 
-use Botble\Base\Facades\EmailHandler;
-use Botble\Base\Http\Controllers\BaseController;
-use Botble\Ecommerce\Facades\EcommerceHelper;
-use Botble\Ecommerce\Http\Requests\Fronts\UploadProofRequest;
-use Botble\Ecommerce\Models\Order;
+use App\Http\Controllers\Controller;
+use App\Models\Order;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
 
-class GuestPaymentProofController extends BaseController
+class GuestPaymentProofController extends Controller
 {
-    protected function validateOrderToken(string $token): ?Order
+    private function getOrder(string $token): Order
     {
-        // Validate token format (should be a valid UUID or similar)
-        abort_if(! $token || strlen($token) < 20, 404);
+        abort_if(strlen($token) < 10, 404);
 
-        // Rate limiting by IP to prevent brute force attempts
-        $key = 'payment-proof-access:' . request()->ip();
-        abort_if(RateLimiter::tooManyAttempts($key, 10), Response::HTTP_TOO_MANY_REQUESTS, 'Too many attempts. Please try again later.');
+        $key = 'payment-proof:' . request()->ip();
 
-        RateLimiter::hit($key, 60); // 10 attempts per minute
+        abort_if(
+            RateLimiter::tooManyAttempts($key, 10),
+            Response::HTTP_TOO_MANY_REQUESTS,
+            'Too many attempts'
+        );
 
-        // Find order by token
-        $order = Order::query()
-            ->where('token', $token)
-            ->first();
+        RateLimiter::hit($key, 60);
 
+        $order = Order::where('token', $token)->first();
         abort_unless($order, 404);
 
         return $order;
     }
-    public function upload(string $token, UploadProofRequest $request)
+
+    public function upload(string $token, Request $request)
     {
-        if (! EcommerceHelper::isPaymentProofEnabled()) {
-            return $this
-                ->httpResponse()
-                ->setError()
-                ->setMessage(__('Payment proof upload is currently disabled.'));
-        }
-
-        if (! EcommerceHelper::isGuestPaymentProofEnabled()) {
-            return $this
-                ->httpResponse()
-                ->setError()
-                ->setMessage(__('Guest payment proof upload is currently disabled.'));
-        }
-
-        // Validate order token with rate limiting
-        $order = $this->validateOrderToken($token);
-
-        // Check if order can accept payment proof
-        if (! $order->canBeCanceled()) {
-            return $this
-                ->httpResponse()
-                ->setError()
-                ->setMessage(__('This order cannot accept payment proof uploads at this time.'));
-        }
-
-        $storage = Storage::disk('local');
-
-        if ($order->proof_file) {
-            $storage->delete($order->proof_file);
-        }
-
-        if (! $storage->exists('proofs')) {
-            $storage->makeDirectory('proofs');
-        }
-
-        $file = $request->file('file');
-
-        $proofFilePath = $storage->putFileAs('proofs', $file, sprintf('%s-%s', $order->getKey(), $file->getClientOriginalName()));
-
-        $order->update([
-            'proof_file' => $proofFilePath,
+        $request->validate([
+            'file' => 'required|file|mimes:jpg,png,pdf|max:2048',
         ]);
 
-        // Prepare email variables
-        $emailVariables = [
-            'customer_name' => $order->user->name ?? $order->address->name,
-            'customer_email' => $order->user->email ?? $order->address->email,
-            'order_id' => get_order_code($order->getKey()),
-            'order_link' => route('orders.edit', $order),
-        ];
+        $order = $this->getOrder($token);
 
-        if (is_plugin_active('payment') && $order->payment->id) {
-            $emailVariables['payment_link'] = route('payment.show', $order->payment->id);
+        // old file delete
+        if ($order->proof_file) {
+            Storage::disk('public')->delete($order->proof_file);
         }
 
-        EmailHandler::setModule(ECOMMERCE_MODULE_SCREEN_NAME)
-            ->setVariableValues($emailVariables)
-            ->sendUsingTemplate('payment-proof-upload-notification', EcommerceHelper::getAdminNotificationEmails(), [
-                'attachments' => [$storage->path($proofFilePath)],
-            ]);
+        $path = $request->file('file')->store('proofs', 'public');
 
-        return $this
-            ->httpResponse()
-            ->setMessage(__('Uploaded proof successfully'));
+        $order->update([
+            'proof_file' => $path,
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Proof uploaded successfully',
+        ]);
     }
 
     public function download(string $token)
     {
-        // Validate order token with rate limiting
-        $order = $this->validateOrderToken($token);
+        $order = $this->getOrder($token);
 
-        $storage = Storage::disk('local');
+        abort_unless($order->proof_file, 404);
 
-        abort_unless($order->proof_file && $storage->exists($order->proof_file), 404);
-
-        return $storage->download($order->proof_file);
+        return Storage::disk('public')->download($order->proof_file);
     }
 }

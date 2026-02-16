@@ -1,13 +1,12 @@
 <?php
 
-namespace Botble\Ecommerce\Models;
+namespace App\Models;
 
-use Botble\Base\Models\BaseModel;
-use Botble\Ecommerce\Enums\ProductLicenseCodeStatusEnum;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class ProductLicenseCode extends BaseModel
+class ProductLicenseCode extends Model
 {
     protected $table = 'ec_product_license_codes';
 
@@ -21,14 +20,13 @@ class ProductLicenseCode extends BaseModel
 
     protected $casts = [
         'assigned_at' => 'datetime',
-        'status' => ProductLicenseCodeStatusEnum::class,
     ];
 
-    protected static function booted(): void
-    {
-        // License codes can now be created for both main products and variations
-        // This allows each variation to have its own specific license codes
-    }
+    /*
+    |--------------------------------------------------------------------------
+    | Relationships
+    |--------------------------------------------------------------------------
+    */
 
     public function product(): BelongsTo
     {
@@ -40,21 +38,27 @@ class ProductLicenseCode extends BaseModel
         return $this->belongsTo(OrderProduct::class, 'assigned_order_product_id');
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Helper Methods
+    |--------------------------------------------------------------------------
+    */
+
     public function isAvailable(): bool
     {
-        return $this->status->getValue() === ProductLicenseCodeStatusEnum::AVAILABLE;
+        return $this->status === 'available';
     }
 
     public function isUsed(): bool
     {
-        return $this->status->getValue() === ProductLicenseCodeStatusEnum::USED;
+        return $this->status === 'used';
     }
 
-    public function markAsUsed(OrderProduct $orderProduct): void
+    public function markAsUsed($orderProductId): void
     {
         $this->update([
-            'status' => ProductLicenseCodeStatusEnum::USED,
-            'assigned_order_product_id' => $orderProduct->id,
+            'status' => 'used',
+            'assigned_order_product_id' => $orderProductId,
             'assigned_at' => now(),
         ]);
     }
@@ -62,20 +66,26 @@ class ProductLicenseCode extends BaseModel
     public function markAsAvailable(): void
     {
         $this->update([
-            'status' => ProductLicenseCodeStatusEnum::AVAILABLE,
+            'status' => 'available',
             'assigned_order_product_id' => null,
             'assigned_at' => null,
         ]);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Scopes
+    |--------------------------------------------------------------------------
+    */
+
     public function scopeAvailable(Builder $query): Builder
     {
-        return $query->where('status', ProductLicenseCodeStatusEnum::AVAILABLE);
+        return $query->where('status', 'available');
     }
 
     public function scopeUsed(Builder $query): Builder
     {
-        return $query->where('status', ProductLicenseCodeStatusEnum::USED);
+        return $query->where('status', 'used');
     }
 
     public function scopeForProduct(Builder $query, int $productId): Builder

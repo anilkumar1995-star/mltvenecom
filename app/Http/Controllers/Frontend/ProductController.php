@@ -66,7 +66,12 @@ class ProductController extends Controller
     public function show($slug)
     {
         $product = EcProduct::published()
-            ->where('slug', $slug)
+            ->where(function ($query) use ($slug) {
+                $query->where('slug', $slug);
+                if (is_numeric($slug)) {
+                    $query->orWhere('id', $slug);
+                }
+            })
             ->with(['brand', 'categories', 'reviews.customer', 'tags'])
             ->firstOrFail();
         // dd($product);
@@ -105,7 +110,12 @@ class ProductController extends Controller
     public function brand($slug)
     {
         $brand = EcBrand::published()
-            ->where('slug', $slug)
+            ->where(function ($query) use ($slug) {
+                $query->where('slug', $slug);
+                if (is_numeric($slug)) {
+                    $query->orWhere('id', $slug);
+                }
+            })
             ->firstOrFail();
 
         $products = EcProduct::published()

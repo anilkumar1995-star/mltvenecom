@@ -64,7 +64,7 @@ class LoginController extends Controller
             $user = Auth::guard('web')->user();
 
             if ($user->role === 'admin') {
-                return redirect()->intended(route('home'));
+                return redirect()->intended(route('admin.dashboard'));
             }
 
             // Check for Vendor/User approval
@@ -92,7 +92,7 @@ class LoginController extends Controller
         // 2. Web Guard
         if (auth()->guard('web')->check()) {
             if ($user->role === 'admin') {
-                return redirect()->route('home');
+                return redirect()->route('admin.home');
             }
             // Vendor/Others -> Customer Dashboard
             return redirect()->route('frontend.customer.dashboard');
@@ -139,7 +139,8 @@ class LoginController extends Controller
         $request->session()->regenerateToken();
 
         // Redirect to login page
-        return redirect()->route('login');
+        // Redirect to home page
+        return redirect('/');
     }
 
 }

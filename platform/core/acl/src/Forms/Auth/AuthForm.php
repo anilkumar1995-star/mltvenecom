@@ -6,7 +6,8 @@ use Botble\Base\Facades\Assets;
 use Botble\Base\Forms\FieldOptions\HtmlFieldOption;
 use Botble\Base\Forms\Fields\HtmlField;
 use Botble\Base\Forms\FormAbstract;
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
+els\BaseModel;
 
 class AuthForm extends FormAbstract
 {

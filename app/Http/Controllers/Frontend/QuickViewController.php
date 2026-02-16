@@ -1,69 +1,51 @@
 <?php
 
-namespace Botble\Ecommerce\Http\Controllers\Fronts;
+namespace App\Http\Controllers\Frontend;
 
-use Botble\Base\Http\Controllers\BaseController;
-use Botble\Ecommerce\Facades\EcommerceHelper;
-use Botble\Theme\Facades\Theme;
+use App\Http\Controllers\Controller;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
-class QuickViewController extends BaseController
+class QuickViewController extends Controller
 {
-    public function show(Request $request, int|string|null $id = null)
+    public function show(Request $request, $id = null)
     {
-        $id ??= $request->input('product_id');
+        $id = $id ?? $request->input('product_id');
 
-        $product = get_products([
-            'condition' => [
-                'ec_products.id' => $id,
-            ],
-            'take' => 1,
-            'with' => [
-                'slugable',
-                'tags',
-                'tags.slugable',
-                'options',
-                'options.values',
-            ],
+        if (!$id) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Product ID is required.'
+            ]);
+        }
+
+        // Fetch product with relations
+        $product = Product::with([
+            'images',
+            'tags',
+            'options.values',
+            'variations.attributes'
+        ])->find($id);
+
+        if (!$product) {
+            return response()->json([
+                'status' => false,
+                'message' => 'This product is not available.'
+            ]);
+        }
+
+        // Basic variation logic
+        $productVariation = $product->variations->first();
+        $selectedAttrs = $productVariation ? $productVariation->attributes : [];
+
+        return response()->json([
+            'status' => true,
+            'html' => view('frontend.quick-view', [
+                'product' => $product,
+                'productImages' => $product->images,
+                'productVariation' => $productVariation,
+                'selectedAttrs' => $selectedAttrs,
+            ])->render()
         ]);
-
-        if (! $product) {
-            return $this
-                ->httpResponse()
-                ->setError()
-                ->setMessage(__('This product is not available.'));
-        }
-
-        [$productImages, $productVariation, $selectedAttrs] = EcommerceHelper::getProductVariationInfo($product);
-
-        $data = apply_filters('ecommerce_quick_view_data', [
-            'product' => $product,
-            'productImages' => $productImages,
-            'productVariation' => $productVariation,
-            'selectedAttrs' => $selectedAttrs,
-        ]);
-
-        $view = apply_filters('ecommerce_quick_view_template', $this->getQuickViewTemplate());
-
-        return $this
-            ->httpResponse()
-            ->setData(view($view, $data)->render());
-    }
-
-    protected function getQuickViewTemplate(): string
-    {
-        if (view()->exists($view = Theme::getThemeNamespace('views.ecommerce.quick-view'))) {
-            return $view;
-        }
-
-        if (view()->exists($view = Theme::getThemeNamespace('partials.ecommerce.quick-view'))) {
-            return $view;
-        }
-
-        if (view()->exists($view = Theme::getThemeNamespace('partials.quick-view'))) {
-            return $view;
-        }
-
-        return EcommerceHelper::viewPath('includes.quick-view');
     }
 }

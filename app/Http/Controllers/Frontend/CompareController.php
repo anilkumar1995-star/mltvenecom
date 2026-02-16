@@ -1,6 +1,6 @@
 <?php
 
-namespace Botble\Ecommerce\Http\Controllers\Fronts;
+namespace App\Http\Controllers\Frontend;
 
 use Botble\Base\Http\Controllers\BaseController;
 use Botble\Ecommerce\AdsTracking\GoogleTagManager;
