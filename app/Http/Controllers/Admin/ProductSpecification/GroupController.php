@@ -18,8 +18,6 @@ class GroupController extends Controller
         $this->middleware('auth');
     }
 
-    // --- Specification Groups ---
-
     public function index(Request $request)
     {
         $query = EcSpecificationGroup::query();
@@ -228,7 +226,7 @@ class GroupController extends Controller
         $data['tables'] = EcSpecificationTable::with('groups')->orderBy('id', 'desc')->get();
         return view('admin-layouts.product-specification.tables.index', $data);
     }
-    
+
     public function productTablecreate()
     {
         $data['groups'] = EcSpecificationGroup::orderBy('id', 'DESC')->get();
