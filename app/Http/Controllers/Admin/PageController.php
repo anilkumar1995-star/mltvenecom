@@ -11,7 +11,7 @@ class PageController extends Controller
 {
     public function index()
     {
-        $pages = \App\Models\Page::orderBy('created_at', 'desc')->paginate(10);
+        $pages = Page::orderBy('created_at', 'desc')->paginate(10);
         return view('admin-layouts.pages.index', compact('pages'));
     }
 
@@ -32,9 +32,29 @@ class PageController extends Controller
             'name' => 'required|max:255',
             'content' => 'required',
             'status' => 'required',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        \App\Models\Page::create($request->all());
+        $data = $request->except(['_token', 'submitter']);
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('pages', 'public');
+        }
+
+        $page = Page::create($data);
+
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Page created successfully.',
+                'redirect' => $request->input('submitter') === 'apply' 
+                    ? route('admin.pages.edit', $page->id) 
+                    : route('admin.pages.index')
+            ]);
+        }
+
+        if ($request->input('submitter') === 'apply') {
+            return redirect()->route('admin.pages.edit', $page->id)->with('success', 'Page created and editing continues.');
+        }
 
         return redirect()->route('admin.pages.index')->with('success', 'Page created successfully.');
     }
@@ -51,10 +71,35 @@ class PageController extends Controller
             'name' => 'required|max:255',
             'content' => 'required',
             'status' => 'required',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $page = \App\Models\Page::findOrFail($id);
-        $page->update($request->all());
+        $page = Page::findOrFail($id);
+        $data = $request->except(['_token', '_method', 'submitter']);
+
+        if ($request->hasFile('image')) {
+            // Delete old image if exists
+            if ($page->image && \Storage::disk('public')->exists($page->image)) {
+                \Storage::disk('public')->delete($page->image);
+            }
+            $data['image'] = $request->file('image')->store('pages', 'public');
+        }
+
+        $page->update($data);
+
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Page updated successfully.',
+                'redirect' => $request->input('submitter') === 'apply' 
+                    ? null 
+                    : route('admin.pages.index')
+            ]);
+        }
+
+        if ($request->input('submitter') === 'apply') {
+            return redirect()->route('admin.pages.edit', $page->id)->with('success', 'Page updated and editing continues.');
+        }
 
         return redirect()->route('admin.pages.index')->with('success', 'Page updated successfully.');
     }
