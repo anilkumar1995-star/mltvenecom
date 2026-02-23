@@ -159,7 +159,7 @@ class EcProduct extends Model
         );
     }
 
- 
+
     public function scopePublished(Builder $query): Builder
     {
         return $query->where('status', 'published');

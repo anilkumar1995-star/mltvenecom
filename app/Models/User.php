@@ -42,6 +42,9 @@ class User extends Authenticatable
         'pan_number',
         'aadhar_number',
         'is_approved',
+        'kyc_kid',
+        'kyc_url',
+        'kyc_status',
     ];
 
     /**

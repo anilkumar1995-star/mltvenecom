@@ -90,12 +90,12 @@ class PublicProductController extends Controller
     public function getProductVariation(Request $request, $id)
     {
         $product = Product::findOrFail($id);
-        
+
         $attributes = $request->input('attributes', []);
-        
+
         // Logic to find specific variation based on attributes
         // This assumes a standard variation structure. Adjust if your DB schema is complex.
-        
+
         $variation = ProductVariation::where('configurable_product_id', $id)
             ->whereHas('productAttributes', function($q) use ($attributes) {
                 // This part requires complex matching depending on how attributes are stored
@@ -105,7 +105,7 @@ class PublicProductController extends Controller
 
         // If your system uses a simpler variation tracking, implement it here.
         // For now, returning success for the base structure.
-        
+
         return response()->json([
             'success' => true,
             'data' => $variation ?? null

@@ -88,7 +88,7 @@ class ProductCollectionController extends Controller
             DB::beginTransaction();
 
             $collection = ProductCollection::findOrFail($id);
-            
+
             $imagePath = $collection->image;
             if ($request->hasFile('image')) {
                 $imagePath = $request->file('image')->store('collections', 'public');

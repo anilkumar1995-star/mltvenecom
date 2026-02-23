@@ -23,13 +23,13 @@ class CartController extends Controller
 
     public function add(Request $request)
     {
-        if (!auth()->guard('customer')->check() && !auth()->guard('web')->check()) {
-            if (!$request->ajax()) {
-                session(['url.intended' => url()->previous()]);
-                return redirect()->route('login');
-            }
-             return response()->json(['error' => 'Unauthenticated', 'url' => route('login')], 401);
-        }
+        // if (!auth()->guard('customer')->check() && !auth()->guard('web')->check()) {
+        //     if (!$request->ajax()) {
+        //         session(['url.intended' => url()->previous()]);
+        //         return redirect()->route('login');
+        //     }
+        //      return response()->json(['error' => 'Unauthenticated', 'url' => route('login')], 401);
+        // }
 
         $product = EcProduct::findOrFail($request->product_id);
 

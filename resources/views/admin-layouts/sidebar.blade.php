@@ -9,7 +9,7 @@
                     <path d="M4 12l16 0"></path>
                     <path d="M4 18l16 0"></path>
                 </svg></button>
-            <h2 class="d-block d-lg-none navbar-brand navbar-brand-autodark"><a href="{{ url("/") }}/admin"><img
+            <h2 class="d-block d-lg-none navbar-brand navbar-brand-autodark"><a href="{{ route('admin.dashboard') }}"><img
                         src="{{ asset('/') }}js/logo-white.png" alt="Your App" class="navbar-brand-image"
                         style="max-height: 32px; height: auto;"></a>
             </h2>
@@ -30,22 +30,25 @@
                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path>
                                 <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
-                            </svg> Profile </a><a class="dropdown-item" href="{{ url("/") }}/admin/logout"><svg
-                                class="icon dropdown-item-icon svg-icon-ti-ti-logout" xmlns="http://www.w3.org/2000/svg"
-                                width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path
-                                    d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2">
-                                </path>
-                                <path d="M9 12h12l-3 -3"></path>
-                                <path d="M18 15l3 -3"></path>
-                            </svg> Logout </a></div>
+                            </svg> Profile </a>
+                            <a class="dropdown-item" href="{{ route('admin.logout') }}"
+                               onclick="event.preventDefault(); document.getElementById('admin-logout-form').submit();">
+                                <svg class="icon dropdown-item-icon svg-icon-ti-ti-logout" xmlns="http://www.w3.org/2000/svg"
+                                    width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path
+                                        d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2">
+                                    </path>
+                                    <path d="M9 12h12l-3 -3"></path>
+                                    <path d="M18 15l3 -3"></path>
+                                </svg> Logout </a>
+                        </div>
                 </div>
             </div>
             <div class="collapse navbar-collapse" id="sidebar-menu">
                 <ul class="navbar-nav">
-                    <li class="nav-item active"><a class="nav-link nav-priority--9999 active show" href="{{ url("/")
-                            }}/admin" id="cms-core-dashboard" title="Dashboard"><span
+                    <li class="nav-item active"><a class="nav-link nav-priority--9999 active show" href="{{ route('admin.dashboard') }}" id="cms-core-dashboard" title="Dashboard"><span
                                 class="nav-link-icon d-md-none d-lg-inline-block" title="Dashboard"><svg
                                     class="icon svg-icon-ti-ti-home" xmlns="http://www.w3.org/2000/svg" width="24"
                                     height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -359,9 +362,9 @@
                                         <path d="M4 12v6a8 3 0 0 0 16 0v-6"></path>
                                     </svg></span><span class="nav-link-title text-truncate"> Product options
                                 </span></a>
-
-
-
+                                
+                                
+                                
                                 <a class="dropdown-item nav-priority-140" href="{{ url("/")
                                 }}/admin/ecommerce/product-labels" id="cms-plugins-product-label"
                                 title="Product labels"><span class="nav-link-icon d-md-none d-lg-inline-block"
@@ -642,7 +645,7 @@
                                     </path>
                                     <path d="M12 16v.01"></path>
                                     <path d="M12 13a2 2 0 0 0 .914 -3.782a1.98 1.98 0 0 0 -2.414 .483"></path>
-                                </svg>
+                                </svg>                            
                             </span>
                             <span class="nav-link-title text-truncate"> FAQs </span>
                         </a>
@@ -949,7 +952,7 @@
                                     <path d="M16 21l.01 0"></path>
                                 </svg></span><span class="nav-link-title text-truncate"> Simple Sliders
                             </span></a></li>
-
+                    
                     <li class="nav-item"><a class="nav-link nav-priority-430" href="{{ url("/") }}/admin/newsletters"
                             id="cms-plugins-newsletter" title="Newsletters"><span
                                 class="nav-link-icon d-md-none d-lg-inline-block" title="Newsletters"><svg
@@ -1274,3 +1277,7 @@
             </div>
         </div>
     </aside>
+</div>
+<form id="admin-logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
+    @csrf
+</form>

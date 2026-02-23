@@ -437,4 +437,12 @@ public function getAttributeValues(Request $request)
     }
 
 
+    public function approve($id)
+    {
+        $product = EcProduct::findOrFail($id);
+        $product->status = 'published';
+        $product->save();
+
+        return redirect()->back()->with('success', 'Product approved successfully.');
+    }
 }

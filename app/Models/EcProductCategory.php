@@ -26,7 +26,7 @@ class EcProductCategory extends Model
         'is_featured' => 'boolean',
     ];
 
- 
+
     public function parent()
     {
         return $this->belongsTo(self::class, 'parent_id');
@@ -47,7 +47,7 @@ class EcProductCategory extends Model
         );
     }
 
-   
+
     public function scopePublished(Builder $query)
     {
         return $query->where('status', 'published');

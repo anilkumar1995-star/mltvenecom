@@ -107,7 +107,7 @@ class GlobalOptionController extends Controller
 
             // Delete old values and add new ones
             $option->values()->delete();
-            
+
             if ($request->has('option_values') && is_array($request->option_values)) {
                 foreach ($request->option_values as $index => $value) {
                     if (!empty($value['option_value'])) {

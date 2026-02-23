@@ -18,6 +18,8 @@ class GroupController extends Controller
         $this->middleware('auth');
     }
 
+    // --- Specification Groups ---
+
     public function index(Request $request)
     {
         $query = EcSpecificationGroup::query();

@@ -11,10 +11,14 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('title', 'Default')</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <link href="{{ asset('storage/main/general/favicon.png') }}" rel="icon shortcut" type="image/x-icon">
     <meta property="og:image" content="{{ asset('storage/main/general/favicon.png') }}">
+
+
     <meta name="description" content="Copyright 2026 © Your App. Version 1.4.3">
     <meta property="og:description" content="Copyright 2026 © Your App. Version 1.4.3">
+
     <link rel="stylesheet" href="https://cdn.datatables.net/2.3.6/css/dataTables.dataTables.css" />
 
     <style>
@@ -720,7 +724,7 @@
     <script src="https://shofy-grocery.botble.com/vendor/core/core/base/js/editor.js?v=1.4.4"></script>
     <script src="https://shofy-grocery.botble.com/vendor/core/packages/shortcode/js/shortcode.js?v=1.4.4"></script>
     <script src="https://shofy-grocery.botble.com/vendor/core/core/base/js/repeater-field.js?v=1.4.4"></script>
-    {{-- <script src="https://shofy-grocery.botble.com/vendor/core/plugins/ecommerce/js/product-option.js?v=1.4.4"></script> --}}
+    <script src="https://shofy-grocery.botble.com/vendor/core/plugins/ecommerce/js/product-option.js?v=1.4.4"></script>
     <script src="https://shofy-grocery.botble.com/vendor/core/packages/seo-helper/js/seo-helper.js?v=1.4.4"></script>
     <script src="https://shofy-grocery.botble.com/vendor/core/plugins/faq/js/faq.js?v=1.4.4"></script>
     <script src="{{ asset('js/dashboard.js.download') }}"></script>
@@ -732,7 +736,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-notify@0.5.5/dist/simple-notify.min.js"></script>
 
-
+    
     <script>
         $(document).ready(function() {
             $('#myTable').DataTable({

@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\StoreController as AdminStoreController;
 use App\Http\Controllers\Admin\TaxController;
 use App\Http\Controllers\Admin\VendorController;
 use App\Http\Controllers\Admin\WithdrawlsController;
+use App\Http\Controllers\Admin\CustomerController as AdminCustomerController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
@@ -24,27 +25,12 @@ use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\Frontend\CheckoutController;
 use App\Http\Controllers\Frontend\CustomerController;
 use App\Http\Controllers\Frontend\HomeController as FrontendHomeController;
-
 use App\Http\Controllers\Frontend\ProductController as FrontendProductController;
 use App\Http\Controllers\HomeController;
-
 use App\Http\Controllers\StoreController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-
-
-
-// FIX FOR LEGACY BOTBLE PACKAGES - Commented out as DashboardController doesn't exist
-// Route::get('/admin/dashboard-index', [DashboardController::class, 'index'])->name('dashboard.index');
-
-/*
-|--------------------------------------------------------------------------
-| AUTH ROUTES
-|--------------------------------------------------------------------------
-*/
-
-// Customer Auth
 // Route::get('/', [LoginController::class, 'home'])->name('home');
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 // Route::post('/login', [LoginController::class, 'login']);
@@ -54,11 +40,22 @@ Route::post('/register', [App\Http\Controllers\Auth\RegisterController::class, '
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/password/reset', function () {return 'Password reset is currently disabled.';})->name('password.request');
 
+// Vendor KYC Pending Page
+Route::get('/vendor/kyc-pending', function (\Illuminate\Http\Request $request) {
+    $user = \App\Models\User::find($request->query('user_id'));
+    if (!$user || $user->role !== 'vendor') {
+        return redirect()->route('login')->with('error', 'Invalid request.');
+    }
+    return view('auth.vendor-kyc-pending', [
+        'kyc_url'    => $user->kyc_url,
+        'kyc_status' => $user->kyc_status ?? 'pending',
+        'user'       => $user,
+    ]);
+})->name('vendor.kyc-pending');
+
 // Placeholder routes to prevent rendering errors
 Route::get('/admin/login', [LoginController::class, 'showLoginForm'])->name('admin.login');
 Route::post('/admin/login', [LoginController::class, 'login']);
-
-
 Route::post('/admin/logout', [LoginController::class, 'logout'])->name('admin.logout');
 // Route::get('/vendor/login', [VendorLoginController::class, 'showLoginForm'])->name('vendor.login');
 // Route::post('/vendor/login', [VendorLoginController::class, 'login']);
@@ -76,7 +73,6 @@ Route::middleware('auth:customer,web')->prefix('customer')->name('customer.')->g
     Route::get('/dashboard', [CustomerController::class, 'dashboard'])->name('dashboard');
 });
 
-
 Route::name('frontend.')->group(function () {
 
     // Vendor Dashboard
@@ -84,12 +80,16 @@ Route::name('frontend.')->group(function () {
         Route::get('/dashboard', function () {
             return view('frontend.vendor.dashboard');
         })->name('dashboard');
+
+        // Vendor Products
+        Route::get('/products', [App\Http\Controllers\Frontend\VendorProductController::class, 'index'])->name('products.index');
+        Route::get('/products/create', [App\Http\Controllers\Frontend\VendorProductController::class, 'create'])->name('products.create');
+        Route::post('/products', [App\Http\Controllers\Frontend\VendorProductController::class, 'store'])->name('products.store');
     });
 
     // Home
     Route::get('/', [FrontendHomeController::class, 'index'])->name('home');
     // Route::get('/', [App\Http\Controllers\Auth\LoginController::class, 'showLoginForm']);
-
 
     // Products
     Route::get('/products', [FrontendProductController::class, 'index'])->name('products.index');
@@ -108,9 +108,6 @@ Route::name('frontend.')->group(function () {
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
     Route::post('/checkout/process', [CheckoutController::class, 'process'])->name('checkout.process');
     Route::get('/checkout/success', [CheckoutController::class, 'success'])->name('checkout.success');
-
-
-
     // Account Deletion Confirmation
     Route::get('/account/delete/confirm/{token}', [App\Http\Controllers\Frontend\AccountDeletionController::class, 'confirm'])->name('account.deletion.confirm');
 
@@ -129,8 +126,6 @@ Route::name('frontend.')->group(function () {
         Route::post('/account/delete', [App\Http\Controllers\Frontend\AccountDeletionController::class, 'store'])->name('account.deletion.request');
     });
 });
-
-
 
 
 // Route::get('/', function () {
@@ -153,7 +148,6 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
-
     // Products CRUD
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
     Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
@@ -172,7 +166,76 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::post('/products/bulk-delete', [ProductController::class, 'bulkDelete'])->name('products.bulk_delete');
     Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
     Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
+    Route::put('/products/{product}/approve', [ProductController::class, 'approve'])->name('products.approve');
     Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+
+    // Product Prices
+    Route::get('/product-prices', [App\Http\Controllers\Admin\ProductPriceController::class, 'index'])->name('product-prices.index');
+    Route::post('/product-prices/update', [App\Http\Controllers\Admin\ProductPriceController::class, 'update'])->name('product-prices.update');
+
+    // Product Inventory
+    Route::get('/product-inventory', [App\Http\Controllers\Admin\ProductInventoryController::class, 'index'])->name('product-inventory.index');
+    Route::post('/product-inventory/update', [App\Http\Controllers\Admin\ProductInventoryController::class, 'update'])->name('product-inventory.update');
+
+    // Ecommerce Reports
+    Route::get('/reports', [App\Http\Controllers\Admin\EcommerceReportController::class, 'index'])->name('reports.index');
+    Route::get('/reports/data', [App\Http\Controllers\Admin\EcommerceReportController::class, 'getRevenueChartData'])->name('reports.data');
+
+    // Orders (Explicit Routes)
+    Route::get('/orders', [App\Http\Controllers\Admin\OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/create', [App\Http\Controllers\Admin\OrderController::class, 'create'])->name('orders.create');
+    Route::post('/orders', [App\Http\Controllers\Admin\OrderController::class, 'store'])->name('orders.store');
+    Route::delete('/orders/{id}', [App\Http\Controllers\Admin\OrderController::class, 'destroy'])->name('orders.destroy');
+    Route::post('/orders/bulk-delete', [App\Http\Controllers\Admin\OrderController::class, 'bulkDelete'])->name('orders.bulk_delete');
+    Route::get('/orders/search-customer', [App\Http\Controllers\Admin\OrderController::class, 'searchCustomer'])->name('orders.search-customer');
+    Route::get('/orders/search-product', [App\Http\Controllers\Admin\OrderController::class, 'searchProduct'])->name('orders.search-product');
+
+    // Incomplete Orders
+    Route::get('/incomplete-orders', [App\Http\Controllers\Admin\IncompleteOrderController::class, 'index'])->name('incomplete-orders.index');
+    Route::delete('/incomplete-orders/{id}', [App\Http\Controllers\Admin\IncompleteOrderController::class, 'destroy'])->name('incomplete-orders.destroy');
+
+    // Order Returns
+    Route::get('/order-returns', [App\Http\Controllers\Admin\OrderReturnController::class, 'index'])->name('order-returns.index');
+    Route::delete('/order-returns/{id}', [App\Http\Controllers\Admin\OrderReturnController::class, 'destroy'])->name('order-returns.destroy');
+
+    // Shipments
+    Route::get('/shipments', [App\Http\Controllers\Admin\ShipmentController::class, 'index'])->name('shipments.index');
+    Route::delete('/shipments/{id}', [App\Http\Controllers\Admin\ShipmentController::class, 'destroy'])->name('shipments.destroy');
+
+    // Invoices
+    Route::get('/invoices', [App\Http\Controllers\Admin\InvoiceController::class, 'index'])->name('invoices.index');
+    Route::get('/invoices/{id}', [App\Http\Controllers\Admin\InvoiceController::class, 'show'])->name('invoices.show');
+    Route::delete('/invoices/{id}', [App\Http\Controllers\Admin\InvoiceController::class, 'destroy'])->name('invoices.destroy');
+
+    // Reviews
+    Route::get('/reviews', [App\Http\Controllers\Admin\ReviewController::class, 'index'])->name('reviews.index');
+    Route::get('/reviews/create', [App\Http\Controllers\Admin\ReviewController::class, 'create'])->name('reviews.create');
+    Route::post('/reviews', [App\Http\Controllers\Admin\ReviewController::class, 'store'])->name('reviews.store');
+    Route::get('/reviews/{id}/edit', [App\Http\Controllers\Admin\ReviewController::class, 'edit'])->name('reviews.edit');
+    Route::put('/reviews/{id}', [App\Http\Controllers\Admin\ReviewController::class, 'update'])->name('reviews.update');
+    Route::delete('/reviews/{id}', [App\Http\Controllers\Admin\ReviewController::class, 'destroy'])->name('reviews.destroy');
+    Route::post('/reviews/bulk-delete', [App\Http\Controllers\Admin\ReviewController::class, 'bulkDelete'])->name('reviews.bulk-delete');
+
+    // Flash Sales
+    Route::get('/flash-sales', [App\Http\Controllers\Admin\FlashSaleController::class, 'index'])->name('flash-sales.index');
+    Route::get('/flash-sales/create', [App\Http\Controllers\Admin\FlashSaleController::class, 'create'])->name('flash-sales.create');
+    Route::post('/flash-sales', [App\Http\Controllers\Admin\FlashSaleController::class, 'store'])->name('flash-sales.store');
+    Route::get('/flash-sales/{id}/edit', [App\Http\Controllers\Admin\FlashSaleController::class, 'edit'])->name('flash-sales.edit');
+    Route::put('/flash-sales/{id}', [App\Http\Controllers\Admin\FlashSaleController::class, 'update'])->name('flash-sales.update');
+    Route::delete('/flash-sales/{id}', [App\Http\Controllers\Admin\FlashSaleController::class, 'destroy'])->name('flash-sales.destroy');
+
+    // Discounts
+    Route::get('/discounts', [App\Http\Controllers\Admin\DiscountController::class, 'index'])->name('discounts.index');
+    Route::get('/discounts/create', [App\Http\Controllers\Admin\DiscountController::class, 'create'])->name('discounts.create');
+    Route::post('/discounts', [App\Http\Controllers\Admin\DiscountController::class, 'store'])->name('discounts.store');
+    Route::get('/discounts/{id}/edit', [App\Http\Controllers\Admin\DiscountController::class, 'edit'])->name('discounts.edit');
+    Route::put('/discounts/{id}', [App\Http\Controllers\Admin\DiscountController::class, 'update'])->name('discounts.update');
+    Route::post('/discounts/bulk-delete', [App\Http\Controllers\Admin\DiscountController::class, 'bulkDelete'])->name('discounts.bulk_delete');
+    Route::delete('/discounts/{id}', [App\Http\Controllers\Admin\DiscountController::class, 'destroy'])->name('discounts.destroy');
+
+
+
+
 
 
     Route::group(['prefix' => 'category'], function () {
@@ -195,7 +258,6 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
         Route::post('bulk-delete', [BrandController::class, 'bulkDelete'])->name('brand.bulk-delete');
         Route::post('bulk-change', [BrandController::class, 'bulkChange'])->name('brand.bulk-change');
     });
-
 
     Route::group(['prefix' => 'group'], function () {
         Route::get('index', [GroupController::class, 'index'])->name('group.Index');
@@ -226,7 +288,6 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
         Route::post('/delete', [GroupController::class, 'productTabledestroy'])->name('producttable.Delete');
         Route::post('bulk-delete', [GroupController::class, 'productTablebulkDelete'])->name('producttable.bulk-delete');
     });
-
 
     Route::group(['prefix' => 'product-tags'], function () {
         Route::get('index', [ProductTagConntroller::class, 'Index'])->name('producttags.Index');
@@ -324,6 +385,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
         Route::put('vendors/{id}', [VendorController::class, 'update'])->name('marketplace.vendors.update');
         Route::delete('vendors/{id}', [VendorController::class, 'destroy'])->name('marketplace.vendors.destroy');
         Route::post('vendors/{id}/approve', [VendorController::class, 'approve'])->name('marketplace.vendors.approve');
+        Route::post('vendors/{id}/check-kyc', [VendorController::class, 'checkKycStatus'])->name('marketplace.vendors.check-kyc');
         Route::get('unverified-vendors', [VendorController::class,'unverifiedVendors'])->name('marketplace.unverified-vendors');
         Route::get('messages', [VendorController::class,'messages'])->name('marketplace.messages');
         Route::get('stores/create', [AdminStoreController::class,'create'])->name('marketplace.store.create');
@@ -338,13 +400,28 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     });
 
 
-          Route::get('pages', [AdminPageController::class, 'index'])->name('pages.index');
-          Route::get('pages/create', [AdminPageController::class, 'create'])->name('pages.create');
-          Route::post('pages', [AdminPageController::class, 'store'])->name('pages.store');
-          Route::get('pages/{id}/edit', [AdminPageController::class, 'edit'])->name('pages.edit');
-          Route::put('pages/{id}', [AdminPageController::class, 'update'])->name('pages.update');
-          Route::delete('pages/{id}', [AdminPageController::class, 'destroy'])->name('pages.destroy');
+    Route::get('pages', [AdminPageController::class, 'index'])->name('pages.index');
+    Route::get('pages/create', [AdminPageController::class, 'create'])->name('pages.create');
+    Route::post('pages', [AdminPageController::class, 'store'])->name('pages.store');
+    Route::get('pages/{id}/edit', [AdminPageController::class, 'edit'])->name('pages.edit');
+    Route::put('pages/{id}', [AdminPageController::class, 'update'])->name('pages.update');
+    Route::delete('pages/{id}', [AdminPageController::class, 'destroy'])->name('pages.destroy');
+
+    // Route::resource('customers', AdminCustomerController::class);
+    // Route::resource('customers', AdminCustomerController::class);
+    Route::get('customers', [AdminCustomerController::class, 'index'])->name('customers.index');
+    Route::get('customers/create', [AdminCustomerController::class, 'create'])->name('customers.create');
+    Route::post('customers', [AdminCustomerController::class, 'store'])->name('customers.store');
+    Route::get('customers/{id}/edit', [AdminCustomerController::class, 'edit'])->name('customers.edit');
+    Route::put('customers/{id}', [AdminCustomerController::class, 'update'])->name('customers.update');
+    Route::get('customers/{id}', [AdminCustomerController::class, 'show'])->name('customers.show');
+    Route::delete('customers/{id}', [AdminCustomerController::class, 'destroy'])->name('customers.destroy');
+    Route::post('customers/bulk-delete', [AdminCustomerController::class, 'bulkDestroy'])->name('customers.bulk_delete');
+
+    Route::post('customers/{id}/addresses', [AdminCustomerController::class, 'storeAddress'])->name('customers.addresses.store');
+    Route::delete('customers/addresses/{address_id}', [AdminCustomerController::class, 'destroyAddress'])->name('customers.addresses.destroy');
 
     Route::get('/menu-items-count', [MenuCountController::class, 'getCounts'])->name('menu-items-count');
 
 });
+

@@ -32,7 +32,16 @@ class Discount extends Model
         'apply_via_url',
         'display_at_checkout',
         'description',
+        'store_id',
     ];
+
+    // ... casts ...
+
+    public function store()
+    {
+        return $this->belongsTo(Store::class, 'store_id');
+    }
+
 
     protected $casts = [
         'start_date' => 'datetime',
