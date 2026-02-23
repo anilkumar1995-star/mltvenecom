@@ -15,7 +15,7 @@
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 
     <!-- Scripts -->
-    @vite(['resources/sass/app.scss'])
+    {{--  @vite(['resources/sass/app.scss'])  --}}
 
     <meta name="description"
         content="Shofy is a powerful tool eCommerce Laravel script for creating a professional and visually appealing online store.">
@@ -361,7 +361,7 @@
     <script src="{{ asset('/') }}home dashboard_files/front-ecommerce.js.download"></script>
     <script src="{{ asset('/') }}home dashboard_files/ecommerce.js.download"></script>
     <script src="{{ asset('/') }}home dashboard_files/meanmenu.js.download"></script>
-    
+
     @include('frontend.partials.mini-cart')
     <script src="{{ asset('/') }}js/cart-custom.js"></script>
     @stack('scripts')
