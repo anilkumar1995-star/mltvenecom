@@ -15,7 +15,7 @@
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 
     <!-- Scripts -->
-    @vite(['resources/sass/app.scss'])
+    {{--  @vite(['resources/sass/app.scss'])  --}}
 
     <meta name="description"
         content="Shofy is a powerful tool eCommerce Laravel script for creating a professional and visually appealing online store.">
