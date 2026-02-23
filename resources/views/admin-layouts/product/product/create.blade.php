@@ -62,16 +62,6 @@
                         </div>
                     </div>
 
-                    @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <ul class="mb-0">
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
-
                     <div class="row">
                         <div class="gap-3 col-md-9">
                             <div class="card mb-3">
@@ -138,7 +128,7 @@
                                                     data-result="description">
                                                     Show/Hide Editor
                                                 </button>
-                                                <button class="btn btn_gallery" type="button"
+                                                {{--  <button class="btn btn_gallery" type="button"
                                                     onclick="openImageModal()">
                                                     <svg class="icon icon-left svg-icon-ti-ti-photo"
                                                         xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -151,7 +141,7 @@
                                                         <path d="M14 14l1 -1c.928 -.893 2.072 -.893 3 0l3 3" />
                                                     </svg>
                                                     Add media
-                                                </button>
+                                                </button>  --}}
                                             </div>
                                             <textarea class="form-control form-control editor-ckeditor ays-ignore" data-counter="100000" rows="4"
                                                 placeholder="Short description" id="description" name="description" cols="50"></textarea>
@@ -166,7 +156,7 @@
                                                     Show/Hide Editor
                                                 </button>
 
-                                                <button class="btn   btn_gallery" type="button" data-result="content"
+                                                {{--  <button class="btn   btn_gallery" type="button" data-result="content"
                                                     data-multiple="true" data-action="media-insert-ckeditor">
                                                     <svg class="icon icon-left svg-icon-ti-ti-photo"
                                                         xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -193,7 +183,7 @@
                                                         <path d="M12 12l-8 -4.5" />
                                                     </svg>
                                                     UI Blocks
-                                                </button>
+                                                </button>  --}}
                                             </div>
                                             <textarea class="form-control form-control editor-ckeditor ays-ignore" data-counter="100000" rows="4"
                                                 placeholder="Write your content" with-short-code id="content" name="content" cols="50"></textarea>
@@ -210,7 +200,7 @@
                                                     <p class="small text-muted">You can select multiple files</p>
                                                 </div>
                                                 <input type="file" id="product_images_input" class="d-none" name="images[]" multiple accept="image/*" onchange="previewImages(this)">
-                                                
+
                                                 <!-- Image Preview Container -->
                                                 <div id="image_preview_container" class="row g-2 mt-3"></div>
                                             </div>
@@ -227,7 +217,7 @@
                                                     <p class="mb-0 text-muted fw-medium">Click to upload video</p>
                                                 </div>
                                                 <input type="file" id="product_video_input" class="d-none" name="video_file" accept="video/*" onchange="previewVideo(this)">
-                                                
+
                                                 <!-- Video Preview Container -->
                                                 <div id="video_preview_container" class="mt-3"></div>
                                             </div>
@@ -237,7 +227,7 @@
                                             function previewImages(input) {
                                                 const container = document.getElementById('image_preview_container');
                                                 container.innerHTML = ''; // Clear previous previews
-                                                
+
                                                 if (input.files) {
                                                     Array.from(input.files).forEach(file => {
                                                         if (file.type.startsWith('image/')) {
@@ -261,7 +251,7 @@
                                             function previewVideo(input) {
                                                 const container = document.getElementById('video_preview_container');
                                                 container.innerHTML = '';
-                                                
+
                                                 if (input.files && input.files[0]) {
                                                     const file = input.files[0];
                                                     const url = URL.createObjectURL(file);
@@ -280,7 +270,7 @@
 
 
 
-                                    
+
                                 </div>
                             </div>
 
@@ -413,7 +403,7 @@
                                                             name="cost_per_item" id="cost_per_item" value="0"
                                                             placeholder="Enter cost per item" step="any" />
                                                     </div>
-                                                    <small class="form-hint">Customers won't see this price.</small>
+                                                    <small class="form-hint">Customers won t see this price.</small>
                                                 </div>
                                             </div>
                                             <input name="product_id" type="hidden" value="">
@@ -664,13 +654,6 @@
                                     </div>
                                 </div>
 
-
-
-
-
-
-
- <!-- Up-selling Products -->
                         <div class="card meta-boxes">
                             <div class="card-header">
                                 <h4 class="card-title">Up-selling products</h4>
@@ -732,8 +715,8 @@
                                                         <li>
                                                             <div class="dropdown-item">
                                                                 <div class="form-check">
-                                                                    <input class="form-check-input faq-checkbox" type="checkbox" 
-                                                                        value="{{ $faq->id }}" 
+                                                                    <input class="form-check-input faq-checkbox" type="checkbox"
+                                                                        value="{{ $faq->id }}"
                                                                         data-question="{{ $faq->question }}"
                                                                         id="faq-check-{{ $faq->id }}"
                                                                         name="selected_existing_faqs[]"
@@ -761,7 +744,7 @@
                                             + Add FAQ
                                         </button>
                                     </div>
-                                    
+
                                     <div id="faq-list">
                                         <!-- Repeater items will be injected here -->
                                         @if(old('faq_schema_config'))
@@ -774,7 +757,7 @@
                                                         </button>
                                                     </div>
                                                     <input type="text" class="form-control mb-3" name="faq_schema_config[{{ $key }}][question]" value="{{ $item['question'] ?? '' }}" placeholder="Enter your question...">
-                                                    
+
                                                     <label class="form-label fw-bold">Answer</label>
                                                     <textarea class="form-control" name="faq_schema_config[{{ $key }}][answer]" rows="2" placeholder="Enter your answer...">{{ $item['answer'] ?? '' }}</textarea>
                                                 </div>
@@ -890,8 +873,8 @@
                                                 <option value="{{ $row->id }}">{{ $row->name }}</option>
                                             @endforeach
                                         @endif
-                                        
-                                           
+
+
                                         </select>
                                     </div>
                                 </div>
@@ -1126,7 +1109,7 @@
                                         </fieldset>
                                     </div>
                                 </div>
-                                
+
                                 <div class="card meta-boxes">
                                     <div class="card-header">
                                         <h4 class="card-title">
@@ -1199,8 +1182,8 @@
                                 </div>
                             </div>
                         </div>
-                      
-                       
+
+
                         <div class="modal fade" id="rv_media_modal" tabindex="-1">
                             <div class="modal-dialog modal-dialog-centered modal-lg">
                                 <div class="modal-content">
@@ -1229,7 +1212,7 @@
     @push('scripts')
         <script>
             // ... existing scripts ...
-            
+
             // AJAX Form Submission
             $(document).ready(function() {
                 $("#botble-ecommerce-forms-product-form").validate({
@@ -1261,24 +1244,27 @@
                                 CKEDITOR.instances[instance].updateElement();
                             }
                         }
-                        
+
                         $.ajax({
                             url: $(form).attr('action'),
                             type: 'POST',
                             data: formData,
                             processData: false,
                             contentType: false,
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'Accept': 'application/json'
+                            },
                             success: function(data) {
-                                if (data.status === true || data.success === true) {
+                                if (data.status === true) {
                                     Swal.fire({
                                         icon: 'success',
                                         title: 'Success!',
                                         text: data.message
                                     }).then(() => {
-                                        window.location.href = data.redirect || "{{ route('admin.products.index') }}";
+                                        window.location.href = "{{ route('admin.products.index') }}";
                                     });
                                 } else {
-                                    // Handle logic where status might be false but 200 OK
                                     Swal.fire({
                                         icon: 'error',
                                         title: 'Error',
@@ -1715,7 +1701,7 @@
                     let valueIndex = $tbody.find('tr').length;
                     let label = data ? data.option_value : '';
                     let price = data ? data.affect_price : 0;
-                    let type = data ? data.affect_type : 0; 
+                    let type = data ? data.affect_type : 0;
 
                     let rowHtml = `
                     <tr>
@@ -1912,7 +1898,7 @@
 
                     if ($selectedContainer.find(`#product-${targetType}-${id}`).length > 0) return;
 
-                    let prefix = 'up_selling'; 
+                    let prefix = 'up_selling';
                     let extraFields = `
                         <div class="d-flex gap-3 align-items-end ms-3">
                              <div style="width: 150px;">
@@ -2073,11 +2059,11 @@
                 // 3. Update Tags Function
                 function updateSelectedTags() {
                     $selectedTagsContainer.empty();
-                    
+
                     $('.faq-checkbox:checked').each(function() {
                         const id = $(this).val();
                         const question = $(this).data('question');
-                        
+
                         // Create Tag
                         const tag = `
                             <div class="badge bg-blue-lt d-flex align-items-center gap-2 p-2 border" style="font-size: 0.9rem;">
@@ -2108,7 +2094,7 @@
                 // --- Repeater Logic ---
                 $(document).on('click', '#add-faq', function() {
                     let newIndex = $repeaterContainer.children('.repeater-item').length + Math.floor(Math.random() * 1000); // Random ID to prevent collisions
-                    
+
                     let html = `
                         <div class="repeater-item mb-3 p-3 border rounded bg-white position-relative">
                             <div class="d-flex justify-content-between align-items-center mb-2">
@@ -2122,7 +2108,7 @@
                                 </button>
                             </div>
                             <input type="text" class="form-control mb-3" name="faq_schema_config[${newIndex}][question]" placeholder="Enter your question...">
-                            
+
                             <label class="form-label fw-bold">Answer</label>
                             <textarea class="form-control" name="faq_schema_config[${newIndex}][answer]" rows="2" placeholder="Enter your answer..."></textarea>
                         </div>

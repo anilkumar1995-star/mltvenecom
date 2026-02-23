@@ -12,7 +12,7 @@
                     <path d="M4 18l16 0"></path>
                 </svg></button>
             <h1 class="navbar-brand navbar-brand-autodark me-4">
-                <a href="{{ route('admin.dashboard') }}"><img src="{{ asset('/') }}js/logo-white.png" alt="Your App"
+                <a href="{{ url("/") }}/admin"><img src="{{ asset('/') }}js/logo-white.png" alt="Your App"
                         class="navbar-brand-image" style="max-height: 32px; height: auto;"></a>
             </h1>
             <div class="flex-row navbar-nav order-md-last">

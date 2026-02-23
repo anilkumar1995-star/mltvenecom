@@ -135,6 +135,7 @@ Route::name('frontend.')->group(function () {
 Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/page/{id}', [AdminPageController::class, 'show'])->name('pages.show');
 
 // Admin demo route
 Route::get('/admin/dashboard', function () {
@@ -398,17 +399,28 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
         Route::delete('messages/{id}', [VendorController::class, 'destroyMessage'])->name('marketplace.vendors.destroy-message');
     });
 
-         
-          Route::get('pages', [AdminPageController::class, 'index'])->name('pages.index');
-          Route::get('pages/create', [AdminPageController::class, 'create'])->name('pages.create');
-          Route::post('pages', [AdminPageController::class, 'store'])->name('pages.store');
-          Route::get('pages/{id}/edit', [AdminPageController::class, 'edit'])->name('pages.edit');
-          Route::put('pages/{id}', [AdminPageController::class, 'update'])->name('pages.update');
-          Route::delete('pages/{id}', [AdminPageController::class, 'destroy'])->name('pages.destroy');
-          Route::get('/page/{id}', [AdminPageController::class, 'show'])->name('pages.show');
 
+    Route::get('pages', [AdminPageController::class, 'index'])->name('pages.index');
+    Route::get('pages/create', [AdminPageController::class, 'create'])->name('pages.create');
+    Route::post('pages', [AdminPageController::class, 'store'])->name('pages.store');
+    Route::get('pages/{id}/edit', [AdminPageController::class, 'edit'])->name('pages.edit');
+    Route::put('pages/{id}', [AdminPageController::class, 'update'])->name('pages.update');
+    Route::delete('pages/{id}', [AdminPageController::class, 'destroy'])->name('pages.destroy');
+
+    // Route::resource('customers', AdminCustomerController::class);
+    // Route::resource('customers', AdminCustomerController::class);
+    Route::get('customers', [AdminCustomerController::class, 'index'])->name('customers.index');
+    Route::get('customers/create', [AdminCustomerController::class, 'create'])->name('customers.create');
+    Route::post('customers', [AdminCustomerController::class, 'store'])->name('customers.store');
+    Route::get('customers/{id}/edit', [AdminCustomerController::class, 'edit'])->name('customers.edit');
+    Route::put('customers/{id}', [AdminCustomerController::class, 'update'])->name('customers.update');
+    Route::get('customers/{id}', [AdminCustomerController::class, 'show'])->name('customers.show');
+    Route::delete('customers/{id}', [AdminCustomerController::class, 'destroy'])->name('customers.destroy');
+    Route::post('customers/bulk-delete', [AdminCustomerController::class, 'bulkDestroy'])->name('customers.bulk_delete');
+
+    Route::post('customers/{id}/addresses', [AdminCustomerController::class, 'storeAddress'])->name('customers.addresses.store');
+    Route::delete('customers/addresses/{address_id}', [AdminCustomerController::class, 'destroyAddress'])->name('customers.addresses.destroy');
 
     Route::get('/menu-items-count', [MenuCountController::class, 'getCounts'])->name('menu-items-count');
 
 });
-
