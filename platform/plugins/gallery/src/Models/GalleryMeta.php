@@ -2,7 +2,7 @@
 
 namespace Botble\Gallery\Models;
 
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 
 class GalleryMeta extends BaseModel
 {

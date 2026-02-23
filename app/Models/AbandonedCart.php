@@ -1,14 +1,14 @@
 <?php
 
-namespace Botble\Ecommerce\Models;
 
-use Botble\Base\Casts\SafeContent;
-use Botble\Base\Models\BaseModel;
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
 
-class AbandonedCart extends BaseModel
+class AbandonedCart extends Model
 {
     protected $table = 'ec_abandoned_carts';
 
@@ -47,9 +47,9 @@ class AbandonedCart extends BaseModel
         'unsubscribed_at' => 'datetime',
         'is_recovered' => 'boolean',
         'recovered_at' => 'datetime',
-        'customer_name' => SafeContent::class,
-        'email' => SafeContent::class,
-        'phone' => SafeContent::class,
+        'customer_name' => 'string',
+        'email' => 'string',
+        'phone' => 'string',
     ];
 
     protected static function boot(): void
@@ -160,10 +160,12 @@ class AbandonedCart extends BaseModel
     public function getCartItems(): array
     {
         $items = [];
+        // Use cart_data which is cast to array
         $cartData = $this->cart_data ?? [];
 
         foreach ($cartData as $item) {
-            $product = Product::query()->find($item['id'] ?? null);
+            // Updated to use EcProduct
+            $product = EcProduct::query()->find($item['id'] ?? null);
             if ($product) {
                 $items[] = [
                     'product' => $product,
@@ -176,3 +178,4 @@ class AbandonedCart extends BaseModel
         return $items;
     }
 }
+

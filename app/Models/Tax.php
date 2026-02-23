@@ -1,15 +1,17 @@
 <?php
 
-namespace Botble\Ecommerce\Models;
+namespace App\Models;
 
-use Botble\Base\Enums\BaseStatusEnum;
-use Botble\Base\Models\BaseModel;
-use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\EcProduct;
 
-class Tax extends BaseModel
+class Tax extends Model
 {
+    use HasFactory;
+
     protected $table = 'ec_taxes';
 
     protected $fillable = [
@@ -19,40 +21,39 @@ class Tax extends BaseModel
         'status',
     ];
 
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
     protected $casts = [
-        'status' => BaseStatusEnum::class,
+        'percentage' => 'float',
+        'priority' => 'integer',
+        'status' => 'string',
     ];
 
     protected static function booted(): void
     {
         static::deleted(function (Tax $tax): void {
-            $tax->products()->detach();
-            $tax->rules()->delete();
+            // Detach products when tax is deleted
+            if (method_exists($tax->products(), 'detach')) {
+                $tax->products()->detach();
+            }
         });
     }
 
     public function products(): BelongsToMany
     {
-        return $this->belongsToMany(Product::class, 'ec_tax_products', 'tax_id', 'product_id');
+        return $this->belongsToMany(EcProduct::class, 'ec_tax_products', 'tax_id', 'product_id');
     }
 
-    public function rules(): HasMany
+    /**
+     * Get the title with percentage.
+     *
+     * @return string
+     */
+    public function getTitleWithPercentageAttribute(): string
     {
-        return $this->hasMany(TaxRule::class);
-    }
-
-    protected function defaultTitle(): Attribute
-    {
-        return Attribute::get(fn () => $this->is_default ? (' - ' . trans('plugins/ecommerce::tax.default')) : '');
-    }
-
-    protected function titleWithPercentage(): Attribute
-    {
-        return Attribute::get(fn () => $this->title . ' (' . $this->percentage . '%)' . $this->default_title);
-    }
-
-    protected function isDefault(): Attribute
-    {
-        return Attribute::get(fn () => $this->id == get_ecommerce_setting('default_tax_rate'));
+        return $this->title . ' (' . $this->percentage . '%)';
     }
 }

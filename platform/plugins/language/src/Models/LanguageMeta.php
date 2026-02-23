@@ -2,7 +2,7 @@
 
 namespace Botble\Language\Models;
 
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Language\Facades\Language as LanguageFacade;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 

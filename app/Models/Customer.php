@@ -47,6 +47,11 @@ class Customer extends Authenticatable
         return $this->hasMany(Review::class, 'customer_id');
     }
 
+    public function wishlist(): HasMany
+    {
+        return $this->hasMany(Wishlist::class, 'customer_id');
+    }
+
     // Scopes
     public function scopeActive($query)
     {

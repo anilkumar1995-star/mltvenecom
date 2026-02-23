@@ -3,7 +3,7 @@
 namespace Botble\Contact\Models;
 
 use Botble\Base\Casts\SafeContent;
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Base\Supports\Avatar;
 use Botble\Contact\Enums\ContactStatusEnum;
 use Botble\Media\Facades\RvMedia;

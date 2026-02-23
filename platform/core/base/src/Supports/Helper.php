@@ -3,7 +3,8 @@
 namespace Botble\Base\Supports;
 
 use Botble\Base\Facades\BaseHelper;
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
+els\BaseModel;
 use Botble\Base\Services\ClearCacheService;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;

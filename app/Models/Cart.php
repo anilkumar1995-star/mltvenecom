@@ -1,10 +1,10 @@
 <?php
 
-namespace Botble\Ecommerce\Models;
+namespace App\Models;
 
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 
-class Cart extends BaseModel
+class Cart extends Model
 {
     protected $table = 'ec_cart';
 }

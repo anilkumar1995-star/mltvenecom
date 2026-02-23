@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\EcProduct;
 
 class Review extends Model
 {
@@ -26,7 +27,7 @@ class Review extends Model
     // Relationships
     public function product(): BelongsTo
     {
-        return $this->belongsTo(Product::class, 'product_id');
+        return $this->belongsTo(EcProduct::class, 'product_id');
     }
 
     public function customer(): BelongsTo

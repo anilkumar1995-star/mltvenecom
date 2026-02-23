@@ -2,7 +2,7 @@
 
 namespace Botble\Support\Repositories\Eloquent;
 
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Base\Models\BaseQueryBuilder;
 use Botble\Base\Supports\RepositoryHelper;
 use Botble\Support\Repositories\Interfaces\RepositoryInterface;

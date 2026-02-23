@@ -1,15 +1,15 @@
 <?php
 
-namespace Botble\Ecommerce\Models;
 
-use Botble\Base\Models\BaseModel;
-use Botble\Base\Models\BaseQueryBuilder;
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\MassPrunable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Query\Builder;
 
-class ProductView extends BaseModel
+class ProductView extends Model
 {
     use MassPrunable;
 
@@ -30,11 +30,12 @@ class ProductView extends BaseModel
 
     public function product(): BelongsTo
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(EcProduct::class);
     }
 
-    public function prunable(): Builder|BaseQueryBuilder
+    public function prunable(): Builder
     {
         return $this->whereDate('created_at', '>', Carbon::now()->subDays(90));
     }
 }
+

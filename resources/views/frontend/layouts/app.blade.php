@@ -362,6 +362,8 @@
     <script src="{{ asset('/') }}home dashboard_files/ecommerce.js.download"></script>
     <script src="{{ asset('/') }}home dashboard_files/meanmenu.js.download"></script>
     
+    @include('frontend.partials.mini-cart')
+    <script src="{{ asset('/') }}js/cart-custom.js"></script>
     @stack('scripts')
 </body>
 

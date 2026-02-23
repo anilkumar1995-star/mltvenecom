@@ -9,7 +9,7 @@
                     <path d="M4 12l16 0"></path>
                     <path d="M4 18l16 0"></path>
                 </svg></button>
-            <h2 class="d-block d-lg-none navbar-brand navbar-brand-autodark"><a href="{{ url("/") }}/admin"><img
+            <h2 class="d-block d-lg-none navbar-brand navbar-brand-autodark"><a href="{{ route('admin.dashboard') }}"><img
                         src="{{ asset('/') }}js/logo-white.png" alt="Your App" class="navbar-brand-image"
                         style="max-height: 32px; height: auto;"></a>
             </h2>
@@ -30,22 +30,25 @@
                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path>
                                 <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
-                            </svg> Profile </a><a class="dropdown-item" href="{{ url("/") }}/admin/logout"><svg
-                                class="icon dropdown-item-icon svg-icon-ti-ti-logout" xmlns="http://www.w3.org/2000/svg"
-                                width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path
-                                    d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2">
-                                </path>
-                                <path d="M9 12h12l-3 -3"></path>
-                                <path d="M18 15l3 -3"></path>
-                            </svg> Logout </a></div>
+                            </svg> Profile </a>
+                            <a class="dropdown-item" href="{{ route('admin.logout') }}"
+                               onclick="event.preventDefault(); document.getElementById('admin-logout-form').submit();">
+                                <svg class="icon dropdown-item-icon svg-icon-ti-ti-logout" xmlns="http://www.w3.org/2000/svg"
+                                    width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path
+                                        d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2">
+                                    </path>
+                                    <path d="M9 12h12l-3 -3"></path>
+                                    <path d="M18 15l3 -3"></path>
+                                </svg> Logout </a>
+                        </div>
                 </div>
             </div>
             <div class="collapse navbar-collapse" id="sidebar-menu">
                 <ul class="navbar-nav">
-                    <li class="nav-item active"><a class="nav-link nav-priority--9999 active show" href="{{ url("/")
-                            }}/admin" id="cms-core-dashboard" title="Dashboard"><span
+                    <li class="nav-item active"><a class="nav-link nav-priority--9999 active show" href="{{ route('admin.dashboard') }}" id="cms-core-dashboard" title="Dashboard"><span
                                 class="nav-link-icon d-md-none d-lg-inline-block" title="Dashboard"><svg
                                     class="icon svg-icon-ti-ti-home" xmlns="http://www.w3.org/2000/svg" width="24"
                                     height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -247,8 +250,9 @@
                             </a>
 
                              <a class="dropdown-item nav-priority-140" href="{{ route('admin.productlables.Index') }}"
-                                title="Product labels"><span class="nav-link-icon d-md-none d-lg-inline-block"
-                                    title="Product labels"><svg class="icon svg-icon-ti-ti-tags"
+                                title="Product labels">
+                                <span class="nav-link-icon d-md-none d-lg-inline-block" title="Product labels">
+                                    <svg class="icon svg-icon-ti-ti-tags"
                                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                         stroke-linejoin="round">
@@ -257,12 +261,64 @@
                                         </path>
                                         <path d="M18 19l1.592 -1.592a4.82 4.82 0 0 0 0 -6.816l-4.592 -4.592"></path>
                                         <path d="M7 10h-.01"></path>
-                                    </svg></span><span class="nav-link-title text-truncate"> Product labels
+                                    </svg>
+                                </span>
+                                <span class="nav-link-title text-truncate"> Product labels</span>
+                            </a>
+
+                            <a class="dropdown-item nav-priority-140" href="{{ route('admin.attribute-sets.index') }}"
+                                title="Product labels">
+                                <span class="nav-link-icon d-md-none d-lg-inline-block" title="Product labels">
+                                    <svg class="icon svg-icon-ti-ti-tags"
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path
+                                            d="M3 8v4.172a2 2 0 0 0 .586 1.414l5.71 5.71a2.41 2.41 0 0 0 3.408 0l3.592 -3.592a2.41 2.41 0 0 0 0 -3.408l-5.71 -5.71a2 2 0 0 0 -1.414 -.586h-4.172a2 2 0 0 0 -2 2z">
+                                        </path>
+                                        <path d="M18 19l1.592 -1.592a4.82 4.82 0 0 0 0 -6.816l-4.592 -4.592"></path>
+                                        <path d="M7 10h-.01"></path>
+                                    </svg>
+                                </span>
+                                <span class="nav-link-title text-truncate">Product attributes</span>
+                            </a>
+
+
+                            <a class="dropdown-item nav-priority-120" href="{{ route('admin.global-options.index') }}"
+                                title="Product options">
+                                <span class="nav-link-icon d-md-none d-lg-inline-block"
+                                    title="Product options">
+                                    <svg class="icon svg-icon-ti-ti-database"
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path d="M12 6m-8 0a8 3 0 1 0 16 0a8 3 0 1 0 -16 0"></path>
+                                        <path d="M4 6v6a8 3 0 0 0 16 0v-6"></path>
+                                        <path d="M4 12v6a8 3 0 0 0 16 0v-6"></path>
+                                    </svg>
+                                </span>
+                                <span class="nav-link-title text-truncate"> Product options</span>
+                            </a>
+
+
+                            <a class="dropdown-item nav-priority-130" href="{{ route('admin.collections.index') }}" title="Product collections">
+                                <span class="nav-link-icon d-md-none d-lg-inline-block"
+                                    title="Product collections"><svg class="icon svg-icon-ti-ti-album"
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path
+                                            d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z">
+                                        </path>
+                                        <path d="M12 4v7l2 -2l2 2v-7"></path>
+                                    </svg>
+                                </span>
+                                <span class="nav-link-title text-truncate"> Product collections
                                 </span>
                             </a>
 
 
-                            {{--  <a class="dropdown-item nav-priority-190" href="{{route('admin.producttaxes.Index') }}" title="Customers">
+                            <a class="dropdown-item nav-priority-190" href="{{route('admin.taxes.index') }}" title="Customers">
                                 <span class="nav-link-icon d-md-none d-lg-inline-block" title="Customers">
                                     <svg
                                         class="icon svg-icon-ti-ti-users" xmlns="http://www.w3.org/2000/svg" width="24"
@@ -275,7 +331,7 @@
                                     </svg>
                                 </span>
                                 <span class="nav-link-title text-truncate">Taxes</span>
-                            </a>  --}}
+                            </a>
 
 
                             {{-- <a class="dropdown-item nav-priority-100" href="{{ url("/")
@@ -291,19 +347,10 @@
                                     </svg></span><span class="nav-link-title text-truncate"> Product tags
                                 </span></a>
 
-                                <a class="dropdown-item nav-priority-110" href="{{ url("/")
-                                }}/admin/ecommerce/product-attribute-sets" id="cms-plugins-product-attribute"
-                                title="Product attributes"><span class="nav-link-icon d-md-none d-lg-inline-block"
-                                    title="Product attributes"><svg class="icon svg-icon-ti-ti-album"
-                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round">
-                                        <path
-                                            d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z">
-                                        </path>
-                                        <path d="M12 4v7l2 -2l2 2v-7"></path>
-                                    </svg></span><span class="nav-link-title text-truncate"> Product attributes
-                                </span></a><a class="dropdown-item nav-priority-120" href="{{ url("/")
+
+
+
+                                <a class="dropdown-item nav-priority-120" href="{{ url("/")
                                 }}/admin/ecommerce/options" id="cms-plugins-ecommerce-global-options"
                                 title="Product options"><span class="nav-link-icon d-md-none d-lg-inline-block"
                                     title="Product options"><svg class="icon svg-icon-ti-ti-database"
@@ -314,19 +361,10 @@
                                         <path d="M4 6v6a8 3 0 0 0 16 0v-6"></path>
                                         <path d="M4 12v6a8 3 0 0 0 16 0v-6"></path>
                                     </svg></span><span class="nav-link-title text-truncate"> Product options
-                                </span></a><a class="dropdown-item nav-priority-130" href="{{ url("/")
-                                }}/admin/ecommerce/product-collections" id="cms-plugins-product-collections"
-                                title="Product collections"><span class="nav-link-icon d-md-none d-lg-inline-block"
-                                    title="Product collections"><svg class="icon svg-icon-ti-ti-album"
-                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round">
-                                        <path
-                                            d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z">
-                                        </path>
-                                        <path d="M12 4v7l2 -2l2 2v-7"></path>
-                                    </svg></span><span class="nav-link-title text-truncate"> Product collections
                                 </span></a>
+                                
+                                
+                                
                                 <a class="dropdown-item nav-priority-140" href="{{ url("/")
                                 }}/admin/ecommerce/product-labels" id="cms-plugins-product-label"
                                 title="Product labels"><span class="nav-link-icon d-md-none d-lg-inline-block"
@@ -393,11 +431,13 @@
                                     --}}
                         </div>
                     </li>
-                    <li class="nav-item dropdown"><a class="nav-link dropdown-toggle nav-priority-0" href="{{ url("/")
-                            }}/admin#cms-plugins-product-specification" id="cms-plugins-product-specification"
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle nav-priority-0" href="/"
                             data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false"
-                            title="Product Specification"><span class="nav-link-icon d-md-none d-lg-inline-block"
-                                title="Product Specification"><svg class="icon svg-icon-ti-ti-table-options"
+                            title="Product Specification">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block"
+                                title="Product Specification">
+                                <svg class="icon svg-icon-ti-ti-table-options"
                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                     stroke-linejoin="round">
@@ -412,22 +452,27 @@
                                     <path d="M17.27 20l-1.3 .75"></path>
                                     <path d="M15.97 17.25l1.3 .75"></path>
                                     <path d="M20.733 20l1.3 .75"></path>
-                                </svg></span><span class="nav-link-title text-truncate"> Product Specification
-                            </span></a>
+                                </svg>
+                            </span><span class="nav-link-title text-truncate"> Product Specification
+                            </span>
+                        </a>
                         <div class="dropdown-menu animate slideIn dropdown-menu-start"><a
                                 class="dropdown-item nav-priority-0" href="{{ route('admin.group.Index')}}"
-                                id="cms-plugins-product-specification-groups" title="Groups"><span
-                                    class="nav-link-icon d-md-none d-lg-inline-block" title="Groups"><svg
+                                id="cms-plugins-product-specification-groups" title="Groups">
+                                <span class="nav-link-icon d-md-none d-lg-inline-block" title="Groups">
+                                    <svg
                                         class="icon svg-icon-ti-ti-folder" xmlns="http://www.w3.org/2000/svg" width="24"
                                         height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <path
                                             d="M5 4h4l3 3h7a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-11a2 2 0 0 1 2 -2">
                                         </path>
-                                    </svg></span><span class="nav-link-title text-truncate"> Groups </span></a>
+                                    </svg>
+                                </span>
+                                <span class="nav-link-title text-truncate"> Groups </span></a>
                             <a class="dropdown-item nav-priority-10" href="{{ route('admin.productattributes.Index') }}"
-                                id="cms-plugins-product-specification-attributes" title="Attributes"><span
-                                    class="nav-link-icon d-md-none d-lg-inline-block" title="Attributes"><svg
+                                id="cms-plugins-product-specification-attributes" title="Attributes">
+                                <span class="nav-link-icon d-md-none d-lg-inline-block" title="Attributes"><svg
                                         class="icon svg-icon-ti-ti-list-details" xmlns="http://www.w3.org/2000/svg"
                                         width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -441,12 +486,15 @@
                                         <path
                                             d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z">
                                         </path>
-                                    </svg></span><span class="nav-link-title text-truncate"> Attributes
-                                </span></a>
+                                    </svg>
+                                </span>
+                                <span class="nav-link-title text-truncate"> Attributes
+                                </span>
+                            </a>
                             <a class="dropdown-item nav-priority-20" href="{{ route('admin.producttable.Index') }}"
-                                id="cms-plugins-product-specification-tables" title="Tables"><span
-                                    class="nav-link-icon d-md-none d-lg-inline-block" title="Tables"><svg
-                                        class="icon svg-icon-ti-ti-table" xmlns="http://www.w3.org/2000/svg" width="24"
+                                id="cms-plugins-product-specification-tables" title="Tables">
+                                <span class="nav-link-icon d-md-none d-lg-inline-block" title="Tables">
+                                    <svg class="icon svg-icon-ti-ti-table" xmlns="http://www.w3.org/2000/svg" width="24"
                                         height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <path
@@ -454,7 +502,10 @@
                                         </path>
                                         <path d="M3 10h18"></path>
                                         <path d="M10 3v18"></path>
-                                    </svg></span><span class="nav-link-title text-truncate"> Tables </span></a>
+                                    </svg>
+                                </span>
+                                <span class="nav-link-title text-truncate">Tables </span>
+                            </a>
                         </div>
                     </li>
                     <li class="nav-item dropdown"><a class="nav-link dropdown-toggle nav-priority-0" href="{{ url("/")
@@ -575,7 +626,63 @@
                                     </path>
                                     <path d="M13 8l2 0"></path>
                                     <path d="M13 12l2 0"></path>
-                                </svg></span><span class="nav-link-title text-truncate"> Pages </span></a></li>
+                                </svg></span><span class="nav-link-title text-truncate"> Pages </span></a>
+                    </li>
+
+
+
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle nav-priority-420" href="{{ url("/") }}/admin#cms-plugins-faq" id="cms-plugins-faq" data-bs-toggle="dropdown"
+                            data-bs-auto-close="false" role="button" aria-expanded="false" title="FAQs">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block" title="FAQs">
+                                <svg
+                                    class="icon svg-icon-ti-ti-help-octagon" xmlns="http://www.w3.org/2000/svg"
+                                    width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path
+                                        d="M12.802 2.165l5.575 2.389c.48 .206 .863 .589 1.07 1.07l2.388 5.574c.22 .512 .22 1.092 0 1.604l-2.389 5.575c-.206 .48 -.589 .863 -1.07 1.07l-5.574 2.388c-.512 .22 -1.092 .22 -1.604 0l-5.575 -2.389a2.036 2.036 0 0 1 -1.07 -1.07l-2.388 -5.574a2.036 2.036 0 0 1 0 -1.604l2.389 -5.575c.206 -.48 .589 -.863 1.07 -1.07l5.574 -2.388a2.036 2.036 0 0 1 1.604 0z">
+                                    </path>
+                                    <path d="M12 16v.01"></path>
+                                    <path d="M12 13a2 2 0 0 0 .914 -3.782a1.98 1.98 0 0 0 -2.414 .483"></path>
+                                </svg>                            
+                            </span>
+                            <span class="nav-link-title text-truncate"> FAQs </span>
+                        </a>
+                        <div class="dropdown-menu animate slideIn dropdown-menu-start">
+                            <a class="dropdown-item nav-priority-0" href="{{ route('admin.faqs.index') }}"
+                                id="cms-plugins-faq-list" title="FAQs">
+                                <span class="nav-link-icon d-md-none d-lg-inline-block" title="FAQs">
+                                    <svg
+                                        class="icon svg-icon-ti-ti-list-check" xmlns="http://www.w3.org/2000/svg"
+                                        width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M3.5 5.5l1.5 1.5l2.5 -2.5"></path>
+                                        <path d="M3.5 11.5l1.5 1.5l2.5 -2.5"></path>
+                                        <path d="M3.5 17.5l1.5 1.5l2.5 -2.5"></path>
+                                        <path d="M11 6l9 0"></path>
+                                        <path d="M11 12l9 0"></path>
+                                        <path d="M11 18l9 0"></path>
+                                    </svg>
+                                </span>
+                                <span class="nav-link-title text-truncate"> FAQs </span>
+                            </a>
+                            {{--  <a class="dropdown-item nav-priority-10" href="{{ url("/") }}/admin/faq-categories"
+                                id="cms-plugins-faq-category" title="Categories">
+                                <span class="nav-link-icon d-md-none d-lg-inline-block" title="Categories">
+                                    <svg
+                                        class="icon svg-icon-ti-ti-folder" xmlns="http://www.w3.org/2000/svg" width="24"
+                                        height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path
+                                            d="M5 4h4l3 3h7a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-11a2 2 0 0 1 2 -2">
+                                        </path>
+                                    </svg>
+                                </span><span class="nav-link-title text-truncate"> Categories</span>
+                            </a>  --}}
+                        </div>
+                    </li>
+
                   {{--  <li class="nav-item dropdown"><a class="nav-link dropdown-toggle nav-priority-3" href="{{ url("/")
                             }}/admin#cms-plugins-blog" id="cms-plugins-blog" data-bs-toggle="dropdown"
                             data-bs-auto-close="false" role="button" aria-expanded="false" title="Blog"><span
@@ -845,44 +952,7 @@
                                     <path d="M16 21l.01 0"></path>
                                 </svg></span><span class="nav-link-title text-truncate"> Simple Sliders
                             </span></a></li>
-                    <li class="nav-item dropdown"><a class="nav-link dropdown-toggle nav-priority-420" href="{{ url("/") }}/admin#cms-plugins-faq" id="cms-plugins-faq" data-bs-toggle="dropdown"
-                            data-bs-auto-close="false" role="button" aria-expanded="false" title="FAQs"><span
-                                class="nav-link-icon d-md-none d-lg-inline-block" title="FAQs"><svg
-                                    class="icon svg-icon-ti-ti-help-octagon" xmlns="http://www.w3.org/2000/svg"
-                                    width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path
-                                        d="M12.802 2.165l5.575 2.389c.48 .206 .863 .589 1.07 1.07l2.388 5.574c.22 .512 .22 1.092 0 1.604l-2.389 5.575c-.206 .48 -.589 .863 -1.07 1.07l-5.574 2.388c-.512 .22 -1.092 .22 -1.604 0l-5.575 -2.389a2.036 2.036 0 0 1 -1.07 -1.07l-2.388 -5.574a2.036 2.036 0 0 1 0 -1.604l2.389 -5.575c.206 -.48 .589 -.863 1.07 -1.07l5.574 -2.388a2.036 2.036 0 0 1 1.604 0z">
-                                    </path>
-                                    <path d="M12 16v.01"></path>
-                                    <path d="M12 13a2 2 0 0 0 .914 -3.782a1.98 1.98 0 0 0 -2.414 .483"></path>
-                                </svg></span><span class="nav-link-title text-truncate"> FAQs </span></a>
-                        <div class="dropdown-menu animate slideIn dropdown-menu-start"><a
-                                class="dropdown-item nav-priority-0" href="{{ url("/") }}/admin/faqs"
-                                id="cms-plugins-faq-list" title="FAQs"><span
-                                    class="nav-link-icon d-md-none d-lg-inline-block" title="FAQs"><svg
-                                        class="icon svg-icon-ti-ti-list-check" xmlns="http://www.w3.org/2000/svg"
-                                        width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M3.5 5.5l1.5 1.5l2.5 -2.5"></path>
-                                        <path d="M3.5 11.5l1.5 1.5l2.5 -2.5"></path>
-                                        <path d="M3.5 17.5l1.5 1.5l2.5 -2.5"></path>
-                                        <path d="M11 6l9 0"></path>
-                                        <path d="M11 12l9 0"></path>
-                                        <path d="M11 18l9 0"></path>
-                                    </svg></span><span class="nav-link-title text-truncate"> FAQs </span></a><a
-                                class="dropdown-item nav-priority-10" href="{{ url("/") }}/admin/faq-categories"
-                                id="cms-plugins-faq-category" title="Categories"><span
-                                    class="nav-link-icon d-md-none d-lg-inline-block" title="Categories"><svg
-                                        class="icon svg-icon-ti-ti-folder" xmlns="http://www.w3.org/2000/svg" width="24"
-                                        height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path
-                                            d="M5 4h4l3 3h7a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-11a2 2 0 0 1 2 -2">
-                                        </path>
-                                    </svg></span><span class="nav-link-title text-truncate"> Categories
-                                </span></a></div>
-                    </li>
+                    
                     <li class="nav-item"><a class="nav-link nav-priority-430" href="{{ url("/") }}/admin/newsletters"
                             id="cms-plugins-newsletter" title="Newsletters"><span
                                 class="nav-link-icon d-md-none d-lg-inline-block" title="Newsletters"><svg
@@ -1207,3 +1277,7 @@
             </div>
         </div>
     </aside>
+</div>
+<form id="admin-logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
+    @csrf
+</form>

@@ -3,7 +3,7 @@
 namespace Botble\Ecommerce\Models;
 
 use Botble\Base\Facades\AdminHelper;
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class SpecificationGroup extends BaseModel

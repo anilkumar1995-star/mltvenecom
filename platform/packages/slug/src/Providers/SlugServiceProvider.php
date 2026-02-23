@@ -5,7 +5,7 @@ namespace Botble\Slug\Providers;
 use Botble\Base\Facades\BaseHelper;
 use Botble\Base\Facades\MacroableModels;
 use Botble\Base\Facades\PanelSectionManager;
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Base\PanelSections\PanelSectionItem;
 use Botble\Base\Supports\ServiceProvider;
 use Botble\Base\Traits\LoadAndPublishDataTrait;

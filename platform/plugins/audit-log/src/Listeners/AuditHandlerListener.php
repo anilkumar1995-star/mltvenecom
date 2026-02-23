@@ -5,7 +5,7 @@ namespace Botble\AuditLog\Listeners;
 use Botble\AuditLog\Events\AuditHandlerEvent;
 use Botble\AuditLog\Models\AuditHistory;
 use Botble\Base\Facades\BaseHelper;
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Setting\Enums\DataRetentionPeriod;
 use Carbon\Carbon;
 use Exception;

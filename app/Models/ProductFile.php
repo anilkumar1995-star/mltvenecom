@@ -1,13 +1,13 @@
 <?php
-
-namespace Botble\Ecommerce\Models;
-
-use Botble\Base\Models\BaseModel;
+namespace App\Models;
+use App\Models\EcProduct;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Arr;
 
-class ProductFile extends BaseModel
+
+class ProductFile extends Model
 {
     protected $table = 'ec_product_files';
 
@@ -23,7 +23,7 @@ class ProductFile extends BaseModel
 
     public function product(): BelongsTo
     {
-        return $this->belongsTo(Product::class)->withDefault();
+        return $this->belongsTo(EcProduct::class)->withDefault();
     }
 
     protected function fileName(): Attribute

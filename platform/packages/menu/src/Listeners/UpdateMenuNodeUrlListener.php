@@ -3,7 +3,7 @@
 namespace Botble\Menu\Listeners;
 
 use Botble\Base\Facades\BaseHelper;
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Base\Supports\RepositoryHelper;
 use Botble\Menu\Facades\Menu;
 use Botble\Menu\Models\MenuNode;

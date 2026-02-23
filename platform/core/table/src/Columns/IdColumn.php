@@ -2,7 +2,7 @@
 
 namespace Botble\Table\Columns;
 
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Table\Contracts\FormattedColumn as FormattedColumnContract;
 
 class IdColumn extends FormattedColumn implements FormattedColumnContract

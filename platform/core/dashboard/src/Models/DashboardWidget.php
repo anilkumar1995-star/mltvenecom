@@ -3,7 +3,8 @@
 namespace Botble\Dashboard\Models;
 
 use Botble\Base\Casts\SafeContent;
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
+els\BaseModel;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class DashboardWidget extends BaseModel

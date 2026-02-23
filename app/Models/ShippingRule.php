@@ -1,14 +1,14 @@
 <?php
 
-namespace Botble\Ecommerce\Models;
 
-use Botble\Base\Casts\SafeContent;
-use Botble\Base\Models\BaseModel;
-use Botble\Ecommerce\Enums\ShippingRuleTypeEnum;
+namespace App\Models;
+
+use Botble\Ecommerce\Models\ShippingRuleItem;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class ShippingRule extends BaseModel
+class ShippingRule extends Model
 {
     protected $table = 'ec_shipping_rules';
 
@@ -29,8 +29,8 @@ class ShippingRule extends BaseModel
     }
 
     protected $casts = [
-        'type' => ShippingRuleTypeEnum::class,
-        'name' => SafeContent::class,
+        'type' => 'string',
+        'name' => 'string',
     ];
 
     public function shipping(): BelongsTo
@@ -43,3 +43,4 @@ class ShippingRule extends BaseModel
         return $this->hasMany(ShippingRuleItem::class);
     }
 }
+

@@ -1,14 +1,13 @@
 <?php
 
-namespace Botble\Ecommerce\Models;
 
-use Botble\ACL\Models\User;
-use Botble\Base\Models\BaseModel;
-use Botble\Ecommerce\Enums\OrderHistoryActionEnum;
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class OrderHistory extends BaseModel
+class OrderHistory extends Model
 {
     protected $table = 'ec_order_histories';
 
@@ -21,7 +20,7 @@ class OrderHistory extends BaseModel
     ];
 
     protected $casts = [
-        'action' => OrderHistoryActionEnum::class,
+        'action' => 'string',
     ];
 
     public function user(): BelongsTo
@@ -39,3 +38,4 @@ class OrderHistory extends BaseModel
         return Attribute::get(fn (?string $value): array => json_decode($value, true) ?: []);
     }
 }
+

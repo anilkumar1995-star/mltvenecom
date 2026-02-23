@@ -2,7 +2,7 @@
 
 namespace Botble\RequestLog\Models;
 
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Base\Models\BaseQueryBuilder;
 use Botble\Setting\Enums\DataRetentionPeriod;
 use Carbon\Carbon;

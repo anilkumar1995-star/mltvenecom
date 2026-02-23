@@ -2,7 +2,7 @@
 
 namespace Botble\Ecommerce\Services;
 
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Ecommerce\Enums\ShippingMethodEnum;
 use Botble\Ecommerce\Enums\ShippingRuleTypeEnum;
 use Botble\Ecommerce\Facades\EcommerceHelper;

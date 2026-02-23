@@ -3,7 +3,7 @@
 namespace Botble\SimpleSlider\Models;
 
 use Botble\Base\Casts\SafeContent;
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 
 class SimpleSliderItem extends BaseModel
 {

@@ -1,14 +1,15 @@
 <?php
 
-namespace Botble\Ecommerce\Models;
 
-use Botble\Base\Models\BaseModel;
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Discount extends BaseModel
+class Discount extends Model
 {
     protected $table = 'ec_discounts';
 
@@ -31,7 +32,16 @@ class Discount extends BaseModel
         'apply_via_url',
         'display_at_checkout',
         'description',
+        'store_id',
     ];
+
+    // ... casts ...
+
+    public function store()
+    {
+        return $this->belongsTo(Store::class, 'store_id');
+    }
+
 
     protected $casts = [
         'start_date' => 'datetime',
@@ -71,7 +81,7 @@ class Discount extends BaseModel
     public function productCategories(): BelongsToMany
     {
         return $this->belongsToMany(
-            ProductCategory::class,
+            EcProductCategory::class,
             'ec_discount_product_categories',
             'discount_id',
             'product_category_id'
@@ -85,7 +95,7 @@ class Discount extends BaseModel
 
     public function products(): BelongsToMany
     {
-        return $this->belongsToMany(Product::class, 'ec_discount_products', 'discount_id', 'product_id');
+        return $this->belongsToMany(EcProduct::class, 'ec_discount_products', 'discount_id', 'product_id');
     }
 
     public function productVariants(): BelongsToMany
@@ -125,3 +135,4 @@ class Discount extends BaseModel
         );
     }
 }
+

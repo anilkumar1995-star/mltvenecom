@@ -109,6 +109,22 @@
                                                     <span class="text-danger small">{{ $message }}</span>
                                                 @enderror
                                             </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">PAN Card Number</label>
+                                                <input id="pan_number" type="text" class="form-control" name="pan_number"
+                                                    value="{{ old('pan_number') }}">
+                                                @error('pan_number')
+                                                    <span class="text-danger small">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Aadhar Card Number</label>
+                                                <input id="aadhar_number" type="text" class="form-control" name="aadhar_number"
+                                                    value="{{ old('aadhar_number') }}">
+                                                @error('aadhar_number')
+                                                    <span class="text-danger small">{{ $message }}</span>
+                                                @enderror
+                                            </div>
                                         </div>
 
                                         <div class="mb-4 form-check">

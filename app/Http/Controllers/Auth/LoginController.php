@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;   
+use Illuminate\Support\Facades\Auth;
 
 
 class LoginController extends Controller
@@ -60,11 +60,18 @@ class LoginController extends Controller
 
         if (Auth::guard('web')->attempt($this->credentials($request), $request->filled('remember'))) {
             $request->session()->regenerate();
-            
+
             $user = Auth::guard('web')->user();
-            
+
             if ($user->role === 'admin') {
-                return redirect()->intended(route('home'));
+                return redirect()->intended(route('admin.dashboard'));
+            }
+
+            // Check for Vendor/User approval
+            if ($user->status !== 'active') {
+                Auth::guard('web')->logout();
+                return back()->withInput($request->only('email', 'remember'))
+                             ->withErrors(['email' => 'Your account is pending approval.']);
             }
 
             // Vendor/Others -> frontend/customer/dashboard.blade.php
@@ -74,7 +81,7 @@ class LoginController extends Controller
         $this->incrementLoginAttempts($request);
         return $this->sendFailedLoginResponse($request);
     }
-    
+
     protected function authenticated(Request $request, $user)
     {
         // 1. Customer Guard
@@ -85,7 +92,7 @@ class LoginController extends Controller
         // 2. Web Guard
         if (auth()->guard('web')->check()) {
             if ($user->role === 'admin') {
-                return redirect()->route('home');
+                return redirect()->route('admin.home');
             }
             // Vendor/Others -> Customer Dashboard
             return redirect()->route('frontend.customer.dashboard');
@@ -111,6 +118,29 @@ class LoginController extends Controller
             return Auth::guard('web');
         }
         return Auth::guard('customer');
+    }
+
+    /**
+     * Log the user out of the application.
+     */
+    public function logout(Request $request)
+    {
+        // Logout from web guard (admin/vendor)
+        if (Auth::guard('web')->check()) {
+            Auth::guard('web')->logout();
+        }
+
+        // Logout from customer guard
+        if (Auth::guard('customer')->check()) {
+            Auth::guard('customer')->logout();
+        }
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        // Redirect to login page
+        // Redirect to home page
+        return redirect('/');
     }
 
 }

@@ -3,7 +3,7 @@
 namespace Botble\Ecommerce\Models;
 
 use Botble\Base\Facades\MacroableModels;
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Base\Models\BaseQueryBuilder;
 use Botble\Base\Models\Concerns\HasPhoneNumber;
 use Botble\Base\Supports\Avatar;

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class EcSpecificationGroup extends Model
 {
+    protected $table = 'ec_specification_groups';
     protected $fillable = [
         'name',
         'description',
@@ -24,4 +25,10 @@ class EcSpecificationGroup extends Model
     {
         return date('d M y - h:i A', strtotime($value));
     }
+
+    public function attributes()
+{
+    return $this->hasMany(EcSpecificationAttribute::class, 'group_id');
+}
+
 }

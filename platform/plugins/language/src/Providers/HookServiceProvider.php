@@ -8,7 +8,7 @@ use Botble\Base\Facades\MetaBox;
 use Botble\Base\Forms\FieldOptions\HtmlFieldOption;
 use Botble\Base\Forms\Fields\HtmlField;
 use Botble\Base\Forms\FormAbstract;
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Base\Supports\ServiceProvider;
 use Botble\Language\Facades\Language;
 use Botble\Language\Models\Language as LanguageModel;

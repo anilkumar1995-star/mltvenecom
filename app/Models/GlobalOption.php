@@ -1,12 +1,11 @@
 <?php
 
-namespace Botble\Ecommerce\Models;
+namespace App\Models;
 
-use Botble\Base\Models\BaseModel;
-use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class GlobalOption extends BaseModel
+class GlobalOption extends Model
 {
     protected $table = 'ec_global_options';
 
@@ -16,22 +15,15 @@ class GlobalOption extends BaseModel
         'required',
     ];
 
-    protected static function booted(): void
+    protected static function booted()
     {
-        self::deleted(function (GlobalOption $option): void {
+        static::deleting(function ($option) {
             $option->values()->delete();
         });
     }
 
     public function values(): HasMany
     {
-        return $this
-            ->hasMany(GlobalOptionValue::class, 'option_id')
-            ->oldest('order');
-    }
-
-    protected function optionName(): Attribute
-    {
-        return Attribute::get(fn () => $this->name);
+        return $this->hasMany(GlobalOptionValue::class, 'option_id')->orderBy('order');
     }
 }

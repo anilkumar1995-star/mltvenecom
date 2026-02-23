@@ -1,6 +1,6 @@
 <?php
 
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Payment\Models\Payment;
 use Botble\Stripe\Supports\StripeHelper;
 

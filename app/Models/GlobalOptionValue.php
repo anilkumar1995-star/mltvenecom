@@ -1,11 +1,11 @@
 <?php
 
-namespace Botble\Ecommerce\Models;
+namespace App\Models;
 
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class GlobalOptionValue extends BaseModel
+class GlobalOptionValue extends Model
 {
     protected $table = 'ec_global_option_value';
 

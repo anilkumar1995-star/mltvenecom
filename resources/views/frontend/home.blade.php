@@ -49,7 +49,7 @@
                     @foreach ($categories as $category)
                         <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
                             <div class="tp-category-item-5 p-relative z-index-1 fix mb-30">
-                                <a href="{{ asset('/') }}products?category={{ $category->id }}">
+                                <a href="{{ route('frontend.categories.show', $category->slug) }}">
                                     <div class="tp-category-thumb-5 include-bg"
                                         style="background-image: url({{ $category->image && file_exists(public_path('storage/' . $category->image)) ? asset('storage/' . $category->image) : asset('home dashboard_files/placeholder.png') }});">
                                     </div>
@@ -69,21 +69,105 @@
     <section class="tp-product-area pb-70">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-xl-6">
+                <div class="col-xl-5 col-lg-6">
                     <div class="tp-section-title-wrapper-5 mb-50">
                         <span class="tp-section-title-pre-5"> Trending Products </span>
                         <h3 class="section-title tp-section-title-5"> <span>Featured</span> Products </h3>
                     </div>
                 </div>
+                <div class="col-xl-7 col-lg-6">
+                    <div class="tp-product-tab-2 tp-product-tab-5 tp-tab mb-50">
+                        <ul class="nav nav-tabs justify-content-lg-end" id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab" aria-controls="all" aria-selected="true">
+                                    All Product
+                                    <span class="tp-product-tab-tooltip">{{ $all_products->count() }}</span>
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="featured-tab" data-bs-toggle="tab" data-bs-target="#featured" type="button" role="tab" aria-controls="featured" aria-selected="false">
+                                    Featured
+                                    <span class="tp-product-tab-tooltip">{{ $featured_products->count() }}</span>
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="on-sale-tab" data-bs-toggle="tab" data-bs-target="#on-sale" type="button" role="tab" aria-controls="on-sale" aria-selected="false">
+                                    On Sale
+                                    <span class="tp-product-tab-tooltip">{{ $on_sale->count() }}</span>
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="trending-tab" data-bs-toggle="tab" data-bs-target="#trending" type="button" role="tab" aria-controls="trending" aria-selected="false">
+                                    Trending
+                                    <span class="tp-product-tab-tooltip">{{ $trending_products->count() }}</span>
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="top-rated-tab" data-bs-toggle="tab" data-bs-target="#top-rated" type="button" role="tab" aria-controls="top-rated" aria-selected="false">
+                                    Top Rated
+                                    <span class="tp-product-tab-tooltip">{{ $top_rated_products->count() }}</span>
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <div class="row mb-30 row-cols-xxl-4 row-cols-md-3 row-cols-sm-2 row-cols-2">
-                @if (!empty($featured_products))
-                    @foreach ($featured_products as $product)
-                        <div class="col">
-                            @include('frontend.partials.product-card', ['product' => $product])
-                        </div>
-                    @endforeach
-                @endif
+            
+            <div class="tab-content" id="myTabContent">
+                <!-- All Products -->
+                <div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
+                    <div class="row row-cols-xxl-4 row-cols-md-3 row-cols-sm-2 row-cols-2">
+                        @foreach ($all_products as $product)
+                            <div class="col">
+                                @include('frontend.partials.product-card-grid', ['product' => $product])
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                
+                <!-- Featured Products -->
+                <div class="tab-pane fade" id="featured" role="tabpanel" aria-labelledby="featured-tab">
+                    <div class="row row-cols-xxl-4 row-cols-md-3 row-cols-sm-2 row-cols-2">
+                        @foreach ($featured_products as $product)
+                            <div class="col">
+                                @include('frontend.partials.product-card-grid', ['product' => $product])
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                
+                <!-- On Sale Products -->
+                <div class="tab-pane fade" id="on-sale" role="tabpanel" aria-labelledby="on-sale-tab">
+                    <div class="row row-cols-xxl-4 row-cols-md-3 row-cols-sm-2 row-cols-2">
+                        @foreach ($on_sale as $product)
+                            <div class="col">
+                                @include('frontend.partials.product-card-grid', ['product' => $product])
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                
+                <!-- Trending Products -->
+                <div class="tab-pane fade" id="trending" role="tabpanel" aria-labelledby="trending-tab">
+                    <div class="row row-cols-xxl-4 row-cols-md-3 row-cols-sm-2 row-cols-2">
+                        @foreach ($trending_products as $product)
+                            <div class="col">
+                                @include('frontend.partials.product-card-grid', ['product' => $product])
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                
+                <!-- Top Rated Products -->
+                <div class="tab-pane fade" id="top-rated" role="tabpanel" aria-labelledby="top-rated-tab">
+                    <div class="row row-cols-xxl-4 row-cols-md-3 row-cols-sm-2 row-cols-2">
+                        @foreach ($top_rated_products as $product)
+                            <div class="col">
+                                @include('frontend.partials.product-card-grid', ['product' => $product])
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -102,7 +186,7 @@
                 @if (!empty($new_arrivals))
                     @foreach ($new_arrivals as $product)
                         <div class="col">
-                            @include('frontend.partials.product-card', ['product' => $product])
+                            @include('frontend.partials.product-card-grid', ['product' => $product])
                         </div>
                     @endforeach
                 @endif

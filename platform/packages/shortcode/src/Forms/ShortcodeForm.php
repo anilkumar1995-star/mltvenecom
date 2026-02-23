@@ -13,7 +13,7 @@ use Botble\Base\Forms\Fields\MediaImageField;
 use Botble\Base\Forms\Fields\SelectField;
 use Botble\Base\Forms\Fields\TextareaField;
 use Botble\Base\Forms\FormAbstract;
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Shortcode\Compilers\ShortcodeCompiler;
 use Botble\Shortcode\Forms\Fields\ShortcodeTabsField;
 

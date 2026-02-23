@@ -1,11 +1,12 @@
 <?php
 
-namespace Botble\Ecommerce\Models;
 
-use Botble\Base\Models\BaseModel;
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class Wishlist extends BaseModel
+class Wishlist extends Model
 {
     protected $table = 'ec_wish_lists';
 
@@ -16,6 +17,7 @@ class Wishlist extends BaseModel
 
     public function product(): HasOne
     {
-        return $this->hasOne(Product::class, 'id', 'product_id')->withDefault();
+        return $this->hasOne(EcProduct::class, 'id', 'product_id')->withDefault();
     }
 }
+

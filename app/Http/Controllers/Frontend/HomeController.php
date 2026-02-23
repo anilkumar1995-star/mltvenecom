@@ -3,44 +3,63 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
-use App\Models\Product;
-use App\Models\ProductCategory;
-use App\Models\Brand;
+use App\Models\EcProduct;
+use App\Models\EcProductCategory;
+use App\Models\EcBrand;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        $featured_products = Product::published()
+        $featured_products = EcProduct::published()
             ->featured()
-            ->inStock()
             ->with(['brand', 'categories'])
             ->take(8)
             ->get();
 
-        $new_arrivals = Product::published()
-            ->inStock()
+        $new_arrivals = EcProduct::published()
             ->with(['brand', 'categories'])
             ->latest()
             ->take(8)
             ->get();
 
-        $on_sale = Product::published()
+        $on_sale = EcProduct::published()
             ->onSale()
-            ->inStock()
             ->with(['brand', 'categories'])
             ->take(8)
             ->get();
 
-        $categories = ProductCategory::published()
+        $categories = EcProductCategory::published()
             ->parent()
             ->featured()
             ->take(8)
             ->get();
 
-        $brands = Brand::published()
+        $EcBrands = EcBrand::published()
             ->featured()
             ->take(6)
+            ->get();
+
+        // All Products
+        $all_products = EcProduct::published()
+            ->with(['brand', 'categories'])
+            ->latest()
+            ->take(8)
+            ->get();
+
+        // Trending Products (Most Viewed)
+        $trending_products = EcProduct::published()
+            ->with(['brand', 'categories'])
+            ->orderBy('views', 'desc')
+            ->take(8)
+            ->get();
+
+        // Top Rated Products (Best Reviews)
+        $top_rated_products = EcProduct::published()
+            ->with(['brand', 'categories'])
+            ->orderBy('reviews_avg', 'desc')
+            ->orderBy('reviews_count', 'desc')
+            ->take(8)
             ->get();
 
         return view('frontend.home', compact(
@@ -48,7 +67,10 @@ class HomeController extends Controller
             'new_arrivals',
             'on_sale',
             'categories',
-            'brands'
+            'EcBrands',
+            'all_products',
+            'trending_products',
+            'top_rated_products'
         ));
     }
 }

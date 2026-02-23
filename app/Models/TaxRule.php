@@ -1,15 +1,12 @@
 <?php
 
-namespace Botble\Ecommerce\Models;
+namespace App\Models;
 
-use Botble\Base\Models\BaseModel;
-use Botble\Ecommerce\Traits\LocationTrait;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class TaxRule extends BaseModel
+class TaxRule extends Model
 {
-    use LocationTrait;
-
     protected $table = 'ec_tax_rules';
 
     protected $fillable = [
@@ -23,8 +20,11 @@ class TaxRule extends BaseModel
         'is_enabled',
     ];
 
+    /**
+     * Parent tax
+     */
     public function tax(): BelongsTo
     {
-        return $this->belongsTo(Tax::class)->withDefault();
+        return $this->belongsTo(Tax::class, 'tax_id');
     }
 }

@@ -1,11 +1,12 @@
 <?php
 
-namespace Botble\Ecommerce\Models;
 
-use Botble\Base\Models\BaseModel;
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class OrderReferral extends BaseModel
+class OrderReferral extends Model
 {
     protected $table = 'ec_order_referrals';
 
@@ -32,3 +33,4 @@ class OrderReferral extends BaseModel
         return $this->belongsTo(Order::class)->withDefault();
     }
 }
+

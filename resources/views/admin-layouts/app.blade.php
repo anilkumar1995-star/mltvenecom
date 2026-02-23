@@ -14,7 +14,7 @@
 
     <link href="{{ asset('storage/main/general/favicon.png') }}" rel="icon shortcut" type="image/x-icon">
     <meta property="og:image" content="{{ asset('storage/main/general/favicon.png') }}">
-    
+
 
     <meta name="description" content="Copyright 2026 © Your App. Version 1.4.3">
     <meta property="og:description" content="Copyright 2026 © Your App. Version 1.4.3">
@@ -736,6 +736,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-notify@0.5.5/dist/simple-notify.min.js"></script>
 
+    
     <script>
         $(document).ready(function() {
             $('#myTable').DataTable({

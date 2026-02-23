@@ -2,7 +2,7 @@
 
 namespace Botble\Language\Repositories\Eloquent;
 
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Language\Models\Language;
 use Botble\Language\Repositories\Interfaces\LanguageInterface;
 use Botble\Support\Repositories\Eloquent\RepositoriesAbstract;

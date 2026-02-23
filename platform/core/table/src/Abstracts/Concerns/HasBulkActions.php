@@ -5,7 +5,7 @@ namespace Botble\Table\Abstracts\Concerns;
 use Botble\Base\Events\UpdatedContentEvent;
 use Botble\Base\Facades\BaseHelper;
 use Botble\Base\Http\Responses\BaseHttpResponse;
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Table\Abstracts\TableBulkActionAbstract;
 use Botble\Table\Abstracts\TableBulkChangeAbstract;
 use Closure;

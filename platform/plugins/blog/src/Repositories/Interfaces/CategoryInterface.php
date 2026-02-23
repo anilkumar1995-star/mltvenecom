@@ -3,7 +3,7 @@
 namespace Botble\Blog\Repositories\Interfaces;
 
 use Botble\Base\Enums\BaseStatusEnum;
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Blog\Models\Category;
 use Botble\Support\Repositories\Interfaces\RepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;

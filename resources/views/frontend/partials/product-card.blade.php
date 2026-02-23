@@ -1,6 +1,6 @@
 <div class="tp-product-item-5 p-relative white-bg mb-40">
     <div class="tp-product-thumb-5 w-img fix mb-15">
-        <a href="{{ asset('/') }}products/{{ $product->slug }}">
+        <a href="{{ route('frontend.products.show', $product->slug ?: $product->id) }}">
             @if($product->image && file_exists(public_path('storage/' . $product->image)))
                 <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}">
             @else
@@ -25,6 +25,15 @@
                     <i class="far fa-eye"></i>
                     <span class="tp-product-tooltip tp-product-tooltip-right">Quick View</span>
                 </button>
+                <form action="{{ route('frontend.cart.buyNow') }}" method="POST" class="d-inline">
+                    @csrf
+                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                    <input type="hidden" name="quantity" value="1">
+                    <button type="submit" class="tp-product-action-btn-2" title="Buy Now">
+                        <i class="fas fa-shopping-bag"></i>
+                        <span class="tp-product-tooltip tp-product-tooltip-right">Buy Now</span>
+                    </button>
+                </form>
                 <button type="button" class="tp-product-action-btn-2" title="Add To Wishlist">
                     <i class="far fa-heart"></i>
                     <span class="tp-product-tooltip tp-product-tooltip-right">Add To Wishlist</span>
@@ -38,7 +47,7 @@
         </div>
 
         <h3 class="tp-product-title-2 line-clamp-2">
-            <a href="{{ asset('/') }}products/{{ $product->slug }}" title="{{ $product->name }}">{{ $product->name }}</a>
+            <a href="{{ route('frontend.products.show', $product->slug ?: $product->id) }}" title="{{ $product->name }}">{{ $product->name }}</a>
         </h3>
 
         <div class="tp-product-price-wrapper-5">
