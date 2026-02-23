@@ -57,9 +57,9 @@ class Customer extends Authenticatable
     {
         return $query->where('status', 'activated');
     }
-
-    public function getIsVendorAttribute(): bool
+    
+    public function store()
     {
-        return \App\Models\User::where('email', $this->email)->where('role', 'vendor')->exists();
+        return $this->hasOne(Store::class, 'customer_id');
     }
 }
