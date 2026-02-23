@@ -87,7 +87,7 @@
                                                         @foreach($product->images as $img)
                                                         <div class="col-6 col-md-4 col-lg-3 existing-image-item">
                                                             <div class="card border-0 shadow-sm position-relative">
-                                                                <img src="{{ asset('storage/'.$img) }}" class="card-img-top rounded" style="height: 100px; object-fit: cover;">
+                                                                <img src="{{ asset('uploads/'.$img) }}" class="card-img-top rounded" style="height: 100px; object-fit: cover;">
                                                                 <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 remove-existing-img" style="border-radius: 50%; padding: 0 6px;">&times;</button>
                                                                 <input type="hidden" name="existing_images[]" value="{{ $img }}">
                                                             </div>
@@ -300,7 +300,7 @@
                                             @foreach($product->relatedProducts as $item)
                                             <div class="list-group-item d-flex justify-content-between align-items-center" id="product-related-products-{{ $item->id }}">
                                                 <div class="d-flex align-items-center flex-grow-1">
-                                                    <img src="{{ asset('storage/'.$item->image) }}" alt="{{ $item->name }}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px; margin-right: 15px;">
+                                                    <img src="{{ asset('uploads/'.$item->image) }}" alt="{{ $item->name }}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px; margin-right: 15px;">
                                                     <span class="fw-bold">{{ $item->name }}</span>
                                                     <input type="hidden" name="related_products[]" value="{{ $item->id }}">
                                                 </div>
@@ -323,7 +323,7 @@
                                              @foreach($product->upSellingProducts as $item)
                                             <div class="list-group-item d-flex justify-content-between align-items-center" id="product-up-selling-products-{{ $item->id }}">
                                                 <div class="d-flex align-items-center flex-grow-1">
-                                                    <img src="{{ asset('storage/'.$item->image) }}" alt="{{ $item->name }}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px; margin-right: 15px;">
+                                                    <img src="{{ asset('uploads/'.$item->image) }}" alt="{{ $item->name }}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px; margin-right: 15px;">
                                                     <span class="fw-bold">{{ $item->name }}</span>
                                                     <input type="hidden" name="up_selling_products[]" value="{{ $item->id }}">
                                                 </div>
@@ -347,7 +347,7 @@
                                              @foreach($product->crossSellingProducts as $item)
                                             <div class="list-group-item d-flex justify-content-between align-items-center" id="product-cross-selling-products-{{ $item->id }}">
                                                 <div class="d-flex align-items-center flex-grow-1">
-                                                    <img src="{{ asset('storage/'.$item->image) }}" alt="{{ $item->name }}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px; margin-right: 15px;">
+                                                    <img src="{{ asset('uploads/'.$item->image) }}" alt="{{ $item->name }}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px; margin-right: 15px;">
                                                     <span class="fw-bold">{{ $item->name }}</span>
                                                     <input type="hidden" name="cross_selling_products[]" value="{{ $item->id }}">
                                                 </div>
@@ -438,7 +438,7 @@
 
                             <div class="card meta-boxes"><div class="card-header"><h4 class="card-title"><label class="form-label" for="brand_id">Brand</label></h4></div><div class=" card-body"><select class="select-search-full form-select" data-placeholder="Select a brand..." data-allow-clear="true" name="brand_id"><option value="">Select a brand...</option>@foreach ($brands as $row)<option value="{{ $row->id }}" {{ $product->brand_id == $row->id ? 'selected' : '' }}>{{ $row->name }}</option>@endforeach</select></div></div>
 
-                            <div class="card meta-boxes"><div class="card-header"><h4 class="card-title"><label class="form-label">Featured image (optional)</label></h4></div><div class=" card-body"><div class="image-box"><div class="preview-image-wrapper mb-1"><div class="preview-image-inner"><img id="preview-image" class="preview-image default-image" src="{{ $product->image ? asset('storage/'.$product->image) : asset('vendor/core/core/base/images/placeholder.png') }}" alt="Preview image" style="width: 150px; height: 150px; object-fit: cover; border-radius: 4px;" /></div></div><input type="file" name="image_file" id="image_file" class="form-control" accept="image/*" onchange="document.getElementById('preview-image').src = window.URL.createObjectURL(this.files[0])"></div></div></div>
+                            <div class="card meta-boxes"><div class="card-header"><h4 class="card-title"><label class="form-label">Featured image (optional)</label></h4></div><div class=" card-body"><div class="image-box"><div class="preview-image-wrapper mb-1"><div class="preview-image-inner"><img id="preview-image" class="preview-image default-image" src="{{ $product->image ? asset('uploads/'.$product->image) : asset('vendor/core/core/base/images/placeholder.png') }}" alt="Preview image" style="width: 150px; height: 150px; object-fit: cover; border-radius: 4px;" /></div></div><input type="file" name="image_file" id="image_file" class="form-control" accept="image/*" onchange="document.getElementById('preview-image').src = window.URL.createObjectURL(this.files[0])"></div></div></div>
 
                             <div class="card meta-boxes"><div class="card-header"><h4 class="card-title"><label class="form-label">Product collections</label></h4></div><div class="card-body"><fieldset class="form-fieldset fieldset-for-multi-check-list"><div class="multi-check-list-wrapper">@foreach ($collections as $collection)<label class="form-check"><input type="checkbox" name="product_collections[]" class="form-check-input" value="{{ $collection->id }}" {{ in_array($collection->id, $product->productCollections->pluck('id')->toArray()) ? 'checked' : '' }}><span class="form-check-label">{{ $collection->name }}</span></label>@endforeach</div></fieldset></div></div>
                             <div class="card meta-boxes"><div class="card-header"><h4 class="card-title"><label class="form-label">Labels</label></h4></div><div class=" card-body"><fieldset class="form-fieldset fieldset-for-multi-check-list"><div class="multi-check-list-wrapper">@foreach($productionlabels as $label)<label class="form-check"><input type="checkbox" name="product_labels[]" class="form-check-input" value="{{ $label->id }}" {{ in_array($label->id, $product->productLabels->pluck('id')->toArray()) ? 'checked' : '' }}><span class="form-check-label">{{ $label->name }}</span></label>@endforeach</div></fieldset></div></div>

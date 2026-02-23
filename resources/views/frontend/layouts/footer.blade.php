@@ -8,7 +8,7 @@
                             <div class="tp-footer-widget-content">
                                 <div class="tp-footer-logo">
                                     <a href="{{ asset('/') }}">
-                                        <img src="{{ asset('/') }}home dashboard_files/logo.png"
+                                        <img src="{{ asset('/') }}home-dashboard-files/logo.png"
                                             alt="Shofy - Multipurpose eCommerce Laravel Script">
                                     </a>
                                 </div>
@@ -102,7 +102,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="tp-footer-payment text-md-end">
-                                <p><img src="{{ asset('/') }}home dashboard_files/footer-pay.png" alt="footer image"></p>
+                                <p><img src="{{ asset('/') }}home-dashboard-files/footer-pay.png" alt="footer image"></p>
                             </div>
                         </div>
                     </div>

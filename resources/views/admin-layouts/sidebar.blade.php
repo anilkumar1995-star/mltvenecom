@@ -9,7 +9,7 @@
                     <path d="M4 12l16 0"></path>
                     <path d="M4 18l16 0"></path>
                 </svg></button>
-            <h2 class="d-block d-lg-none navbar-brand navbar-brand-autodark"><a href="{{ route('admin.dashboard') }}"><img
+            <h2 class="d-block d-lg-none navbar-brand navbar-brand-autodark"><a href="{{ url("/") }}/admin"><img
                         src="{{ asset('/') }}js/logo-white.png" alt="Your App" class="navbar-brand-image"
                         style="max-height: 32px; height: auto;"></a>
             </h2>
@@ -30,25 +30,22 @@
                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path>
                                 <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
-                            </svg> Profile </a>
-                            <a class="dropdown-item" href="{{ route('admin.logout') }}"
-                               onclick="event.preventDefault(); document.getElementById('admin-logout-form').submit();">
-                                <svg class="icon dropdown-item-icon svg-icon-ti-ti-logout" xmlns="http://www.w3.org/2000/svg"
-                                    width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                    <path
-                                        d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2">
-                                    </path>
-                                    <path d="M9 12h12l-3 -3"></path>
-                                    <path d="M18 15l3 -3"></path>
-                                </svg> Logout </a>
-                        </div>
+                            </svg> Profile </a><a class="dropdown-item" href="{{ url("/") }}/admin/logout"><svg
+                                class="icon dropdown-item-icon svg-icon-ti-ti-logout" xmlns="http://www.w3.org/2000/svg"
+                                width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2">
+                                </path>
+                                <path d="M9 12h12l-3 -3"></path>
+                                <path d="M18 15l3 -3"></path>
+                            </svg> Logout </a></div>
                 </div>
             </div>
             <div class="collapse navbar-collapse" id="sidebar-menu">
                 <ul class="navbar-nav">
-                    <li class="nav-item active"><a class="nav-link nav-priority--9999 active show" href="{{ route('admin.dashboard') }}" id="cms-core-dashboard" title="Dashboard"><span
+                    <li class="nav-item active"><a class="nav-link nav-priority--9999 active show" href="{{ url("/")
+                            }}/admin" id="cms-core-dashboard" title="Dashboard"><span
                                 class="nav-link-icon d-md-none d-lg-inline-block" title="Dashboard"><svg
                                     class="icon svg-icon-ti-ti-home" xmlns="http://www.w3.org/2000/svg" width="24"
                                     height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -73,6 +70,334 @@
                                     data-url="{{ url("/") }}/admin/menu-items-count"
                                     style="display: none;"></span></span></a>
                         <div class="dropdown-menu animate slideIn dropdown-menu-start">
+                            <a class="dropdown-item nav-priority-90" href="{{ route('admin.reports.index') }}"
+                                id="cms-plugins-ecommerce-reports" title="Reports"><span
+                                    class="nav-link-icon d-md-none d-lg-inline-block" title="Reports"><svg
+                                        class="icon svg-icon-ti-ti-chart-bar" xmlns="http://www.w3.org/2000/svg"
+                                        width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
+                                        <path d="M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
+                                        <path d="M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
+                                        <path d="M4 20h14"></path>
+                                    </svg></span><span class="nav-link-title text-truncate"> Reports
+                                </span>
+                            </a>
+                            <a class="dropdown-item nav-priority-50" href="{{ route('admin.orders.index') }}"
+                                id="cms-plugins-ecommerce-order" title="Orders"><span
+                                    class="nav-link-icon d-md-none d-lg-inline-block" title="Orders"><svg
+                                        class="icon svg-icon-ti-ti-shopping-cart" xmlns="http://www.w3.org/2000/svg"
+                                        width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M6 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                                        <path d="M17 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                                        <path d="M17 17h-11v-14h-2"></path>
+                                        <path d="M6 5l14 1l-1 7h-13"></path>
+                                    </svg></span><span class="nav-link-title text-truncate"> Orders
+                                </span>
+                            </a>
+                            <a class="dropdown-item nav-priority-60" href="{{ route('admin.incomplete-orders.index') }}"
+                                id="cms-plugins-ecommerce-incomplete-order" title="Incomplete Orders"><span
+                                    class="nav-link-icon d-md-none d-lg-inline-block" title="Incomplete Orders"><svg
+                                        class="icon svg-icon-ti-ti-shopping-cart-x" xmlns="http://www.w3.org/2000/svg"
+                                        width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M6 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                                        <path d="M17 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                                        <path d="M17 17h-11v-14h-2"></path>
+                                        <path d="M6 5l14 1l-1 7h-13"></path>
+                                        <path d="M22 22l-5 -5"></path>
+                                        <path d="M17 22l5 -5"></path>
+                                    </svg></span><span class="nav-link-title text-truncate"> Incomplete Orders
+                                </span>
+                            </a>
+                            <a class="dropdown-item nav-priority-70" href="{{ route('admin.order-returns.index') }}"
+                                id="cms-plugins-ecommerce-order-return" title="Order Returns"><span
+                                    class="nav-link-icon d-md-none d-lg-inline-block" title="Order Returns"><svg
+                                        class="icon svg-icon-ti-ti-arrow-back-up" xmlns="http://www.w3.org/2000/svg"
+                                        width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M9 13l-4 -4l4 -4m-4 4h11a4 4 0 0 1 0 8h-1"></path>
+                                    </svg></span><span class="nav-link-title text-truncate"> Order Returns
+                                </span>
+                            </a>
+                             <a class="dropdown-item nav-priority-80" href="{{ route('admin.shipments.index') }}"
+                                id="cms-plugins-ecommerce-shipment" title="Shipments"><span
+                                    class="nav-link-icon d-md-none d-lg-inline-block" title="Shipments"><svg
+                                        class="icon svg-icon-ti-ti-truck" xmlns="http://www.w3.org/2000/svg" width="24"
+                                        height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M7 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                                        <path d="M17 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                                        <path d="M5 17h-2v-11a1 1 0 0 1 1 -1h9v12m-4 0h6m4 0h2v-6h-8m0 -5h5l3 5"></path>
+                                    </svg></span><span class="nav-link-title text-truncate"> Shipments
+                                </span>
+                            </a>
+                            <a class="dropdown-item nav-priority-90" href="{{ route('admin.invoices.index') }}"
+                                id="cms-plugins-ecommerce-invoice" title="Invoices"><span
+                                    class="nav-link-icon d-md-none d-lg-inline-block" title="Invoices"><svg
+                                        class="icon svg-icon-ti-ti-file-invoice" xmlns="http://www.w3.org/2000/svg"
+                                        width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                                        <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z">
+                                        </path>
+                                        <path d="M9 7l1 0"></path>
+                                        <path d="M9 13l6 0"></path>
+                                        <path d="M13 17l2 0"></path>
+                                    </svg></span><span class="nav-link-title text-truncate"> Invoices
+                                </span>
+                            </a>
+                            <a class="dropdown-item nav-priority-60" href="{{ route('admin.products.index') }}"
+                                id="cms-plugins-ecommerce-product" title="Products">
+                                <span
+                                    class="nav-link-icon d-md-none d-lg-inline-block" title="Products"><svg
+                                        class="icon svg-icon-ti-ti-package" xmlns="http://www.w3.org/2000/svg"
+                                        width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5"></path>
+                                        <path d="M12 12l8 -4.5"></path>
+                                        <path d="M12 12l0 9"></path>
+                                        <path d="M12 12l-8 -4.5"></path>
+                                        <path d="M16 5.25l-8 4.5"></path>
+                                    </svg>
+                                </span><span class="nav-link-title text-truncate"> Products <span
+                                        class="badge badge-sm bg-primary text-primary-fg badge-pill menu-item-count pending-products"
+                                        data-url="{{ url("/") }}/admin/menu-items-count"
+                                        style="display: none;"></span></span>
+                                </a>
+
+                             <a class="dropdown-item nav-priority-70" href="{{ route('admin.product-prices.index') }}"
+                                id="cms-plugins-ecommerce-product-price" title="Product Prices"><span
+                                    class="nav-link-icon d-md-none d-lg-inline-block" title="Product Prices"><svg
+                                        class="icon svg-icon-ti-ti-currency-dollar" xmlns="http://www.w3.org/2000/svg"
+                                        width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 0 1 0 6h-4a3 3 0 0 1 -2.7 -2">
+                                        </path>
+                                        <path d="M12 3v3m0 12v3"></path>
+                                    </svg></span><span class="nav-link-title text-truncate"> Product Prices
+                                </span>
+                            </a>
+                            <a class="dropdown-item nav-priority-80" href="{{ route('admin.product-inventory.index') }}"
+                                id="cms-plugins-ecommerce-product-inventory" title="Product Inventory"><span
+                                    class="nav-link-icon d-md-none d-lg-inline-block" title="Product Inventory"><svg
+                                        class="icon svg-icon-ti-ti-home-check" xmlns="http://www.w3.org/2000/svg"
+                                        width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2"></path>
+                                        <path d="M19 13.488v-1.488h2l-9 -9l-9 9h2v7a2 2 0 0 0 2 2h4.525"></path>
+                                        <path d="M15 19l2 2l4 -4"></path>
+                                    </svg></span><span class="nav-link-title text-truncate"> Product Inventory
+                                </span>
+                            </a>
+                            <a class="dropdown-item nav-priority-90" href="{{ route('admin.category.Index') }}"
+                                id="cms-plugins-product-categories" title="Product categories">
+                                <span class="nav-link-icon d-md-none d-lg-inline-block" title="Product categories"><svg
+                                        class="icon svg-icon-ti-ti-archive" xmlns="http://www.w3.org/2000/svg"
+                                        width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path
+                                            d="M3 4m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z">
+                                        </path>
+                                        <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10"></path>
+                                        <path d="M10 12l4 0"></path>
+                                    </svg></span><span class="nav-link-title text-truncate"> Product categories
+                                </span>
+                            </a>
+                            <a class="dropdown-item nav-priority-100" href="{{route('admin.producttags.Index') }}" title="Product tags"><span
+                                    class="nav-link-icon d-md-none d-lg-inline-block" title="Product tags"><svg
+                                        class="icon svg-icon-ti-ti-tag" xmlns="http://www.w3.org/2000/svg" width="24"
+                                        height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M7.5 7.5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                                        <path
+                                            d="M3 6v5.172a2 2 0 0 0 .586 1.414l7.71 7.71a2.41 2.41 0 0 0 3.408 0l5.592 -5.592a2.41 2.41 0 0 0 0 -3.408l-7.71 -7.71a2 2 0 0 0 -1.414 -.586h-5.172a3 3 0 0 0 -3 3z">
+                                        </path>
+                                    </svg></span><span class="nav-link-title text-truncate"> Product tags
+                                </span>
+                            </a>
+                            <a class="dropdown-item nav-priority-140" href="{{ route('admin.attribute-sets.index') }}"
+                                title="Product labels">
+                                <span class="nav-link-icon d-md-none d-lg-inline-block" title="Product labels">
+                                    <svg class="icon svg-icon-ti-ti-tags"
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path
+                                            d="M3 8v4.172a2 2 0 0 0 .586 1.414l5.71 5.71a2.41 2.41 0 0 0 3.408 0l3.592 -3.592a2.41 2.41 0 0 0 0 -3.408l-5.71 -5.71a2 2 0 0 0 -1.414 -.586h-4.172a2 2 0 0 0 -2 2z">
+                                        </path>
+                                        <path d="M18 19l1.592 -1.592a4.82 4.82 0 0 0 0 -6.816l-4.592 -4.592"></path>
+                                        <path d="M7 10h-.01"></path>
+                                    </svg>
+                                </span>
+                                <span class="nav-link-title text-truncate">Product attributes</span>
+                            </a>
+                             <a class="dropdown-item nav-priority-120" href="{{ route('admin.global-options.index') }}"
+                                title="Product options">
+                                <span class="nav-link-icon d-md-none d-lg-inline-block"
+                                    title="Product options">
+                                    <svg class="icon svg-icon-ti-ti-database"
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path d="M12 6m-8 0a8 3 0 1 0 16 0a8 3 0 1 0 -16 0"></path>
+                                        <path d="M4 6v6a8 3 0 0 0 16 0v-6"></path>
+                                        <path d="M4 12v6a8 3 0 0 0 16 0v-6"></path>
+                                    </svg>
+                                </span>
+                                <span class="nav-link-title text-truncate"> Product options</span>
+                            </a>
+                            <a class="dropdown-item nav-priority-130" href="{{ route('admin.collections.index') }}" title="Product collections">
+                                <span class="nav-link-icon d-md-none d-lg-inline-block"
+                                    title="Product collections"><svg class="icon svg-icon-ti-ti-album"
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path
+                                            d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z">
+                                        </path>
+                                        <path d="M12 4v7l2 -2l2 2v-7"></path>
+                                    </svg>
+                                </span>
+                                <span class="nav-link-title text-truncate"> Product collections
+                                </span>
+                            </a>
+                             <a class="dropdown-item nav-priority-140" href="{{ route('admin.productlables.Index') }}"
+                                title="Product labels">
+                                <span class="nav-link-icon d-md-none d-lg-inline-block" title="Product labels">
+                                    <svg class="icon svg-icon-ti-ti-tags"
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path
+                                            d="M3 8v4.172a2 2 0 0 0 .586 1.414l5.71 5.71a2.41 2.41 0 0 0 3.408 0l3.592 -3.592a2.41 2.41 0 0 0 0 -3.408l-5.71 -5.71a2 2 0 0 0 -1.414 -.586h-4.172a2 2 0 0 0 -2 2z">
+                                        </path>
+                                        <path d="M18 19l1.592 -1.592a4.82 4.82 0 0 0 0 -6.816l-4.592 -4.592"></path>
+                                        <path d="M7 10h-.01"></path>
+                                    </svg>
+                                </span>
+                                <span class="nav-link-title text-truncate"> Product labels</span>
+                            </a>
+                            <a class="dropdown-item nav-priority-150" href="{{ route('admin.brand.Index') }}"
+                                id="cms-plugins-brands" title="Brands">
+                                <span class="nav-link-icon d-md-none d-lg-inline-block" title="Brands">
+                                    <svg class="icon svg-icon-ti-ti-registered" xmlns="http://www.w3.org/2000/svg"
+                                        width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
+                                        <path d="M10 15v-6h2a2 2 0 1 1 0 4h-2"></path>
+                                        <path d="M14 15l-2 -2"></path>
+                                    </svg>
+                                </span>
+                                <span class="nav-link-title text-truncate"> Brands </span>
+                            </a>
+                            <a class="dropdown-item nav-priority-100" href="{{ route('admin.reviews.index') }}"
+                                id="cms-plugins-ecommerce-review" title="Reviews"><span
+                                    class="nav-link-icon d-md-none d-lg-inline-block" title="Reviews"><svg
+                                        class="icon svg-icon-ti-ti-star" xmlns="http://www.w3.org/2000/svg" width="24"
+                                        height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"></path>
+                                    </svg></span><span class="nav-link-title text-truncate"> Reviews
+                                </span></a>
+
+                            <a class="dropdown-item nav-priority-110" href="{{ route('admin.flash-sales.index') }}"
+                                id="cms-plugins-ecommerce-flash-sale" title="Flash Sales"><span
+                                    class="nav-link-icon d-md-none d-lg-inline-block" title="Flash Sales"><svg
+                                        class="icon svg-icon-ti-ti-bolt" xmlns="http://www.w3.org/2000/svg" width="24"
+                                        height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M13 3l0 7l6 0l-8 11l0 -7l-6 0l8 -11"></path>
+                                    </svg></span><span class="nav-link-title text-truncate"> Flash Sales
+                                </span></a>
+
+                            <a class="dropdown-item nav-priority-120" href="{{ route('admin.discounts.index') }}"
+                                id="cms-plugins-ecommerce-discount" title="Discounts"><span
+                                    class="nav-link-icon d-md-none d-lg-inline-block" title="Discounts"><svg
+                                        class="icon svg-icon-ti-ti-tag" xmlns="http://www.w3.org/2000/svg" width="24"
+                                        height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M7 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                                        <path d="M9 17l6 -13"></path>
+                                        <path d="M9 4l6 13"></path>
+                                        <path d="M17 7m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                                    </svg></span><span class="nav-link-title text-truncate"> Discounts
+                                </span>
+                            </a>
+                            <a class="dropdown-item nav-priority-190" href="{{route('admin.taxes.index') }}" title="Customers">
+                                <span class="nav-link-icon d-md-none d-lg-inline-block" title="Customers">
+                                    <svg
+                                        class="icon svg-icon-ti-ti-users" xmlns="http://www.w3.org/2000/svg" width="24"
+                                        height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path>
+                                        <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
+                                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                        <path d="M21 21v-2a4 4 0 0 0 -3 -3.85"></path>
+                                    </svg>
+                                </span>
+                                <span class="nav-link-title text-truncate">Taxes</span>
+                            </a>
+
+                            <a class="dropdown-item nav-priority-190"  href="{{route('admin.customers.index') }}"  id="cms-plugins-ecommerce-customer" title="Customers"><span
+                                    class="nav-link-icon d-md-none d-lg-inline-block" title="Customers"><svg
+                                        class="icon svg-icon-ti-ti-users" xmlns="http://www.w3.org/2000/svg" width="24"
+                                        height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path>
+                                        <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
+                                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                        <path d="M21 21v-2a4 4 0 0 0 -3 -3.85"></path>
+                                    </svg></span><span class="nav-link-title text-truncate"> Customers </span>
+                                </a>
+
+                           
+
+                           
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                             {{-- <a class="dropdown-item nav-priority-0" href="{{ url("/") }}/admin/ecommerce/reports"
                                 id="cms-plugins-ecommerce-report" title="Report"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Report"><svg
@@ -167,22 +492,8 @@
                                     </svg></span><span class="nav-link-title text-truncate"> Invoices </span></a>
 
                             --}}
-                            <a class="dropdown-item nav-priority-60" href="{{ route('admin.products.index') }}"
-                                id="cms-plugins-ecommerce-product" title="Products"><span
-                                    class="nav-link-icon d-md-none d-lg-inline-block" title="Products"><svg
-                                        class="icon svg-icon-ti-ti-package" xmlns="http://www.w3.org/2000/svg"
-                                        width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5"></path>
-                                        <path d="M12 12l8 -4.5"></path>
-                                        <path d="M12 12l0 9"></path>
-                                        <path d="M12 12l-8 -4.5"></path>
-                                        <path d="M16 5.25l-8 4.5"></path>
-                                    </svg></span>
-                                <span class="nav-link-title text-truncate"> Products <span
-                                        class="badge badge-sm bg-primary text-primary-fg badge-pill menu-item-count pending-products"
-                                        data-url="{{ url("/") }}/admin/menu-items-count"
-                                        style="display: none;"></span></span></a>
+                            
+                                
                             {{-- <a class="dropdown-item nav-priority-70" href="{{ url("/")
                                 }}/admin/ecommerce/product-prices" id="cms-plugins-ecommerce-product-price"
                                 title="Product Prices"><span class="nav-link-icon d-md-none d-lg-inline-block"
@@ -208,130 +519,38 @@
                                     </svg></span><span class="nav-link-title text-truncate"> Product Inventory
                                 </span></a> --}}
 
-                            <a class="dropdown-item nav-priority-90" href="{{ route('admin.category.Index') }}"
-                                id="cms-plugins-product-categories" title="Product categories">
-                                <span class="nav-link-icon d-md-none d-lg-inline-block" title="Product categories"><svg
-                                        class="icon svg-icon-ti-ti-archive" xmlns="http://www.w3.org/2000/svg"
-                                        width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path
-                                            d="M3 4m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z">
-                                        </path>
-                                        <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10"></path>
-                                        <path d="M10 12l4 0"></path>
-                                    </svg></span><span class="nav-link-title text-truncate"> Product categories
-                                </span>
-                            </a>
+                            
 
-                            <a class="dropdown-item nav-priority-150" href="{{ route('admin.brand.Index') }}"
-                                id="cms-plugins-brands" title="Brands">
-                                <span class="nav-link-icon d-md-none d-lg-inline-block" title="Brands">
-                                    <svg class="icon svg-icon-ti-ti-registered" xmlns="http://www.w3.org/2000/svg"
-                                        width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
-                                        <path d="M10 15v-6h2a2 2 0 1 1 0 4h-2"></path>
-                                        <path d="M14 15l-2 -2"></path>
-                                    </svg>
-                                </span>
-                                <span class="nav-link-title text-truncate"> Brands </span>
-                            </a>
-                            <a class="dropdown-item nav-priority-100" href="{{route('admin.producttags.Index') }}" title="Product tags"><span
-                                    class="nav-link-icon d-md-none d-lg-inline-block" title="Product tags"><svg
-                                        class="icon svg-icon-ti-ti-tag" xmlns="http://www.w3.org/2000/svg" width="24"
-                                        height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M7.5 7.5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
-                                        <path
-                                            d="M3 6v5.172a2 2 0 0 0 .586 1.414l7.71 7.71a2.41 2.41 0 0 0 3.408 0l5.592 -5.592a2.41 2.41 0 0 0 0 -3.408l-7.71 -7.71a2 2 0 0 0 -1.414 -.586h-5.172a3 3 0 0 0 -3 3z">
-                                        </path>
-                                    </svg></span><span class="nav-link-title text-truncate"> Product tags
-                                </span>
-                            </a>
+                            
+                            
 
-                             <a class="dropdown-item nav-priority-140" href="{{ route('admin.productlables.Index') }}"
-                                title="Product labels">
-                                <span class="nav-link-icon d-md-none d-lg-inline-block" title="Product labels">
-                                    <svg class="icon svg-icon-ti-ti-tags"
-                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round">
-                                        <path
-                                            d="M3 8v4.172a2 2 0 0 0 .586 1.414l5.71 5.71a2.41 2.41 0 0 0 3.408 0l3.592 -3.592a2.41 2.41 0 0 0 0 -3.408l-5.71 -5.71a2 2 0 0 0 -1.414 -.586h-4.172a2 2 0 0 0 -2 2z">
-                                        </path>
-                                        <path d="M18 19l1.592 -1.592a4.82 4.82 0 0 0 0 -6.816l-4.592 -4.592"></path>
-                                        <path d="M7 10h-.01"></path>
-                                    </svg>
-                                </span>
-                                <span class="nav-link-title text-truncate"> Product labels</span>
-                            </a>
+                            
 
-                            <a class="dropdown-item nav-priority-140" href="{{ route('admin.attribute-sets.index') }}"
-                                title="Product labels">
-                                <span class="nav-link-icon d-md-none d-lg-inline-block" title="Product labels">
-                                    <svg class="icon svg-icon-ti-ti-tags"
-                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round">
-                                        <path
-                                            d="M3 8v4.172a2 2 0 0 0 .586 1.414l5.71 5.71a2.41 2.41 0 0 0 3.408 0l3.592 -3.592a2.41 2.41 0 0 0 0 -3.408l-5.71 -5.71a2 2 0 0 0 -1.414 -.586h-4.172a2 2 0 0 0 -2 2z">
-                                        </path>
-                                        <path d="M18 19l1.592 -1.592a4.82 4.82 0 0 0 0 -6.816l-4.592 -4.592"></path>
-                                        <path d="M7 10h-.01"></path>
-                                    </svg>
-                                </span>
-                                <span class="nav-link-title text-truncate">Product attributes</span>
-                            </a>
+                            
 
 
-                            <a class="dropdown-item nav-priority-120" href="{{ route('admin.global-options.index') }}"
-                                title="Product options">
-                                <span class="nav-link-icon d-md-none d-lg-inline-block"
-                                    title="Product options">
-                                    <svg class="icon svg-icon-ti-ti-database"
-                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round">
-                                        <path d="M12 6m-8 0a8 3 0 1 0 16 0a8 3 0 1 0 -16 0"></path>
-                                        <path d="M4 6v6a8 3 0 0 0 16 0v-6"></path>
-                                        <path d="M4 12v6a8 3 0 0 0 16 0v-6"></path>
-                                    </svg>
-                                </span>
-                                <span class="nav-link-title text-truncate"> Product options</span>
-                            </a>
+                           
 
 
-                            <a class="dropdown-item nav-priority-130" href="{{ route('admin.collections.index') }}" title="Product collections">
-                                <span class="nav-link-icon d-md-none d-lg-inline-block"
-                                    title="Product collections"><svg class="icon svg-icon-ti-ti-album"
-                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round">
-                                        <path
-                                            d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z">
-                                        </path>
-                                        <path d="M12 4v7l2 -2l2 2v-7"></path>
-                                    </svg>
-                                </span>
-                                <span class="nav-link-title text-truncate"> Product collections
-                                </span>
-                            </a>
+                            
 
 
-                            <a class="dropdown-item nav-priority-190" href="{{route('admin.taxes.index') }}" title="Customers">
-                                <span class="nav-link-icon d-md-none d-lg-inline-block" title="Customers">
-                                    <svg
-                                        class="icon svg-icon-ti-ti-users" xmlns="http://www.w3.org/2000/svg" width="24"
-                                        height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path>
-                                        <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
-                                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                                        <path d="M21 21v-2a4 4 0 0 0 -3 -3.85"></path>
-                                    </svg>
-                                </span>
-                                <span class="nav-link-title text-truncate">Taxes</span>
-                            </a>
+                            
+
+                            
+
+                           
+
+                           
+
+                            
+
+                           
+
+                            
+
+                            
+
 
 
                             {{-- <a class="dropdown-item nav-priority-100" href="{{ url("/")
@@ -362,9 +581,9 @@
                                         <path d="M4 12v6a8 3 0 0 0 16 0v-6"></path>
                                     </svg></span><span class="nav-link-title text-truncate"> Product options
                                 </span></a>
-                                
-                                
-                                
+
+
+
                                 <a class="dropdown-item nav-priority-140" href="{{ url("/")
                                 }}/admin/ecommerce/product-labels" id="cms-plugins-product-label"
                                 title="Product labels"><span class="nav-link-icon d-md-none d-lg-inline-block"
@@ -543,7 +762,9 @@
                                             d="M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z">
                                         </path>
                                         <path d="M4 20h14"></path>
-                                    </svg></span><span class="nav-link-title text-truncate"> Reports </span></a><a
+                                    </svg></span><span class="nav-link-title text-truncate"> Reports </span></a>
+                                    
+                                    <a
                                 class="dropdown-item nav-priority-1" href="{{ route('admin.marketplace.store.index') }}"
                                 id="cms-plugins-store" title="Stores"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Stores"><svg
@@ -645,7 +866,7 @@
                                     </path>
                                     <path d="M12 16v.01"></path>
                                     <path d="M12 13a2 2 0 0 0 .914 -3.782a1.98 1.98 0 0 0 -2.414 .483"></path>
-                                </svg>                            
+                                </svg>
                             </span>
                             <span class="nav-link-title text-truncate"> FAQs </span>
                         </a>
@@ -952,7 +1173,7 @@
                                     <path d="M16 21l.01 0"></path>
                                 </svg></span><span class="nav-link-title text-truncate"> Simple Sliders
                             </span></a></li>
-                    
+
                     <li class="nav-item"><a class="nav-link nav-priority-430" href="{{ url("/") }}/admin/newsletters"
                             id="cms-plugins-newsletter" title="Newsletters"><span
                                 class="nav-link-icon d-md-none d-lg-inline-block" title="Newsletters"><svg
@@ -1277,7 +1498,3 @@
             </div>
         </div>
     </aside>
-</div>
-<form id="admin-logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
-    @csrf
-</form>
