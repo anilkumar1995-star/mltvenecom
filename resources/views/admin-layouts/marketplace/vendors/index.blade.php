@@ -41,6 +41,25 @@
     <main class="page-body page-content">
         <div class="container-xl">
 
+            {{-- Flash Messages --}}
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>✅</strong> {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            @endif
+            @if(session('error'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>❌</strong> {{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            @endif
+            @if(session('info'))
+                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                    <strong>ℹ️</strong> {{ session('info') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            @endif
 
             <div class="table-wrapper">
                 <div class="card mb-3 table-configuration-wrap" style="display: none;">
@@ -460,17 +479,15 @@
                                 <thead>
                                     <tr>
                                         <th title="Checkbox"><input class="form-check-input m-0 align-middle table-check-all" data-set=".dataTable .checkboxes" name="" type="checkbox"></th>
-                                        <th title="ID" width="20" class="text-center no-column-visibility  column-key-0">ID</th>
-                                        <th title="Avatar" class=" column-key-1">Avatar</th>
-                                        <th title="Name" class="text-start  column-key-2">Name</th>
-                                        <th title="Email" class="text-start  column-key-3">Email</th>
-                                        <th title="Store name" class=" column-key-4">Store name</th>
-                                        <th title="Total Revenue" class=" column-key-7">Total Revenue</th>
-                                        <th title="Balance" class=" column-key-8">Balance</th>
-                                        <th title="Verified" width="100" class="text-center  column-key-9">Verified</th>
-                                        <th title="Store Status" class=" column-key-10">Store Status</th>
-                                        <th title="Status" width="100" class="text-center  column-key-11">Status</th>
-                                        <th title="Operations">Operations</th>
+                                        <th title="ID" width="20" class="text-center">ID</th>
+                                        <th title="Avatar">Avatar</th>
+                                        <th title="Name" class="text-start">Name</th>
+                                        <th title="Email" class="text-start">Email</th>
+                                        <th title="Mobile">Mobile</th>
+                                        <th title="KYC Status" width="120" class="text-center">KYC Status</th>
+                                        <th title="Status" width="100" class="text-center">Status</th>
+                                        <th title="Created At">Registered</th>
+                                        <th title="Operations" width="280">Operations</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -485,49 +502,56 @@
                                             </td>
                                             <td><a href="{{ route('admin.marketplace.vendors.edit', $vendor->id) }}">{{ $vendor->name }}</a></td>
                                             <td>{{ $vendor->email }}</td>
-                                            <td>{{ $vendor->store->name ?? 'N/A' }}</td>
-                                            <td>{{ number_format($vendor->store->earnings ?? 0, 2) }}</td>
-                                            <td>{{ number_format($vendor->store->balance ?? 0, 2) }}</td>
+                                            <td>{{ $vendor->mobile ?? $vendor->phone ?? 'N/A' }}</td>
                                             <td class="text-center">
-                                                @if($vendor->vendor_verified_at)
-                                                    <span class="badge bg-success text-white">Verified</span>
+                                                @if($vendor->kyc_status === 'success')
+                                                    <span class="badge bg-success text-white">✅ Verified</span>
+                                                @elseif($vendor->kyc_status === 'pending')
+                                                    <span class="badge bg-warning text-dark">⏳ Pending</span>
+                                                @elseif($vendor->kyc_status === 'failure')
+                                                    <span class="badge bg-danger text-white">❌ Failed</span>
                                                 @else
-                                                    <span class="badge bg-warning text-white">Unverified</span>
+                                                    <span class="badge bg-secondary text-white">— Not Initiated</span>
                                                 @endif
                                             </td>
+                                            <td class="text-center">
+                                                @if($vendor->status == 'active' && $vendor->is_approved)
+                                                    <span class="badge bg-success text-white">Approved</span>
+                                                @else
+                                                    <span class="badge bg-secondary text-white">{{ ucfirst($vendor->status ?? 'pending') }}</span>
+                                                @endif
+                                            </td>
+                                            <td>{{ $vendor->created_at ? $vendor->created_at->format('d M Y') : 'N/A' }}</td>
                                             <td>
-                                                @if(optional($vendor->store)->status == 'published')
-                                                    <span class="badge bg-success text-white">Published</span>
-                                                @elseif(optional($vendor->store)->status == 'draft')
-                                                    <span class="badge bg-secondary text-white">Draft</span>
-                                                @else
-                                                    <span class="badge bg-warning text-white">Pending</span>
-                                                @endif
-                                            </td>
-                                            <td class="text-center">
-                                                @if($vendor->status == 'activated')
-                                                    <span class="badge bg-success text-white">Activated</span>
-                                                @else
-                                                    <span class="badge bg-secondary text-white">{{ ucfirst($vendor->status) }}</span>
-                                                @endif
-                                            </td>
-                                            <td class="text-center">
-                                                <div class="btn-list flex-nowrap justify-content-center">
-                                                    <a href="{{ route('admin.marketplace.vendors.show', $vendor->id) }}" class="btn btn-icon btn-sm btn-info" data-bs-toggle="tooltip" data-bs-original-title="View">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                           <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                           <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
-                                                           <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"></path>
-                                                        </svg>
-                                                    </a>
-                                                    <a href="{{ route('admin.marketplace.vendors.edit', $vendor->id) }}" class="btn btn-icon btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-original-title="Edit">
-                                                        <svg class="icon svg-icon-ti-ti-edit" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4" /><path d="M13.5 6.5l4 4" /></svg>
-                                                    </a>
+                                                <div class="btn-list flex-nowrap">
+                                                    {{-- Check KYC Status Button --}}
+                                                    @if($vendor->kyc_kid && $vendor->kyc_status !== 'success')
+                                                        <form action="{{ route('admin.marketplace.vendors.check-kyc', $vendor->id) }}" method="POST" style="display:inline-block">
+                                                            @csrf
+                                                            <button type="submit" class="btn btn-sm btn-outline-info" data-bs-toggle="tooltip" title="Check KYC Status from API">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4"/><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4"/></svg>
+                                                                Check KYC
+                                                            </button>
+                                                        </form>
+                                                    @endif
+
+                                                    {{-- Approve Button (only if KYC success and not yet approved) --}}
+                                                    @if($vendor->kyc_status === 'success' && !$vendor->is_approved)
+                                                        <form action="{{ route('admin.marketplace.vendors.approve', $vendor->id) }}" method="POST" style="display:inline-block">
+                                                            @csrf
+                                                            <button type="submit" class="btn btn-sm btn-success" data-bs-toggle="tooltip" title="Approve this vendor">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5l10 -10"/></svg>
+                                                                Approve
+                                                            </button>
+                                                        </form>
+                                                    @endif
+
+                                                    {{-- Delete Button --}}
                                                     <form action="{{ route('admin.marketplace.vendors.destroy', $vendor->id) }}" method="POST" class="delete-vendor-form" style="display:inline-block">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-icon btn-danger btn-sm" data-bs-toggle="tooltip" data-bs-original-title="Delete">
-                                                            <svg class="icon svg-icon-ti-ti-trash" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7l16 0" /><path d="M10 11l0 6" /><path d="M14 11l0 6" /><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" /><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" /></svg>
+                                                        <button type="submit" class="btn btn-icon btn-danger btn-sm" data-bs-toggle="tooltip" title="Delete">
+                                                            <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7l16 0"/><path d="M10 11l0 6"/><path d="M14 11l0 6"/><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"/><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"/></svg>
                                                         </button>
                                                     </form>
                                                 </div>

@@ -1,11 +1,16 @@
 <div class="tp-product-item-2 mb-40">
     <div class="tp-product-thumb-2 p-relative z-index-1 fix w-img">
         <a href="{{ route('frontend.products.show', $product->slug ?: $product->id) }}">
-            @if($product->image && file_exists(public_path('storage/' . $product->image)))
-                <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}">
-            @else
-                <img src="{{ asset('/') }}home dashboard_files/placeholder.png" alt="{{ $product->name }}">
-            @endif
+
+            @php
+                $imageUrl = asset('home-dashboard-files/placeholder.png');
+                if ($product->image && file_exists(public_path('storage/' . $product->image))) {
+                    $imageUrl = asset('storage/' . $product->image);
+                } elseif ($product->images && count($product->images) > 0) {
+                     $imageUrl = asset('uploads/' . $product->images[0]);
+                }
+            @endphp
+            <img src="{{ $imageUrl }}" alt="{{ $product->name }}" onerror="this.src='{{ asset('home-dashboard-files/placeholder.png') }}'">
         </a>
 
         <!-- Product Actions -->
