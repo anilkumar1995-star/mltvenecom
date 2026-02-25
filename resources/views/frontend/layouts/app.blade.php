@@ -50,7 +50,8 @@
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home-dashboard-files/theme(1).css">
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home-dashboard-files/lightgallery.min.css">
 
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/fontawesome.min.css">
+    {{--  <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/fontawesome.min.css">  --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" />
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/select2.min.css">
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/select2.css">
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/toastr.min.css">
