@@ -57,9 +57,9 @@
     </footer>
 
     <!-- Essential Scripts -->
-    <script src="{{ asset('/') }}home-dashboard-files/jquery-3.7.1.min.js.download"></script>
-    <script src="{{ asset('/') }}home-dashboard-files/bootstrap.min.js.download"></script>
-    <script src="{{ asset('/') }}home-dashboard-files/theme.js.download"></script>
+    <script src="{{ asset('/') }}home-dashboard-files/jquery-3.7.1.min.js"></script>
+    <script src="{{ asset('/') }}home-dashboard-files/bootstrap.min.js"></script>
+    <script src="{{ asset('/') }}home-dashboard-files/theme.js"></script>
     @stack('scripts')
 </body>
 </html>

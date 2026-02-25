@@ -50,7 +50,8 @@
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home-dashboard-files/theme(1).css">
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home-dashboard-files/lightgallery.min.css">
 
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/fontawesome.min.css">
+    {{--  <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/fontawesome.min.css">  --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" />
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/select2.min.css">
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/select2.css">
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/toastr.min.css">
@@ -276,7 +277,7 @@
         .page_speed_1049214245 {
             height: 16px;
             width: auto;
-        }
+        } 
 
         .page_speed_772306096 {
             --bottom-bar-menu-text-font-size: 13px;
@@ -351,6 +352,7 @@
     @yield('content')
     @include('frontend.layouts.footer')
 
+<<<<<<< HEAD
     <script src="{{ asset('/') }}home-dashboard-files/jquery-3.7.1.min.js.download"></script>
     <script src="{{ asset('/') }}home-dashboard-files/bootstrap.min.js.download"></script>
     <script src="{{ asset('/') }}home-dashboard-files/lazyload.min.js.download"></script>
@@ -361,6 +363,18 @@
     <script src="{{ asset('/') }}home-dashboard-files/front-ecommerce.js.download"></script>
     <script src="{{ asset('/') }}home-dashboard-files/ecommerce.js.download"></script>
     <script src="{{ asset('/') }}home-dashboard-files/meanmenu.js.download"></script>
+=======
+    <script src="{{ asset('/') }}home-dashboard-files/jquery-3.7.1.min.js"></script>
+    <script src="{{ asset('/') }}home-dashboard-files/bootstrap.min.js"></script>
+    <script src="{{ asset('/') }}home-dashboard-files/lazyload.min.js"></script>
+    <script src="{{ asset('/') }}home-dashboard-files/swiper-bundle.js"></script>
+    <script src="{{ asset('/') }}home-dashboard-files/owl.carousel.js"></script>
+    <script src="{{ asset('/') }}home-dashboard-files/slick.min.js"></script>
+    <script src="{{ asset('/') }}home-dashboard-files/theme.js"></script>
+    <script src="{{ asset('/') }}home-dashboard-files/front-ecommerce.js"></script>
+    <script src="{{ asset('/') }}home-dashboard-files/ecommerce.js"></script>
+    <script src="{{ asset('/') }}home-dashboard-files/meanmenu.js"></script>
+>>>>>>> 6b55105f9551485a77b5c21de5eaf16f7d8ca69a
 
     @include('frontend.partials.mini-cart')
     <script src="{{ asset('/') }}js/cart-custom.js"></script>

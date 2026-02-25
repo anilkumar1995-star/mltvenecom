@@ -20,6 +20,7 @@
                             </nav>
                         </div>
                     </div>
+<<<<<<< HEAD
                     <div class="col-auto ms-auto d-print-none">
                         <div class="btn-list">
                             <a href="{{ route('admin.customers.create') }}" class="btn btn-primary d-none d-sm-inline-block">
@@ -32,6 +33,8 @@
                             </a>
                         </div>
                     </div>
+=======
+>>>>>>> 6b55105f9551485a77b5c21de5eaf16f7d8ca69a
                 </div>
             </div>
         </div>
