@@ -277,7 +277,7 @@
         .page_speed_1049214245 {
             height: 16px;
             width: auto;
-        }
+        } 
 
         .page_speed_772306096 {
             --bottom-bar-menu-text-font-size: 13px;
