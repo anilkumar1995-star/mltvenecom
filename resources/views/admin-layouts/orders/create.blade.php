@@ -375,10 +375,7 @@
                 </form>
             </div>
         </main>
-<<<<<<< HEAD
     </div>
-=======
->>>>>>> 6b55105f9551485a77b5c21de5eaf16f7d8ca69a
 
 @endsection
 

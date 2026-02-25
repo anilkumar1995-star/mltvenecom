@@ -352,18 +352,6 @@
     @yield('content')
     @include('frontend.layouts.footer')
 
-<<<<<<< HEAD
-    <script src="{{ asset('/') }}home-dashboard-files/jquery-3.7.1.min.js.download"></script>
-    <script src="{{ asset('/') }}home-dashboard-files/bootstrap.min.js.download"></script>
-    <script src="{{ asset('/') }}home-dashboard-files/lazyload.min.js.download"></script>
-    <script src="{{ asset('/') }}home-dashboard-files/swiper-bundle.js.download"></script>
-    <script src="{{ asset('/') }}home-dashboard-files/owl.carousel.js.download"></script>
-    <script src="{{ asset('/') }}home-dashboard-files/slick.min.js.download"></script>
-    <script src="{{ asset('/') }}home-dashboard-files/theme.js.download"></script>
-    <script src="{{ asset('/') }}home-dashboard-files/front-ecommerce.js.download"></script>
-    <script src="{{ asset('/') }}home-dashboard-files/ecommerce.js.download"></script>
-    <script src="{{ asset('/') }}home-dashboard-files/meanmenu.js.download"></script>
-=======
     <script src="{{ asset('/') }}home-dashboard-files/jquery-3.7.1.min.js"></script>
     <script src="{{ asset('/') }}home-dashboard-files/bootstrap.min.js"></script>
     <script src="{{ asset('/') }}home-dashboard-files/lazyload.min.js"></script>
@@ -374,10 +362,9 @@
     <script src="{{ asset('/') }}home-dashboard-files/front-ecommerce.js"></script>
     <script src="{{ asset('/') }}home-dashboard-files/ecommerce.js"></script>
     <script src="{{ asset('/') }}home-dashboard-files/meanmenu.js"></script>
->>>>>>> 6b55105f9551485a77b5c21de5eaf16f7d8ca69a
 
     @include('frontend.partials.mini-cart')
-    <script src="{{ asset('/') }}js/cart-custom.js"></script>
+    <!-- <script src="{{ asset('/') }}js/cart-custom.js"></script> -->
     @stack('scripts')
     <script>
         window.themeOptions = {
