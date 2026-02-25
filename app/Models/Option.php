@@ -1,12 +1,12 @@
 <?php
 
-namespace Botble\Ecommerce\Models;
+namespace App\Models;
 
-use Botble\Base\Models\BaseModel;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Option extends BaseModel
+class Option extends Model
 {
     protected $table = 'ec_options';
 
@@ -18,18 +18,17 @@ class Option extends BaseModel
         'order',
     ];
 
-    protected static function booted(): void
+    protected static function booted()
     {
-        self::deleted(function (Option $option): void {
+        static::deleting(function ($option) {
             $option->values()->delete();
         });
     }
 
     public function values(): HasMany
     {
-        return $this
-            ->hasMany(OptionValue::class, 'option_id')
-            ->oldest('order');
+        return $this->hasMany(OptionValue::class, 'option_id')
+                    ->orderBy('order');
     }
 
     public function product(): BelongsTo

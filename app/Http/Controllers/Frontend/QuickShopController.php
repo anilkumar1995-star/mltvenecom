@@ -1,79 +1,44 @@
 <?php
 
-namespace Botble\Ecommerce\Http\Controllers\Fronts;
+namespace App\Http\Controllers\Frontend;
 
-use Botble\Base\Http\Controllers\BaseController;
-use Botble\Ecommerce\Facades\EcommerceHelper;
-use Botble\Ecommerce\Services\Products\GetProductBySlugService;
-use Botble\Ecommerce\Services\Products\GetProductWithCrossSalesBySlugService;
-use Botble\Ecommerce\Services\Products\ProductCrossSalePriceService;
-use Botble\Theme\Facades\Theme;
+use App\Http\Controllers\Controller;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
-class QuickShopController extends BaseController
+class QuickShopController extends Controller
 {
-    public function show(
-        string $slug,
-        GetProductBySlugService $getProductBySlugService,
-        GetProductWithCrossSalesBySlugService $getProductWithCrossSalesBySlugService,
-        Request $request,
-    ) {
+    public function show(Request $request, $slug)
+    {
         $request->validate([
-            'reference_product' => ['sometimes', 'required', 'string'],
+            'reference_product' => ['sometimes', 'string'],
         ]);
 
-        $product = $getProductBySlugService->handle($slug, [
-            'with' => [
-                'slugable',
-                'tags',
-                'tags.slugable',
-                'options',
-                'options.values',
-            ],
-        ]);
+        // Get product by slug
+        $product = Product::with([
+            'images',
+            'tags',
+            'options.values'
+        ])->where('slug', $slug)->firstOrFail();
 
-        abort_unless($product && $product->exists, 404);
-
+        // Optional reference product
         $referenceProduct = null;
 
-        if (
-            $request->filled('reference_product')
-            && $referenceProduct = $getProductWithCrossSalesBySlugService->handle($request->input('reference_product'))
-        ) {
-            app(ProductCrossSalePriceService::class)->applyProduct($referenceProduct);
+        if ($request->filled('reference_product')) {
+            $referenceProduct = Product::where('slug', $request->reference_product)->first();
         }
 
-        [$productImages, $productVariation, $selectedAttrs] = EcommerceHelper::getProductVariationInfo($product);
+        // Basic variation logic
+        $productVariation = $product->variations()->first();
+        $selectedAttrs = $productVariation ? $productVariation->attributes : [];
 
-        $data = apply_filters('ecommerce_quick_shop_data', [
-            'product' => $product,
-            'productImages' => $productImages,
-            'productVariation' => $productVariation,
-            'selectedAttrs' => $selectedAttrs,
-            'referenceProduct' => $referenceProduct,
+        return response()->json([
+            'html' => view('frontend.quick-shop', [
+                'product' => $product,
+                'productVariation' => $productVariation,
+                'selectedAttrs' => $selectedAttrs,
+                'referenceProduct' => $referenceProduct,
+            ])->render()
         ]);
-
-        $view = apply_filters('ecommerce_quick_shop_template', $this->getQuickShopTemplate());
-
-        return $this
-            ->httpResponse()
-            ->setData(view($view, $data)->render());
-    }
-
-    protected function getQuickShopTemplate(): string
-    {
-        if (view()->exists($view = Theme::getThemeNamespace('views.ecommerce.quick-shop'))) {
-            return $view;
-        }
-
-        if (view()->exists($view = Theme::getThemeNamespace('partials.ecommerce.quick-shop'))) {
-            return $view;
-        }
-
-        if (view()->exists($view = Theme::getThemeNamespace('partials.quick-shop'))) {
-            return $view;
-        }
-
-        return EcommerceHelper::viewPath('includes.quick-shop');
     }
 }

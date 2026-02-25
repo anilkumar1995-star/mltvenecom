@@ -2,7 +2,7 @@
 
 namespace Botble\Ecommerce\Models;
 
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Ecommerce\Facades\EcommerceHelper;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;

@@ -2,7 +2,7 @@
 
 namespace Botble\Menu\Models;
 
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class MenuLocation extends BaseModel

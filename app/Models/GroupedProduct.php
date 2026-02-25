@@ -1,11 +1,11 @@
 <?php
 
-namespace Botble\Ecommerce\Models;
+namespace App\Models;
 
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class GroupedProduct extends BaseModel
+class GroupedProduct extends Model
 {
     protected $table = 'ec_grouped_products';
 
@@ -21,14 +21,14 @@ class GroupedProduct extends BaseModel
     {
         return self::query()
             ->join('ec_products', 'ec_products.id', '=', 'ec_grouped_products.parent_product_id')
-            ->whereIn('ec_products.id', [$groupedProductId])
+            ->where('ec_products.id', $groupedProductId)
             ->distinct()
             ->get();
     }
 
     public static function createGroupedProducts(int|string $groupedProductId, array $childItems): void
     {
-        DB::transaction(function () use ($childItems, $groupedProductId): void {
+        DB::transaction(function () use ($childItems, $groupedProductId) {
             self::query()
                 ->where('parent_product_id', $groupedProductId)
                 ->delete();
@@ -37,7 +37,7 @@ class GroupedProduct extends BaseModel
                 self::query()->create([
                     'parent_product_id' => $groupedProductId,
                     'product_id' => $item['id'],
-                    'fixed_qty' => isset($item['qty']) & $item['qty'] ?: 1,
+                    'fixed_qty' => isset($item['qty']) && $item['qty'] ? $item['qty'] : 1,
                 ]);
             }
         });

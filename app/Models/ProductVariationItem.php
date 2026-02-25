@@ -1,15 +1,16 @@
 <?php
 
-namespace Botble\Ecommerce\Models;
 
-use Botble\Base\Models\Concerns\HasUuidsOrIntegerIds;
+namespace App\Models;
+
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class ProductVariationItem extends Pivot
 {
-    use HasUuidsOrIntegerIds;
+    // Removing HasUuidsOrIntegerIds as it's a Botble trait.
+    // unique id generation should be handled by database or standard Laravel features if needed.
 
     protected $table = 'ec_product_variation_items';
 
@@ -81,3 +82,4 @@ class ProductVariationItem extends Pivot
             ->get();
     }
 }
+

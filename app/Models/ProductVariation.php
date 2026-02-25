@@ -1,18 +1,16 @@
 <?php
 
-namespace Botble\Ecommerce\Models;
 
-use Botble\Base\Events\CreatedContentEvent;
-use Botble\Base\Events\DeletedContentEvent;
-use Botble\Base\Models\BaseModel;
-use Botble\Ecommerce\Events\ProductQuantityUpdatedEvent;
-use Botble\Ecommerce\Services\Products\UpdateDefaultProductService;
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\EcProduct;
 
-class ProductVariation extends BaseModel
+class ProductVariation extends Model
 {
     protected $table = 'ec_product_variations';
 
@@ -28,7 +26,7 @@ class ProductVariation extends BaseModel
     {
         self::created(function (ProductVariation $variation): void {
             if ($variation->configurable_product_id) {
-                Product::query()
+                EcProduct::query()
                     ->where('id', $variation->configurable_product_id)
                     ->update([
                         'variations_count' => ProductVariation::query()
@@ -44,11 +42,11 @@ class ProductVariation extends BaseModel
 
             if ($variation->product && $variation->product->is_variation) {
                 $variation->product->delete();
-                event(new DeletedContentEvent(PRODUCT_MODULE_SCREEN_NAME, request(), $variation->product));
+                // Event removed
             }
 
             if ($variation->configurable_product_id) {
-                Product::query()
+                EcProduct::query()
                     ->where('id', $variation->configurable_product_id)
                     ->update([
                         'variations_count' => ProductVariation::query()
@@ -60,9 +58,8 @@ class ProductVariation extends BaseModel
 
         self::updated(function (ProductVariation $variation): void {
             if ($variation->is_default) {
-                app(UpdateDefaultProductService::class)->execute($variation->product);
-
-                ProductQuantityUpdatedEvent::dispatch($variation->product);
+                // Service call removed
+                // Event removed
             }
         });
     }
@@ -74,12 +71,12 @@ class ProductVariation extends BaseModel
 
     public function product(): BelongsTo
     {
-        return $this->belongsTo(Product::class, 'product_id')->withDefault();
+        return $this->belongsTo(EcProduct::class, 'product_id')->withDefault();
     }
 
     public function configurableProduct(): BelongsTo
     {
-        return $this->belongsTo(Product::class, 'configurable_product_id')->withDefault();
+        return $this->belongsTo(EcProduct::class, 'configurable_product_id')->withDefault();
     }
 
     public function productAttributes(): BelongsToMany
@@ -120,7 +117,7 @@ class ProductVariation extends BaseModel
                 'configurable_product_id' => $configurableProductId,
             ]);
 
-            new CreatedContentEvent(PRODUCT_VARIATIONS_MODULE_SCREEN_NAME, request(), $variation);
+            // Event removed
 
             foreach ($attributes as $attribute) {
                 ProductVariationItem::query()->create([
@@ -179,7 +176,7 @@ class ProductVariation extends BaseModel
         return ProductVariationItem::query()->whereIn('id', $items)->delete();
     }
 
-    public static function getParentOfVariation(int|string $variationId, array $with = []): ?Product
+    public static function getParentOfVariation(int|string $variationId, array $with = []): ?EcProduct
     {
         $variation = self::query()
             ->where('product_id', $variationId);
@@ -187,14 +184,11 @@ class ProductVariation extends BaseModel
         $variation = $variation->first();
 
         if (empty($variation)) {
-            $product = Product::query()->with($with)->find($variationId);
+            $product = EcProduct::query()->with($with)->find($variationId);
         } else {
-            $product = Product::query()->with($with)->find($variation->configurable_product_id);
+            $product = EcProduct::query()->with($with)->find($variation->configurable_product_id);
         }
 
-        /**
-         * @var Product $product
-         */
         return $product;
     }
 
@@ -225,3 +219,4 @@ class ProductVariation extends BaseModel
         return Attribute::get(fn () => $this->product->name);
     }
 }
+

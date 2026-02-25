@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class EcSpecificationTable extends Model
 {
+    protected $table = 'ec_specification_tables';
     protected $fillable = [
         'name',
         'description',
@@ -24,12 +25,12 @@ class EcSpecificationTable extends Model
     {
         return date('d M y - h:i A', strtotime($value));
     }
-    
+
     public function groups()
     {
         return $this->belongsToMany(
             EcSpecificationGroup::class,
-            'ec_specification_table_groups',
+            'ec_specification_table_group',
             'table_id',
             'group_id'
         );

@@ -1,15 +1,13 @@
 <?php
 
-namespace Botble\Ecommerce\Models;
 
-use Botble\Base\Models\BaseModel;
-use Botble\Ecommerce\Traits\LocationTrait;
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Shipping extends BaseModel
+class Shipping extends Model
 {
-    use LocationTrait;
-
     protected $table = 'ec_shipping';
 
     protected $fillable = [
@@ -29,3 +27,4 @@ class Shipping extends BaseModel
         return $this->hasMany(ShippingRule::class, 'shipping_id');
     }
 }
+

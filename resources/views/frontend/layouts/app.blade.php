@@ -15,7 +15,7 @@
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 
     <!-- Scripts -->
-    @vite(['resources/sass/app.scss'])
+    {{--  @vite(['resources/sass/app.scss'])  --}}
 
     <meta name="description"
         content="Shofy is a powerful tool eCommerce Laravel script for creating a professional and visually appealing online store.">
@@ -36,19 +36,19 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('/') }}storage/main/general/favicon.png">
 
 
-    <!-- <link rel="preload" as="image" href="./home dashboard_files/newsletter-popup.jpg"> -->
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home dashboard_files/content-styles.css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home dashboard_files/bootstrap.min.css">
+    <!-- <link rel="preload" as="image" href="./home-dashboard-files/newsletter-popup.jpg"> -->
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home-dashboard-files/content-styles.css">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home-dashboard-files/bootstrap.min.css">
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/front-auth.css">
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/social-login.css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home dashboard_files/front-ecommerce.css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home dashboard_files/animate.css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home dashboard_files/swiper-bundle.css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home dashboard_files/owl.carousel.css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home dashboard_files/slick.css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home dashboard_files/theme.css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home dashboard_files/theme(1).css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home dashboard_files/lightgallery.min.css">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home-dashboard-files/front-ecommerce.css">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home-dashboard-files/animate.css">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home-dashboard-files/swiper-bundle.css">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home-dashboard-files/owl.carousel.css">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home-dashboard-files/slick.css">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home-dashboard-files/theme.css">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home-dashboard-files/theme(1).css">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home-dashboard-files/lightgallery.min.css">
 
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/fontawesome.min.css">
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/select2.min.css">
@@ -62,7 +62,7 @@
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/core.css">
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/language.css">
 
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home dashboard_files/announcement.css">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home-dashboard-files/announcement.css">
     <link href="{{ asset('/') }}" hreflang="x-default" rel="alternate">
     <script async="" defer="" src="{{ asset('/') }}js/js"></script>
 
@@ -351,18 +351,25 @@
     @yield('content')
     @include('frontend.layouts.footer')
 
-    <script src="{{ asset('/') }}home dashboard_files/jquery-3.7.1.min.js.download"></script>
-    <script src="{{ asset('/') }}home dashboard_files/bootstrap.min.js.download"></script>
-    <script src="{{ asset('/') }}home dashboard_files/lazyload.min.js.download"></script>
-    <script src="{{ asset('/') }}home dashboard_files/swiper-bundle.js.download"></script>
-    <script src="{{ asset('/') }}home dashboard_files/owl.carousel.js.download"></script>
-    <script src="{{ asset('/') }}home dashboard_files/slick.min.js.download"></script>
-    <script src="{{ asset('/') }}home dashboard_files/theme.js.download"></script>
-    <script src="{{ asset('/') }}home dashboard_files/front-ecommerce.js.download"></script>
-    <script src="{{ asset('/') }}home dashboard_files/ecommerce.js.download"></script>
-    <script src="{{ asset('/') }}home dashboard_files/meanmenu.js.download"></script>
-    
+    <script src="{{ asset('/') }}home-dashboard-files/jquery-3.7.1.min.js"></script>
+    <script src="{{ asset('/') }}home-dashboard-files/bootstrap.min.js"></script>
+    <script src="{{ asset('/') }}home-dashboard-files/lazyload.min.js"></script>
+    <script src="{{ asset('/') }}home-dashboard-files/swiper-bundle.js"></script>
+    <script src="{{ asset('/') }}home-dashboard-files/owl.carousel.js"></script>
+    <script src="{{ asset('/') }}home-dashboard-files/slick.min.js"></script>
+    <script src="{{ asset('/') }}home-dashboard-files/theme.js"></script>
+    <script src="{{ asset('/') }}home-dashboard-files/front-ecommerce.js"></script>
+    <script src="{{ asset('/') }}home-dashboard-files/ecommerce.js"></script>
+    <script src="{{ asset('/') }}home-dashboard-files/meanmenu.js"></script>
+
+    @include('frontend.partials.mini-cart')
+    <script src="{{ asset('/') }}js/cart-custom.js"></script>
     @stack('scripts')
+    <script>
+        window.themeOptions = {
+            ecommerce_auto_open_mini_cart: 'yes',
+        };
+    </script>
 </body>
 
 </html>

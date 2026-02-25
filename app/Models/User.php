@@ -12,6 +12,17 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
+    /**
+     * Check if the user has a specific role.
+     *
+     * @param string $role
+     * @return bool
+     */
+    public function hasRole($role)
+    {
+        return $this->role === $role;
+    }
+
     // protected $connection = 'mysql_users';
 
     /**
@@ -23,8 +34,17 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'user_type',
         'role',
+        'shop_name',
+        'website',
+        'mobile',
+        'status',
+        'pan_number',
+        'aadhar_number',
+        'is_approved',
+        'kyc_kid',
+        'kyc_url',
+        'kyc_status',
     ];
 
     /**

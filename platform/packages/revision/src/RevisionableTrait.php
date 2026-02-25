@@ -2,7 +2,7 @@
 
 namespace Botble\Revision;
 
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use DateTime;
 use Exception;
 use Illuminate\Database\Eloquent\Relations\MorphMany;

@@ -1,12 +1,12 @@
 <?php
 
-namespace Botble\Ecommerce\Models;
 
-use Botble\ACL\Models\User;
-use Botble\Base\Models\BaseModel;
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class ReviewReply extends BaseModel
+class ReviewReply extends Model
 {
     protected $table = 'ec_review_replies';
 
@@ -26,3 +26,4 @@ class ReviewReply extends BaseModel
         return $this->belongsTo(Review::class);
     }
 }
+

@@ -15,21 +15,21 @@ class CheckoutController extends Controller
     public function index()
     {
         $cart = Session::get('cart', []);
-        
+
         if (empty($cart)) {
             return redirect()->route('frontend.cart.index')
                 ->with('error', 'Your cart is empty!');
         }
-        
+
         $subtotal = 0;
         foreach ($cart as $item) {
             $subtotal += $item['price'] * $item['quantity'];
         }
-        
-        $tax = $subtotal * 0.1; // 10% tax
-        $shipping = 10; // Flat shipping
+
+        $tax = $subtotal * 0.15; // 15% tax
+        $shipping = 20; // Flat shipping
         $total = $subtotal + $tax + $shipping;
-        
+
         return view('frontend.checkout.index', compact('cart', 'subtotal', 'tax', 'shipping', 'total'));
     }
 
@@ -46,14 +46,14 @@ class CheckoutController extends Controller
             'country' => 'required|string',
             'payment_method' => 'required|string',
         ]);
-        
+
         $cart = Session::get('cart', []);
-        
+
         if (empty($cart)) {
             return redirect()->route('frontend.cart.index')
                 ->with('error', 'Your cart is empty!');
         }
-        
+
         DB::beginTransaction();
         try {
             // Calculate totals
@@ -61,11 +61,11 @@ class CheckoutController extends Controller
             foreach ($cart as $item) {
                 $subtotal += $item['price'] * $item['quantity'];
             }
-            
-            $tax = $subtotal * 0.1;
-            $shipping = 10;
+
+            $tax = $subtotal * 0.15;
+            $shipping = 20;
             $total = $subtotal + $tax + $shipping;
-            
+
             // Create order
             $order = Order::create([
                 'user_id' => auth('customer')->id() ?? null,
@@ -78,7 +78,7 @@ class CheckoutController extends Controller
                 'payment_method' => $validated['payment_method'],
                 'payment_status' => 'pending',
             ]);
-            
+
             // Create order items
             foreach ($cart as $item) {
                 OrderProduct::create([
@@ -90,7 +90,7 @@ class CheckoutController extends Controller
                     'tax_amount' => 0,
                 ]);
             }
-            
+
             // Create shipping address
             OrderAddress::create([
                 'order_id' => $order->id,
@@ -104,15 +104,15 @@ class CheckoutController extends Controller
                 'country' => $validated['country'],
                 'type' => 'shipping',
             ]);
-            
+
             DB::commit();
-            
+
             // Clear cart
             Session::forget('cart');
-            
+
             return redirect()->route('frontend.checkout.success')
                 ->with('order_id', $order->id);
-                
+
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->with('error', 'Order failed: ' . $e->getMessage());

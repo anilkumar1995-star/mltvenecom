@@ -2,7 +2,8 @@
 
 namespace Botble\ACL\Models;
 
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
+els\BaseModel;
 use Botble\Support\Services\Cache\Cache;
 use Illuminate\Support\Facades\Auth;
 

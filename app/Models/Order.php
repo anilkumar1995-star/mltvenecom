@@ -12,17 +12,24 @@ class Order extends Model
 
     protected $fillable = [
         'user_id',
+        'code',
         'amount',
         'tax_amount',
         'shipping_amount',
         'discount_amount',
         'sub_total',
         'status',
-        'payment_method',
-        'payment_status',
         'shipping_method',
+        'shipping_option',
+        'payment_id',
+        'payment_fee',
         'description',
         'coupon_code',
+        'discount_description',
+        'is_confirmed',
+        'is_finished',
+        'token',
+        'store_id',
     ];
 
     protected $casts = [
@@ -44,9 +51,19 @@ class Order extends Model
         return $this->hasMany(OrderProduct::class, 'order_id');
     }
 
+    public function payment(): BelongsTo
+    {
+        return $this->belongsTo(Payment::class, 'payment_id');
+    }
+
     public function address(): HasMany
     {
         return $this->hasMany(OrderAddress::class, 'order_id');
+    }
+
+    public function store(): BelongsTo
+    {
+        return $this->belongsTo(Store::class, 'store_id');
     }
 
     // Helper Methods

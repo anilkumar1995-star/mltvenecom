@@ -5,7 +5,7 @@ namespace Botble\Marketplace\Models;
 use Botble\ACL\Models\User;
 use Botble\Base\Facades\BaseHelper;
 use Botble\Base\Facades\Html;
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Ecommerce\Models\Currency;
 use Botble\Ecommerce\Models\Customer;
 use Botble\Ecommerce\Models\Order;

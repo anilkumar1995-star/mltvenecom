@@ -1,6 +1,8 @@
 @extends('admin-layouts.app')
 @section('title', 'Products')
 @section('content')
+
+    <div class="page-wrapper">
         <div class="page-header d-print-none">
             <div class="container-xl">
                 <div class="row g-2 align-items-center">
@@ -10,7 +12,7 @@
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item">
                                         <a class="mb-0 d-inline-block fs-6 lh-1"
-                                            href="{{ route('home') }}">Dashboard</a>
+                                            href="{{ route('admin.dashboard') }}">Dashboard</a>
                                     </li>
                                     <li class="breadcrumb-item">
                                         <h1 class="mb-0 d-inline-block fs-6 lh-1">Ecommerce</h1>
@@ -425,23 +427,17 @@
                                         <td>
                                             <!-- <div class="d-flex align-items-center"> -->
                                                 @php
-                                                    $displayImage = null;
-                                                    if ($product->image) {
-                                                        $displayImage = $product->image;
-                                                    } elseif (is_array($product->images) && !empty($product->images)) {
-                                                        $displayImage = $product->images[0];
-                                                    }
+                                                    $displayImage = $product->image ?: (is_array($product->images) && !empty($product->images) ? $product->images[0] : null);
+                                                    $imageUrl = $displayImage ? asset('uploads/' . $displayImage) : asset('home-dashboard-files/placeholder.png');
                                                 @endphp
 
-                                                @if($displayImage)
-                                                    <a data-fslightbox="gallery" href="{{ asset('storage/' . $displayImage) }}">
-                                                        <img src="{{ asset('storage/' . $displayImage) }}" alt="{{ $product->name }}" class="img-thumbnail me-2" style="width: 50px; height: 50px; object-fit: cover;">
-                                                    </a>
-                                                @else
-                                                    <div class="bg-light text-muted d-flex align-items-center justify-content-center me-2" style="width: 50px; height: 50px; border-radius: 4px;">
-                                                        <i class="fa fa-image"></i>
-                                                    </div>
-                                                @endif
+                                                <a data-fslightbox="gallery" href="{{ $imageUrl }}">
+                                                    <img src="{{ $imageUrl }}" 
+                                                         alt="{{ $product->name }}" 
+                                                         class="img-thumbnail me-2" 
+                                                         style="width: 50px; height: 50px; object-fit: cover;"
+                                                         onerror="this.src='{{ asset('home-dashboard-files/placeholder.png') }}'">
+                                                </a>
                                                 <!-- <div>
                                                     <a href="{{ route('admin.products.edit', $product->id) }}" class="fw-bold text-decoration-none text-dark">{{ $product->name }}</a>
                                                     <div class="small text-muted">{{ $product->sku }}</div>
@@ -463,6 +459,15 @@
                                     
                                         <td class="text-end">
                                             <div class="btn-group">
+                                                @if($product->status == 'pending')
+                                                    <form action="{{ route('admin.products.approve', $product->id) }}" method="POST" class="d-inline-block">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <button type="submit" class="btn btn-sm btn-outline-success" title="Approve">
+                                                            <i class="fa fa-check"></i>
+                                                        </button>
+                                                    </form>
+                                                @endif
                                                 <a href="{{ route('admin.products.edit', $product->id) }}" class="btn btn-sm btn-outline-primary" title="Edit">
                                                     <i class="fa fa-edit"></i>
                                                 </a>

@@ -2,7 +2,8 @@
 
 namespace Botble\Base\Supports\Database;
 
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
+els\BaseModel;
 use Closure;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Schema\Blueprint as IlluminateBlueprint;

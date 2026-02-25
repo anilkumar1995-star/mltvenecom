@@ -2,12 +2,12 @@
 
 namespace Botble\Ecommerce\Models;
 
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Ecommerce\Enums\ProductLicenseCodeStatusEnum;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class ProductLicenseCode extends BaseModel
+class ProductLicenseCode extends Model
 {
     protected $table = 'ec_product_license_codes';
 

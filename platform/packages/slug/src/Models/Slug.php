@@ -2,7 +2,7 @@
 
 namespace Botble\Slug\Models;
 
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Slug extends BaseModel

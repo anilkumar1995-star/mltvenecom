@@ -3,7 +3,7 @@
 namespace Botble\Language\Models;
 
 use Botble\Base\Casts\SafeContent;
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Setting\Facades\Setting;
 use Botble\Theme\Facades\ThemeOption;
 use Botble\Widget\Models\Widget;

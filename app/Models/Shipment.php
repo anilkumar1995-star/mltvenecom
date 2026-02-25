@@ -1,17 +1,15 @@
 <?php
 
-namespace Botble\Ecommerce\Models;
 
-use Botble\Base\Models\BaseModel;
-use Botble\Ecommerce\Enums\ShippingCodStatusEnum;
-use Botble\Ecommerce\Enums\ShippingMethodEnum;
-use Botble\Ecommerce\Enums\ShippingStatusEnum;
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class Shipment extends BaseModel
+class Shipment extends Model
 {
     protected $table = 'ec_shipments';
 
@@ -37,8 +35,8 @@ class Shipment extends BaseModel
     ];
 
     protected $casts = [
-        'status' => ShippingStatusEnum::class,
-        'cod_status' => ShippingCodStatusEnum::class,
+        'status' => 'string',
+        'cod_status' => 'string',
         'metadata' => 'json',
         'estimate_date_shipped' => 'datetime',
         'date_shipped' => 'datetime',
@@ -69,7 +67,7 @@ class Shipment extends BaseModel
 
     protected function isCanceled(): Attribute
     {
-        return Attribute::get(fn () => $this->status == ShippingStatusEnum::CANCELED);
+        return Attribute::get(fn () => $this->status == 'canceled');
     }
 
     protected function canConfirmDelivery(): Attribute
@@ -80,17 +78,14 @@ class Shipment extends BaseModel
                     return false;
                 }
 
-                return $this->status == ShippingStatusEnum::DELIVERING;
+                return $this->status == 'delivering';
             }
         );
     }
 
     public function canPrintLabel(): bool
     {
-        return apply_filters(
-            'ecommerce_shipment_can_print_shipping_label',
-            $this->order->shipping_method == ShippingMethodEnum::DEFAULT,
-            $this
-        );
+        return $this->order->shipping_method == 'default';
     }
 }
+

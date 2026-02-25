@@ -4,7 +4,7 @@ namespace Botble\Blog\Models;
 
 use Botble\ACL\Models\User;
 use Botble\Base\Casts\SafeContent;
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Blog\Enums\PostStatusEnum;
 use Botble\Revision\RevisionableTrait;
 use Illuminate\Database\Eloquent\Casts\Attribute;

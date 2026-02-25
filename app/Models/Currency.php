@@ -1,12 +1,12 @@
 <?php
 
-namespace Botble\Ecommerce\Models;
+namespace App\Models;
 
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Facades\Cache;
 
-class Currency extends BaseModel
+class Currency extends Model
 {
     protected $table = 'ec_currencies';
 

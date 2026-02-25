@@ -3,113 +3,64 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Customer;
-use App\Models\Message;
-use App\Models\Store;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class VendorController extends Controller
 {
-   public function vendors()
-   {
-     $vendors = Customer::has('store')->with('store')->latest()->paginate(15);
-
-       return view('admin-layouts.marketplace.vendors.index', compact('vendors'));
-   }
-
-    public function unverifiedVendors()
-   {
-
-       $stores = Store::where('is_verified', 0)->with('customer')->orderBy('created_at', 'desc')->paginate(10);
-       return view('admin-layouts.marketplace.vendors.unverified_vendors', compact('stores'));
-   }
-
-    public function messages()
-   {
-      $messages = Message::with(['store', 'customer'])->orderBy('created_at', 'desc')->paginate(15);
-       return view('admin-layouts.marketplace.vendors.messages', compact('messages'));
-   }
-
-    public function show($id)
+    public function vendors()
     {
-        $vendor = Customer::with('store')->findOrFail($id);
-        return view('admin-layouts.marketplace.vendors.show', compact('vendor'));
+        // Get all users who are vendors
+        $vendors = User::where('role', 'vendor')->latest()->paginate(15);
+        return view('admin-layouts.marketplace.vendors.index', compact('vendors'));
     }
 
-    public function edit($id)
+    public function approve($id)
     {
-        $vendor = Customer::findOrFail($id);
-        return view('admin-layouts.marketplace.vendors.edit', compact('vendor'));
-    }
+        $vendor = User::findOrFail($id);
+        $vendor->status = 'active';
+        $vendor->is_approved = true;
+        $vendor->save();
 
-    public function update(Request $request, $id)
-    {
-        $vendor = Customer::findOrFail($id);
-        
-        $rules = [
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:ec_customers,email,' . $id,
-            'phone' => 'nullable|string|max:20',
-            'dob' => 'nullable|date',
-            'status' => 'required',
-        ];
-
-        if ($request->is_change_password) {
-            $rules['password'] = 'required|min:6|confirmed';
-        }
-
-        $request->validate($rules);
-
-        $data = [
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'dob' => $request->dob,
-            'status' => $request->status,
-            'is_vendor' => $request->has('is_vendor') ? 1 : 0,
-        ];
-
-          if ($request->hasFile('avatar_file')) {
-            $path = $request->file('avatar_file')->store('vendors', 'public');
-            $data['avatar_file'] = 'storage/' . $path;
-        } elseif ($request->avatar_file) {
-            $data['avatar_file'] = $request->avatar_file;
-        }
-
-      
-        if ($request->is_change_password) {
-            $data['password'] = bcrypt($request->password);
-        }
-
-        $vendor->update($data);
-
-        return response()->json([
-            'status' => true,
-            'message' => 'Vendor updated successfully',
-            'redirect_url' => route('admin.marketplace.vendors')
-        ]);
+        return redirect()->back()->with('success', 'Vendor approved successfully.');
     }
 
     public function destroy($id)
     {
-        $vendor = Customer::findOrFail($id);
-        // Maybe also delete store? For now just delete customer/vendor.
+        $vendor = User::findOrFail($id);
         $vendor->delete();
 
-        return response()->json([
-            'status' => true,
-            'message' => 'Vendor deleted successfully.'
-        ]);
+        return redirect()->back()->with('success', 'Vendor deleted successfully.');
     }
 
-    public function destroyMessage($id)
-    {
-        $message = Message::findOrFail($id);
-        $message->delete();
-
-        return response()->json([
-            'status' => true,
-            'message' => 'Message deleted successfully.'
-        ]);
+    // Maintain old route signature methods to avoid errors if linked
+    public function unverifiedVendors() {
+         $vendors = User::where('role', 'vendor')->where('status', 'pending')->latest()->paginate(15);
+         return view('admin-layouts.marketplace.vendors.index', compact('vendors'));
     }
+
+    public function show($id) {
+         $vendor = User::findOrFail($id);
+         // return view('admin-layouts.marketplace.vendors.show', compact('vendor'));
+         return redirect()->route('admin.marketplace.vendors');
+    }
+
+    public function edit($id) {
+         $vendor = User::findOrFail($id);
+         // return view('admin-layouts.marketplace.vendors.edit', compact('vendor'));
+         return redirect()->route('admin.marketplace.vendors');
+    }
+
+    public function messages() {
+        return view('admin-layouts.marketplace.vendors.messages', ['messages' => []]);
+    }
+
+    public function destroyMessage($id) {
+        return back();
+    }
+
+    public function update(Request $request, $id) {
+        return back();
+    }
+
 }

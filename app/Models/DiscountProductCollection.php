@@ -1,11 +1,12 @@
 <?php
 
-namespace Botble\Ecommerce\Models;
 
-use Botble\Base\Models\BaseModel;
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class DiscountProductCollection extends BaseModel
+class DiscountProductCollection extends Model
 {
     protected $table = 'ec_discount_product_collections';
 
@@ -19,3 +20,4 @@ class DiscountProductCollection extends BaseModel
         return $this->belongsTo(ProductCollection::class, 'product_collection_id')->withDefault();
     }
 }
+

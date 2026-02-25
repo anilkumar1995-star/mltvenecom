@@ -1,14 +1,14 @@
 <?php
 
-namespace Botble\Ecommerce\Models;
 
-use Botble\Base\Models\BaseModel;
-use Botble\Ecommerce\Facades\EcommerceHelper;
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\MassPrunable;
 
-class SharedWishlist extends BaseModel
+class SharedWishlist extends Model
 {
     use MassPrunable;
 
@@ -25,6 +25,7 @@ class SharedWishlist extends BaseModel
 
     public function prunable(): Builder
     {
-        return $this->where('created_at', '<=', Carbon::now()->subDays(EcommerceHelper::getSharedWishlistLifetime()));
+        return $this->where('created_at', '<=', Carbon::now()->subDays(30)); // Default to 30 days
     }
 }
+

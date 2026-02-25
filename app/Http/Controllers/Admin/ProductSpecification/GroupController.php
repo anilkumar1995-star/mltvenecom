@@ -225,13 +225,13 @@ class GroupController extends Controller
 
     public function productTable()
     {
-        $data['tables'] = EcSpecificationTable::orderBy('id', 'desc')->get();
+        $data['tables'] = EcSpecificationTable::with('groups')->orderBy('id', 'desc')->get();
         return view('admin-layouts.product-specification.tables.index', $data);
     }
-    
+
     public function productTablecreate()
     {
-        $data['groups'] = EcSpecificationGroup::all();
+        $data['groups'] = EcSpecificationGroup::orderBy('id', 'DESC')->get();
         return view('admin-layouts.product-specification.tables.create', $data);
     }
 

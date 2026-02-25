@@ -4,7 +4,7 @@ namespace Botble\Menu\Models;
 
 use Botble\Base\Casts\SafeContent;
 use Botble\Base\Enums\BaseStatusEnum;
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Base\Models\Concerns\HasSlug;
 use Botble\Support\Services\Cache\Cache;
 use Illuminate\Database\Eloquent\Relations\HasMany;

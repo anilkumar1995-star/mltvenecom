@@ -1,17 +1,16 @@
 <?php
 
-namespace Botble\Ecommerce\Models;
 
-use Botble\Base\Casts\SafeContent;
-use Botble\Base\Enums\BaseStatusEnum;
-use Botble\Base\Models\BaseModel;
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Facades\DB;
 
-class FlashSale extends BaseModel
+class FlashSale extends Model
 {
     protected $table = 'ec_flash_sales';
 
@@ -22,9 +21,9 @@ class FlashSale extends BaseModel
     ];
 
     protected $casts = [
-        'status' => BaseStatusEnum::class,
+        'status' => 'string',
         'end_date' => 'date',
-        'name' => SafeContent::class,
+        'name' => 'string',
     ];
 
     protected static function booted(): void
@@ -35,7 +34,7 @@ class FlashSale extends BaseModel
     public function products(): BelongsToMany
     {
         return $this
-            ->belongsToMany(Product::class, 'ec_flash_sale_products', 'flash_sale_id', 'product_id')
+            ->belongsToMany(EcProduct::class, 'ec_flash_sale_products', 'flash_sale_id', 'product_id')
             ->withPivot(['price', 'quantity', 'sold']);
     }
 
@@ -97,3 +96,4 @@ class FlashSale extends BaseModel
         return $this->products()->wherePivot('quantity', '>', DB::raw('sold'));
     }
 }
+

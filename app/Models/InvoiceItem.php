@@ -1,15 +1,15 @@
 <?php
 
-namespace Botble\Ecommerce\Models;
 
-use Botble\Base\Casts\SafeContent;
-use Botble\Base\Models\BaseModel;
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Arr;
 
-class InvoiceItem extends BaseModel
+class InvoiceItem extends Model
 {
     protected $table = 'ec_invoice_items';
 
@@ -38,7 +38,7 @@ class InvoiceItem extends BaseModel
         'metadata' => 'json',
         'paid_at' => 'datetime',
         'options' => 'json',
-        'name' => SafeContent::class,
+        'name' => 'string',
     ];
 
     public function invoice(): BelongsTo
@@ -53,12 +53,12 @@ class InvoiceItem extends BaseModel
 
     protected function amountFormat(): Attribute
     {
-        return Attribute::get(fn () => format_price($this->price));
+        return Attribute::get(fn () => number_format($this->price, 2));
     }
 
     protected function totalFormat(): Attribute
     {
-        return Attribute::get(fn () => format_price($this->price * $this->qty));
+        return Attribute::get(fn () => number_format($this->price * $this->qty, 2));
     }
 
     public function productOptionsImplode(): Attribute
@@ -83,13 +83,13 @@ class InvoiceItem extends BaseModel
     {
         return Attribute::get(function () {
             if (! $this->options) {
-                return '';
+                return [];
             }
 
             $options = Arr::get($this->options, 'options');
 
             if (! $options) {
-                return '';
+                return [];
             }
 
             return Arr::map(Arr::get($options, 'optionInfo'), function ($item, $key) use ($options) {
@@ -98,9 +98,10 @@ class InvoiceItem extends BaseModel
                 return [
                     'label' => $item,
                     'value' => Arr::get($options, "optionCartValue.$key.0.option_value"),
-                    'affect_price' => $affectedPrice ? format_price($affectedPrice) : '',
+                    'affect_price' => $affectedPrice ? number_format($affectedPrice, 2) : '',
                 ];
             });
         });
     }
 }
+

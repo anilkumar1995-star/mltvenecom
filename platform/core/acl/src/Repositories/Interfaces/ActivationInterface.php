@@ -3,7 +3,8 @@
 namespace Botble\ACL\Repositories\Interfaces;
 
 use Botble\ACL\Models\User;
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
+els\BaseModel;
 use Illuminate\Database\Eloquent\Model;
 
 interface ActivationInterface

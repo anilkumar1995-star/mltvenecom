@@ -2,7 +2,8 @@
 
 namespace Botble\ACL\Models;
 
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
+els\BaseModel;
 
 class Activation extends BaseModel
 {

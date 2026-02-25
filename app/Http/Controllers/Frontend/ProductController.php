@@ -3,17 +3,16 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
-use App\Models\Product;
-use App\Models\ProductCategory;
-use App\Models\Brand;
+use App\Models\EcBrand;
+use App\Models\EcProduct;
+use App\Models\EcProductCategory;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Product::published()
-            ->inStock()
+        $query = EcProduct::published()
             ->with(['brand', 'categories']);
 
         // Search
@@ -58,16 +57,21 @@ class ProductController extends Controller
         }
 
         $products = $query->paginate(12);
-        $categories = ProductCategory::published()->parent()->get();
-        $brands = Brand::published()->get();
+        $categories = EcProductCategory::published()->parent()->get();
+        $brands = EcBrand::published()->get();
 
         return view('frontend.products.index', compact('products', 'categories', 'brands'));
     }
 
     public function show($slug)
     {
-        $product = Product::published()
-            ->where('slug', $slug)
+        $product = EcProduct::published()
+            ->where(function ($query) use ($slug) {
+                $query->where('slug', $slug);
+                if (is_numeric($slug)) {
+                    $query->orWhere('id', $slug);
+                }
+            })
             ->with(['brand', 'categories', 'reviews.customer', 'tags'])
             ->firstOrFail();
         // dd($product);
@@ -76,8 +80,7 @@ class ProductController extends Controller
         $product->increment('views');
 
         // Related products
-        $related_products = Product::published()
-            ->inStock()
+        $related_products = EcProduct::published()
             ->where('id', '!=', $product->id)
             ->whereHas('categories', function ($q) use ($product) {
                 $q->whereIn('ec_product_categories.id', $product->categories->pluck('id'));
@@ -90,12 +93,11 @@ class ProductController extends Controller
 
     public function category($slug)
     {
-        $category = ProductCategory::published()
+        $category = EcProductCategory::published()
             ->where('slug', $slug)
             ->firstOrFail();
 
-        $products = Product::published()
-            ->inStock()
+        $products = EcProduct::published()
             ->whereHas('categories', function ($q) use ($category) {
                 $q->where('ec_product_categories.id', $category->id);
             })
@@ -107,12 +109,16 @@ class ProductController extends Controller
 
     public function brand($slug)
     {
-        $brand = Brand::published()
-            ->where('slug', $slug)
+        $brand = EcBrand::published()
+            ->where(function ($query) use ($slug) {
+                $query->where('slug', $slug);
+                if (is_numeric($slug)) {
+                    $query->orWhere('id', $slug);
+                }
+            })
             ->firstOrFail();
 
-        $products = Product::published()
-            ->inStock()
+        $products = EcProduct::published()
             ->where('brand_id', $brand->id)
             ->with(['brand', 'categories'])
             ->paginate(12);

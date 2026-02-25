@@ -7,7 +7,7 @@ use Botble\Base\Forms\FieldOptions\SelectFieldOption;
 use Botble\Base\Forms\Fields\AlertField;
 use Botble\Base\Forms\Fields\SelectField;
 use Botble\Base\Forms\FormAbstract;
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Widget\AbstractWidget;
 
 class WidgetForm extends FormAbstract

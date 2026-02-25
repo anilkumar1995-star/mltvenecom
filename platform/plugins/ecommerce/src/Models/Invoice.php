@@ -2,7 +2,7 @@
 
 namespace Botble\Ecommerce\Models;
 
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Ecommerce\Enums\InvoiceStatusEnum;
 use Botble\Payment\Models\Payment;
 use Illuminate\Database\Eloquent\Casts\Attribute;

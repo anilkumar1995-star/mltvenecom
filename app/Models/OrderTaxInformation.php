@@ -1,11 +1,12 @@
 <?php
 
-namespace Botble\Ecommerce\Models;
 
-use Botble\Base\Models\BaseModel;
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class OrderTaxInformation extends BaseModel
+class OrderTaxInformation extends Model
 {
     protected $table = 'ec_order_tax_information';
 
@@ -22,3 +23,4 @@ class OrderTaxInformation extends BaseModel
         return $this->belongsTo(Order::class);
     }
 }
+

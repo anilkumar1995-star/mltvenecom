@@ -1,127 +1,110 @@
 <?php
 
-namespace Botble\Ecommerce\Http\Controllers\Fronts;
+namespace App\Http\Controllers\Frontend;
 
-use Botble\Base\Http\Controllers\BaseController;
-use Botble\Ecommerce\AdsTracking\GoogleTagManager;
-use Botble\Ecommerce\Facades\Cart;
-use Botble\Ecommerce\Facades\EcommerceHelper;
-use Botble\Ecommerce\Models\Product;
-use Botble\Ecommerce\Models\SharedWishlist;
-use Botble\Ecommerce\Repositories\Interfaces\ProductInterface;
-use Botble\Ecommerce\Services\ProductWishlistService;
-use Botble\SeoHelper\Facades\SeoHelper;
-use Botble\Theme\Facades\Theme;
+use App\Http\Controllers\Controller;
+use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
-class WishlistController extends BaseController
+class WishlistController extends Controller
 {
-    public function index(Request $request, ProductInterface $productRepository, ?string $code = null)
+    /*
+    |--------------------------------------------------------------------------
+    | Wishlist Page
+    |--------------------------------------------------------------------------
+    */
+    public function index(Request $request)
     {
-        abort_if($code && ! EcommerceHelper::isWishlistSharingEnabled(), 404);
-
-        $title = __('Wishlist');
-
-        SeoHelper::setTitle(theme_option('ecommerce_wishlist_seo_title') ?: $title)
-            ->setDescription(theme_option('ecommerce_wishlist_seo_description'));
-
-        Theme::breadcrumb()->add($title, route('public.wishlist'));
-
-        $queryParams = [
-            'paginate' => [
-                'per_page' => 100,
-                'current_paged' => $request->integer('page', 1) ?: 1,
-            ],
-            'with' => ['slugable'],
-        ];
-
-        if ($code && EcommerceHelper::isWishlistSharingEnabled()) {
-            $sharedWishlist = SharedWishlist::query()->where('code', $code)->firstOrFail();
-
-            $products = $productRepository->getProductsByIds($sharedWishlist->product_ids, $queryParams);
+        if (Auth::check()) {
+            // Logged in user wishlist (DB relation)
+            $products = Auth::user()
+                ->wishlist()
+                ->with('images')
+                ->paginate(12);
         } else {
-            if (auth('customer')->check()) {
-                $products = $productRepository->getProductsWishlist(auth('customer')->id(), $queryParams);
+            // Guest wishlist (session)
+            $wishlist = Session::get('wishlist', []);
+            $products = Product::whereIn('id', $wishlist)
+                ->with('images')
+                ->paginate(12);
+        }
+
+        return view('frontend.wishlist', compact('products'));
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Add / Remove Wishlist (Toggle)
+    |--------------------------------------------------------------------------
+    */
+    public function store($productId)
+    {
+        $product = Product::findOrFail($productId);
+
+        if (Auth::check()) {
+
+            $user = Auth::user();
+
+            if ($user->wishlist()->where('product_id', $productId)->exists()) {
+                $user->wishlist()->detach($productId);
+                $added = false;
             } else {
-                $products = new LengthAwarePaginator([], 0, 10);
-
-                $itemIds = Cart::instance('wishlist')
-                    ->content()
-                    ->sortBy([['updated_at', 'desc']])
-                    ->pluck('id')
-                    ->unique()
-                    ->all();
-
-                if ($itemIds) {
-                    $products = $productRepository->getProductsByIds($itemIds, $queryParams);
-                }
+                $user->wishlist()->attach($productId);
+                $added = true;
             }
+
+            $count = $user->wishlist()->count();
+
+        } else {
+            $wishlist = Session::get('wishlist', []);
+
+            if (in_array($productId, $wishlist)) {
+                $wishlist = array_diff($wishlist, [$productId]);
+                $added = false;
+            } else {
+                $wishlist[] = $productId;
+                $added = true;
+            }
+
+            Session::put('wishlist', $wishlist);
+            $count = count($wishlist);
         }
 
-        $canRemoveWishlist = ! $code || (EcommerceHelper::getWishlistCode() === $code);
-
-        return Theme::scope('ecommerce.wishlist', compact('products', 'canRemoveWishlist'), 'plugins/ecommerce::themes.wishlist')->render();
+        return response()->json([
+            'status' => true,
+            'message' => $added
+                ? $product->name . ' added to wishlist.'
+                : $product->name . ' removed from wishlist.',
+            'count' => $count,
+            'added' => $added
+        ]);
     }
 
-    public function store(int|string $productId, Request $request)
+    /*
+    |--------------------------------------------------------------------------
+    | Remove Wishlist
+    |--------------------------------------------------------------------------
+    */
+    public function destroy($productId)
     {
-        if (! $productId) {
-            $productId = $request->input('product_id');
+        $product = Product::findOrFail($productId);
+
+        if (Auth::check()) {
+            Auth::user()->wishlist()->detach($productId);
+            $count = Auth::user()->wishlist()->count();
+        } else {
+            $wishlist = Session::get('wishlist', []);
+            $wishlist = array_diff($wishlist, [$productId]);
+            Session::put('wishlist', $wishlist);
+            $count = count($wishlist);
         }
 
-        if (! $productId) {
-            return $this
-                ->httpResponse()
-                ->setError()
-                ->setMessage(trans('plugins/ecommerce::products.wishlist.product_not_available'));
-        }
-
-        /**
-         * @var Product $product
-         */
-        $product = Product::query()->findOrFail($productId);
-
-        $isAdded = app(ProductWishlistService::class)->handle($product);
-
-        return $this
-            ->httpResponse()
-            ->setMessage(
-                $isAdded
-                ? trans('plugins/ecommerce::products.wishlist.added_success', ['product' => $product->name])
-                : trans('plugins/ecommerce::products.wishlist.removed_success', ['product' => $product->name])
-            )
-            ->setData([
-                'count' => $this->wishlistCount(),
-                'added' => $isAdded,
-                'extra_data' => app(GoogleTagManager::class)->formatProductTrackingData($product->original_product),
-            ]);
-    }
-
-    public function destroy(int|string $productId)
-    {
-        /**
-         * @var Product $product
-         */
-        $product = Product::query()->findOrFail($productId);
-
-        app(ProductWishlistService::class)->handle($product);
-
-        return $this
-            ->httpResponse()
-            ->setMessage(trans('plugins/ecommerce::products.wishlist.removed_success', ['product' => $product->name]))
-            ->setData([
-                'count' => $this->wishlistCount(),
-                'extra_data' => app(GoogleTagManager::class)->formatProductTrackingData($product->original_product),
-            ]);
-    }
-
-    protected function wishlistCount(): int
-    {
-        if (! auth('customer')->check()) {
-            return Cart::instance('wishlist')->count();
-        }
-
-        return auth('customer')->user()->wishlist()->count();
+        return response()->json([
+            'status' => true,
+            'message' => $product->name . ' removed from wishlist.',
+            'count' => $count
+        ]);
     }
 }

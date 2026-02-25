@@ -3,7 +3,7 @@
 namespace Botble\Language;
 
 use Botble\Base\Facades\BaseHelper;
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Language\Models\Language;
 use Botble\Language\Models\LanguageMeta;
 use Botble\Support\Services\Cache\Cache;

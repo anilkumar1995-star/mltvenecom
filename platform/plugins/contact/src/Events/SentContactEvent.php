@@ -3,7 +3,7 @@
 namespace Botble\Contact\Events;
 
 use Botble\Base\Events\Event;
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Queue\SerializesModels;
 
 class SentContactEvent extends Event

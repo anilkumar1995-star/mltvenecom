@@ -3,7 +3,7 @@
 namespace Botble\Media\Repositories\Eloquent;
 
 use Botble\Base\Facades\BaseHelper;
-use Botble\Base\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 use Botble\Media\Facades\RvMedia;
 use Botble\Media\Models\MediaFile;
 use Botble\Media\Models\MediaFolder;
