@@ -61,6 +61,7 @@
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/jquery.fancybox.min.css">
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/core.css">
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/language.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"/>
 
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home/announcement.css">
     <link href="{{ asset('/') }}" hreflang="x-default" rel="alternate">
@@ -363,8 +364,7 @@
     <script src="{{ asset('/') }}home/meanmenu.js"></script>
 
     @include('frontend.partials.mini-cart')
-    <script src="{{ asset('/') }}js/cart-custom.js"></script>
-    @stack('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/shopify-cartjs/1.1.0/cart.min.js"></script>    @stack('scripts')
     <script>
         window.themeOptions = {
             ecommerce_auto_open_mini_cart: 'yes',
