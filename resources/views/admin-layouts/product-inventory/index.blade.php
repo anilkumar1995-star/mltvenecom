@@ -136,7 +136,7 @@
                                             <td>
                                                 @php
                                                     $displayImage = $product->image ?: (is_array($product->images) && !empty($product->images) ? $product->images[0] : null);
-                                                    $imageUrl = $displayImage ? asset('uploads/' . $displayImage) : asset('home-dashboard-files/placeholder.png');
+                                                    $imageUrl = $displayImage ? asset('uploads/' . $displayImage) : asset('home/placeholder.png');
                                                 @endphp
                                                 <img src="{{ $imageUrl }}" alt="{{ $product->name }}" class="img-thumbnail me-2" style="width: 50px; height: 50px; object-fit: cover;">
                                             </td>

@@ -9,9 +9,9 @@
             <div class="tp-slider-item-5 scene tp-slider-height-5 d-flex align-items-center"
                 style="background-color: #F3F3F3;">
                 <div class="tp-slider-shape-5">
-                    <div class="tp-slider-shape-5-1"><img src="{{ asset('home-dashboard-files/shape-1.png') }}"
+                    <div class="tp-slider-shape-5-1"><img src="{{ asset('home/shape-1.png') }}"
                             class="layer" data-depth="0.2" alt="shape"></div>
-                    <div class="tp-slider-shape-5-2"><img src="{{ asset('home-dashboard-files/shape-2.png') }}"
+                    <div class="tp-slider-shape-5-2"><img src="{{ asset('home/shape-2.png') }}"
                             class="layer" data-depth="0.2" alt="shape"></div>
                 </div>
                 <div class="container">
@@ -27,7 +27,7 @@
                         <div class="col-xxl-5 col-xl-5 col-lg-6">
                             <div class="tp-slider-thumb-wrapper-5 p-relative">
                                 <div class="tp-slider-thumb-5 main-img">
-                                    <img src="{{ asset('home-dashboard-files/slider-1.png') }}" alt="slider">
+                                    <img src="{{ asset('home/slider-1.png') }}" alt="slider">
                                     <span class="tp-slider-thumb-5-gradient"></span>
                                 </div>
                             </div>
@@ -51,7 +51,7 @@
                             <div class="tp-category-item-5 p-relative z-index-1 fix mb-30">
                                 <a href="{{ route('frontend.categories.show', $category->slug) }}">
                                     <div class="tp-category-thumb-5 include-bg"
-                                        style="background-image: url({{ $category->image ? asset('uploads/' . $category->image) : asset('home-dashboard-files/placeholder.png') }});">
+                                        style="background-image: url({{ $category->image ? asset('uploads/' . $category->image) : asset('home/placeholder.png') }});">
                                     </div>
                                     <div class="tp-category-content-5">
                                         <h3 class="tp-category-title-5">{{ $category->name }}</h3>

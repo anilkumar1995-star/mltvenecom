@@ -35,9 +35,9 @@
                                 <td>
                                     @php
                                         $displayImage = $product->image ?: (is_array($product->images) && !empty($product->images) ? $product->images[0] : null);
-                                        $imageUrl = $displayImage ? asset('uploads/' . $displayImage) : asset('home-dashboard-files/placeholder.png');
+                                        $imageUrl = $displayImage ? asset('uploads/' . $displayImage) : asset('home/placeholder.png');
                                     @endphp
-                                    <img src="{{ $imageUrl }}" alt="{{ $product->name }}" class="avatar me-2" style="object-fit:cover;" onerror="this.src='{{ asset('home-dashboard-files/placeholder.png') }}'">
+                                    <img src="{{ $imageUrl }}" alt="{{ $product->name }}" class="avatar me-2" style="object-fit:cover;" onerror="this.src='{{ asset('home/placeholder.png') }}'">
                                 </td>
                                 <td>{{ $product->name }}</td>
                                 <td>{{ $product->sku }}</td>

@@ -11,9 +11,9 @@
     @vite(['resources/sass/app.scss'])
     
     <!-- Essential CSS Only -->
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home-dashboard-files/bootstrap.min.css">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home/bootstrap.min.css">
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/fontawesome.min.css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home-dashboard-files/theme.css">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home/theme.css">
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/core.css">
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/main.css">
     
@@ -57,9 +57,9 @@
     </footer>
 
     <!-- Essential Scripts -->
-    <script src="{{ asset('/') }}home-dashboard-files/jquery-3.7.1.min.js.download"></script>
-    <script src="{{ asset('/') }}home-dashboard-files/bootstrap.min.js.download"></script>
-    <script src="{{ asset('/') }}home-dashboard-files/theme.js.download"></script>
+    <script src="{{ asset('/') }}home/jquery-3.7.1.min.js.download"></script>
+    <script src="{{ asset('/') }}home/bootstrap.min.js.download"></script>
+    <script src="{{ asset('/') }}home/theme.js.download"></script>
     @stack('scripts')
 </body>
 </html>

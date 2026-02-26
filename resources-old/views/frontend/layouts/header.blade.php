@@ -23,7 +23,7 @@
                             </div>
                             <div class="logo">
                                 <a href="{{ asset('/') }}">
-                                    <img src="{{ asset('/') }}home-dashboard-files/logo-white.png" data-bb-lazy="false"
+                                    <img src="{{ asset('/') }}home/logo-white.png" data-bb-lazy="false"
                                         style="max-height: 35px !important;" loading="eager"
                                         alt="Shofy - Multipurpose eCommerce Laravel Script">
                                 </a>
