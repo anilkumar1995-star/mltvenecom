@@ -61,6 +61,7 @@
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/jquery.fancybox.min.css">
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/core.css">
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/language.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"/>
 
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home/announcement.css">
     <link href="{{ asset('/') }}" hreflang="x-default" rel="alternate">
@@ -351,19 +352,19 @@
     @yield('content')
     @include('frontend.layouts.footer')
 
-    <script src="{{ asset('/') }}home/jquery-3.7.1.min.js.download"></script>
-    <script src="{{ asset('/') }}home/bootstrap.min.js.download"></script>
-    <script src="{{ asset('/') }}home/lazyload.min.js.download"></script>
-    <script src="{{ asset('/') }}home/swiper-bundle.js.download"></script>
-    <script src="{{ asset('/') }}home/owl.carousel.js.download"></script>
-    <script src="{{ asset('/') }}home/slick.min.js.download"></script>
-    <script src="{{ asset('/') }}home/theme.js.download"></script>
-    <script src="{{ asset('/') }}home/front-ecommerce.js.download"></script>
-    <script src="{{ asset('/') }}home/ecommerce.js.download"></script>
-    <script src="{{ asset('/') }}home/meanmenu.js.download"></script>
+    <script src="{{ asset('/') }}home/jquery-3.7.1.min.js"></script>
+    <script src="{{ asset('/') }}home/bootstrap.min.js"></script>
+    <script src="{{ asset('/') }}home/lazyload.min.js"></script>
+    <script src="{{ asset('/') }}home/swiper-bundle.js"></script>
+    <script src="{{ asset('/') }}home/owl.carousel.js"></script>
+    <script src="{{ asset('/') }}home/slick.min.js"></script>
+    <script src="{{ asset('/') }}home/theme.js"></script>
+    <script src="{{ asset('/') }}home/front-ecommerce.js"></script>
+    <script src="{{ asset('/') }}home/ecommerce.js"></script>
+    <script src="{{ asset('/') }}home/meanmenu.js"></script>
 
     @include('frontend.partials.mini-cart')
-    <script src="{{ asset('/') }}js/cart-custom.js"></script>
+    <!-- <script src="{{ asset('/') }}js/cart-custom.js"></script> -->
     @stack('scripts')
     <script>
         window.themeOptions = {
