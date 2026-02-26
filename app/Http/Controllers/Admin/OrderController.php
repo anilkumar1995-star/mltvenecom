@@ -223,7 +223,7 @@ class OrderController extends Controller
         // Map images
         $products->transform(function($product) {
             $displayImage = $product->image ?: (is_array($product->images) && !empty($product->images) ? $product->images[0] : null);
-             $product->image_url = $displayImage ? asset('uploads/' . $displayImage) : asset('home-dashboard-files/placeholder.png');
+             $product->image_url = $displayImage ? asset('uploads/' . $displayImage) : asset('home/placeholder.png');
              return $product;
         });
 

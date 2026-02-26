@@ -3,14 +3,14 @@
         <a href="{{ route('frontend.products.show', $product->slug ?: $product->id) }}">
 
             @php
-                $imageUrl = asset('home-dashboard-files/placeholder.png');
+                $imageUrl = asset('home/placeholder.png');
                 if ($product->image && file_exists(public_path('storage/' . $product->image))) {
                     $imageUrl = asset('storage/' . $product->image);
                 } elseif ($product->images && count($product->images) > 0) {
                      $imageUrl = asset('uploads/' . $product->images[0]);
                 }
             @endphp
-            <img src="{{ $imageUrl }}" alt="{{ $product->name }}" onerror="this.src='{{ asset('home-dashboard-files/placeholder.png') }}'">
+            <img src="{{ $imageUrl }}" alt="{{ $product->name }}" onerror="this.src='{{ asset('home/placeholder.png') }}'">
         </a>
 
         <!-- Product Actions -->

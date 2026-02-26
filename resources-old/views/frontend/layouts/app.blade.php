@@ -36,19 +36,19 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('/') }}storage/main/general/favicon.png">
 
 
-    <!-- <link rel="preload" as="image" href="./home-dashboard-files/newsletter-popup.jpg"> -->
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home-dashboard-files/content-styles.css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home-dashboard-files/bootstrap.min.css">
+    <!-- <link rel="preload" as="image" href="./home/newsletter-popup.jpg"> -->
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home/content-styles.css">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home/bootstrap.min.css">
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/front-auth.css">
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/social-login.css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home-dashboard-files/front-ecommerce.css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home-dashboard-files/animate.css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home-dashboard-files/swiper-bundle.css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home-dashboard-files/owl.carousel.css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home-dashboard-files/slick.css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home-dashboard-files/theme.css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home-dashboard-files/theme(1).css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home-dashboard-files/lightgallery.min.css">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home/front-ecommerce.css">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home/animate.css">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home/swiper-bundle.css">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home/owl.carousel.css">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home/slick.css">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home/theme.css">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home/theme(1).css">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home/lightgallery.min.css">
 
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/fontawesome.min.css">
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/select2.min.css">
@@ -62,7 +62,7 @@
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/core.css">
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/language.css">
 
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home-dashboard-files/announcement.css">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home/announcement.css">
     <link href="{{ asset('/') }}" hreflang="x-default" rel="alternate">
     <script async="" defer="" src="{{ asset('/') }}js/js"></script>
 
@@ -351,16 +351,16 @@
     @yield('content')
     @include('frontend.layouts.footer')
 
-    <script src="{{ asset('/') }}home-dashboard-files/jquery-3.7.1.min.js"></script>
-    <script src="{{ asset('/') }}home-dashboard-files/bootstrap.min.js"></script>
-    <script src="{{ asset('/') }}home-dashboard-files/lazyload.min.js"></script>
-    <script src="{{ asset('/') }}home-dashboard-files/swiper-bundle.js"></script>
-    <script src="{{ asset('/') }}home-dashboard-files/owl.carousel.js"></script>
-    <script src="{{ asset('/') }}home-dashboard-files/slick.min.js"></script>
-    <script src="{{ asset('/') }}home-dashboard-files/theme.js"></script>
-    <script src="{{ asset('/') }}home-dashboard-files/front-ecommerce.js"></script>
-    <script src="{{ asset('/') }}home-dashboard-files/ecommerce.js"></script>
-    <script src="{{ asset('/') }}home-dashboard-files/meanmenu.js"></script>
+    <script src="{{ asset('/') }}home/jquery-3.7.1.min.js.download"></script>
+    <script src="{{ asset('/') }}home/bootstrap.min.js.download"></script>
+    <script src="{{ asset('/') }}home/lazyload.min.js.download"></script>
+    <script src="{{ asset('/') }}home/swiper-bundle.js.download"></script>
+    <script src="{{ asset('/') }}home/owl.carousel.js.download"></script>
+    <script src="{{ asset('/') }}home/slick.min.js.download"></script>
+    <script src="{{ asset('/') }}home/theme.js.download"></script>
+    <script src="{{ asset('/') }}home/front-ecommerce.js.download"></script>
+    <script src="{{ asset('/') }}home/ecommerce.js.download"></script>
+    <script src="{{ asset('/') }}home/meanmenu.js.download"></script>
 
     @include('frontend.partials.mini-cart')
     <script src="{{ asset('/') }}js/cart-custom.js"></script>

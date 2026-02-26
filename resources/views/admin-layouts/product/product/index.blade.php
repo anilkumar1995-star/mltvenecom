@@ -428,7 +428,7 @@
                                             <!-- <div class="d-flex align-items-center"> -->
                                                 @php
                                                     $displayImage = $product->image ?: (is_array($product->images) && !empty($product->images) ? $product->images[0] : null);
-                                                    $imageUrl = $displayImage ? asset('uploads/' . $displayImage) : asset('home-dashboard-files/placeholder.png');
+                                                    $imageUrl = $displayImage ? asset('uploads/' . $displayImage) : asset('home/placeholder.png');
                                                 @endphp
 
                                                 <a data-fslightbox="gallery" href="{{ $imageUrl }}">
@@ -436,7 +436,7 @@
                                                          alt="{{ $product->name }}" 
                                                          class="img-thumbnail me-2" 
                                                          style="width: 50px; height: 50px; object-fit: cover;"
-                                                         onerror="this.src='{{ asset('home-dashboard-files/placeholder.png') }}'">
+                                                         onerror="this.src='{{ asset('home/placeholder.png') }}'">
                                                 </a>
                                                 <!-- <div>
                                                     <a href="{{ route('admin.products.edit', $product->id) }}" class="fw-bold text-decoration-none text-dark">{{ $product->name }}</a>

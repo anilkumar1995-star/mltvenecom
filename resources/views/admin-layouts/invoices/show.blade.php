@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>Invoice {{ $invoice->code }}</title>
     <!-- CSS files -->
-    <link href="{{ asset('home-dashboard-files/dist/css/tabler.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('home/dist/css/tabler.min.css') }}" rel="stylesheet">
     <style>
         @media print {
             .no-print {

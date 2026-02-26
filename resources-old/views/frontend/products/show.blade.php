@@ -375,7 +375,7 @@
                         </div>
 
                         <div class="tp-product-details-payment">
-                            <img src="{{ asset('home-dashboard-files/payment-option.png') }}" alt="Payment">
+                            <img src="{{ asset('home/payment-option.png') }}" alt="Payment">
                         </div>
                     </div>
                 </div>
