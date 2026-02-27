@@ -587,7 +587,7 @@
                             <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
                                 <div class="product-item shadow-sm rounded overflow-hidden">
                                     <div class="product-thumb position-relative">
-                                        <a href="{{ route('frontend.products.show', $related->slug) }}">
+                                        <a href="{{ route('frontend.products.show', $related->slug ?: $related->id) }}">
                                             <img src="{{ asset('uploads/' . $related->image) }}" alt="{{ $related->name }}" style="width:100%; height: 250px; object-fit:cover;">
                                         </a>
                                         @if($related->isOnSale())
@@ -595,7 +595,7 @@
                                         @endif
                                     </div>
                                     <div class="product-content p-3">
-                                        <h6 class="product-title mb-2"><a href="{{ route('frontend.products.show', $related->slug) }}" class="text-dark text-decoration-none">{{ $related->name }}</a></h6>
+                                        <h6 class="product-title mb-2"><a href="{{ route('frontend.products.show', $related->slug ?: $related->id) }}" class="text-dark text-decoration-none">{{ $related->name }}</a></h6>
                                         <div class="product-price">
                                             @if($related->isOnSale())
                                                 <span class="text-danger fw-bold">${{ number_format($related->sale_price, 2) }}</span>
