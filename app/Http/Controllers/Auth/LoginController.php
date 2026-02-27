@@ -54,6 +54,10 @@ class LoginController extends Controller
 
         if (Auth::guard('customer')->attempt($this->credentials($request), $request->filled('remember'))) {
             $request->session()->regenerate();
+            
+            if ($request->wantsJson()) {
+                return response()->json(['success' => true, 'redirect' => route('frontend.customer.dashboard')]);
+            }
             // Customer -> frontend/customer/dashboard.blade.php
             return redirect()->intended(route('frontend.customer.dashboard'));
         }
@@ -64,21 +68,41 @@ class LoginController extends Controller
             $user = Auth::guard('web')->user();
 
             if ($user->role === 'admin') {
+                if ($request->wantsJson()) {
+                    return response()->json(['success' => true, 'redirect' => route('admin.dashboard')]);
+                }
                 return redirect()->intended(route('admin.dashboard'));
             }
 
             // Check for Vendor/User approval
             if ($user->status !== 'active') {
                 Auth::guard('web')->logout();
+                
+                if ($request->wantsJson()) {
+                    return response()->json([
+                        'error' => true,
+                        'message' => 'Your account is pending approval.'
+                    ], 403);
+                }
                 return back()->withInput($request->only('email', 'remember'))
                              ->withErrors(['email' => 'Your account is pending approval.']);
             }
 
+            if ($request->wantsJson()) {
+                return response()->json(['success' => true, 'redirect' => route('frontend.customer.dashboard')]);
+            }
             // Vendor/Others -> frontend/customer/dashboard.blade.php
             return redirect()->intended(route('frontend.customer.dashboard'));
         }
 
         $this->incrementLoginAttempts($request);
+        
+        if ($request->wantsJson()) {
+            return response()->json([
+                'error' => true,
+                'message' => trans('auth.failed')
+            ], 401);
+        }
         return $this->sendFailedLoginResponse($request);
     }
 

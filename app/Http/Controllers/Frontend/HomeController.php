@@ -32,6 +32,7 @@ class HomeController extends Controller
         $categories = EcProductCategory::published()
             ->parent()
             ->featured()
+            ->withCount('products')
             ->take(8)
             ->get();
 
