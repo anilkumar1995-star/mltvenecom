@@ -201,6 +201,10 @@ $(document).ready(function() {
             type: method,
             data: formData,
             dataType: 'json',
+            headers: {
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
             success: function(response) {
                 if (response.success) {
                     Swal.fire({
