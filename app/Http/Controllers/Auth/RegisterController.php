@@ -76,13 +76,25 @@ class RegisterController extends Controller
                     'kyc_url'    => $kycResult['url'],
                     'kyc_status' => 'pending',
                 ]);
+                if ($request->wantsJson()) {
+                    return response()->json(['success' => true, 'redirect' => $kycResult['url']]);
+                }
                 return redirect($kycResult['url']);
             } else {
                 Log::error('KYC Initiation Failed', ['user_id' => $user->id, 'error' => $kycResult['message']]);
+                if ($request->wantsJson()) {
+                    return response()->json([
+                        'error' => true, 
+                        'message' => 'KYC Error: ' . ($kycResult['message'] ?? 'Could not generate Digio link.')
+                    ], 400);
+                }
                 return redirect()->route('register')->with('error', 'KYC Error: ' . ($kycResult['message'] ?? 'Could not generate Digio link.'));
             }
         }
 
+        if ($request->wantsJson()) {
+            return response()->json(['success' => true, 'message' => 'Registration successful! Redirecting...', 'redirect' => $this->redirectTo]);
+        }
         return redirect($this->redirectTo);
     }
 }

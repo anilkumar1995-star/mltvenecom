@@ -8,7 +8,7 @@
     
     <!-- Fonts and Core CSS -->
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-    @vite(['resources/sass/app.scss'])
+   {{--   @vite(['resources/sass/app.scss']) --}}
     
     <!-- Essential CSS Only -->
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home/bootstrap.min.css">

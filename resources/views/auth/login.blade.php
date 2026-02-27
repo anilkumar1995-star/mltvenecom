@@ -40,7 +40,7 @@
                                 </div>
 
                                 <div class="auth-card__body">
-                                    <form method="POST" action="{{ route('login') }}">
+                                    <form method="POST" action="{{ route('login') }}" id="loginForm">
                                         @csrf
                                         <div class="mb-3 position-relative">
                                             <label class="form-label" for="email">Email</label>
@@ -107,3 +107,110 @@
         </div>
     </section>
 @endsection
+
+@push('scripts')
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script>
+$(document).ready(function() {
+    $('#loginForm').on('submit', function(e) {
+        e.preventDefault();
+        
+        var form = $(this);
+        var url = form.attr('action');
+        var method = form.attr('method');
+        var formData = form.serialize();
+        
+        // Clear previous errors
+        $('.is-invalid').removeClass('is-invalid');
+        $('.text-danger').remove();
+        $('.alert-danger').remove();
+
+        var submitBtn = form.find('button[type="submit"]');
+        var originalBtnText = submitBtn.html();
+        
+        submitBtn.html('<span class="spinner-border spinner-border-sm me-2"></span> Logging in...').attr('disabled', true);
+
+        Swal.fire({
+            title: 'Authenticating...',
+            text: 'Please wait while we verify your credentials.',
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        $.ajax({
+            url: url,
+            type: method,
+            data: formData,
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: 'Login successful!',
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        window.location.href = response.redirect || '/';
+                    });
+                } else {
+                    submitBtn.html(originalBtnText).attr('disabled', false);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: response.message || 'Login failed. Please try again.',
+                    });
+                }
+            },
+            error: function(xhr) {
+                submitBtn.html(originalBtnText).attr('disabled', false);
+                
+                if (xhr.status === 422) { // Validation errors
+                    var errors = xhr.responseJSON.errors;
+                    var errorHtml = '<div class="alert alert-danger mb-4 small"><ul class="mb-0 text-start">';
+                    
+                    $.each(errors, function(field, messages) {
+                        var inputField = $('#' + field);
+                        if (inputField.length === 0) {
+                             inputField = $('[name="' + field + '"]');
+                        }
+                        
+                        inputField.addClass('is-invalid');
+                        inputField.closest('.mb-3').append('<span class="text-danger small mt-1 d-block">' + messages[0] + '</span>');
+                        
+                        errorHtml += '<li>' + messages[0] + '</li>';
+                    });
+                    errorHtml += '</ul></div>';
+                    
+                    form.before(errorHtml);
+                    
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Validation Failed',
+                        text: 'Please check your credentials.',
+                    });
+                } else if (xhr.status === 401 || xhr.status === 403) {
+                    var msg = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : 'Invalid credentials.';
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Login Failed',
+                        text: msg,
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong. Please try again later.',
+                    });
+                }
+            }
+        });
+    });
+});
+</script>
+@endpush

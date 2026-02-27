@@ -63,6 +63,7 @@
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/core.css">
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/language.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"/>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home/announcement.css">
     <link href="{{ asset('/') }}" hreflang="x-default" rel="alternate">
@@ -354,20 +355,20 @@
     @include('frontend.layouts.footer')
 
     <script src="{{ asset('/') }}home/jquery-3.7.1.min.js"></script>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
     <script src="{{ asset('/') }}home/bootstrap.min.js"></script>
     <script src="{{ asset('/') }}home/lazyload.min.js"></script>
     <script src="{{ asset('/') }}home/swiper-bundle.js"></script>
     <script src="{{ asset('/') }}home/owl.carousel.js"></script>
     <script src="{{ asset('/') }}home/slick.min.js"></script>
+    <script src="{{ asset('/') }}home/meanmenu.js"></script>
     <script src="{{ asset('/') }}home/theme.js"></script>
     <script src="{{ asset('/') }}home/front-ecommerce.js"></script>
     <script src="{{ asset('/') }}home/ecommerce.js"></script>
-    <script src="{{ asset('/') }}home/meanmenu.js"></script>
 
     @include('frontend.partials.mini-cart')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/shopify-cartjs/1.1.0/cart.min.js"></script>    @stack('scripts')
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/shopify-cartjs/1.1.0/cart.min.js"></script>     -->
+@stack('scripts')
     <script>
         window.themeOptions = {
             ecommerce_auto_open_mini_cart: 'yes',
