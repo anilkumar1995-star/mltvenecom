@@ -240,119 +240,117 @@
                             </div>
 
                             <div class="card has-actions has-filter">
-                                <div class="card-header">
-                                    <div class="w-100 justify-content-between d-flex flex-wrap align-items-center gap-1">
-                                        <div class="d-flex flex-wrap flex-md-nowrap align-items-center gap-1">
-                                            <div class="dropdown d-inline-block">
-                                                <button
+                            <div class="card-header">
+                               <div class="w-100 justify-content-between d-flex flex-wrap align-items-center gap-1">
+                                <div class="d-flex flex-wrap flex-md-nowrap align-items-center gap-1">
+                                    <div class="dropdown d-inline-block">
+                                          <button
                                                     class="btn   dropdown-toggle" type="button" data-bs-toggle="dropdown">
 
                                                     Bulk Actions
 
                                                 </button>
 
+                                        <div class="dropdown-menu">
+                                            <div class="dropdown-submenu">
+                                                <button class="dropdown-item">
+
+                                                    Bulk changes
+
+                                                    <svg class="icon dropdown-item-icon ms-auto me-0 svg-icon-ti-ti-chevron-right"
+                                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path d="M9 6l6 6l-6 6" />
+                                                    </svg> </button>
                                                 <div class="dropdown-menu">
-                                                    <div class="dropdown-submenu">
-                                                        <button class="dropdown-item">
+                                                    <button class="dropdown-item bulk-change-item" data-key="category"
+                                                        data-class-item="Botble\Ecommerce\Tables\ProductTable"
+                                                        data-save-url="https://shofy-grocery.botble.com/admin/tables/bulk-changes/save">
 
-                                                            Bulk changes
+                                                        Category
 
-                                                            <svg class="icon dropdown-item-icon ms-auto me-0 svg-icon-ti-ti-chevron-right"
-                                                                xmlns="http://www.w3.org/2000/svg"
-                                                                width="24"
-                                                                height="24"
-                                                                viewBox="0 0 24 24"
-                                                                fill="none"
-                                                                stroke="currentColor"
-                                                                stroke-width="2"
-                                                                stroke-linecap="round"
-                                                                stroke-linejoin="round">
-                                                                <path d="M9 6l6 6l-6 6" />
-                                                            </svg> </button>
-                                                        <div class="dropdown-menu">
-                                                            <button class="dropdown-item bulk-change-item" data-key="name" data-class-item="Botble\Marketplace\Tables\StoreTable" data-save-url="https://shofy-grocery.botble.com/admin/tables/bulk-changes/save">
+                                                    </button>
+                                                    <button class="dropdown-item bulk-change-item" data-key="brand_id"
+                                                        data-class-item="Botble\Ecommerce\Tables\ProductTable"
+                                                        data-save-url="https://shofy-grocery.botble.com/admin/tables/bulk-changes/save">
 
-                                                                Name
+                                                        Brand
 
-                                                            </button>
-                                                            <button class="dropdown-item bulk-change-item" data-key="status" data-class-item="Botble\Marketplace\Tables\StoreTable" data-save-url="https://shofy-grocery.botble.com/admin/tables/bulk-changes/save">
+                                                    </button>
+                                                    <button class="dropdown-item bulk-change-item" data-key="name"
+                                                        data-class-item="Botble\Ecommerce\Tables\ProductTable"
+                                                        data-save-url="https://shofy-grocery.botble.com/admin/tables/bulk-changes/save">
 
-                                                                Status
+                                                        Name
 
-                                                            </button>
-                                                            <button class="dropdown-item bulk-change-item" data-key="is_verified" data-class-item="Botble\Marketplace\Tables\StoreTable" data-save-url="https://shofy-grocery.botble.com/admin/tables/bulk-changes/save">
+                                                    </button>
+                                                    <button class="dropdown-item bulk-change-item" data-key="order"
+                                                        data-class-item="Botble\Ecommerce\Tables\ProductTable"
+                                                        data-save-url="https://shofy-grocery.botble.com/admin/tables/bulk-changes/save">
 
-                                                                Verified Store
+                                                        Sort order
 
-                                                            </button>
-                                                            <button class="dropdown-item bulk-change-item" data-key="created_at" data-class-item="Botble\Marketplace\Tables\StoreTable" data-save-url="https://shofy-grocery.botble.com/admin/tables/bulk-changes/save">
+                                                    </button>
+                                                    <button class="dropdown-item bulk-change-item" data-key="status"
+                                                        data-class-item="Botble\Ecommerce\Tables\ProductTable"
+                                                        data-save-url="https://shofy-grocery.botble.com/admin/tables/bulk-changes/save">
 
-                                                                Created At
+                                                        Status
 
-                                                            </button>
-                                                        </div>
-                                                    </div>
+                                                    </button>
+                                                    <button class="dropdown-item bulk-change-item" data-key="stock_status"
+                                                        data-class-item="Botble\Ecommerce\Tables\ProductTable"
+                                                        data-save-url="https://shofy-grocery.botble.com/admin/tables/bulk-changes/save">
 
-                                                    <a class="dropdown-item" href="https://shofy-grocery.botble.com/admin/tables/bulk-actions" data-trigger-bulk-action="data-trigger-bulk-action" data-method="POST" data-table-target="Botble\Marketplace\Tables\StoreTable" data-target="Botble\Table\BulkActions\DeleteBulkAction" data-confirmation-modal-title="Confirm to perform this action" data-confirmation-modal-message="Are you sure you want to do this action? This cannot be undone." data-confirmation-modal-button="Delete" data-confirmation-modal-cancel-button="Cancel">
+                                                        Stock status
 
-                                                        Delete
+                                                    </button>
+                                                    <button class="dropdown-item bulk-change-item" data-key="created_at"
+                                                        data-class-item="Botble\Ecommerce\Tables\ProductTable"
+                                                        data-save-url="https://shofy-grocery.botble.com/admin/tables/bulk-changes/save">
 
-                                                    </a>
+                                                        Created At
+
+                                                    </button>
+                                                    <button class="dropdown-item bulk-change-item" data-key="is_featured"
+                                                        data-class-item="Botble\Ecommerce\Tables\ProductTable"
+                                                        data-save-url="https://shofy-grocery.botble.com/admin/tables/bulk-changes/save">
+
+                                                        Is featured?
+
+                                                    </button>
                                                 </div>
                                             </div>
 
-                                            <button
-                                                class="btn   btn-show-table-options" type="button">
+                                            <a class="dropdown-item"
+                                                href="https://shofy-grocery.botble.com/admin/tables/bulk-actions"
+                                                data-trigger-bulk-action="data-trigger-bulk-action" data-method="POST"
+                                                data-table-target="Botble\Ecommerce\Tables\ProductTable"
+                                                data-target="Botble\Table\BulkActions\DeleteBulkAction"
+                                                data-confirmation-modal-title="Confirm to perform this action"
+                                                data-confirmation-modal-message="Are you sure you want to do this action? This cannot be undone."
+                                                data-confirmation-modal-button="Delete"
+                                                data-confirmation-modal-cancel-button="Cancel">
 
-                                                Filters
+                                                Delete
 
-                                            </button>
-
-                                            <div class="input-group">
-                                                <input
-                                                    type="search"
-                                                    class="form-control input-sm"
-                                                    placeholder="Search..."
-                                                    style="min-width: 120px">
-                                                <button
-                                                    type="button"
-                                                    title="Search..."
-                                                    class="btn btn-icon btn-outline-secondary search-icon">
-                                                    <svg class="icon svg-icon-ti-ti-search"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        width="24"
-                                                        height="24"
-                                                        viewBox="0 0 24 24"
-                                                        fill="none"
-                                                        stroke="currentColor"
-                                                        stroke-width="2"
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round">
-                                                        <path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
-                                                        <path d="M21 21l-6 -6" />
-                                                    </svg>
-                                                </button>
-                                                <button
-                                                    type="button"
-                                                    title="Clear"
-                                                    class="btn btn-icon btn-outline-secondary search-reset-icon">
-                                                    <svg class="icon svg-icon-ti-ti-x"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        width="24"
-                                                        height="24"
-                                                        viewBox="0 0 24 24"
-                                                        fill="none"
-                                                        stroke="currentColor"
-                                                        stroke-width="2"
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round">
-                                                        <path d="M18 6l-12 12" />
-                                                        <path d="M6 6l12 12" />
-                                                    </svg>
-                                                </button>
-                                            </div>
+                                            </a>
                                         </div>
-                                        <div
+                                    </div>
+
+                                    <button class="btn   btn-show-table-options" type="button">
+                                        Filters
+                                    </button>
+
+                                    <div class="table-search-input">
+                                        <label>
+                                            <input type="search" class="form-control input-sm" placeholder="Search..."
+                                                style="min-width: 120px">
+                                        </label>
+                                    </div>
+                                </div>
+                                <div
                                             class="d-flex flex-column flex-sm-row align-items-stretch align-items-sm-center gap-1 table-action-buttons">
                                            <a href="{{ route('admin.marketplace.store.create') }}"
                                                 class="btn action-item btn-primary">
@@ -386,8 +384,8 @@
 
                                             </button>
                                         </div>
-                                    </div>
-                                </div>
+                            </div>
+                        </div>
 
                                 <div class="card-table">
                                     <div class="table-responsive table-has-actions table-has-filter">
@@ -465,6 +463,7 @@
 
                     </div>
                 </main>
+            </div>
 
 @endsection
 @push('scripts')

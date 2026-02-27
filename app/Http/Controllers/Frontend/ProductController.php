@@ -91,20 +91,36 @@ class ProductController extends Controller
         return view('frontend.products.show', compact('product', 'related_products'));
     }
 
-    public function category($slug)
+    public function category(Request $request, $slug)
     {
         $category = EcProductCategory::published()
             ->where('slug', $slug)
             ->firstOrFail();
 
-        $products = EcProduct::published()
+        $query = EcProduct::published()
             ->whereHas('categories', function ($q) use ($category) {
                 $q->where('ec_product_categories.id', $category->id);
             })
-            ->with(['brand', 'categories'])
-            ->paginate(12);
+            ->with(['brand', 'categories']);
 
-        return view('frontend.products.category', compact('category', 'products'));
+        // filter by brand
+        if ($request->has('brands') && is_array($request->brands)) {
+            $query->whereIn('brand_id', $request->brands);
+        }
+
+        $products = $query->paginate(12)->appends($request->all());
+
+        $brandIds = EcProduct::published()
+            ->whereHas('categories', function ($q) use ($category) {
+                $q->where('ec_product_categories.id', $category->id);
+            })
+            ->pluck('brand_id')
+            ->unique()
+            ->filter();
+            
+        $brands = EcBrand::whereIn('id', $brandIds)->get();
+
+        return view('frontend.products.category', compact('category', 'products', 'brands'));
     }
 
     public function brand($slug)
