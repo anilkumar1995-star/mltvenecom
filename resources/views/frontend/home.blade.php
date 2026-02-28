@@ -1,6 +1,141 @@
 @extends('frontend.layouts.app')
 @section('title', 'Home')
 @section('content')
+
+@push('styles')
+<style>
+/* Custom Product Card Hover Effects & Clean Design */
+.tp-product-item-2 {
+    transition: all 0.3s ease-in-out !important;
+    border-radius: 12px !important;
+    background: #fff !important;
+    padding-bottom: 20px !important;
+    position: relative !important;
+    border: 1px solid #f1f1f1 !important;
+}
+.tp-product-item-2:hover {
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08) !important;
+    transform: translateY(-5px) !important;
+    border-color: #e5e5e5 !important;
+}
+.tp-product-thumb-2 {
+    overflow: hidden !important;
+    border-radius: 12px 12px 0 0 !important;
+    position: relative !important;
+}
+.tp-product-thumb-2 img {
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1) !important;
+    width: 100% !important;
+    object-fit: cover !important;
+}
+.tp-product-item-2:hover .tp-product-thumb-2 img {
+    transform: scale(1.08) !important;
+}
+.tp-product-action-2 {
+    position: absolute !important;
+    right: 15px !important;
+    top: 15px !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transform: translateX(15px) !important;
+    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1) !important;
+    z-index: 9 !important;
+}
+.tp-product-item-2:hover .tp-product-action-2 {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateX(0) !important;
+}
+.tp-product-action-btn-2 {
+    background-color: #fff !important;
+    color: #444 !important;
+    border: none !important;
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-bottom: 8px !important;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1) !important;
+    transition: all 0.3s ease !important;
+}
+.tp-product-action-btn-2:hover {
+    background-color: var(--primary-color, #678E61) !important;
+    color: #fff !important;
+    transform: scale(1.1) !important;
+}
+.tp-product-action-btn-2 i {
+    font-size: 16px !important;
+}
+.tp-product-content-2 {
+    padding: 0 20px !important;
+    margin-top: 15px !important;
+}
+.tp-product-title-2 {
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    margin-bottom: 5px !important;
+}
+.tp-product-title-2 a {
+    color: #222 !important;
+    transition: color 0.3s ease !important;
+}
+.tp-product-title-2 a:hover {
+    color: var(--primary-color, #678E61) !important;
+}
+.tp-product-price-2.new-price {
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    color: var(--primary-color, #678E61) !important;
+}
+.tp-product-price-2.old-price {
+    font-size: 14px !important;
+    color: #999 !important;
+    text-decoration: line-through !important;
+    margin-left: 8px !important;
+}
+.tp-product-rating-icon-2 span {
+    color: #ffb21d !important;
+    font-size: 12px !important;
+}
+.tp-category-item-5 {
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    transition: all 0.3s ease !important;
+}
+.tp-category-item-5:hover {
+    transform: translateY(-5px) !important;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.06) !important;
+}
+.tp-category-thumb-5 {
+    transition: transform 0.5s ease !important;
+}
+.tp-category-item-5:hover .tp-category-thumb-5 {
+    transform: scale(1.05) !important;
+}
+.tp-slider-title-5 {
+    font-weight: 800 !important;
+    font-size: 56px !important;
+    line-height: 1.1 !important;
+    color: #111 !important;
+    margin-bottom: 25px !important;
+}
+.tp-btn-green {
+    background-color: var(--primary-color, #678E61) !important;
+    color: #fff !important;
+    padding: 12px 30px !important;
+    border-radius: 5px !important;
+    font-weight: 600 !important;
+    transition: all 0.3s ease !important;
+    display: inline-block !important;
+}
+.tp-btn-green:hover {
+    background-color: #222 !important;
+    color: #fff !important;
+}
+</style>
+@endpush
     <section data-block-id="simple-slider" class="tp-slider-area p-relative z-index-1 fix">
         <div class="tp-slider-active-5 owl-carousel" data-owl-auto="true" data-owl-loop="true" data-owl-speed="5000"
             data-owl-gap="0" data-owl-nav="false" data-owl-dots="false" data-owl-item="1" data-owl-item-xs="1"
@@ -9,9 +144,9 @@
             <div class="tp-slider-item-5 scene tp-slider-height-5 d-flex align-items-center"
                 style="background-color: #F3F3F3;">
                 <div class="tp-slider-shape-5">
-                    <div class="tp-slider-shape-5-1"><img src="{{ asset('home-dashboard-files/shape-1.png') }}"
+                    <div class="tp-slider-shape-5-1"><img src="{{ asset('home/shape-1.png') }}"
                             class="layer" data-depth="0.2" alt="shape"></div>
-                    <div class="tp-slider-shape-5-2"><img src="{{ asset('home-dashboard-files/shape-2.png') }}"
+                    <div class="tp-slider-shape-5-2"><img src="{{ asset('home/shape-2.png') }}"
                             class="layer" data-depth="0.2" alt="shape"></div>
                 </div>
                 <div class="container">
@@ -27,7 +162,7 @@
                         <div class="col-xxl-5 col-xl-5 col-lg-6">
                             <div class="tp-slider-thumb-wrapper-5 p-relative">
                                 <div class="tp-slider-thumb-5 main-img">
-                                    <img src="{{ asset('home-dashboard-files/slider-1.png') }}" alt="slider">
+                                    <img src="{{ asset('home/slider-1.png') }}" alt="slider">
                                     <span class="tp-slider-thumb-5-gradient"></span>
                                 </div>
                             </div>
@@ -51,7 +186,7 @@
                             <div class="tp-category-item-5 p-relative z-index-1 fix mb-30">
                                 <a href="{{ route('frontend.categories.show', $category->slug) }}">
                                     <div class="tp-category-thumb-5 include-bg"
-                                        style="background-image: url({{ $category->image ? asset('uploads/' . $category->image) : asset('home-dashboard-files/placeholder.png') }});">
+                                        style="background-image: url({{ $category->image ? asset('uploads/' . $category->image) : asset('home/placeholder.png') }});">
                                     </div>
                                     <div class="tp-category-content-5">
                                         <h3 class="tp-category-title-5">{{ $category->name }}</h3>

@@ -44,7 +44,7 @@
             </div>
             <div class="collapse navbar-collapse" id="sidebar-menu">
                 <ul class="navbar-nav">
-                    <li class="nav-item active"><a class="nav-link nav-priority--9999 active show" href="{{ url("/")
+                    <li class="nav-item"><a class="nav-link nav-priority--9999" href="{{ url("/")
                             }}/admin" id="cms-core-dashboard" title="Dashboard"><span
                                 class="nav-link-icon d-md-none d-lg-inline-block" title="Dashboard"><svg
                                     class="icon svg-icon-ti-ti-home" xmlns="http://www.w3.org/2000/svg" width="24"
@@ -1498,3 +1498,61 @@
             </div>
         </div>
     </aside>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let currentUrl = window.location.href.split('?')[0];
+            let sidebar = document.getElementById('sidebar-menu-main');
+            if(!sidebar) return;
+
+            sidebar.querySelectorAll('.active').forEach(el => el.classList.remove('active'));
+            sidebar.querySelectorAll('.show').forEach(el => el.classList.remove('show'));
+
+            let links = sidebar.querySelectorAll('a.dropdown-item, a.nav-link');
+            let matchedLink = null;
+            let maxLength = 0;
+
+            links.forEach(function (link) {
+                let linkUrl = link.href.split('?')[0].split('#')[0];
+                if (linkUrl && linkUrl !== 'javascript:void(0)' && linkUrl !== '#' && currentUrl.startsWith(linkUrl)) {
+                    // Prevent catching the root '/admin' for all pages
+                    let isRootAdmin = linkUrl.endsWith('/admin') || linkUrl.endsWith('/admin/');
+                    if (isRootAdmin && currentUrl !== linkUrl && currentUrl !== linkUrl + '/') {
+                        return; // Skip root dashboard catch-all
+                    }
+
+                    if (currentUrl === linkUrl || currentUrl.charAt(linkUrl.length) === '/') {
+                        if (linkUrl.length > maxLength) {
+                            matchedLink = link;
+                            maxLength = linkUrl.length;
+                        }
+                    }
+                }
+            });
+
+            if (matchedLink) {
+                matchedLink.classList.add('active');
+                
+                let parentDropdown = matchedLink.closest('.dropdown-menu');
+                if (parentDropdown) {
+                    parentDropdown.classList.add('show');
+                    
+                    let toggleItem = parentDropdown.previousElementSibling;
+                    if (toggleItem && toggleItem.classList.contains('dropdown-toggle')) {
+                        toggleItem.classList.add('show');
+                        toggleItem.setAttribute('aria-expanded', 'true');
+                    }
+                    
+                    let parentNavItem = matchedLink.closest('.nav-item.dropdown');
+                    if (parentNavItem) {
+                        parentNavItem.classList.add('active');
+                    }
+                } else {
+                    let parentNavItem = matchedLink.closest('.nav-item');
+                    if (parentNavItem) {
+                        parentNavItem.classList.add('active');
+                    }
+                }
+            }
+        });
+    </script>

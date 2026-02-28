@@ -47,6 +47,16 @@ class EcProductCategory extends Model
         );
     }
 
+    public function products()
+    {
+        return $this->belongsToMany(
+            EcProduct::class,
+            'ec_product_category_product',
+            'category_id',
+            'product_id'
+        );
+    }
+
 
     public function scopePublished(Builder $query)
     {

@@ -440,7 +440,7 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    @if($messages->hasPages())
+                                    @if(is_object($messages) && method_exists($messages, 'hasPages') && $messages->hasPages())
                                         <div class="card-footer d-flex align-items-center">
                                             {{ $messages->withQueryString()->links('pagination::bootstrap-5') }}
                                         </div>

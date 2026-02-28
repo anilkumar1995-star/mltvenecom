@@ -306,7 +306,7 @@
                                             @if($item->product && $item->product->image)
                                                 <img src="{{ asset('uploads/' . $item->product->image) }}" alt="{{ $item->product->name }}" width="50">
                                             @else
-                                                <img src="{{ asset('home-dashboard-files/placeholder.png') }}" alt="Placeholder" width="50">
+                                                <img src="{{ asset('home/placeholder.png') }}" alt="Placeholder" width="50">
                                             @endif
                                         </td>
                                         <td>

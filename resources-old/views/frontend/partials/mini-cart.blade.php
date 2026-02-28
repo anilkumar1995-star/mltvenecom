@@ -25,7 +25,7 @@
                                     @if(isset($item['image']))
                                         <img src="{{ asset('storage/' . $item['image']) }}" alt="{{ $item['name'] }}">
                                     @else
-                                        <img src="{{ asset('home-dashboard-files/product-1.jpg') }}" alt="{{ $item['name'] }}">
+                                        <img src="{{ asset('home/product-1.jpg') }}" alt="{{ $item['name'] }}">
                                     @endif
                                 </a>
                             </div>

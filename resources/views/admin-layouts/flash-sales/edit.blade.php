@@ -62,10 +62,10 @@
                                                data-id="{{ $product->id }}" 
                                                data-name="{{ $product->name }}" 
                                                data-price="{{ $product->price }}"
-                                               data-image="{{ $product->image ? asset('uploads/' . $product->image) : asset('home-dashboard-files/placeholder.png') }}"
+                                               data-image="{{ $product->image ? asset('uploads/' . $product->image) : asset('home/placeholder.png') }}"
                                                style="display: none;">
                                                 <div class="d-flex align-items-center">
-                                                    <img src="{{ $product->image ? asset('uploads/' . $product->image) : asset('home-dashboard-files/placeholder.png') }}" alt="{{ $product->name }}" width="30" class="me-2">
+                                                    <img src="{{ $product->image ? asset('uploads/' . $product->image) : asset('home/placeholder.png') }}" alt="{{ $product->name }}" width="30" class="me-2">
                                                     <span>{{ $product->name }}</span>
                                                 </div>
                                             </a>
@@ -79,7 +79,7 @@
                                         @foreach($flashSale->products as $product)
                                         <div class="list-group-item product-item" data-id="{{ $product->id }}">
                                             <div class="d-flex align-items-center mb-2">
-                                                <img src="{{ $product->image ? asset('uploads/' . $product->image) : asset('home-dashboard-files/placeholder.png') }}" alt="{{ $product->name }}" width="40" class="me-3 rounded">
+                                                <img src="{{ $product->image ? asset('uploads/' . $product->image) : asset('home/placeholder.png') }}" alt="{{ $product->name }}" width="40" class="me-3 rounded">
                                                 <div>
                                                     <a href="#" target="_blank" class="fw-bold text-dark">{{ $product->name }}</a>
                                                 </div>

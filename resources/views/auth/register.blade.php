@@ -159,11 +159,26 @@ $(document).ready(function() {
         });
     }
 
-    // Standard Form Submit with SweetAlert Loader
-    $('#registerForm').on('submit', function() {
+    // AJAX Form Submit with SweetAlert Loader and Validation
+    $('#registerForm').on('submit', function(e) {
+        e.preventDefault(); // Prevent default submission
+        
+        var form = $(this);
+        var url = form.attr('action');
+        var method = form.attr('method');
+        var formData = form.serialize();
+        
         var isVendor = $('input[name="type"]:checked').val() === 'vendor';
 
+        // Clear previous error messages
+        $('.is-invalid').removeClass('is-invalid');
+        $('.invalid-feedback').remove();
+        
+        // Remove error summary alert if exists
+        $('.alert-danger').remove();
+
         // Disable button with spinner
+        var originalBtnText = $('#registerBtn').text();
         $('#registerBtn')
             .html('<span class="spinner-border spinner-border-sm me-1"></span> Processing...')
             .attr('disabled', true);
@@ -181,7 +196,83 @@ $(document).ready(function() {
             }
         });
         
-        return true; // Allow form to submit normally
+        $.ajax({
+            url: url,
+            type: method,
+            data: formData,
+            dataType: 'json',
+            headers: {
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            success: function(response) {
+                if (response.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: response.message || 'Registration successful!',
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        window.location.href = response.redirect || '/';
+                    });
+                } else {
+                    $('#registerBtn').html(originalBtnText).attr('disabled', false);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: response.message || 'Something went wrong. Please try again.',
+                    });
+                }
+            },
+            error: function(xhr) {
+                $('#registerBtn').html(originalBtnText).attr('disabled', false);
+                
+                if (xhr.status === 422) {
+                    // Validation errors
+                    var errors = xhr.responseJSON.errors;
+                    var errorHtml = '<div class="alert alert-danger mb-4 small"><ul class="mb-0 text-start">';
+                    
+                    $.each(errors, function(field, messages) {
+                        var inputField = $('#' + field);
+                        if (inputField.length === 0) {
+                             inputField = $('[name="' + field + '"]');
+                        }
+                        
+                        if (field === 'shop_name' || field === 'mobile' || field === 'pan_number' || field === 'aadhar_number') {
+                             if(isVendor) {
+                                 inputField.addClass('is-invalid');
+                                 inputField.after('<div class="invalid-feedback">' + messages[0] + '</div>');
+                             }
+                        } else {
+                             inputField.addClass('is-invalid');
+                             inputField.after('<div class="invalid-feedback">' + messages[0] + '</div>');
+                        }
+                        
+                        errorHtml += '<li>' + messages[0] + '</li>';
+                    });
+                    errorHtml += '</ul></div>';
+                    
+                    // Add summary error on top of form
+                    $('#registerForm').before(errorHtml);
+                    
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Validation Failed',
+                        text: 'Please check the form for errors.',
+                    });
+                    
+                } else {
+                    // General error
+                    var msg = xhr.responseJSON ? xhr.responseJSON.message : 'Something went wrong.';
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: msg,
+                    });
+                }
+            }
+        });
     });
 });
 </script>

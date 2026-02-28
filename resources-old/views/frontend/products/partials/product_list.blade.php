@@ -4,9 +4,9 @@
         <div class="product-card">
             <div class="position-relative">
                 @if($product->image)
-                    <img src="{{ asset($product->image) }}" alt="{{ $product->name }}" class="product-image">
+                    <img src="{{ asset('uploads/' . $product->image) }}" alt="{{ $product->name }}" class="product-image">
                 @else
-                    <img src="https://via.placeholder.com/300x250" alt="{{ $product->name }}" class="product-image">
+                    <img src="{{ asset('uploads/products/no-img.png') }}" alt="{{ $product->name }}" class="product-image">
                 @endif
                 
                 @if($product->isOnSale())

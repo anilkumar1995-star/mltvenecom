@@ -684,8 +684,14 @@
 
     @include('admin-layouts.header')
     @include('admin-layouts.sidebar')
-    @yield('content')
-    @include('admin-layouts.footer')
+    
+    <div class="d-flex flex-column w-100" style="min-width: 0;">
+        @yield('content')
+        @include('admin-layouts.footer')
+    </div>
+
+    </div> <!-- Closes .d-block.d-lg-flex (from sidebar) -->
+    </div> <!-- Closes #app (from header) -->
 
     <script src="{{ asset('js/notification.js') }}"></script>
     <script src="https://shofy-grocery.botble.com/vendor/core/core/base/js/core-ui.js?v=1.4.4"></script>
