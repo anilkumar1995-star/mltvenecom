@@ -111,7 +111,7 @@
                                             @csrf
                                             <input type="hidden" name="product_id" value="{{ $product->id }}">
                                             
-                                            <span class="tp-cart-minus d-flex align-items-center justify-content-center" style="cursor:pointer; width:30px; height:100%; color: #010F1C;" onclick="var input = this.nextElementSibling; if(input.value > 1) { input.value--; this.closest('form').submit(); }">
+                                            <span class="tp-cart-minus d-flex align-items-center justify-content-center" style="cursor:pointer; width:30px; height:100%; color: #010F1C;" onclick="var input = this.nextElementSibling; if(parseInt(input.value) <= 1) { document.getElementById('remove-product-{{ $product->id }}').submit(); } else { input.value--; this.closest('form').submit(); }">
                                                 <svg width="10" height="2" viewBox="0 0 10 2" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <path d="M1 1H9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                                 </svg>
@@ -125,6 +125,10 @@
                                                     <path d="M1 5H9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                                 </svg>
                                             </span>
+                                        </form>
+                                        <form id="remove-product-{{ $product->id }}" action="{{ route('frontend.cart.remove', $product->id) }}" method="POST" style="display:none;">
+                                            @csrf
+                                            @method('DELETE')
                                         </form>
                                     </div>
                                 @else

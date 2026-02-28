@@ -98,19 +98,19 @@
                             <div class="col-md-12">
                                 <div class="checkout-form-list">
                                     <label>Full Name <span class="required">*</span></label>
-                                    <input type="text" name="address[name]" placeholder="Enter your full name" required value="{{ auth('customer')->user()->name ?? '' }}">
+                                    <input type="text" name="address[name]" placeholder="Enter your full name" required value="{{ auth('customer')->user()->name ?? (auth('web')->user()->name ?? '') }}">
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="checkout-form-list">
                                     <label>Email <span class="required">*</span></label>
-                                    <input type="email" name="address[email]" placeholder="Enter your email" required value="{{ auth('customer')->user()->email ?? '' }}">
+                                    <input type="email" name="address[email]" placeholder="Enter your email" required value="{{ auth('customer')->user()->email ?? (auth('web')->user()->email ?? '') }}">
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="checkout-form-list">
                                     <label>Phone number</label>
-                                    <input type="tel" name="address[phone_display]" placeholder="Enter phone number" value="{{ auth('customer')->user()->phone ?? '' }}">
+                                    <input type="tel" name="address[phone_display]" placeholder="Enter phone number" value="{{ auth('customer')->user()->phone ?? (auth('web')->user()->phone ?? '') }}">
                                 </div>
                             </div>
                             
@@ -149,7 +149,7 @@
                             </div>
 
                             <!-- Create Account Checkbox -->
-                            @if(!auth('customer')->check())
+                            @if(!auth('customer')->check() && !auth('web')->check())
                             <div class="col-md-12">
                                 <div class="checkout-form-list create-acc-checkbox">
                                     <input id="create_account" type="checkbox" name="create_account">
@@ -367,8 +367,9 @@
                                 </div>
                             </div>
                             
+                            <input type="hidden" name="payment_method" id="payment_method_input" value="bank_transfer">
                             <div class="place-order-btn">
-                                <button type="submit" class="tp-btn">Place Order</button>
+                                <button type="submit" class="tp-btn" id="place-order-btn">Place Order</button>
                             </div>
                         </div>
                     </div>
@@ -407,6 +408,26 @@
             } else {
                 $('#tax_information_box').slideUp();
             }
+        });
+
+        // Payment Method Selection
+        var paymentMethods = {
+            'bankOne': 'bank_transfer',
+            'bankTwo': 'cod',
+            'bankThree': 'paypal'
+        };
+        $('.payment-accordion .accordion-button').on('click', function() {
+            var target = $(this).data('bs-target').replace('#', '');
+            if (paymentMethods[target]) {
+                $('#payment_method_input').val(paymentMethods[target]);
+            }
+        });
+
+        // Place Order - loading state
+        $('form').on('submit', function() {
+            var btn = $('#place-order-btn');
+            btn.prop('disabled', true);
+            btn.html('<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Processing...');
         });
     });
 </script>

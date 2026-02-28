@@ -144,6 +144,26 @@ class EcProduct extends Model
         return $this->faqs();
     }
 
+    public function productCollections(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            ProductCollection::class,
+            'ec_product_collection_products',
+            'product_id',
+            'product_collection_id'
+        );
+    }
+
+    public function productLabels(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            ProductLabel::class,
+            'ec_product_label_products',
+            'product_id',
+            'product_label_id'
+        );
+    }
+
     public function reviews(): HasMany
     {
         return $this->hasMany(Review::class, 'product_id');

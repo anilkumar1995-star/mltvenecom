@@ -34,21 +34,25 @@
                         @endif
 
                         @if ($showUserMenu && is_plugin_active('ecommerce'))
-                            @auth('customer')
+                            @php
+                                $isLoggedIn = auth('customer')->check() || auth('web')->check();
+                                $user = auth('customer')->user() ?: auth('web')->user();
+                            @endphp
+                            @if ($isLoggedIn)
                                 <div class="tp-header-top-menu-item tp-header-setting">
                                     <span class="tp-header-setting-toggle" id="tp-header-setting-toggle">
-                                        {{ auth('customer')->user()->name }}
+                                        {{ $user->name }}
                                         <x-core::icon name="ti ti-chevron-down" />
                                     </span>
                                     <ul>
                                         <li>
-                                            <a href="{{ route('customer.overview') }}">{{ __('My Profile') }}</a>
+                                            <a href="{{ auth('web')->check() ? $user->url : route('customer.overview') }}"><x-core::icon name="ti ti-user" /> {{ __('My Profile') }}</a>
                                         </li>
                                         <li>
-                                            <a href="{{ route('customer.orders') }}">{{ __('Orders') }}</a>
+                                            <a href="{{ route('customer.orders') }}"><x-core::icon name="ti ti-package" /> {{ __('Orders') }}</a>
                                         </li>
                                         <li>
-                                            <a href="{{ route('customer.logout') }}">{{ __('Logout') }}</a>
+                                            <a href="{{ auth('web')->check() ? route('access.logout') : route('customer.logout') }}"><x-core::icon name="ti ti-logout" /> {{ __('Logout') }}</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -61,7 +65,7 @@
                                     <a href="{{ route('customer.register') }}">{{ __('Register') }}</a>
                                 </div>
                                 @endif
-                            @endauth
+                            @endif
                         @endif
                     </div>
                 </div>

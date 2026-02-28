@@ -30,22 +30,23 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xxl-4 col-xl-6 d-none d-xl-block">
+                    <div class="col-xxl-6 col-xl-5 d-none d-xl-block">
                         <div class="main-menu">
                             <nav class="tp-main-menu-content">
                                 <ul>
                                     <li class="has-dropdown">
                                         <a href="{{ asset('/') }}" title="Home">
                                             Home
-                                            <svg class="icon svg-icon-ti-ti-chevron-down"
+                                            <!-- <svg class="icon svg-icon-ti-ti-chevron-down"
                                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                 stroke-width="2" stroke-linecap="round"
                                                 stroke-linejoin="round">
                                                 <path d="M6 9l6 6l6 -6"></path>
-                                            </svg> </a>
+                                            </svg>  -->
+                                        </a>
 
-                                        <ul class="tp-submenu">
+                                       <!-- <ul class="tp-submenu">
                                             <li class="">
                                                 <a href="#" title="Electronics">
                                                     Electronics
@@ -71,7 +72,7 @@
                                                     Grocery
                                                 </a>
                                             </li>
-                                        </ul>
+                                        </ul>  -->
                                     </li>
                                     <li class="has-dropdown">
                                         <a href="{{ asset('/') }}" title="Shop">
@@ -230,7 +231,7 @@
                             </nav>
                         </div>
                     </div>
-                    <div class="col-xxl-4 d-none d-xxl-block">
+                    <div class="d-none">
                         <div class="tp-header-search-5">
                             <form role="search" action="{{ asset('/') }}products"
                                 method="GET">
@@ -261,7 +262,7 @@
                         </div>
                     </div>
 
-                    <div class="col-xxl-2 col-xl-3 col-6">
+                    <div class="col-xxl-4 col-xl-4 col-6">
                         <div class="tp-header-right-5 d-flex align-items-center justify-content-end">
                             <div class="tp-header-login-5 d-none d-lg-block">
                                 <div class="d-flex align-items-center">
@@ -280,46 +281,35 @@
                                             </svg>
                                         </span>
                                     </div>
-                                    <div class="tp-header-login-5 d-none d-lg-block">
-                                        @if(auth('web')->check())
-                                            @php $user = auth('web')->user(); @endphp
-                                            <div class="d-flex align-items-center me-2">
-                                                <div class="tp-header-login-content-5">
-                                                    @if($user->role === 'admin')
-                                                        <a href="{{ route('home') }}">Dashboard (Admin)</a>
-                                                        <span class="mx-2">|</span>
-                                                        <a href="{{ route('admin.logout') }}" onclick="event.preventDefault(); document.getElementById('admin-logout-form').submit();">Logout</a>
-                                                        <form id="admin-logout-form" action="{{ route('admin.logout') }}" method="POST" class="d-none">@csrf</form>
-                                                    @else
-                                                        {{-- Vendor and Standard User both go to Customer Dashboard as requested --}}
-                                                        <a href="{{ route('frontend.customer.dashboard') }}">My Dashboard</a>
-                                                        <span class="mx-2">|</span>
-                                                        <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
-                                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">@csrf</form>
-                                                    @endif
-                                                </div>
-                                            </div>
-                                        @elseif(auth('customer')->check())
-                                            <div class="d-flex align-items-center me-2">
-                                                <div class="tp-header-login-content-5">
-                                                    <a href="{{ route('frontend.customer.dashboard') }}">My Dashboard</a>
-                                                    <span class="mx-2">|</span>
-                                                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
-                                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">@csrf</form>
-                                                </div>
+                                    <div class="tp-header-login-5 d-none d-lg-block ms-2">
+                                        @php
+                                            $isLogged = auth('web')->check() || auth('customer')->check();
+                                            $currentUser = auth('web')->user() ?? auth('customer')->user();
+                                        @endphp
+
+                                        @if($isLogged)
+                                            <div class="d-flex align-items-center">
+                                                <a href="{{ (auth('web')->check() && $currentUser->role === 'admin') ? route('home') : route('frontend.customer.dashboard') }}" class="text-decoration-none text-start">
+                                                    <div style="line-height: 1.2;">
+                                                        <span style="font-size: 13px; color: rgba(255, 255, 255, 0.7); display: block; margin-bottom: 2px;">{{ $currentUser->email }}</span>
+                                                        <span style="font-size: 15px; font-weight: 500; color: #fff; display: block;">Hello, {{ $currentUser->name }}</span>
+                                                    </div>
+                                                </a>
                                             </div>
                                         @else
-                                            <a href="{{ route('login') }}" class="d-flex align-items-center me-2">
-                                                <div class="tp-header-login-content-5">
-                                                    Login
-                                                </div>
-                                            </a>
+                                            <div class="d-flex">
+                                                <a href="{{ route('login') }}" class="d-flex align-items-center me-3 text-decoration-none">
+                                                    <div class="text-white">
+                                                        Login
+                                                    </div>
+                                                </a>
 
-                                            <a href="{{ route('register') }}" class="d-flex align-items-center">
-                                                <div class="tp-header-login-content-5">
-                                                    Register
-                                                </div>
-                                            </a>
+                                                <a href="{{ route('register') }}" class="d-flex align-items-center text-decoration-none">
+                                                    <div class="text-white">
+                                                        Register
+                                                    </div>
+                                                </a>
+                                            </div>
                                         @endif
                                     </div>
 
@@ -377,8 +367,35 @@
                 </div>
             </div>
         </div>
-        <div class="tp-header-side-menu tp-side-menu-5" style="display: none">
-            <!-- Categories menu content -->
+        <div class="tp-header-side-menu tp-side-menu-5" style="display: none;">
+            <nav class="tp-category-menu-content">
+                <ul>
+                    @foreach(\App\Models\EcProductCategory::where(function($q) { $q->whereNull('parent_id')->orWhere('parent_id', 0); })->with('children')->published()->orderBy('order', 'ASC')->get() as $category)
+                    <li class="{{ $category->children->count() > 0 ? 'has-dropdown' : '' }}">
+                        <a href="{{ route('frontend.categories.show', $category->slug) }}" class="text-decoration-none {{ $category->children->count() > 0 ? 'has-mega-menu' : '' }}">
+                            @if($category->icon_image)
+                                <img src="{{ asset('storage/' . $category->icon_image) }}" alt="{{ $category->name }}" width="20" class="me-2">
+                            @elseif($category->icon)
+                                <i class="{{ $category->icon }} me-2"></i>
+                            @endif
+                            {{ $category->name }}
+                        </a>
+                        
+                        @if($category->children->count() > 0)
+                            <ul class="tp-submenu">
+                                @foreach($category->children->where('status', 'published') as $child)
+                                <li class="">
+                                    <a href="{{ route('frontend.categories.show', $child->slug) }}" class="text-decoration-none">
+                                        {{ $child->name }}
+                                    </a>
+                                </li>
+                                @endforeach
+                            </ul>
+                        @endif
+                    </li>
+                    @endforeach
+                </ul>
+            </nav>
         </div>
     </div>
 </header>

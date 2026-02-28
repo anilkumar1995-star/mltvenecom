@@ -19,6 +19,7 @@ class Customer extends Authenticatable
         'dob',
         'avatar',
         'status',
+        'confirmed_at',
     ];
 
     protected $hidden = [
