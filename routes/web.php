@@ -121,6 +121,13 @@ Route::name('frontend.')->group(function () {
         Route::post('/profile/update', [CustomerController::class, 'updateProfile'])->name('profile.update');
         Route::get('/addresses', [CustomerController::class, 'addresses'])->name('addresses');
         Route::post('/addresses/store', [CustomerController::class, 'storeAddress'])->name('addresses.store');
+        Route::put('/addresses/{id}/update', [CustomerController::class, 'updateAddress'])->name('addresses.update');
+        Route::delete('/addresses/{id}/delete', [CustomerController::class, 'deleteAddress'])->name('addresses.delete');
+        
+        Route::get('/invoices', [CustomerController::class, 'invoices'])->name('invoices');
+        Route::get('/reviews', [CustomerController::class, 'reviews'])->name('reviews');
+        Route::get('/downloads', [CustomerController::class, 'downloads'])->name('downloads');
+        Route::get('/returns', [CustomerController::class, 'returns'])->name('returns');
 
         // Account Deletion Request
         Route::post('/account/delete', [App\Http\Controllers\Frontend\AccountDeletionController::class, 'store'])->name('account.deletion.request');

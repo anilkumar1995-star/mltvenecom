@@ -335,6 +335,8 @@ public function getAttributeValues(Request $request)
             'up_selling_products'    => 'upSellingProducts',
             'cross_selling_products' => 'crossSellingProducts',
             'selected_existing_faqs' => 'productFaqs',
+            'product_collections'    => 'productCollections',
+            'product_labels'         => 'productLabels',
         ];
 
         foreach ($relations as $inputKey => $relationMethod) {

@@ -65,43 +65,67 @@
                         <div class="col-xxl-2 col-xl-3 col-6">
                             <div class="tp-header-right-5 d-flex align-items-center justify-content-end">
                                 <div class="tp-header-login-5 d-none d-lg-block">
-                                    <a href="{{ auth('customer')->check() ? route('customer.overview') : route('customer.login') }}" class="d-flex align-items-center">
-                                        <div class="tp-header-login-icon-5">
-                                            <span>
-                                                <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path
-                                                        d="M8.00029 9C10.2506 9 12.0748 7.20914 12.0748 5C12.0748 2.79086 10.2506 1 8.00029 1C5.75 1 3.92578 2.79086 3.92578 5C3.92578 7.20914 5.75 9 8.00029 9Z"
-                                                        stroke="currentColor"
-                                                        stroke-width="1.5"
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round"
-                                                    />
-                                                    <path d="M15 17C15 13.904 11.8626 11.4 8 11.4C4.13737 11.4 1 13.904 1 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                                </svg>
-                                            </span>
-                                        </div>
-                                        <div class="tp-header-login-content-5">
-                                            <p>
-                                            <span>
-                                                @auth('customer')
-                                                    {{ Str::limit(auth('customer')->user()->email ?? '', 25) }}
-                                                @else
-                                                    {{ __('Hello') }}
-                                                @endauth
-                                            </span>
-                                                <br>
-                                                @auth('customer')
-                                                    {{ __('Hello, :name', ['name' => Str::limit(auth('customer')->user()->name ?? '', 15)]) }}
-                                                @else
-                                                    @if(EcommerceHelper::isCustomerRegistrationEnabled())
-                                                        {{ __('Login / Register') }}
+                                    <div class="d-flex align-items-center">
+                                        @php
+                                            $isLoggedIn = auth('customer')->check() || auth('web')->check();
+                                            $user = auth('customer')->user() ?: auth('web')->user();
+                                        @endphp
+                                        <a href="{{ $isLoggedIn ? route('customer.overview') : route('customer.login') }}" class="d-flex align-items-center">
+                                            <div class="tp-header-login-icon-5">
+                                                <span>
+                                                    @if ($isLoggedIn)
+                                                        <img src="{{ $user->avatar_url }}" alt="{{ $user->name }}" style="width: 40px; height: 40px; border-radius: 50%;">
                                                     @else
-                                                        {{ __('Login') }}
+                                                        <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M8.00029 9C10.2506 9 12.0748 7.20914 12.0748 5C12.0748 2.79086 10.2506 1 8.00029 1C5.75 1 3.92578 2.79086 3.92578 5C3.92578 7.20914 5.75 9 8.00029 9Z"
+                                                                stroke="currentColor"
+                                                                stroke-width="1.5"
+                                                                stroke-linecap="round"
+                                                                stroke-linejoin="round"
+                                                            />
+                                                            <path d="M15 17C15 13.904 11.8626 11.4 8 11.4C4.13737 11.4 1 13.904 1 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                                        </svg>
                                                     @endif
-                                                @endauth
-                                            </p>
-                                        </div>
-                                    </a>
+                                                </span>
+                                            </div>
+                                            <div class="tp-header-login-content-5">
+                                                <p>
+                                                    <span>
+                                                        @if ($isLoggedIn)
+                                                            {{ Str::limit($user->email ?? '', 25) ?: $user->phone }}
+                                                        @else
+                                                            {{ __('Hello') }}
+                                                        @endif
+                                                    </span>
+                                                    <br>
+                                                    @if ($isLoggedIn)
+                                                        {{ __('Hello, :name', ['name' => Str::limit($user->name, 15)]) }}
+                                                    @else
+                                                        @if(EcommerceHelper::isCustomerRegistrationEnabled())
+                                                            {{ __('Login / Register') }}
+                                                        @else
+                                                            {{ __('Login') }}
+                                                        @endif
+                                                    @endif
+                                                </p>
+                                            </div>
+                                        </a>
+
+                                        @if ($isLoggedIn)
+                                            <div class="tp-header-login-icon-5 ml-10">
+                                                <a href="{{ auth('web')->check() ? route('access.logout') : route('customer.logout') }}" title="{{ __('Logout') }}">
+                                                    <span>
+                                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                                            <polyline points="16 17 21 12 16 7"></polyline>
+                                                            <line x1="21" y1="12" x2="9" y2="12"></line>
+                                                        </svg>
+                                                   </span>
+                                                </a>
+                                            </div>
+                                        @endif
+                                    </div>
                                 </div>
 
                                 <div class="tp-header-action-5 d-flex align-items-center ml-20">

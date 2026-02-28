@@ -73,8 +73,27 @@ class CartController extends Controller
         $cart = Session::get('cart', []);
 
         if (isset($cart[$request->product_id])) {
-            $cart[$request->product_id]['quantity'] = $request->quantity;
+            $newQty = (int) $request->quantity;
+            if ($newQty <= 0) {
+                unset($cart[$request->product_id]);
+            } else {
+                $cart[$request->product_id]['quantity'] = $newQty;
+            }
             Session::put('cart', $cart);
+        }
+
+        if ($request->ajax()) {
+            $total = 0;
+            foreach ($cart as $item) {
+                $total += $item['price'] * $item['quantity'];
+            }
+            return response()->json([
+                'success' => true,
+                'message' => 'Cart updated!',
+                'count' => count($cart),
+                'subtotal' => $total,
+                'html' => view('frontend.partials.mini-cart')->render(),
+            ]);
         }
 
         return back()->with('success', 'Cart updated!');
