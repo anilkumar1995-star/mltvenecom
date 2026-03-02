@@ -18,40 +18,60 @@
                         <div class="tp-header-main-right d-flex align-items-center justify-content-end">
                             @if(is_plugin_active('ecommerce'))
                                 <div class="tp-header-login d-none d-lg-block">
-                                    <a href="{{ auth('customer')->check() ? route('customer.overview') : route('customer.login') }}" class="d-flex align-items-center">
-                                        <div class="tp-header-login-icon">
-                                            <span style="border-color: {{ theme_option('header_border_color', 'rgba(1, 15, 28, 0.1)') }};">
-                                                @auth('customer')
-                                                    <img src="{{ auth('customer')->user()->avatar_url }}" alt="{{ auth('customer')->user()->name }}">
-                                                @else
-                                                    <svg width="17" height="21" viewBox="0 0 17 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <circle cx="8.57894" cy="5.77803" r="4.77803" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M1.00002 17.2014C0.998732 16.8655 1.07385 16.5337 1.2197 16.2311C1.67736 15.3158 2.96798 14.8307 4.03892 14.611C4.81128 14.4462 5.59431 14.336 6.38217 14.2815C7.84084 14.1533 9.30793 14.1533 10.7666 14.2815C11.5544 14.3367 12.3374 14.4468 13.1099 14.611C14.1808 14.8307 15.4714 15.27 15.9291 16.2311C16.2224 16.8479 16.2224 17.564 15.9291 18.1808C15.4714 19.1419 14.1808 19.5812 13.1099 19.7918C12.3384 19.9634 11.5551 20.0766 10.7666 20.1304C9.57937 20.2311 8.38659 20.2494 7.19681 20.1854C6.92221 20.1854 6.65677 20.1854 6.38217 20.1304C5.59663 20.0773 4.81632 19.9641 4.04807 19.7918C2.96798 19.5812 1.68652 19.1419 1.2197 18.1808C1.0746 17.8747 0.999552 17.5401 1.00002 17.2014Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                                    </svg>
-                                                @endauth
-                                            </span>
-                                        </div>
-                                        <div class="tp-header-login-content d-none d-xl-block">
-                                            <span style="border-color: {{ theme_option('header_border_color', 'rgba(1, 15, 28, 0.1)') }};">
-                                                @auth('customer')
-                                                    {{ Str::limit(auth('customer')->user()->email ?? '', 25) ?: auth('customer')->user()->phone }}
-                                                @else
-                                                    {{ __('Hello, :name', ['name' => __('Guest')]) }}
-                                                @endauth
-                                            </span>
-                                            <h5 class="tp-header-login-title" @auth('customer') title="{{ $name = auth('customer')->user()->name ?? '' }}" @endauth>
-                                                @auth('customer')
-                                                    {{ __('Hello, :name', ['name' => Str::limit($name ?? '', 15)]) }}
-                                                @else
-                                                    @if(EcommerceHelper::isCustomerRegistrationEnabled())
-                                                        {{ __('Login / Register') }}
+                                    <div class="d-flex align-items-center">
+                                        @php
+                                            $isLoggedIn = auth('customer')->check() || auth('web')->check();
+                                            $user = auth('customer')->user() ?: auth('web')->user();
+                                        @endphp
+                                        <a href="{{ $isLoggedIn ? route('customer.overview') : route('customer.login') }}" class="d-flex align-items-center">
+                                            <div class="tp-header-login-icon">
+                                                <span style="border-color: {{ theme_option('header_border_color', 'rgba(1, 15, 28, 0.1)') }};">
+                                                    @if ($isLoggedIn)
+                                                        <img src="{{ $user->avatar_url }}" alt="{{ $user->name }}">
                                                     @else
-                                                        {{ __('Login') }}
+                                                        <svg width="17" height="21" viewBox="0 0 17 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <circle cx="8.57894" cy="5.77803" r="4.77803" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M1.00002 17.2014C0.998732 16.8655 1.07385 16.5337 1.2197 16.2311C1.67736 15.3158 2.96798 14.8307 4.03892 14.611C4.81128 14.4462 5.59431 14.336 6.38217 14.2815C7.84084 14.1533 9.30793 14.1533 10.7666 14.2815C11.5544 14.3367 12.3374 14.4468 13.1099 14.611C14.1808 14.8307 15.4714 15.27 15.9291 16.2311C16.2224 16.8479 16.2224 17.564 15.9291 18.1808C15.4714 19.1419 14.1808 19.5812 13.1099 19.7918C12.3384 19.9634 11.5551 20.0766 10.7666 20.1304C9.57937 20.2311 8.38659 20.2494 7.19681 20.1854C6.92221 20.1854 6.65677 20.1854 6.38217 20.1304C5.59663 20.0773 4.81632 19.9641 4.04807 19.7918C2.96798 19.5812 1.68652 19.1419 1.2197 18.1808C1.0746 17.8747 0.999552 17.5401 1.00002 17.2014Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                        </svg>
                                                     @endif
-                                                @endauth
-                                            </h5>
-                                        </div>
-                                    </a>
+                                                </span>
+                                            </div>
+                                            <div class="tp-header-login-content d-none d-xl-block">
+                                                <span style="border-color: {{ theme_option('header_border_color', 'rgba(1, 15, 28, 0.1)') }};">
+                                                    @if ($isLoggedIn)
+                                                        {{ Str::limit($user->email ?? '', 25) ?: $user->phone }}
+                                                    @else
+                                                        {{ __('Hello, :name', ['name' => __('Guest')]) }}
+                                                    @endif
+                                                </span>
+                                                <h5 class="tp-header-login-title" @if ($isLoggedIn) title="{{ $user->name }}" @endif>
+                                                    @if ($isLoggedIn)
+                                                        {{ __('Hello, :name', ['name' => Str::limit($user->name, 15)]) }}
+                                                    @else
+                                                        @if(EcommerceHelper::isCustomerRegistrationEnabled())
+                                                            {{ __('Login / Register') }}
+                                                        @else
+                                                            {{ __('Login') }}
+                                                        @endif
+                                                    @endif
+                                                </h5>
+                                            </div>
+                                        </a>
+
+                                        @if ($isLoggedIn)
+                                            <div class="tp-header-login-icon ml-10">
+                                                <a href="{{ auth('web')->check() ? route('access.logout') : route('customer.logout') }}" title="{{ __('Logout') }}">
+                                                    <span style="border-color: {{ theme_option('header_border_color', 'rgba(1, 15, 28, 0.1)') }};">
+                                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                                            <polyline points="16 17 21 12 16 7"></polyline>
+                                                            <line x1="21" y1="12" x2="9" y2="12"></line>
+                                                        </svg>
+                                                    </span>
+                                                </a>
+                                            </div>
+                                        @endif
+                                    </div>
                                 </div>
                             @endif
 

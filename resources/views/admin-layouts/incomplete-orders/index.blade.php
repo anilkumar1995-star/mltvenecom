@@ -36,7 +36,7 @@
                                 <td>{{ $order->id }}</td>
                                 <td>
                                     @if($order->user)
-                                    <a href="{{ route('customers.edit', $order->user->id) }}">{{ $order->user->name }}</a>
+                                    <a href="{{ route('admin.customers.edit', $order->user->id) }}">{{ $order->user->name }}</a>
                                     @else
                                     Guest
                                     @endif
@@ -52,7 +52,7 @@
                                 <td>{{ $order->created_at->format('Y-m-d H:i:s') }}</td>
                                 <td>
                                     <div class="btn-list flex-nowrap">
-                                        <form action="{{ route('incomplete-orders.destroy', $order->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this order?');">
+                                        <form action="{{ route('admin.incomplete-orders.destroy', $order->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this order?');">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-icon btn-outline-danger btn-sm" title="Delete">
