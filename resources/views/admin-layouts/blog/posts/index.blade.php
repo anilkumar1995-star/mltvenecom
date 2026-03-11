@@ -1,5 +1,5 @@
 @extends('admin-layouts.app')
-@section('title', 'Invoices')
+@section('title', 'Posts')
 @section('content')
 <div class="page-wrapper">
     <div class="page-header d-print-none">
@@ -13,10 +13,10 @@
                                     <a class="mb-0 d-inline-block fs-6 lh-1" href="{{ route('admin.dashboard') }}">Dashboard</a>
                                 </li>
                                 <li class="breadcrumb-item">
-                                    <a class="mb-0 d-inline-block fs-6 lh-1" href="#">Ecommerce</a>
+                                    <a class="mb-0 d-inline-block fs-6 lh-1" href="#">Blog</a>
                                 </li>
                                 <li class="breadcrumb-item active" aria-current="page">
-                                    <h1 class="mb-0 d-inline-block fs-6 lh-1">Invoices</h1>
+                                    <h1 class="mb-0 d-inline-block fs-6 lh-1">Posts</h1>
                                 </li>
                             </ol>
                         </nav>
@@ -56,10 +56,10 @@
                                 </div>
                             </div>
                             <div class="d-flex flex-column flex-sm-row align-items-stretch align-items-sm-center gap-1 table-action-buttons">
-                                <button class="btn btn-primary invoice-generate" data-action="{{ route('invoices.generate') }}" type="button">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" /><line x1="9" y1="7" x2="10" y2="7" /><line x1="9" y1="13" x2="15" y2="13" /><line x1="13" y1="17" x2="15" y2="17" /></svg>
-                                    Generate Invoices
-                                </button>
+                                <a href="{{ route('admin.blog.posts.create') }}" class="btn btn-primary" type="button">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                    Create
+                                </a>
                                 <button class="btn" type="button" onclick="window.location.reload()">
                                     <svg class="icon icon-left" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" />
@@ -73,57 +73,62 @@
 
                     <div class="card-table">
                         <div class="table-responsive table-has-actions table-has-filter">
-                            <table class="table card-table table-vcenter table-hover datatable" id="invoicesTable">
+                            <table class="table card-table table-vcenter table-hover datatable" id="postsTable">
                                 <thead>
                                 <tr>
                                     <th class="text-center" style="width: 20px;">
-                                        <input class="form-check-input m-0 align-middle table-check-all" type="checkbox" aria-label="Select all invoices">
+                                        <input class="form-check-input m-0 align-middle table-check-all" type="checkbox" aria-label="Select all posts">
                                     </th>
                                     <th title="ID" width="50" class="text-start">ID</th>
-                                    <th title="Name" class="text-start">Name</th>
-                                    <th title="Order" class="text-start">Order</th>
-                                    <th title="Code" class="text-start">Code</th>
-                                    <th title="Amount" class="text-start">Amount</th>
-                                    <th title="Created at" class="text-start">Created At</th>
-                                    <th title="Status" width="120" class="text-center">Status</th>
-                                    <th title="Operations" class="text-end">Operations</th>
+                                    <th title="IMAGE" width="70" class="text-start">IMAGE</th>
+                                    <th title="NAME" class="text-start">NAME</th>
+                                    <th title="CATEGORIES" class="text-start">CATEGORIES</th>
+                                    <th title="AUTHOR" class="text-start">AUTHOR</th>
+                                    <th title="VIEWS" class="text-center">VIEWS</th>
+                                    <th title="CREATED AT" class="text-center">CREATED AT</th>
+                                    <th title="STATUS" width="120" class="text-center">STATUS</th>
+                                    <th title="OPERATIONS" class="text-center" width="120">OPERATIONS</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse($invoices as $invoice)
+                                    @forelse($posts as $post)
                                     <tr>
                                         <td class="text-center">
-                                            <input type="checkbox" class="form-check-input bulk-checkbox" value="{{ $invoice->id }}">
+                                            <input type="checkbox" class="form-check-input bulk-checkbox" value="{{ $post->id }}">
                                         </td>
-                                        <td class="text-start">{{ $invoice->id }}</td>
+                                        <td class="text-start">{{ $post->id }}</td>
                                         <td class="text-start">
-                                            <div>{{ $invoice->customer_name }}</div>
-                                            @if($invoice->customer_email)
-                                            <div class="text-muted"><small>{{ $invoice->customer_email }}</small></div>
-                                            @endif
-                                        </td>
-                                        <td class="text-start">
-                                            <a href="#" class="text-decoration-none">#SF-100000{{ $invoice->reference_id }}</a>
-                                        </td>
-                                        <td class="text-start">
-                                            <a href="{{ route('admin.invoices.show', $invoice->id) }}">{{ $invoice->code }}</a>
-                                        </td>
-                                        <td class="text-start">${{ number_format($invoice->amount, 2) }}</td>
-                                        <td class="text-start">{{ $invoice->created_at->format('Y-m-d') }}</td>
-                                        <td class="text-center">
-                                            @if($invoice->status == 'completed')
-                                                <span class="badge bg-success text-white">Completed</span>
-                                            @elseif($invoice->status == 'pending')
-                                                <span class="badge bg-warning text-white">Pending</span>
-                                            @elseif($invoice->status == 'canceled')
-                                                <span class="badge bg-danger text-white">Canceled</span>
+                                            @if($post->image)
+                                            <img src="{{ Storage::url($post->image) }}" alt="{{ $post->name }}" style="width: 50px; height: auto;">
                                             @else
-                                                <span class="badge bg-secondary text-white">{{ ucfirst($invoice->status) }}</span>
+                                            <img src="https://via.placeholder.com/50" alt="Placeholder">
                                             @endif
                                         </td>
-                                        <td class="text-end">
-                                            <div class="table-actions">
-                                                <a href="{{ route('admin.invoices.show', $invoice->id) }}" class="btn btn-sm btn-icon btn-primary" data-bs-toggle="tooltip" data-bs-title="Edit">
+                                        <td class="text-start">
+                                            <a href="{{ route('admin.blog.posts.edit', $post->id) }}" class="text-primary fw-medium">{{ $post->name }}</a>
+                                        </td>
+                                        <td class="text-start text-primary">
+                                            {{ $post->categories->pluck('name')->implode(', ') }}
+                                        </td>
+                                        <td class="text-start text-primary">
+                                            {{ $post->author->name ?? 'System' }}
+                                        </td>
+                                        <td class="text-center text-muted">{{ number_format($post->views) }}</td>
+                                        <td class="text-center text-muted">{{ $post->created_at->format('Y-m-d') }}</td>
+                                        <td class="text-center">
+                                            @if($post->status == 'published')
+                                                <span class="badge bg-success text-white">Published</span>
+                                            @elseif($post->status == 'pending')
+                                                <span class="badge bg-warning text-white">Pending</span>
+                                            @elseif($post->status == 'draft')
+                                                <span class="badge bg-secondary text-white">Draft</span>
+                                            @else
+                                                <span class="badge bg-secondary text-white">{{ ucfirst($post->status) }}</span>
+                                            @endif
+                                        </td>
+                                        <td class="text-center">
+                                            <div class="table-actions d-flex justify-content-center gap-1">
+                                                <a href="{{ route('admin.blog.posts.edit', $post->id) }}" class="btn btn-sm btn-icon btn-primary" data-bs-toggle="tooltip" data-bs-title="Edit">
                                                     <svg class="icon svg-icon-ti-ti-edit" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                                         <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
                                                         <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415" />
@@ -131,7 +136,7 @@
                                                     </svg>            
                                                     <span class="sr-only">Edit</span>
                                                 </a>
-                                                <button type="button" class="btn btn-sm btn-icon btn-danger delete-btn delete-item" data-id="{{ $invoice->id }}" data-action="{{ route('admin.invoices.destroy', $invoice->id) }}" data-bs-toggle="tooltip" data-bs-title="Delete" data-confirmation-modal="true" data-confirmation-modal-title="Confirm delete" data-confirmation-modal-message="Do you really want to delete this record?" data-confirmation-modal-button="Delete" data-confirmation-modal-cancel-button="Cancel">
+                                                <button type="button" class="btn btn-sm btn-icon btn-danger delete-btn" data-url="{{ route('admin.blog.posts.destroy', $post->id) }}" data-bs-toggle="tooltip" data-bs-title="Delete">
                                                     <svg class="icon svg-icon-ti-ti-trash" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                                         <path d="M4 7l16 0" />
                                                         <path d="M10 11l0 6" />
@@ -146,7 +151,17 @@
                                     </tr>
                                     @empty
                                     <tr>
-                                        <td colspan="9" class="text-center text-muted">No invoices found</td>
+                                        <td colspan="10" class="text-center text-muted py-4">
+                                            <div class="mb-3">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-x" width="48" height="48" viewBox="0 0 24 24" stroke-width="1.5" stroke="#9e9e9e" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                  <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+                                                  <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
+                                                  <path d="M10 12l4 4m0 -4l-4 4" />
+                                                </svg>
+                                            </div>
+                                            No posts found
+                                        </td>
                                     </tr>
                                     @endforelse
                                 </tbody>
@@ -154,9 +169,9 @@
                         </div>
                         <div class="card-footer d-flex justify-content-between align-items-center">
                             <div class="text-muted">
-                                Showing {{ method_exists($invoices, 'firstItem') ? $invoices->firstItem() : 0 }} to {{ method_exists($invoices, 'lastItem') ? $invoices->lastItem() : 0 }} of {{ method_exists($invoices, 'total') ? $invoices->total() : $invoices->count() }} entries
+                                Showing {{ method_exists($posts, 'firstItem') ? $posts->firstItem() : 0 }} to {{ method_exists($posts, 'lastItem') ? $posts->lastItem() : 0 }} of {{ method_exists($posts, 'total') ? $posts->total() : $posts->count() }} records
                             </div>
-                            {{ method_exists($invoices, 'links') ? $invoices->appends(request()->query())->links('pagination::bootstrap-5') : '' }}
+                            {{ method_exists($posts, 'links') ? $posts->appends(request()->query())->links('pagination::bootstrap-5') : '' }}
                         </div>
                     </div>
                 </div>
@@ -170,7 +185,7 @@
     <script>
         $(document).ready(function () {
             // Check all
-            $('#check-all').on('change', function () {
+            $('.table-check-all').on('change', function () {
                 $('.bulk-checkbox').prop('checked', $(this).is(':checked'));
                 updateBulkDeleteButton();
             });
@@ -194,13 +209,14 @@
                 let url = btn.data('url');
 
                 Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
+                    title: 'Confirm delete',
+                    text: "Do you really want to delete this record?",
                     icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Delete',
+                    cancelButtonText: 'Cancel'
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({
@@ -208,57 +224,12 @@
                             type: 'DELETE',
                             data: { _token: '{{ csrf_token() }}' },
                             success: function (response) {
-                                Swal.fire('Deleted!', 'Invoice has been deleted.', 'success').then(() => {
+                                Swal.fire('Deleted!', 'Post has been deleted.', 'success').then(() => {
                                     window.location.reload();
                                 });
                             },
                             error: function(xhr) {
                                 Swal.fire('Error!', 'Something went wrong.', 'error');
-                            }
-                        });
-                    }
-                });
-            });
-
-            // Bulk Delete
-            $('#bulk-delete').on('click', function () {
-                let ids = [];
-                $('.bulk-checkbox:checked').each(function () {
-                    ids.push($(this).val());
-                });
-
-                if(ids.length === 0) return;
-
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: `You are about to delete ${ids.length} invoices!`,
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Yes, delete selected!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            // Note: Add a bulk delete route in web.php if needed, or use a placeholder for now
-                            url: "{{ url('admin/invoices/bulk-delete') }}", 
-                            type: 'POST',
-                            data: {
-                                _token: '{{ csrf_token() }}',
-                                ids: ids
-                            },
-                            success: function (response) {
-                                if (response.success || response) {
-                                    Swal.fire('Deleted!', 'Invoices have been deleted.', 'success').then(() => {
-                                        window.location.reload();
-                                    });
-                                } else {
-                                    Swal.fire('Error!', response.message || 'Something went wrong.', 'error');
-                                }
-                            },
-                            error: function(xhr) {
-                                // Fallback just in case route doesn't exist yet
-                                Swal.fire('Error!', 'Bulk delete endpoint not available or an error occurred.', 'error');
                             }
                         });
                     }
@@ -271,47 +242,11 @@
                 clearTimeout(searchTimer);
                 let query = $(this).val().toLowerCase();
                 searchTimer = setTimeout(function() {
-                    $('#invoicesTable tbody tr').each(function () {
+                    $('#postsTable tbody tr').each(function () {
                         let text = $(this).text().toLowerCase();
                         $(this).toggle(text.indexOf(query) > -1);
                     });
                 }, 300);
-            });
-            // Generate Invoices Logic
-            $('.invoice-generate').on('click', function () {
-                let btn = $(this);
-                let url = btn.data('action');
-                let originalText = btn.html();
-
-                btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Generating...');
-
-                $.ajax({
-                    url: url,
-                    type: 'POST',
-                    data: { _token: '{{ csrf_token() }}' },
-                    success: function (response) {
-                        btn.prop('disabled', false).html(originalText);
-                        if (response.success || response) {
-                            Swal.fire({
-                                title: 'Success!',
-                                text: response.message || 'Invoices generated successfully.',
-                                icon: 'success',
-                                toast: true,
-                                position: 'top-end',
-                                showConfirmButton: false,
-                                timer: 3000
-                            }).then(() => {
-                                window.location.reload();
-                            });
-                        } else {
-                            Swal.fire('Error!', response.message || 'Something went wrong.', 'error');
-                        }
-                    },
-                    error: function(xhr) {
-                        btn.prop('disabled', false).html(originalText);
-                        Swal.fire('Error!', 'Could not generate invoices. Please check your backend code.', 'error');
-                    }
-                });
             });
         });
     </script>
