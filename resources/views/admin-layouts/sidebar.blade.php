@@ -904,7 +904,7 @@
                         </div>
                     </li>
 
-                  {{--  <li class="nav-item dropdown"><a class="nav-link dropdown-toggle nav-priority-3" href="{{ url("/")
+                    <li class="nav-item dropdown"><a class="nav-link dropdown-toggle nav-priority-3" href="{{ url("/")
                             }}/admin#cms-plugins-blog" id="cms-plugins-blog" data-bs-toggle="dropdown"
                             data-bs-auto-close="false" role="button" aria-expanded="false" title="Blog"><span
                                 class="nav-link-icon d-md-none d-lg-inline-block" title="Blog"><svg
@@ -919,7 +919,7 @@
                                     <path d="M7 16h10"></path>
                                 </svg></span><span class="nav-link-title text-truncate"> Blog </span></a>
                         <div class="dropdown-menu animate slideIn dropdown-menu-start"><a
-                                class="dropdown-item nav-priority-10" href="{{ url("/") }}/admin/blog/posts"
+                                class="dropdown-item nav-priority-10" href="{{ route('admin.blog.posts.index') }}"
                                 id="cms-plugins-blog-post" title="Posts"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Posts"><svg
                                         class="icon svg-icon-ti-ti-file-text" xmlns="http://www.w3.org/2000/svg"
@@ -933,7 +933,7 @@
                                         <path d="M9 13l6 0"></path>
                                         <path d="M9 17l6 0"></path>
                                     </svg></span><span class="nav-link-title text-truncate"> Posts </span></a><a
-                                class="dropdown-item nav-priority-20" href="{{ url("/") }}/admin/blog/categories"
+                                class="dropdown-item nav-priority-20" href="{{ route('admin.blog.categories.index') }}"
                                 id="cms-plugins-blog-categories" title="Categories"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Categories"><svg
                                         class="icon svg-icon-ti-ti-folder" xmlns="http://www.w3.org/2000/svg" width="24"
@@ -943,7 +943,7 @@
                                             d="M5 4h4l3 3h7a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-11a2 2 0 0 1 2 -2">
                                         </path>
                                     </svg></span><span class="nav-link-title text-truncate"> Categories
-                                </span></a><a class="dropdown-item nav-priority-30" href="{{ url("/")
+                                </span></a>{{--<a class="dropdown-item nav-priority-30" href="{{ url("/")
                                 }}/admin/blog/tags" id="cms-plugins-blog-tags" title="Tags"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Tags"><svg
                                         class="icon svg-icon-ti-ti-tag" xmlns="http://www.w3.org/2000/svg" width="24"
@@ -973,6 +973,8 @@
                                     </svg></span><span class="nav-link-title text-truncate"> Reports </span></a>
                         </div>
                     </li>
+
+                  {{--  
                     <li class="nav-item dropdown"><a class="nav-link dropdown-toggle nav-priority-3" href="{{ url("/")
                             }}/admin#cms-plugins-payments" id="cms-plugins-payments" data-bs-toggle="dropdown"
                             data-bs-auto-close="false" role="button" aria-expanded="false" title="Payments"><span
