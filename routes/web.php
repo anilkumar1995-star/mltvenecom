@@ -388,6 +388,26 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
         Route::post('/bulk-delete', [FaqController::class, 'bulkDelete'])->name('faqs.bulk-delete');
     });
 
+    // Simple Sliders Routes
+    Route::group(['prefix' => 'simple-sliders'], function () {
+        Route::get('/', [\App\Http\Controllers\Admin\SimpleSliderController::class, 'index'])->name('simple-sliders.index');
+        Route::get('/create', [\App\Http\Controllers\Admin\SimpleSliderController::class, 'create'])->name('simple-sliders.create');
+        Route::post('/store', [\App\Http\Controllers\Admin\SimpleSliderController::class, 'store'])->name('simple-sliders.store');
+        Route::get('/{id}/edit', [\App\Http\Controllers\Admin\SimpleSliderController::class, 'edit'])->name('simple-sliders.edit');
+        Route::put('/{id}', [\App\Http\Controllers\Admin\SimpleSliderController::class, 'update'])->name('simple-sliders.update');
+        Route::delete('/{id}', [\App\Http\Controllers\Admin\SimpleSliderController::class, 'destroy'])->name('simple-sliders.destroy');
+        Route::post('/bulk-delete', [\App\Http\Controllers\Admin\SimpleSliderController::class, 'bulkDelete'])->name('simple-sliders.bulk-delete');
+        
+        // Items within a slider
+        Route::group(['prefix' => 'items'], function () {
+            Route::get('/create', [\App\Http\Controllers\Admin\SimpleSliderItemController::class, 'create'])->name('simple-sliders.items.create');
+            Route::post('/store', [\App\Http\Controllers\Admin\SimpleSliderItemController::class, 'store'])->name('simple-sliders.items.store');
+            Route::get('/{id}/edit', [\App\Http\Controllers\Admin\SimpleSliderItemController::class, 'edit'])->name('simple-sliders.items.edit');
+            Route::put('/{id}', [\App\Http\Controllers\Admin\SimpleSliderItemController::class, 'update'])->name('simple-sliders.items.update');
+            Route::delete('/{id}', [\App\Http\Controllers\Admin\SimpleSliderItemController::class, 'destroy'])->name('simple-sliders.items.destroy');
+        });
+    });
+
 
     Route::group(['prefix' => 'marketplaces'], function() {
         Route::get('stores', [AdminStoreController::class,'index'])->name('marketplace.store.index');
