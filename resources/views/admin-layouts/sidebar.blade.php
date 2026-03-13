@@ -9,28 +9,28 @@
                     <path d="M4 12l16 0"></path>
                     <path d="M4 18l16 0"></path>
                 </svg></button>
-            <h2 class="d-block d-lg-none navbar-brand navbar-brand-autodark"><a href="{{ url("/") }}/admin"><img
+            <h2 class="d-block d-lg-none navbar-brand navbar-brand-autodark"><a href="{{ url('admin') }}"><img
                         src="{{ asset('/') }}js/logo-white.png" alt="Your App" class="navbar-brand-image"
                         style="max-height: 32px; height: auto;"></a>
             </h2>
             <div class="navbar-nav flex-row d-lg-none">
-                <div class="dropdown nav-item"><a href="{{ url("/") }}/admin#"
+                <div class="dropdown nav-item"><a href="{{ url('admin') }}#"
                         class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown"
                         aria-label="Open user menu"><span class="crop-image-original avatar avatar-sm"
                             style="background-image: url(&quot;data:image/jpeg;base64,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&quot;);"></span>
-                        <div class="d-none d-xl-block ps-2">
+                        <div class="d-none d-lg-block ps-2">
                             <div>{{ Auth::user()->name }}</div>
                             <div class="mt-1 small text-muted">{{ Auth::user()->email }}</div>
                         </div>
                     </a>
                     <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-end"><a class="dropdown-item"
-                            href="{{ url("/") }}/admin/system/users/profile/1"><svg
+                            href="{{ url('admin/system/users/profile/1') }}"><svg
                                 class="icon dropdown-item-icon svg-icon-ti-ti-user" xmlns="http://www.w3.org/2000/svg"
                                 width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path>
                                 <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
-                            </svg> Profile </a><a class="dropdown-item" href="{{ url("/") }}/admin/logout"><svg
+                            </svg> Profile </a><a class="dropdown-item" href="{{ route('admin.logout') }}"><svg
                                 class="icon dropdown-item-icon svg-icon-ti-ti-logout" xmlns="http://www.w3.org/2000/svg"
                                 width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -44,8 +44,7 @@
             </div>
             <div class="collapse navbar-collapse" id="sidebar-menu">
                 <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link nav-priority--9999" href="{{ url("/")
-                            }}/admin" id="cms-core-dashboard" title="Dashboard"><span
+                    <li class="nav-item"><a class="nav-link nav-priority--9999" href="{{ url('admin') }}" id="cms-core-dashboard" title="Dashboard"><span
                                 class="nav-link-icon d-md-none d-lg-inline-block" title="Dashboard"><svg
                                     class="icon svg-icon-ti-ti-home" xmlns="http://www.w3.org/2000/svg" width="24"
                                     height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -54,8 +53,8 @@
                                     <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"></path>
                                     <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"></path>
                                 </svg></span><span class="nav-link-title text-truncate"> Dashboard </span></a></li>
-                    <li class="nav-item dropdown"><a class="nav-link dropdown-toggle nav-priority-0" href="{{ url("/")
-                            }}/admin#cms-plugins-ecommerce" id="cms-plugins-ecommerce" data-bs-toggle="dropdown"
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle nav-priority-0" href="{{ url('admin#cms-plugins-ecommerce') }}" id="cms-plugins-ecommerce" data-bs-toggle="dropdown"
                             data-bs-auto-close="false" role="button" aria-expanded="false" title="Ecommerce"><span
                                 class="nav-link-icon d-md-none d-lg-inline-block" title="Ecommerce"><svg
                                     class="icon svg-icon-ti-ti-shopping-bag" xmlns="http://www.w3.org/2000/svg"
@@ -67,7 +66,7 @@
                                     <path d="M9 11v-5a3 3 0 0 1 6 0v5"></path>
                                 </svg></span><span class="nav-link-title text-truncate"> Ecommerce <span
                                     class="badge badge-sm bg-primary text-primary-fg badge-pill menu-item-count ecommerce-count"
-                                    data-url="{{ url("/") }}/admin/menu-items-count"
+                                    data-url="{{ url('admin/menu-items-count') }}"
                                     style="display: none;"></span></span></a>
                         <div class="dropdown-menu animate slideIn dropdown-menu-start">
                             <a class="dropdown-item nav-priority-90" href="{{ route('admin.reports.index') }}"
@@ -163,7 +162,7 @@
                                     </svg>
                                 </span><span class="nav-link-title text-truncate"> Products <span
                                         class="badge badge-sm bg-primary text-primary-fg badge-pill menu-item-count pending-products"
-                                        data-url="{{ url("/") }}/admin/menu-items-count"
+                                        data-url="{{ url('admin/menu-items-count') }}"
                                         style="display: none;"></span></span>
                                 </a>
 
@@ -727,8 +726,7 @@
                             </a>
                         </div>
                     </li>
-                    <li class="nav-item dropdown"><a class="nav-link dropdown-toggle nav-priority-0" href="{{ url("/")
-                            }}/admin#cms-plugins-marketplace" id="cms-plugins-marketplace" data-bs-toggle="dropdown"
+                    <li class="nav-item dropdown"><a class="nav-link dropdown-toggle nav-priority-0" href="{{ url('admin#cms-plugins-marketplace') }}" id="cms-plugins-marketplace" data-bs-toggle="dropdown"
                             data-bs-auto-close="false" role="button" aria-expanded="false" title="Marketplace"><span
                                 class="nav-link-icon d-md-none d-lg-inline-block" title="Marketplace"><svg
                                     class="icon svg-icon-ti-ti-building-store" xmlns="http://www.w3.org/2000/svg"
@@ -743,10 +741,10 @@
                                     <path d="M9 21v-4a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v4"></path>
                                 </svg></span><span class="nav-link-title text-truncate"> Marketplace <span
                                     class="badge badge-sm bg-primary text-primary-fg badge-pill menu-item-count marketplace-notifications-count"
-                                    data-url="{{ url("/") }}/admin/menu-items-count"
+                                    data-url="{{ url('admin/menu-items-count') }}"
                                     style="display: none;"></span></span></a>
                         <div class="dropdown-menu animate slideIn dropdown-menu-start"><a
-                                class="dropdown-item nav-priority-0" href="{{ url("/") }}/admin/marketplaces/reports"
+                                class="dropdown-item nav-priority-0" href="{{ url('admin/marketplaces/reports') }}"
                                 id="cms-plugins-marketplace-reports" title="Reports"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Reports"><svg
                                         class="icon svg-icon-ti-ti-chart-bar" xmlns="http://www.w3.org/2000/svg"
@@ -793,7 +791,7 @@
                                         <path d="M6 12h.01"></path>
                                     </svg></span><span class="nav-link-title text-truncate"> Withdrawals <span
                                         class="badge badge-sm bg-primary text-primary-fg badge-pill menu-item-count pending-withdrawals"
-                                        data-url="{{ url("/") }}/admin/menu-items-count"
+                                        data-url="{{ url('admin/menu-items-count') }}"
                                         style="display: none;"></span></span></a><a class="dropdown-item nav-priority-4"
                                 href="{{ route('admin.marketplace.vendors') }}" id="cms-plugins-marketplace-vendors"
                                 title="Vendors"><span class="nav-link-icon d-md-none d-lg-inline-block"
@@ -943,7 +941,8 @@
                                             d="M5 4h4l3 3h7a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-11a2 2 0 0 1 2 -2">
                                         </path>
                                     </svg></span><span class="nav-link-title text-truncate"> Categories
-                                </span></a>{{--<a class="dropdown-item nav-priority-30" href="{{ url("/")
+                                </span></a>
+                                <a class="dropdown-item nav-priority-30" href="{{ url("/")
                                 }}/admin/blog/tags" id="cms-plugins-blog-tags" title="Tags"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Tags"><svg
                                         class="icon svg-icon-ti-ti-tag" xmlns="http://www.w3.org/2000/svg" width="24"
@@ -973,6 +972,24 @@
                                     </svg></span><span class="nav-link-title text-truncate"> Reports </span></a>
                         </div>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-priority-390" href="{{ route('admin.simple-sliders.index') }}" id="cms-plugins-simple-slider" title="Simple Sliders">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block" title="Simple Sliders"><svg
+                                    class="icon svg-icon-ti-ti-slideshow" xmlns="http://www.w3.org/2000/svg" width="24"
+                                    height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M15 6l.01 0"></path>
+                                    <path
+                                        d="M3 3m0 3a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3z">
+                                    </path>
+                                    <path d="M3 13l4 -4a3 5 0 0 1 3 0l4 4"></path>
+                                    <path d="M13 12l2 -2a3 5 0 0 1 3 0l3 3"></path>
+                                    <path d="M8 21l.01 0"></path>
+                                    <path d="M12 21l.01 0"></path>
+                                    <path d="M16 21l.01 0"></path>
+                                </svg></span><span class="nav-link-title text-truncate"> Simple Sliders
+                            </span></a></li>
+                    
 
                   {{--  
                     <li class="nav-item dropdown"><a class="nav-link dropdown-toggle nav-priority-3" href="{{ url("/")
@@ -1158,23 +1175,7 @@
                                     </svg></span><span class="nav-link-title text-truncate"> Custom Fields
                                 </span></a></div>
                     </li>
-                    <li class="nav-item"><a class="nav-link nav-priority-390" href="{{ url("/")
-                            }}/admin/simple-sliders" id="cms-plugins-simple-slider" title="Simple Sliders"><span
-                                class="nav-link-icon d-md-none d-lg-inline-block" title="Simple Sliders"><svg
-                                    class="icon svg-icon-ti-ti-slideshow" xmlns="http://www.w3.org/2000/svg" width="24"
-                                    height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M15 6l.01 0"></path>
-                                    <path
-                                        d="M3 3m0 3a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3z">
-                                    </path>
-                                    <path d="M3 13l4 -4a3 5 0 0 1 3 0l4 4"></path>
-                                    <path d="M13 12l2 -2a3 5 0 0 1 3 0l3 3"></path>
-                                    <path d="M8 21l.01 0"></path>
-                                    <path d="M12 21l.01 0"></path>
-                                    <path d="M16 21l.01 0"></path>
-                                </svg></span><span class="nav-link-title text-truncate"> Simple Sliders
-                            </span></a></li>
+                    
 
                     <li class="nav-item"><a class="nav-link nav-priority-430" href="{{ url("/") }}/admin/newsletters"
                             id="cms-plugins-newsletter" title="Newsletters"><span
