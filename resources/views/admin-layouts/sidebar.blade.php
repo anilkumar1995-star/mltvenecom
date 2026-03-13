@@ -989,6 +989,22 @@
                                     <path d="M16 21l.01 0"></path>
                                 </svg></span><span class="nav-link-title text-truncate"> Simple Sliders
                             </span></a></li>
+
+                    <li class="nav-item">
+                        <a class="nav-link nav-priority-10" href="{{ url("/") }}/admin/announcements"
+                            id="cms-plugins-announcement" title="Announcements">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block" title="Announcements">
+                                <svg class="icon svg-icon-ti-ti-speakerphone" xmlns="http://www.w3.org/2000/svg"
+                                    width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M18 8a3 3 0 0 1 0 6"></path>
+                                    <path d="M10 8v11a1 1 0 0 1 -1 1h-1a1 1 0 0 1 -1 -1v-5"></path>
+                                    <path d="M12 8h0l4.524 -3.77a.9 .9 0 0 1 1.476 .692v12.156a.9 .9 0 0 1 -1.476 .692l-4.524 -3.77h-8a1 1 0 0 1 -1 -1v-4a1 1 0 0 1 1 -1h8"></path>
+                                </svg>
+                            </span>
+                            <span class="nav-link-title text-truncate"> Announcements </span>
+                        </a>
+                    </li>
                     
 
                   {{--  
@@ -1117,19 +1133,7 @@
                                     </svg></span><span class="nav-link-title text-truncate"> Ads Settings
                                 </span></a></div>
                     </li>
-                    <li class="nav-item"><a class="nav-link nav-priority-10" href="{{ url("/") }}/admin/announcements"
-                            id="cms-plugins-announcement" title="Announcements"><span
-                                class="nav-link-icon d-md-none d-lg-inline-block" title="Announcements"><svg
-                                    class="icon svg-icon-ti-ti-speakerphone" xmlns="http://www.w3.org/2000/svg"
-                                    width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M18 8a3 3 0 0 1 0 6"></path>
-                                    <path d="M10 8v11a1 1 0 0 1 -1 1h-1a1 1 0 0 1 -1 -1v-5"></path>
-                                    <path
-                                        d="M12 8h0l4.524 -3.77a.9 .9 0 0 1 1.476 .692v12.156a.9 .9 0 0 1 -1.476 .692l-4.524 -3.77h-8a1 1 0 0 1 -1 -1v-4a1 1 0 0 1 1 -1h8">
-                                    </path>
-                                </svg></span><span class="nav-link-title text-truncate"> Announcements </span></a>
-                    </li>
+                    
                     <li class="nav-item dropdown"><a class="nav-link dropdown-toggle nav-priority-120" href="{{ url("/") }}/admin#cms-plugins-contact" id="cms-plugins-contact" data-bs-toggle="dropdown"
                             data-bs-auto-close="false" role="button" aria-expanded="false" title="Contact"><span
                                 class="nav-link-icon d-md-none d-lg-inline-block" title="Contact"><svg

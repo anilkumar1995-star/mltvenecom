@@ -21,28 +21,48 @@ class SimpleSliderItemController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'simple_slider_id' => 'required|exists:simple_sliders,id',
-            'title' => 'nullable|string|max:255',
-            'link' => 'nullable|string|max:255',
-            'image' => 'required|string',
-            'order' => 'nullable|integer',
+            'title' => 'required|string|max:255',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
 
         try {
             DB::beginTransaction();
+            $slider_id = $request->query('slider_id', $request->simple_slider_id);
 
-            SimpleSliderItem::create([
-                'simple_slider_id' => $request->simple_slider_id,
-                'title' => $request->title,
-                'link' => $request->link,
-                'description' => $request->description,
-                'image' => $request->image,
-                'order' => $request->order ?? 0,
+            $data = $request->only([
+                'title', 'subtitle', 'link', 'button_label', 'description', 
+                'order', 'status', 'background_color'
             ]);
+            $data['background_color_light'] = $request->has('background_color_light') ? 1 : 0;
+            $data['simple_slider_id'] = $slider_id;
+
+            // Handle uploads
+            if ($request->hasFile('image')) {
+                $file = $request->file('image');
+                $filename = time() . '_' . $file->getClientOriginalName();
+                $file->move(public_path('uploads/sliders'), $filename);
+                $data['image'] = 'uploads/sliders/' . $filename;
+            }
+
+            if ($request->hasFile('tablet_image')) {
+                $file = $request->file('tablet_image');
+                $filename = time() . '_tablet_' . $file->getClientOriginalName();
+                $file->move(public_path('uploads/sliders'), $filename);
+                $data['tablet_image'] = 'uploads/sliders/' . $filename;
+            }
+
+            if ($request->hasFile('mobile_image')) {
+                $file = $request->file('mobile_image');
+                $filename = time() . '_mobile_' . $file->getClientOriginalName();
+                $file->move(public_path('uploads/sliders'), $filename);
+                $data['mobile_image'] = 'uploads/sliders/' . $filename;
+            }
+
+            SimpleSliderItem::create($data);
 
             DB::commit();
 
-            return redirect()->route('admin.simple-sliders.edit', $request->simple_slider_id)
+            return redirect()->route('admin.simple-sliders.edit', $slider_id)
                              ->with('success', 'Slider item created successfully.');
         } catch (Exception $e) {
             DB::rollBack();
@@ -50,32 +70,47 @@ class SimpleSliderItemController extends Controller
         }
     }
 
-    public function edit($id)
-    {
-        $item = SimpleSliderItem::findOrFail($id);
-        return view('admin-layouts.sliders.items.edit', compact('item'));
-    }
-
     public function update(Request $request, $id)
     {
         $request->validate([
-            'title' => 'nullable|string|max:255',
-            'link' => 'nullable|string|max:255',
-            'image' => 'required|string',
-            'order' => 'nullable|integer',
+            'title' => 'required|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
 
         try {
             DB::beginTransaction();
 
             $item = SimpleSliderItem::findOrFail($id);
-            $item->update([
-                'title' => $request->title,
-                'link' => $request->link,
-                'description' => $request->description,
-                'image' => $request->image,
-                'order' => $request->order ?? 0,
+            
+            $data = $request->only([
+                'title', 'subtitle', 'link', 'button_label', 'description', 
+                'order', 'status', 'background_color'
             ]);
+            $data['background_color_light'] = $request->has('background_color_light') ? 1 : 0;
+
+            // Handle uploads
+            if ($request->hasFile('image')) {
+                $file = $request->file('image');
+                $filename = time() . '_' . $file->getClientOriginalName();
+                $file->move(public_path('uploads/sliders'), $filename);
+                $data['image'] = 'uploads/sliders/' . $filename;
+            }
+
+            if ($request->hasFile('tablet_image')) {
+                $file = $request->file('tablet_image');
+                $filename = time() . '_tablet_' . $file->getClientOriginalName();
+                $file->move(public_path('uploads/sliders'), $filename);
+                $data['tablet_image'] = 'uploads/sliders/' . $filename;
+            }
+
+            if ($request->hasFile('mobile_image')) {
+                $file = $request->file('mobile_image');
+                $filename = time() . '_mobile_' . $file->getClientOriginalName();
+                $file->move(public_path('uploads/sliders'), $filename);
+                $data['mobile_image'] = 'uploads/sliders/' . $filename;
+            }
+
+            $item->update($data);
 
             DB::commit();
 

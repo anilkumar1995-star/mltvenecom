@@ -11,10 +11,17 @@ class SimpleSliderItem extends Model
     protected $fillable = [
         'simple_slider_id',
         'title',
+        'subtitle',
         'link',
+        'button_label',
         'description',
         'image',
+        'tablet_image',
+        'mobile_image',
+        'background_color',
+        'background_color_light',
         'order',
+        'status',
     ];
 
     public function slider()
