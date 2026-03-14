@@ -9,11 +9,13 @@
         <div class="container-xl">
             <div class="row g-2 align-items-center mb-3">
                 <div class="col">
-                    <div class="page-pretitle breadcrumb-arrows mb-2">
-                        <ol class="breadcrumb" aria-label="breadcrumbs">
-                            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">DASHBOARD</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">ANNOUNCEMENTS</li>
-                        </ol>
+                    <div class="page-pretitle mb-2">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb" style="font-size: 11px; font-weight: 600; text-transform: uppercase;">
+                                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}" class="text-primary" style="text-decoration: none;">DASHBOARD</a></li>
+                                <li class="breadcrumb-item active text-muted" aria-current="page">ANNOUNCEMENTS</li>
+                            </ol>
+                        </nav>
                     </div>
                 </div>
             </div>
@@ -192,20 +194,24 @@
 <style>
     .breadcrumb-item+.breadcrumb-item::before {
         content: "/";
-        padding: 0 5px;
+        padding: 0 8px;
         color: #adb5bd;
     }
     .breadcrumb-item a {
         text-decoration: none;
         color: #206bc4;
-        font-size: 14px;
-        font-weight: 500;
+        font-size: 11px;
+        font-weight: 600;
         text-transform: uppercase;
+        transition: color 0.2s;
+    }
+    .breadcrumb-item a:hover {
+        color: #1a56a6 !important;
     }
     .breadcrumb-item.active {
-        color: #6c7a91;
-        font-size: 14px;
-        font-weight: 400;
+        color: #6c7a91 !important;
+        font-size: 11px;
+        font-weight: 600;
         text-transform: uppercase;
     }
     .btn-light-shofy {
