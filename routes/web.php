@@ -123,7 +123,7 @@ Route::name('frontend.')->group(function () {
         Route::post('/addresses/store', [CustomerController::class, 'storeAddress'])->name('addresses.store');
         Route::put('/addresses/{id}/update', [CustomerController::class, 'updateAddress'])->name('addresses.update');
         Route::delete('/addresses/{id}/delete', [CustomerController::class, 'deleteAddress'])->name('addresses.delete');
-        
+    
         Route::get('/invoices', [CustomerController::class, 'invoices'])->name('invoices');
         Route::get('/reviews', [CustomerController::class, 'reviews'])->name('reviews');
         Route::get('/downloads', [CustomerController::class, 'downloads'])->name('downloads');
@@ -203,14 +203,21 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 
     // Order Returns
     Route::get('/order-returns', [App\Http\Controllers\Admin\OrderReturnController::class, 'index'])->name('order-returns.index');
+    Route::post('/order-returns/bulk-delete', [App\Http\Controllers\Admin\OrderReturnController::class, 'bulkDelete'])->name('order-returns.bulk_delete');
+    Route::get('/order-returns/export', [App\Http\Controllers\Admin\OrderReturnController::class, 'export'])->name('order-returns.export');
     Route::delete('/order-returns/{id}', [App\Http\Controllers\Admin\OrderReturnController::class, 'destroy'])->name('order-returns.destroy');
 
     // Shipments
-    Route::get('/shipments', [App\Http\Controllers\Admin\ShipmentController::class, 'index'])->name('shipments.index');
-    Route::delete('/shipments/{id}', [App\Http\Controllers\Admin\ShipmentController::class, 'destroy'])->name('shipments.destroy');
+    Route::get('shipments', [\App\Http\Controllers\Admin\ShipmentController::class, 'index'])->name('shipments.index');
+    Route::delete('shipments/{id}', [\App\Http\Controllers\Admin\ShipmentController::class, 'destroy'])->name('shipments.destroy');
+    Route::post('shipments/bulk-delete', [\App\Http\Controllers\Admin\ShipmentController::class, 'bulkDelete'])->name('shipments.bulk_delete');
+    Route::get('shipments/export', [\App\Http\Controllers\Admin\ShipmentController::class, 'export'])->name('shipments.export');
+    Route::get('shipments/{id}/edit', [\App\Http\Controllers\Admin\ShipmentController::class, 'edit'])->name('shipments.edit');
+    Route::put('shipments/{id}', [\App\Http\Controllers\Admin\ShipmentController::class, 'update'])->name('shipments.update');
 
     // Invoices
     Route::get('/invoices', [App\Http\Controllers\Admin\InvoiceController::class, 'index'])->name('invoices.index');
+    Route::post('/invoices/generate-invoices', [App\Http\Controllers\Admin\InvoiceController::class, 'generate'])->name('invoices.generate');
     Route::get('/invoices/{id}', [App\Http\Controllers\Admin\InvoiceController::class, 'show'])->name('invoices.show');
     Route::delete('/invoices/{id}', [App\Http\Controllers\Admin\InvoiceController::class, 'destroy'])->name('invoices.destroy');
 
@@ -381,6 +388,26 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
         Route::post('/bulk-delete', [FaqController::class, 'bulkDelete'])->name('faqs.bulk-delete');
     });
 
+    // Simple Sliders Routes
+    Route::group(['prefix' => 'simple-sliders'], function () {
+        Route::get('/', [\App\Http\Controllers\Admin\SimpleSliderController::class, 'index'])->name('simple-sliders.index');
+        Route::get('/create', [\App\Http\Controllers\Admin\SimpleSliderController::class, 'create'])->name('simple-sliders.create');
+        Route::post('/store', [\App\Http\Controllers\Admin\SimpleSliderController::class, 'store'])->name('simple-sliders.store');
+        Route::get('/{id}/edit', [\App\Http\Controllers\Admin\SimpleSliderController::class, 'edit'])->name('simple-sliders.edit');
+        Route::put('/{id}', [\App\Http\Controllers\Admin\SimpleSliderController::class, 'update'])->name('simple-sliders.update');
+        Route::delete('/{id}', [\App\Http\Controllers\Admin\SimpleSliderController::class, 'destroy'])->name('simple-sliders.destroy');
+        Route::post('/bulk-delete', [\App\Http\Controllers\Admin\SimpleSliderController::class, 'bulkDelete'])->name('simple-sliders.bulk-delete');
+        
+        // Items within a slider
+        Route::group(['prefix' => 'items'], function () {
+            Route::get('/create', [\App\Http\Controllers\Admin\SimpleSliderItemController::class, 'create'])->name('simple-sliders.items.create');
+            Route::post('/store', [\App\Http\Controllers\Admin\SimpleSliderItemController::class, 'store'])->name('simple-sliders.items.store');
+            Route::get('/{id}/edit', [\App\Http\Controllers\Admin\SimpleSliderItemController::class, 'edit'])->name('simple-sliders.items.edit');
+            Route::put('/{id}', [\App\Http\Controllers\Admin\SimpleSliderItemController::class, 'update'])->name('simple-sliders.items.update');
+            Route::delete('/{id}', [\App\Http\Controllers\Admin\SimpleSliderItemController::class, 'destroy'])->name('simple-sliders.items.destroy');
+        });
+    });
+
 
     Route::group(['prefix' => 'marketplaces'], function() {
         Route::get('stores', [AdminStoreController::class,'index'])->name('marketplace.store.index');
@@ -413,6 +440,21 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('pages/{id}/edit', [AdminPageController::class, 'edit'])->name('pages.edit');
     Route::put('pages/{id}', [AdminPageController::class, 'update'])->name('pages.update');
     Route::delete('pages/{id}', [AdminPageController::class, 'destroy'])->name('pages.destroy');
+
+    // Blog Posts
+    Route::get('blog/posts', [\App\Http\Controllers\Admin\PostController::class, 'index'])->name('blog.posts.index');
+    Route::get('blog/posts/create', [\App\Http\Controllers\Admin\PostController::class, 'create'])->name('blog.posts.create');
+    Route::post('blog/posts', [\App\Http\Controllers\Admin\PostController::class, 'store'])->name('blog.posts.store');
+    Route::get('blog/posts/{post}/edit', [\App\Http\Controllers\Admin\PostController::class, 'edit'])->name('blog.posts.edit');
+    Route::put('blog/posts/{post}', [\App\Http\Controllers\Admin\PostController::class, 'update'])->name('blog.posts.update');
+    Route::delete('blog/posts/{post}', [\App\Http\Controllers\Admin\PostController::class, 'destroy'])->name('blog.posts.destroy');
+
+    // Blog Categories
+    Route::get('blog/categories', [\App\Http\Controllers\Admin\BlogCategoryController::class, 'index'])->name('blog.categories.index');
+    Route::post('blog/categories', [\App\Http\Controllers\Admin\BlogCategoryController::class, 'store'])->name('blog.categories.store');
+    Route::get('blog/categories/{category}/edit', [\App\Http\Controllers\Admin\BlogCategoryController::class, 'edit'])->name('blog.categories.edit');
+    Route::put('blog/categories/{category}', [\App\Http\Controllers\Admin\BlogCategoryController::class, 'update'])->name('blog.categories.update');
+    Route::delete('blog/categories/{category}', [\App\Http\Controllers\Admin\BlogCategoryController::class, 'destroy'])->name('blog.categories.destroy');
 
     // Route::resource('customers', AdminCustomerController::class);
     // Route::resource('customers', AdminCustomerController::class);

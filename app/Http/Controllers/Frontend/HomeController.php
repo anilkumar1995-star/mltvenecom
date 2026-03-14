@@ -6,11 +6,16 @@ use App\Http\Controllers\Controller;
 use App\Models\EcProduct;
 use App\Models\EcProductCategory;
 use App\Models\EcBrand;
+use App\Models\SimpleSlider;
 
 class HomeController extends Controller
 {
     public function index()
     {
+        $home_slider = SimpleSlider::with(['sliderItems' => function($q) {
+            $q->orderBy('order', 'asc');
+        }])->where('key', 'home-slider')->where('status', 'published')->first();
+
         $featured_products = EcProduct::published()
             ->featured()
             ->with(['brand', 'categories'])
@@ -64,6 +69,7 @@ class HomeController extends Controller
             ->get();
 
         return view('frontend.home', compact(
+            'home_slider',
             'featured_products',
             'new_arrivals',
             'on_sale',
