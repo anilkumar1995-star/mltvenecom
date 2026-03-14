@@ -722,8 +722,8 @@
     <script src="https://shofy-grocery.botble.com/vendor/core/plugins/ecommerce/js/edit-product.js?v=1.4.4"></script>
     <script src="https://shofy-grocery.botble.com/vendor/core/core/base/js/tags.js?v=1.4.4"></script>
     <script src="https://shofy-grocery.botble.com/vendor/core/packages/slug/js/slug.js?v=1.4.4"></script>
-    <script src="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/ckeditor/ckeditor.js?v=1.4.4"></script>
-    <script src="https://shofy-grocery.botble.com/vendor/core/core/base/js/editor.js?v=1.4.4"></script>
+    <script src="{{ asset('vendor/core/core/base/libraries/ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset('vendor/core/core/base/js/editor.js') }}"></script>
     <script src="https://shofy-grocery.botble.com/vendor/core/packages/shortcode/js/shortcode.js?v=1.4.4"></script>
     <script src="https://shofy-grocery.botble.com/vendor/core/core/base/js/repeater-field.js?v=1.4.4"></script>
     {{-- <script src="https://shofy-grocery.botble.com/vendor/core/plugins/ecommerce/js/product-option.js?v=1.4.4"></script> --}}
