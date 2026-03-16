@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'Shofy - Multipurpose eCommerce Laravel Script')</title>
+    <title>@yield('title', 'MLTVE - Multipurpose eCommerce Laravel Script')</title>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
@@ -18,12 +18,12 @@
     {{--  @vite(['resources/sass/app.scss'])  --}}
 
     <meta name="description"
-        content="Shofy is a powerful tool eCommerce Laravel script for creating a professional and visually appealing online store.">
+        content="MLTVE is a powerful tool eCommerce Laravel script for creating a professional and visually appealing online store.">
     <link rel="canonical" href="{{ asset('/') }}">
     <meta name="robots" content="index, follow">
-    <meta property="og:site_name" content="Shofy - Multipurpose eCommerce Laravel Script">
+    <meta property="og:site_name" content="MLTVE - Multipurpose eCommerce Laravel Script">
     <meta property="og:type" content="article">
-    <meta property="og:title" content="Shofy - Multipurpose eCommerce Laravel Script">
+    <meta property="og:title" content="MLTVE - Multipurpose eCommerce Laravel Script">
     <meta property="og:description"
         content="Shofy is a powerful tool eCommerce Laravel script for creating a professional and visually appealing online store.">
     <meta property="og:url" content="{{ asset('/') }}">

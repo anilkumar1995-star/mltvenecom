@@ -8,12 +8,6 @@ use Illuminate\Support\Facades\Log;
 
 class ApiHelper
 {
-    /**
-     * Check service status and get API credentials by code.
-     *
-     * @param string $code - The API code from apis table
-     * @return array ['status' => bool, 'apidata' => [...]]
-     */
     public static function CheckServiceStatus($code)
     {
         try {
@@ -42,11 +36,7 @@ class ApiHelper
         }
     }
 
-    /**
-     * Standard cURL method with apilog logging.
-     */
-    public static function curl($url, $method, $parameters, $header, $log = 'no', $modal = 'none', $txnid = 'none')
-    {
+    public static function curl($url, $method, $parameters, $header, $log = 'no', $modal = 'none', $txnid = 'none'){
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -71,7 +61,6 @@ class ApiHelper
         $code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         curl_close($curl);
 
-        // Log to apilogs table
         if ($log != 'no') {
             ApiLog::create([
                 'url'      => $url,

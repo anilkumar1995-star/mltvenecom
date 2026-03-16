@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\TaxController;
 use App\Http\Controllers\Admin\VendorController;
 use App\Http\Controllers\Admin\WithdrawlsController;
 use App\Http\Controllers\Admin\CustomerController as AdminCustomerController;
+use App\Http\Controllers\Admin\AnnouncementController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
@@ -408,6 +409,10 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
         });
     });
 
+    // Announcements Routes
+    Route::post('/announcements/bulk-delete', [AnnouncementController::class, 'bulkDelete'])->name('announcements.bulk_delete');
+    Route::resource('announcements', AnnouncementController::class);
+
 
     Route::group(['prefix' => 'marketplaces'], function() {
         Route::get('stores', [AdminStoreController::class,'index'])->name('marketplace.store.index');
@@ -455,6 +460,16 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('blog/categories/{category}/edit', [\App\Http\Controllers\Admin\BlogCategoryController::class, 'edit'])->name('blog.categories.edit');
     Route::put('blog/categories/{category}', [\App\Http\Controllers\Admin\BlogCategoryController::class, 'update'])->name('blog.categories.update');
     Route::delete('blog/categories/{category}', [\App\Http\Controllers\Admin\BlogCategoryController::class, 'destroy'])->name('blog.categories.destroy');
+
+    // Blog Tags
+    Route::get('blog/tags', [\App\Http\Controllers\Admin\TagController::class, 'index'])->name('blog.tags.index');
+    Route::get('blog/tags/create', [\App\Http\Controllers\Admin\TagController::class, 'create'])->name('blog.tags.create');
+    Route::post('blog/tags', [\App\Http\Controllers\Admin\TagController::class, 'store'])->name('blog.tags.store');
+    Route::get('blog/tags/{tag}/edit', [\App\Http\Controllers\Admin\TagController::class, 'edit'])->name('blog.tags.edit');
+    Route::put('blog/tags/{tag}', [\App\Http\Controllers\Admin\TagController::class, 'update'])->name('blog.tags.update');
+    Route::delete('blog/tags/{tag}', [\App\Http\Controllers\Admin\TagController::class, 'destroy'])->name('blog.tags.destroy');
+    Route::post('blog/tags/bulk-delete', [\App\Http\Controllers\Admin\TagController::class, 'bulkDelete'])->name('blog.tags.bulk_delete');
+
 
     // Route::resource('customers', AdminCustomerController::class);
     // Route::resource('customers', AdminCustomerController::class);

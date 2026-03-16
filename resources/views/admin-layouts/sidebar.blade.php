@@ -851,6 +851,7 @@
 
 
 
+
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle nav-priority-420" href="{{ url("/") }}/admin#cms-plugins-faq" id="cms-plugins-faq" data-bs-toggle="dropdown"
                             data-bs-auto-close="false" role="button" aria-expanded="false" title="FAQs">
