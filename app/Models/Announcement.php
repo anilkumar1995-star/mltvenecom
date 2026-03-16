@@ -12,6 +12,10 @@ class Announcement extends Model
         'start_date',
         'end_date',
         'is_active',
+        'has_action',
+        'action_label',
+        'action_url',
+        'action_open_new_tab',
     ];
 
     protected $casts = [

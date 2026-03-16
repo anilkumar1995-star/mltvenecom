@@ -33,6 +33,8 @@ class AnnouncementController extends Controller
             'content' => 'required|string',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
+            'action_label' => 'nullable|string|max:255',
+            'action_url' => 'nullable|string|max:255',
         ]);
 
         try {
@@ -44,6 +46,10 @@ class AnnouncementController extends Controller
                 'start_date' => $request->start_date,
                 'end_date' => $request->end_date,
                 'is_active' => $request->has('is_active') ? 1 : 0,
+                'has_action' => $request->has('has_action') ? 1 : 0,
+                'action_label' => $request->action_label,
+                'action_url' => $request->action_url,
+                'action_open_new_tab' => $request->has('action_open_new_tab') ? 1 : 0,
             ]);
 
             DB::commit();
@@ -72,6 +78,8 @@ class AnnouncementController extends Controller
             'content' => 'required|string',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
+            'action_label' => 'nullable|string|max:255',
+            'action_url' => 'nullable|string|max:255',
         ]);
 
         try {
@@ -84,6 +92,10 @@ class AnnouncementController extends Controller
                 'start_date' => $request->start_date,
                 'end_date' => $request->end_date,
                 'is_active' => $request->has('is_active') ? 1 : 0,
+                'has_action' => $request->has('has_action') ? 1 : 0,
+                'action_label' => $request->action_label,
+                'action_url' => $request->action_url,
+                'action_open_new_tab' => $request->has('action_open_new_tab') ? 1 : 0,
             ]);
 
             DB::commit();

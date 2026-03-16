@@ -156,7 +156,7 @@
                             <div class="row align-items-center">
                                 <div class="col-xxl-7 col-xl-7 col-lg-6">
                                     <div class="tp-slider-content-5 p-relative z-index-1">
-                                        <h3 class="tp-slider-title-5">{!! nl2br(e($item->title)) !!}</h3>
+                                        <h3 class="tp-slider-title-5">{!! $item->title !!}</h3>
                                         @if($item->link)
                                         <div class="tp-slider-btn-5"><a href="{{ $item->link }}" class="tp-btn-green">
                                                 Shop Now </a></div>
@@ -216,23 +216,29 @@
                 <h3 class="section-title tp-section-title-5"><span>Popular</span> on the Shofy store. </h3>
             </div>
             <div class="row">
-                @if (!empty($categories))
-                    @foreach ($categories as $category)
-                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                            <div class="tp-category-item-5 p-relative z-index-1 fix mb-30">
-                                <a href="{{ route('frontend.categories.show', $category->slug) }}">
-                                    <div class="tp-category-thumb-5 include-bg"
-                                        style="background-image: url({{ $category->image ? asset('uploads/' . $category->image) : asset('home/placeholder.png') }});">
+                <div class="col-xl-12">
+                    <div class="tp-category-slider-active-2 swiper-container">
+                        <div class="swiper-wrapper">
+                            @if (!empty($categories))
+                                @foreach ($categories as $category)
+                                    <div class="swiper-slide">
+                                        <div class="tp-category-item-5 p-relative z-index-1 fix mb-30">
+                                            <a href="{{ route('frontend.categories.show', $category->slug) }}">
+                                                <div class="tp-category-thumb-5 include-bg"
+                                                    style="background-image: url({{ $category->image ? asset('uploads/' . $category->image) : asset('home/placeholder.png') }});">
+                                                </div>
+                                                <div class="tp-category-content-5">
+                                                    <h3 class="tp-category-title-5">{{ $category->name }}</h3>
+                                                    <span> {{ $category->products_count ?? 0 }} products </span>
+                                                </div>
+                                            </a>
+                                        </div>
                                     </div>
-                                    <div class="tp-category-content-5">
-                                        <h3 class="tp-category-title-5">{{ $category->name }}</h3>
-                                        <span> {{ $category->products_count ?? 0 }} products </span>
-                                    </div>
-                                </a>
-                            </div>
+                                @endforeach
+                            @endif
                         </div>
-                    @endforeach
-                @endif
+                    </div>
+                </div>
             </div>
         </div>
     </section>
