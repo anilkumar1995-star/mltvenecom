@@ -52,47 +52,69 @@ class LoginController extends Controller
             return $this->sendLockoutResponse($request);
         }
 
-        if (Auth::guard('customer')->attempt($this->credentials($request), $request->filled('remember'))) {
-            $request->session()->regenerate();
-            
-            if ($request->wantsJson()) {
-                return response()->json(['success' => true, 'redirect' => route('frontend.customer.dashboard')]);
-            }
-            // Customer -> frontend/customer/dashboard.blade.php
-            return redirect()->intended(route('frontend.customer.dashboard'));
-        }
+        $isAdminLogin = $request->is('admin/*') || $request->routeIs('admin.login');
 
-        if (Auth::guard('web')->attempt($this->credentials($request), $request->filled('remember'))) {
-            $request->session()->regenerate();
-
-            $user = Auth::guard('web')->user();
-
-            if ($user->role === 'admin') {
-                if ($request->wantsJson()) {
-                    return response()->json(['success' => true, 'redirect' => route('admin.dashboard')]);
-                }
-                return redirect()->intended(route('admin.dashboard'));
-            }
-
-            // Check for Vendor/User approval
-            if ($user->status !== 'active') {
-                Auth::guard('web')->logout();
+        if ($isAdminLogin) {
+            // ADMIN LOGIN ATTEMPT
+            if (Auth::guard('web')->attempt($this->credentials($request), $request->filled('remember'))) {
+                $user = Auth::guard('web')->user();
                 
-                if ($request->wantsJson()) {
-                    return response()->json([
-                        'error' => true,
-                        'message' => 'Your account is pending approval.'
-                    ], 403);
+                if ($user->role === 'admin') {
+                    $request->session()->regenerate();
+                    if ($request->wantsJson()) {
+                        return response()->json(['success' => true, 'redirect' => route('admin.dashboard')]);
+                    }
+                    return redirect()->intended(route('admin.dashboard'));
+                } else {
+                    Auth::guard('web')->logout();
+                    $msg = 'This login is for administrators only.';
+                    if ($request->wantsJson()) {
+                        return response()->json(['error' => true, 'message' => $msg], 403);
+                    }
+                    return back()->withInput($request->only('email', 'remember'))->withErrors(['email' => $msg]);
                 }
-                return back()->withInput($request->only('email', 'remember'))
-                             ->withErrors(['email' => 'Your account is pending approval.']);
+            }
+        } else {
+            // FRONTEND LOGIN ATTEMPT (Customer/Vendor)
+            // 1. Try Customer Guard
+            if (Auth::guard('customer')->attempt($this->credentials($request), $request->filled('remember'))) {
+                $request->session()->regenerate();
+                if ($request->wantsJson()) {
+                    return response()->json(['success' => true, 'redirect' => route('frontend.customer.dashboard')]);
+                }
+                return redirect()->intended(route('frontend.customer.dashboard'));
             }
 
-            if ($request->wantsJson()) {
-                return response()->json(['success' => true, 'redirect' => route('frontend.customer.dashboard')]);
+            // 2. Try Web Guard (for Vendors)
+            if (Auth::guard('web')->attempt($this->credentials($request), $request->filled('remember'))) {
+                $user = Auth::guard('web')->user();
+
+                // Block Admin from logging in via frontend customer page
+                if ($user->role === 'admin') {
+                    Auth::guard('web')->logout();
+                    $msg = 'Administrators must log in via the admin portal.';
+                    if ($request->wantsJson()) {
+                        return response()->json(['error' => true, 'message' => $msg], 403);
+                    }
+                    return back()->withInput($request->only('email', 'remember'))->withErrors(['email' => $msg]);
+                }
+
+                // Check for Vendor/User approval
+                if ($user->status !== 'active') {
+                    Auth::guard('web')->logout();
+                    $msg = 'Your account is pending approval.';
+                    if ($request->wantsJson()) {
+                        return response()->json(['error' => true, 'message' => $msg], 403);
+                    }
+                    return back()->withInput($request->only('email', 'remember'))->withErrors(['email' => $msg]);
+                }
+
+                $request->session()->regenerate();
+                if ($request->wantsJson()) {
+                    return response()->json(['success' => true, 'redirect' => route('frontend.customer.dashboard')]);
+                }
+                return redirect()->intended(route('frontend.customer.dashboard'));
             }
-            // Vendor/Others -> frontend/customer/dashboard.blade.php
-            return redirect()->intended(route('frontend.customer.dashboard'));
         }
 
         $this->incrementLoginAttempts($request);
