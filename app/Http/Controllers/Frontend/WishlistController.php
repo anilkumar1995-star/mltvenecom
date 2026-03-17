@@ -3,108 +3,68 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
-use App\Models\Product;
+use App\Models\EcProduct;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class WishlistController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Wishlist Page
-    |--------------------------------------------------------------------------
-    */
-    public function index(Request $request)
+    public function index()
     {
-        if (Auth::check()) {
-            // Logged in user wishlist (DB relation)
-            $products = Auth::user()
-                ->wishlist()
-                ->with('images')
-                ->paginate(12);
-        } else {
-            // Guest wishlist (session)
-            $wishlist = Session::get('wishlist', []);
-            $products = Product::whereIn('id', $wishlist)
-                ->with('images')
-                ->paginate(12);
-        }
-
-        return view('frontend.wishlist', compact('products'));
+        $wishlist = Session::get('wishlist', []);
+        $productIds = array_keys($wishlist);
+        $products = EcProduct::whereIn('id', $productIds)->get();
+        return view('frontend.wishlist.index', compact('products', 'wishlist'));
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Add / Remove Wishlist (Toggle)
-    |--------------------------------------------------------------------------
-    */
+    public function toggle(Request $request)
+    {
+        $productId = $request->product_id;
+        $product = EcProduct::findOrFail($productId);
+
+        $wishlist = Session::get('wishlist', []);
+
+        if (isset($wishlist[$productId])) {
+            unset($wishlist[$productId]);
+            $inWishlist = false;
+            $message = 'Removed from wishlist!';
+        } else {
+            $wishlist[$productId] = [
+                'id'    => $product->id,
+                'name'  => $product->name,
+                'price' => $product->final_price,
+                'image' => $product->image,
+                'slug'  => $product->slug ?: $product->id,
+            ];
+            $inWishlist = true;
+            $message = 'Added to wishlist!';
+        }
+
+        Session::put('wishlist', $wishlist);
+
+        if ($request->ajax()) {
+            return response()->json([
+                'success'     => true,
+                'message'     => $message,
+                'in_wishlist' => $inWishlist,
+                'count'       => count($wishlist),
+            ]);
+        }
+
+        return back()->with('success', $message);
+    }
+
+    // Legacy methods kept for compatibility
     public function store($productId)
     {
-        $product = Product::findOrFail($productId);
-
-        if (Auth::check()) {
-
-            $user = Auth::user();
-
-            if ($user->wishlist()->where('product_id', $productId)->exists()) {
-                $user->wishlist()->detach($productId);
-                $added = false;
-            } else {
-                $user->wishlist()->attach($productId);
-                $added = true;
-            }
-
-            $count = $user->wishlist()->count();
-
-        } else {
-            $wishlist = Session::get('wishlist', []);
-
-            if (in_array($productId, $wishlist)) {
-                $wishlist = array_diff($wishlist, [$productId]);
-                $added = false;
-            } else {
-                $wishlist[] = $productId;
-                $added = true;
-            }
-
-            Session::put('wishlist', $wishlist);
-            $count = count($wishlist);
-        }
-
-        return response()->json([
-            'status' => true,
-            'message' => $added
-                ? $product->name . ' added to wishlist.'
-                : $product->name . ' removed from wishlist.',
-            'count' => $count,
-            'added' => $added
-        ]);
+        return $this->toggle(request()->merge(['product_id' => $productId]));
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Remove Wishlist
-    |--------------------------------------------------------------------------
-    */
     public function destroy($productId)
     {
-        $product = Product::findOrFail($productId);
-
-        if (Auth::check()) {
-            Auth::user()->wishlist()->detach($productId);
-            $count = Auth::user()->wishlist()->count();
-        } else {
-            $wishlist = Session::get('wishlist', []);
-            $wishlist = array_diff($wishlist, [$productId]);
-            Session::put('wishlist', $wishlist);
-            $count = count($wishlist);
-        }
-
-        return response()->json([
-            'status' => true,
-            'message' => $product->name . ' removed from wishlist.',
-            'count' => $count
-        ]);
+        $wishlist = Session::get('wishlist', []);
+        unset($wishlist[$productId]);
+        Session::put('wishlist', $wishlist);
+        return response()->json(['status' => true, 'message' => 'Removed from wishlist.', 'count' => count($wishlist)]);
     }
 }

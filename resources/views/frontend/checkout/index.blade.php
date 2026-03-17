@@ -301,7 +301,7 @@
                                             {{ $item['name'] }} <strong class="product-quantity"> × {{ $item['quantity'] }}</strong>
                                         </td>
                                         <td class="product-total">
-                                            <span class="amount">${{ number_format($item['price'] * $item['quantity'], 2) }}</span>
+                                            <span class="amount">₹{{ number_format($item['price'] * $item['quantity'], 2) }}</span>
                                         </td>
                                     </tr>
                                     @endforeach
@@ -309,19 +309,19 @@
                                 <tfoot>
                                     <tr class="cart-subtotal">
                                         <th>Cart Subtotal</th>
-                                        <td><span class="amount">${{ number_format($subtotal, 2) }}</span></td>
+                                        <td><span class="amount">₹{{ number_format($subtotal, 2) }}</span></td>
                                     </tr>
                                     <tr class="shipping">
                                         <th>Tax</th>
                                         <td>
                                             <ul>
-                                                <li><span class="amount">${{ number_format($tax, 2) }}</span></li>
+                                                <li><span class="amount">₹{{ number_format($tax, 2) }}</span></li>
                                             </ul>
                                         </td>
                                     </tr>
                                     <tr class="order-total">
                                         <th>Order Total</th>
-                                        <td><strong><span class="amount">${{ number_format($total, 2) }}</span></strong></td>
+                                        <td><strong><span class="amount">₹{{ number_format($total, 2) }}</span></strong></td>
                                     </tr>
                                 </tfoot>
                             </table>

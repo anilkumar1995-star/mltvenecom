@@ -222,7 +222,7 @@
                                             <td class="text-center">{{ $customer->id }}</td>
                                             <td>
                                                 @if($customer->avatar)
-                                                    <img src="{{ asset('storage/' . $customer->avatar) }}" alt="{{ $customer->name }}" class="avatar rounded" style="width: 40px; height: 40px; object-fit: cover;">
+                                                    <img src="{{ 'https://images.incomeowl.in/incomeowl/b2b/images/' . $customer->avatar }}" alt="{{ $customer->name }}" class="avatar rounded" style="width: 40px; height: 40px; object-fit: cover;" onerror="this.src='https://via.placeholder.com/40'">
                                                 @else
                                                     <span class="avatar rounded">{{ substr($customer->name, 0, 1) }}</span>
                                                 @endif

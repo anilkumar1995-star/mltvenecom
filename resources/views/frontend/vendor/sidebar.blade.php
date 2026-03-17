@@ -10,7 +10,7 @@
             My Products
         </a>
         <a href="{{ route('logout') }}" class="list-group-item list-group-item-action text-danger"
-           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+           onclick="event.preventDefault(); document.getElementById('global-logout-form').submit();">
             Logout
         </a>
     </div>

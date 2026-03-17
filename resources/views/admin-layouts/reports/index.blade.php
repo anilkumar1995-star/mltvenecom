@@ -21,8 +21,28 @@
     .card-header { background: transparent; border-bottom: 1px solid rgba(0,0,0,0.05); padding: 0.85rem 1.25rem; display: flex; align-items: center; justify-content: space-between; }
     .card-title { font-size: 0.825rem; font-weight: 700; color: #1f2937; margin: 0; }
     
-    .avatar-bt { width: 44px; height: 44px; border-radius: 4px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .avatar-bt i { font-size: 1.25rem; }
+    .avatar-bt { 
+        width: 64px !important; 
+        height: 64px !important; 
+        min-width: 64px !important;
+        min-height: 64px !important;
+        border-radius: 12px !important; 
+        display: grid !important; 
+        place-items: center !important; 
+        flex-shrink: 0 !important; 
+        background-color: rgba(0,0,0,0.03);
+        transition: all 0.2s ease;
+    }
+    .avatar-bt i { 
+        font-size: 32px !important; 
+        width: 32px !important;
+        height: 32px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        line-height: 1 !important; 
+    }
+    .card-sm:hover .avatar-bt { transform: scale(1.1); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
     
     .bg-pink-lt { background: #fce8ef !important; color: var(--bt-pink) !important; }
     .bg-green-lt { background: #eaf7ed !important; color: var(--bt-green) !important; }
@@ -35,8 +55,8 @@
     .bg-purple-lt { background: #f7ecf9 !important; color: var(--bt-purple) !important; }
     .bg-teal-lt { background: #e7f6f2 !important; color: var(--bt-teal) !important; }
 
-    .subheader { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: #64748b; margin-bottom: 2px; }
-    .h2 { font-size: 1.25rem; font-weight: 700; color: #1e293b; margin: 0; }
+    .subheader { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: #64748b; margin-bottom: 4px; }
+    .h2 { font-size: 1.5rem; font-weight: 700; color: #1e293b; margin: 0; }
 
     .table thead th { background: #f8fafc; text-transform: uppercase; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.05em; color: #64748b; padding: 0.75rem 1rem; border-top: 0; border-bottom: 1px solid rgba(0,0,0,0.05); }
     .table tbody td { padding: 0.75rem 1rem; font-size: 0.8rem; vertical-align: middle; border-color: rgba(0,0,0,0.03); }
@@ -83,36 +103,36 @@
             <!-- 10 Widgets Section -->
             <div class="row row-cards mb-4">
                 <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="card card-sm"><div class="card-body d-flex align-items-center"><span class="avatar-bt bg-pink-lt me-3"><i class="ti ti-currency-dollar"></i></span><div><div class="subheader">Revenue</div><div class="h2">${{ number_format($revenue, 2) }}</div></div></div></div>
+                    <div class="card card-sm"><div class="card-body d-flex align-items-center"><span class="avatar-bt bg-pink-lt me-3" style="width: 60px !important; height: 60px !important; min-width: 60px !important; display: flex !important; align-items: center !important; justify-content: center !important; border-radius: 12px !important; flex-shrink: 0 !important;"><i class="ti ti-currency-rupee" style="font-size: 30px !important;"></i></span><div><div class="subheader">Revenue</div><div class="h2">₹{{ number_format($revenue, 2) }}</div></div></div></div>
                 </div>
                 <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="card card-sm"><div class="card-body d-flex align-items-center"><span class="avatar-bt bg-green-lt me-3"><i class="ti ti-chart-line"></i></span><div><div class="subheader">Profit</div><div class="h2">${{ number_format($profit, 2) }}</div></div></div></div>
+                    <div class="card card-sm"><div class="card-body d-flex align-items-center"><span class="avatar-bt bg-green-lt me-3" style="width: 60px !important; height: 60px !important; min-width: 60px !important; display: flex !important; align-items: center !important; justify-content: center !important; border-radius: 12px !important; flex-shrink: 0 !important;"><i class="ti ti-chart-line" style="font-size: 30px !important;"></i></span><div><div class="subheader">Profit</div><div class="h2">₹{{ number_format($profit, 2) }}</div></div></div></div>
                 </div>
                 <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="card card-sm"><div class="card-body d-flex align-items-center"><span class="avatar-bt bg-red-lt me-3"><i class="ti ti-trending-down"></i></span><div><div class="subheader">Expenses</div><div class="h2">${{ number_format($expenses, 2) }}</div></div></div></div>
+                    <div class="card card-sm"><div class="card-body d-flex align-items-center"><span class="avatar-bt bg-red-lt me-3" style="width: 60px !important; height: 60px !important; min-width: 60px !important; display: flex !important; align-items: center !important; justify-content: center !important; border-radius: 12px !important; flex-shrink: 0 !important;"><i class="ti ti-trending-down" style="font-size: 30px !important;"></i></span><div><div class="subheader">Expenses</div><div class="h2">₹{{ number_format($expenses, 2) }}</div></div></div></div>
                 </div>
                 <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="card card-sm"><div class="card-body d-flex align-items-center"><span class="avatar-bt bg-blue-lt me-3"><i class="ti ti-notebook"></i></span><div><div class="subheader">Average Order Value</div><div class="h2">${{ number_format($averageOrderValue, 2) }}</div></div></div></div>
+                    <div class="card card-sm"><div class="card-body d-flex align-items-center"><span class="avatar-bt bg-blue-lt me-3" style="width: 60px !important; height: 60px !important; min-width: 60px !important; display: flex !important; align-items: center !important; justify-content: center !important; border-radius: 12px !important; flex-shrink: 0 !important;"><i class="ti ti-notebook" style="font-size: 30px !important;"></i></span><div><div class="subheader">Average Order Value</div><div class="h2">₹{{ number_format($averageOrderValue, 2) }}</div></div></div></div>
                 </div>
                 
                 <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="card card-sm"><div class="card-body d-flex align-items-center"><span class="avatar-bt bg-yellow-lt me-3"><i class="ti ti-shopping-cart"></i></span><div><div class="subheader">Orders</div><div class="h2">{{ $ordersCount }}</div></div></div></div>
+                    <div class="card card-sm"><div class="card-body d-flex align-items-center"><span class="avatar-bt bg-yellow-lt me-3" style="width: 60px !important; height: 60px !important; min-width: 60px !important; display: flex !important; align-items: center !important; justify-content: center !important; border-radius: 12px !important; flex-shrink: 0 !important;"><i class="ti ti-shopping-cart" style="font-size: 30px !important;"></i></span><div><div class="subheader">Orders</div><div class="h2">{{ $ordersCount }}</div></div></div></div>
                 </div>
                 <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="card card-sm"><div class="card-body d-flex align-items-center"><span class="avatar-bt bg-lime-lt me-3"><i class="ti ti-users"></i></span><div><div class="subheader">Customers</div><div class="h2">{{ $customersCount }}</div></div></div></div>
+                    <div class="card card-sm"><div class="card-body d-flex align-items-center"><span class="avatar-bt bg-lime-lt me-3" style="width: 60px !important; height: 60px !important; min-width: 60px !important; display: flex !important; align-items: center !important; justify-content: center !important; border-radius: 12px !important; flex-shrink: 0 !important;"><i class="ti ti-users" style="font-size: 30px !important;"></i></span><div><div class="subheader">Customers</div><div class="h2">{{ $customersCount }}</div></div></div></div>
                 </div>
                 <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="card card-sm"><div class="card-body d-flex align-items-center"><span class="avatar-bt bg-cyan-lt me-3"><i class="ti ti-database"></i></span><div><div class="subheader">Products</div><div class="h2">{{ $productsCount }}</div></div></div></div>
+                    <div class="card card-sm"><div class="card-body d-flex align-items-center"><span class="avatar-bt bg-cyan-lt me-3" style="width: 60px !important; height: 60px !important; min-width: 60px !important; display: flex !important; align-items: center !important; justify-content: center !important; border-radius: 12px !important; flex-shrink: 0 !important;"><i class="ti ti-database" style="font-size: 30px !important;"></i></span><div><div class="subheader">Products</div><div class="h2">{{ $productsCount }}</div></div></div></div>
                 </div>
                 <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="card card-sm"><div class="card-body d-flex align-items-center"><span class="avatar-bt bg-orange-lt me-3"><i class="ti ti-chart-pie"></i></span><div><div class="subheader">Conversion Rate</div><div class="h2">{{ number_format($conversionRate, 2) }}%</div></div></div></div>
+                    <div class="card card-sm"><div class="card-body d-flex align-items-center"><span class="avatar-bt bg-orange-lt me-3" style="width: 60px !important; height: 60px !important; min-width: 60px !important; display: flex !important; align-items: center !important; justify-content: center !important; border-radius: 12px !important; flex-shrink: 0 !important;"><i class="ti ti-chart-pie" style="font-size: 30px !important;"></i></span><div><div class="subheader">Conversion Rate</div><div class="h2">{{ number_format($conversionRate, 2) }}%</div></div></div></div>
                 </div>
 
-                <div class="col-sm-12 col-md-6 col-lg-6">
-                    <div class="card card-sm"><div class="card-body d-flex align-items-center"><span class="avatar-bt bg-purple-lt me-3"><i class="ti ti-discount-2"></i></span><div><div class="subheader">Tax Collection</div><div class="h2">${{ number_format($taxAmount, 2) }}</div></div></div></div>
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="card card-sm"><div class="card-body d-flex align-items-center"><span class="avatar-bt bg-purple-lt me-3" style="width: 60px !important; height: 60px !important; min-width: 60px !important; display: flex !important; align-items: center !important; justify-content: center !important; border-radius: 12px !important; flex-shrink: 0 !important;"><i class="ti ti-discount-2" style="font-size: 30px !important;"></i></span><div><div class="subheader">Tax Collection</div><div class="h2">₹{{ number_format($taxAmount, 2) }}</div></div></div></div>
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-6">
-                    <div class="card card-sm"><div class="card-body d-flex align-items-center"><span class="avatar-bt bg-teal-lt me-3"><i class="ti ti-star"></i></span><div><div class="subheader">Product Reviews</div><div class="h2">{{ number_format($reviewsAvg, 1) }} ({{ $reviewsCount }} reviews)</div></div></div></div>
+                    <div class="card card-sm"><div class="card-body d-flex align-items-center"><span class="avatar-bt bg-teal-lt me-3" style="width: 60px !important; height: 60px !important; min-width: 60px !important; display: flex !important; align-items: center !important; justify-content: center !important; border-radius: 12px !important; flex-shrink: 0 !important;"><i class="ti ti-star" style="font-size: 30px !important;"></i></span><div><div class="subheader">Product Reviews</div><div class="h2">{{ number_format($reviewsAvg, 1) }} ({{ $reviewsCount }} reviews)</div></div></div></div>
                 </div>
             </div>
 
@@ -141,7 +161,7 @@
                                     <tr>
                                         <td>#{{ $order->id }}</td>
                                         <td>{{ @$order->user->name ?: 'Guest' }}</td>
-                                        <td class="font-weight-bold">${{ number_format($order->amount, 2) }}</td>
+                                        <td class="font-weight-bold">₹{{ number_format($order->amount, 2) }}</td>
                                         <td class="text-uppercase small">{{ @$order->payment->payment_channel ?: 'N/A' }}</td>
                                         <td><span class="badge bg-{{ @$order->payment->status == 'completed' ? 'green' : 'orange' }}-lt">{{ ucfirst(@$order->payment->status ?: 'Pending') }}</span></td>
                                     </tr>
@@ -192,7 +212,6 @@
 @endsection
 
 @push('scripts')
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -225,7 +244,9 @@
                     stroke: { curve: 'smooth', width: 2 },
                     xaxis: { categories: res.dates },
                     fill: { type: 'gradient', gradient: { opacityFrom: 0.2, opacityTo: 0.05 } },
-                    legend: { position: 'top', horizontalAlign: 'right' }
+                    legend: { position: 'top', horizontalAlign: 'right' },
+                    yaxis: { labels: { formatter: (val) => "₹" + val.toLocaleString() } },
+                    tooltip: { y: { formatter: (val) => "₹" + val.toLocaleString() } }
                 }).render();
 
                 // Line Charts
@@ -241,7 +262,12 @@
 
                 // Other Charts
                 new ApexCharts(document.querySelector("#retention-chart"), { series: [{ name: 'Retention', data: Array(res.dates.length).fill(0) }], chart: { type: 'line', height: 300, toolbar: { show: false } }, stroke: { curve: 'smooth', width: 3 }, colors: ['#74b816'], xaxis: { categories: res.dates } }).render();
-                new ApexCharts(document.querySelector("#categories-chart"), { series: res.categorySales.map(i => parseFloat(i.total)), labels: res.categorySales.map(i => i.name), chart: { type: 'donut', height: 300 } }).render();
+                new ApexCharts(document.querySelector("#categories-chart"), { 
+                    series: res.categorySales.map(i => parseFloat(i.total)), 
+                    labels: res.categorySales.map(i => i.name), 
+                    chart: { type: 'donut', height: 300 },
+                    tooltip: { y: { formatter: (val) => "₹" + val.toLocaleString() } }
+                }).render();
                 new ApexCharts(document.querySelector("#statuses-chart"), { series: [{ name: 'Status', data: res.orderStatuses.map(i => parseInt(i.total)) }], chart: { type: 'bar', height: 300, toolbar: { show: false } }, plotOptions: { bar: { horizontal: true, borderRadius: 2 } }, xaxis: { categories: res.orderStatuses.map(i => i.status) }, colors: ['#206bc4'] }).render();
                 new ApexCharts(document.querySelector("#payments-chart"), { series: res.paymentMethods.map(i => parseInt(i.total)), labels: res.paymentMethods.map(i => i.payment_method), chart: { type: 'pie', height: 300 } }).render();
                 new ApexCharts(document.querySelector("#shipping-chart"), { series: [{ name: 'Shipping', data: res.shippingMethods.map(i => parseInt(i.total)) }], chart: { type: 'bar', height: 300, toolbar: { show: false } }, xaxis: { categories: res.shippingMethods.map(i => i.shipping_method) }, colors: ['#206bc4'] }).render();

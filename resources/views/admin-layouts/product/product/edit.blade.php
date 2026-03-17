@@ -87,7 +87,7 @@
                                                         @foreach($product->images as $img)
                                                         <div class="col-6 col-md-4 col-lg-3 existing-image-item">
                                                             <div class="card border-0 shadow-sm position-relative">
-                                                                <img src="{{ asset('uploads/'.$img) }}" class="card-img-top rounded" style="height: 100px; object-fit: cover;">
+                                                                <img src="{{ str_starts_with($img, 'http') ? $img : \App\Helpers\ImageHelper::getImageUrl().$img }}" class="card-img-top rounded" style="height: 100px; object-fit: cover;">
                                                                 <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 remove-existing-img" style="border-radius: 50%; padding: 0 6px;">&times;</button>
                                                                 <input type="hidden" name="existing_images[]" value="{{ $img }}">
                                                             </div>
@@ -116,7 +116,7 @@
                                                        @foreach($product->video_media as $video)
                                                             @if(isset($video['file']))
                                                             <div class="card border-0 shadow-sm">
-                                                                 <video src="{{ asset('storage/'.$video['file']) }}" controls class="w-100 rounded" style="max-height: 200px;"></video>
+                                                                 <video src="{{ str_starts_with($video['file'] ?? '', 'http') ? ($video['file'] ?? '') : \App\Helpers\ImageHelper::getImageUrl().($video['file'] ?? '') }}" controls class="w-100 rounded" style="max-height: 200px;"></video>
                                                                  <div class="p-2 text-center small text-muted text-truncate">Existing Video</div>
                                                             </div>
                                                             @endif
@@ -211,10 +211,10 @@
                                                 <div class="mb-3 position-relative"><label class="form-label">SKU</label><input class="form-control" type="text" name="sku" value="{{ old('sku', $product->sku) }}" /></div>
                                             </div>
                                             <div class="col-md-6">
-                                                <div class="mb-3 position-relative"><label class="form-label">Price</label><div class="input-group input-group-flat"><span class="input-group-text">$</span><input class="form-control input-mask-number" type="text" name="price" value="{{ old('price', $product->price) }}" data-thousands-separator="," data-decimal-separator="." step="any" /></div></div>
+                                                <div class="mb-3 position-relative"><label class="form-label">Price</label><div class="input-group input-group-flat"><span class="input-group-text">₹</span><input class="form-control input-mask-number" type="text" name="price" value="{{ old('price', $product->price) }}" data-thousands-separator="," data-decimal-separator="." step="any" /></div></div>
                                             </div>
                                             <div class="col-md-6">
-                                                <div class="mb-3 position-relative"><label class="form-label">Price sale</label><div class="input-group input-group-flat"><span class="input-group-text">$</span><input class="form-control input-mask-number" type="text" name="sale_price" value="{{ old('sale_price', $product->sale_price) }}" data-thousands-separator="," data-decimal-separator="." /></div></div>
+                                                <div class="mb-3 position-relative"><label class="form-label">Price sale</label><div class="input-group input-group-flat"><span class="input-group-text">₹</span><input class="form-control input-mask-number" type="text" name="sale_price" value="{{ old('sale_price', $product->sale_price) }}" data-thousands-separator="," data-decimal-separator="." /></div></div>
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="mb-3 position-relative">
@@ -222,7 +222,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
-                                                <div class="mb-3 position-relative"><label class="form-label">Cost per item</label><div class="input-group input-group-flat"><span class="input-group-text">$</span><input class="form-control input-mask-number" type="text" name="cost_per_item" value="{{ old('cost_per_item', $product->cost_per_item) }}" step="any" /></div></div>
+                                                <div class="mb-3 position-relative"><label class="form-label">Cost per item</label><div class="input-group input-group-flat"><span class="input-group-text">₹</span><input class="form-control input-mask-number" type="text" name="cost_per_item" value="{{ old('cost_per_item', $product->cost_per_item) }}" step="any" /></div></div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="mb-3 position-relative"><label class="form-label">Barcode</label><input class="form-control" type="text" name="barcode" value="{{ old('barcode', $product->barcode) }}" /></div>
@@ -438,7 +438,7 @@
 
                             <div class="card meta-boxes"><div class="card-header"><h4 class="card-title"><label class="form-label" for="brand_id">Brand</label></h4></div><div class=" card-body"><select class="select-search-full form-select" data-placeholder="Select a brand..." data-allow-clear="true" name="brand_id"><option value="">Select a brand...</option>@foreach ($brands as $row)<option value="{{ $row->id }}" {{ $product->brand_id == $row->id ? 'selected' : '' }}>{{ $row->name }}</option>@endforeach</select></div></div>
 
-                            <div class="card meta-boxes"><div class="card-header"><h4 class="card-title"><label class="form-label">Featured image (optional)</label></h4></div><div class=" card-body"><div class="image-box"><div class="preview-image-wrapper mb-1"><div class="preview-image-inner"><img id="preview-image" class="preview-image default-image" src="{{ $product->image ? asset('uploads/'.$product->image) : asset('vendor/core/core/base/images/placeholder.png') }}" alt="Preview image" style="width: 150px; height: 150px; object-fit: cover; border-radius: 4px;" /></div></div><input type="file" name="image_file" id="image_file" class="form-control" accept="image/*" onchange="document.getElementById('preview-image').src = window.URL.createObjectURL(this.files[0])"></div></div></div>
+                            <div class="card meta-boxes"><div class="card-header"><h4 class="card-title"><label class="form-label">Featured image (optional)</label></h4></div><div class=" card-body"><div class="image-box"><div class="preview-image-wrapper mb-1"><div class="preview-image-inner"><img id="preview-image" class="preview-image default-image" src="{{ $product->image_url }}" alt="Preview image" style="width: 150px; height: 150px; object-fit: cover; border-radius: 4px;" /></div></div><input type="file" name="image_file" id="image_file" class="form-control" accept="image/*" onchange="document.getElementById('preview-image').src = window.URL.createObjectURL(this.files[0])"></div></div></div>
 
                             <div class="card meta-boxes"><div class="card-header"><h4 class="card-title"><label class="form-label">Product collections</label></h4></div><div class="card-body"><fieldset class="form-fieldset fieldset-for-multi-check-list"><div class="multi-check-list-wrapper">@foreach ($collections as $collection)<label class="form-check"><input type="checkbox" name="product_collections[]" class="form-check-input" value="{{ $collection->id }}" {{ in_array($collection->id, $product->productCollections->pluck('id')->toArray()) ? 'checked' : '' }}><span class="form-check-label">{{ $collection->name }}</span></label>@endforeach</div></fieldset></div></div>
                             <div class="card meta-boxes"><div class="card-header"><h4 class="card-title"><label class="form-label">Labels</label></h4></div><div class=" card-body"><fieldset class="form-fieldset fieldset-for-multi-check-list"><div class="multi-check-list-wrapper">@foreach($productionlabels as $label)<label class="form-check"><input type="checkbox" name="product_labels[]" class="form-check-input" value="{{ $label->id }}" {{ in_array($label->id, $product->productLabels->pluck('id')->toArray()) ? 'checked' : '' }}><span class="form-check-label">{{ $label->name }}</span></label>@endforeach</div></fieldset></div></div>

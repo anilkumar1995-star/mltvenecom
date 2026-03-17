@@ -25,7 +25,7 @@
                                 <a href="{{ asset('/') }}">
                                     <img src="{{ asset('/') }}home/logo-white.png" data-bb-lazy="false"
                                         style="max-height: 35px !important;" loading="eager"
-                                        alt="Shofy - Multipurpose eCommerce Laravel Script">
+                                        alt="Multive - Multipurpose eCommerce Laravel Script">
                                 </a>
                             </div>
                         </div>
@@ -289,7 +289,7 @@
 
                                         @if($isLogged)
                                             <div class="d-flex align-items-center">
-                                                <a href="{{ (auth('web')->check() && $currentUser->role === 'admin') ? route('home') : route('frontend.customer.dashboard') }}" class="text-decoration-none text-start">
+                                                <a href="{{ (auth('web')->check() && $currentUser->role === 'admin') ? route('admin.dashboard') : route('frontend.customer.dashboard') }}" class="text-decoration-none text-start">
                                                     <div style="line-height: 1.2;">
                                                         <span style="font-size: 13px; color: rgba(255, 255, 255, 0.7); display: block; margin-bottom: 2px;">{{ $currentUser->email }}</span>
                                                         <span style="font-size: 15px; font-weight: 500; color: #fff; display: block;">Hello, {{ $currentUser->name }}</span>
@@ -332,7 +332,7 @@
                                                 stroke-linecap="round" stroke-linejoin="round"></path>
                                         </svg>
                                         <span class="tp-header-action-badge-5"
-                                            data-bb-value="wishlist-count">0</span>
+                                            data-bb-value="wishlist-count">{{ count(session('wishlist', [])) }}</span>
                                     </a>
                                 </div>
 

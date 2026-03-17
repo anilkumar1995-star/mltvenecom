@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Helpers\ImageHelper;
 
 class EcProduct extends Model
 {
@@ -235,5 +236,56 @@ class EcProduct extends Model
     public function getDiscountPercentage(): int
     {
         return $this->discount_percent;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Media Accessors
+    |--------------------------------------------------------------------------
+    */
+
+    public function getImageUrlAttribute()
+    {
+        if (empty($this->image)) {
+            return asset('home/placeholder.png');
+        }
+
+        if (str_starts_with($this->image, 'http')) {
+            return $this->image;
+        }
+
+        return rtrim(ImageHelper::getImageUrl(), '/') . '/' . ltrim($this->image, '/');
+    }
+
+    public function getGalleryImageUrlsAttribute()
+    {
+        $urls = [];
+        $images = $this->images ?? [];
+        foreach ($images as $img) {
+            if (empty($img)) continue;
+            
+            if (str_starts_with($img, 'http')) {
+                $urls[] = $img;
+            } else {
+                $urls[] = rtrim(ImageHelper::getImageUrl(), '/') . '/' . ltrim($img, '/');
+            }
+        }
+        return $urls;
+    }
+
+    public function getVideoUrlAttribute()
+    {
+        $videoMedia = $this->video_media ?? [];
+        $url = $videoMedia[0] ?? null;
+
+        if (empty($url)) {
+            return null;
+        }
+
+        if (str_starts_with($url, 'http')) {
+            return $url;
+        }
+
+        return rtrim(ImageHelper::getImageUrl(), '/') . '/' . ltrim($url, '/');
     }
 }

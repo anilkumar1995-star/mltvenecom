@@ -11,13 +11,13 @@
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item">
-                                    <a class="mb-0 d-inline-block fs-6 lh-1" href="{{ route('home') }}">DASHBOARD</a>
+                                    <a class="mb-0 d-inline-block fs-6 lh-1" href="{{ route('home') }}"><i class="fas fa-home me-1"></i> DASHBOARD</a>
                                 </li>
                                 <li class="breadcrumb-item">
                                     <a class="mb-0 d-inline-block fs-6 lh-1" href="{{ route('admin.simple-sliders.index') }}">SIMPLE SLIDERS</a>
                                 </li>
                                 <li class="breadcrumb-item active" aria-current="page">
-                                    <h1 class="mb-0 d-inline-block fs-6 lh-1">EDIT SLIDER</h1>
+                                    <span class="mb-0 d-inline-block fs-6 lh-1">{{ strtoupper($slider->name) }}</span>
                                 </li>
                             </ol>
                         </nav>
@@ -96,24 +96,28 @@
                                         <thead>
                                             <tr>
                                                 <th width="40" class="text-center"><input type="checkbox" class="form-check-input" id="checkAllItems"></th>
-                                                <th width="60" class="text-secondary text-uppercase fs-6">ID</th>
+                                                <th width="40" class="text-secondary text-uppercase fs-6">#</th>
                                                 <th width="80" class="text-secondary text-uppercase fs-6">IMAGE</th>
                                                 <th class="text-secondary text-uppercase fs-6">TITLE</th>
                                                 <th width="80" class="text-secondary text-uppercase fs-6 text-center">ORDER</th>
-                                                <th width="120" class="text-secondary text-uppercase fs-6 text-center">STATUS</th>
                                                 <th width="150" class="text-secondary text-uppercase fs-6 text-center">CREATED AT</th>
                                                 <th width="100" class="text-center text-secondary text-uppercase fs-6">OPERATIONS</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @forelse($slider->sliderItems as $item)
-                                            <tr>
+                                            <tr data-id="{{ $item->id }}">
                                                 <td class="text-center"><input type="checkbox" class="form-check-input row-checkbox-item" value="{{ $item->id }}"></td>
-                                                <td class="text-center text-muted" style="padding-left: 15px;">{{ $item->order > 0 ? $item->order : $loop->iteration }}</td>
+                                                <td class="text-center text-muted" style="cursor: move;">
+                                                    <i class="fas fa-grip-vertical text-muted opacity-50"></i>
+                                                </td>
                                                 <td>
                                                     <div class="p-1 border rounded bg-white d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
                                                         @if($item->image)
-                                                            <img src="{{ asset($item->image) }}" alt="" class="img-fluid" style="max-height: 100%;">
+                                                            @php
+                                                                $imageUrl = str_starts_with($item->image, 'http') ? $item->image : \App\Helpers\ImageHelper::getImageUrl() . $item->image;
+                                                            @endphp
+                                                            <img src="{{ $imageUrl }}" alt="" class="img-fluid" style="max-height: 100%;">
                                                         @else
                                                             <i class="fas fa-image fs-3 text-muted"></i>
                                                         @endif
@@ -121,9 +125,6 @@
                                                 </td>
                                                 <td><a href="#" class="text-primary text-decoration-none fs-5 fw-normal" data-bs-toggle="offcanvas" data-bs-target="#sliderItemOffcanvas" onclick='editItem(@json($item))'>{!! nl2br(e($item->title)) !!}</a></td>
                                                 <td class="text-center">{{ $item->order ?? 0 }}</td>
-                                                <td class="text-center">
-                                                    <span class="badge {{ $item->status == 'published' ? 'bg-success text-success-fg' : 'bg-secondary text-secondary-fg' }} px-2 py-1">{{ ucfirst($item->status) }}</span>
-                                                </td>
                                                 <td class="text-center text-muted fs-5 fw-normal">{{ $item->created_at ? $item->created_at->format('Y-m-d') : now()->format('Y-m-d') }}</td>
                                                 <td class="text-center">
                                                     <div class="table-actions d-flex justify-content-center gap-1">
@@ -163,6 +164,19 @@
                     </div>
                     <div class="col-md-3 gap-3 d-flex flex-column mb-md-0 mb-5">
                         <div class="card mb-3">
+                            <div class="card-header bg-light py-2">
+                                <h4 class="card-title mb-0 fs-5">Shortcode</h4>
+                            </div>
+                            <div class="card-body py-3">
+                                <div class="input-group">
+                                    <input type="text" class="form-control form-control-sm bg-light" value='[simple-slider key="{{ $slider->key }}"]' readonly id="shortcode-input">
+                                    <button class="btn btn-sm btn-outline-secondary" type="button" onclick="copyShortcode()"><i class="fas fa-copy"></i></button>
+                                </div>
+                                <small class="text-muted mt-1 d-block">Use this shortcode to display this slider anywhere.</small>
+                            </div>
+                        </div>
+
+                        <div class="card mb-3">
                             <div class="card-header">
                                 <h4 class="card-title">Publish</h4>
                             </div>
@@ -185,7 +199,7 @@
                             <div class="card-body">
                                 <div class="d-flex align-items-center justify-content-between mb-3">
                                     <div class="d-flex align-items-center">
-                                        <img src="{{ asset('flags/us.svg') }}" style="width: 24px; margin-right: 8px;">
+                                        <img src="{{ asset('vendor/core/core/base/img/flags/us.svg') }}" style="width: 24px; margin-right: 8px;">
                                         <select class="form-select form-select-sm" style="width: auto;">
                                             <option>English</option>
                                         </select>
@@ -195,15 +209,15 @@
                                     <div class="text-muted small mb-2 fw-bold">Translations</div>
                                     <ul class="list-unstyled mb-0 small">
                                         <li class="mb-2 d-flex align-items-center justify-content-between">
-                                            <span><img src="{{ asset('flags/sa.svg') }}" style="width: 16px; margin-right: 5px;"> Arabic</span>
+                                            <span><img src="{{ asset('vendor/core/core/base/img/flags/sa.svg') }}" style="width: 16px; margin-right: 5px;"> Arabic</span>
                                             <a href="#" class="text-decoration-none"><i class="fas fa-plus"></i></a>
                                         </li>
                                         <li class="mb-2 d-flex align-items-center justify-content-between">
-                                            <span><img src="{{ asset('flags/vn.svg') }}" style="width: 16px; margin-right: 5px;"> Tiếng Việt</span>
+                                            <span><img src="{{ asset('vendor/core/core/base/img/flags/vn.svg') }}" style="width: 16px; margin-right: 5px;"> Tiếng Việt</span>
                                             <a href="#" class="text-decoration-none"><i class="fas fa-plus"></i></a>
                                         </li>
                                         <li class="mb-2 d-flex align-items-center justify-content-between">
-                                            <span><img src="{{ asset('flags/fr.svg') }}" style="width: 16px; margin-right: 5px;"> Français</span>
+                                            <span><img src="{{ asset('vendor/core/core/base/img/flags/fr.svg') }}" style="width: 16px; margin-right: 5px;"> Français</span>
                                             <a href="#" class="text-decoration-none"><i class="fas fa-plus"></i></a>
                                         </li>
                                     </ul>
@@ -320,13 +334,6 @@
                     <input type="file" name="mobile_image" id="item_mobile_image" class="d-none" accept="image/*" onchange="previewImage(this, 'item_mobile_image_preview', 'item_mobile_image_preview_img')">
                 </div>
 
-                <div class="mb-4">
-                    <label class="form-label required">Status</label>
-                    <select class="form-select" name="status" id="item_status">
-                        <option value="published">Published</option>
-                        <option value="draft">Draft</option>
-                    </select>
-                </div>
 
                 <div class="offcanvas-footer border-top pt-3 d-flex justify-content-end gap-2 bg-white sticky-bottom pb-2">
                     <button type="button" class="btn btn-light" data-bs-dismiss="offcanvas">Cancel</button>
@@ -389,6 +396,13 @@
 
     const storeUrl = "{{ route('admin.simple-sliders.items.store', ['slider_id' => $slider->id]) }}";
     const updateUrlBase = "{{ url('admin/simple-sliders/items') }}";
+    const baseImageUrl = "{{ \App\Helpers\ImageHelper::getImageUrl() }}";
+
+    function getImageUrl(img) {
+        if (!img) return null;
+        if (img.startsWith('http')) return img;
+        return baseImageUrl.replace(/\/$/, '') + '/' + img.replace(/^\//, '');
+    }
 
     function resetItemForm() {
         $('#sliderItemOffcanvasLabel').text('Create a new slide');
@@ -408,30 +422,15 @@
         
         // Populate fields
         $('#item_title').val(item.title);
-        $('#item_subtitle').val(item.subtitle);
         $('#item_link').val(item.link);
-        $('#item_button_label').val(item.button_label);
         $('#item_description').val(item.description);
         $('#item_order').val(item.order);
-        $('#item_background_color').val(item.background_color || '#000000');
-        $('#item_background_color_light').prop('checked', item.background_color_light == 1);
-        $('#item_status').val(item.status);
 
-        // Previews logic (mock for existing images)
+        // Previews logic
         if (item.image) {
             $('#item_image_preview').addClass('d-none');
-            $('#item_image_preview_img').removeClass('d-none').attr('src', '/' + item.image);
+            $('#item_image_preview_img').removeClass('d-none').attr('src', getImageUrl(item.image));
         } else resetPreview('item_image');
-
-        if (item.tablet_image) {
-            $('#item_tablet_image_preview').addClass('d-none');
-            $('#item_tablet_image_preview_img').removeClass('d-none').attr('src', '/' + item.tablet_image);
-        } else resetPreview('item_tablet_image');
-
-        if (item.mobile_image) {
-            $('#item_mobile_image_preview').addClass('d-none');
-            $('#item_mobile_image_preview_img').removeClass('d-none').attr('src', '/' + item.mobile_image);
-        } else resetPreview('item_mobile_image');
     }
 
     function resetPreview(id) {
@@ -473,6 +472,37 @@
                         }
                     }
                 });
+            }
+        });
+    }
+
+    function copyShortcode() {
+        var copyText = document.getElementById("shortcode-input");
+        copyText.select();
+        copyText.setSelectionRange(0, 99999);
+        navigator.clipboard.writeText(copyText.value);
+        
+        // Show success alert
+        Swal.fire({
+            icon: 'success',
+            title: 'Copied!',
+            text: 'Shortcode copied to clipboard',
+            timer: 1500,
+            showConfirmButton: false
+        });
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+<script>
+    // Initialize sorting if there's more than 1 item
+    const el = document.querySelector('.datatable tbody');
+    if (el && el.children.length > 1) {
+        Sortable.create(el, {
+            animation: 150,
+            handle: '.fa-grip-vertical',
+            onEnd: function (evt) {
+                // Here you would normally send an AJAX request to save the new order
+                console.log('Reordered item from', evt.oldIndex, 'to', evt.newIndex);
             }
         });
     }

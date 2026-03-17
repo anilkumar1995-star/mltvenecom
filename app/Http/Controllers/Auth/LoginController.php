@@ -116,7 +116,7 @@ class LoginController extends Controller
         // 2. Web Guard
         if (auth()->guard('web')->check()) {
             if ($user->role === 'admin') {
-                return redirect()->route('admin.home');
+                return redirect()->route('admin.dashboard');
             }
             // Vendor/Others -> Customer Dashboard
             return redirect()->route('frontend.customer.dashboard');
@@ -132,8 +132,8 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
-        $this->middleware('auth')->only('logout');
+        $this->middleware('guest:web,customer')->except('logout');
+        $this->middleware('auth:web,customer')->only('logout');
     }
 
     protected function guard()

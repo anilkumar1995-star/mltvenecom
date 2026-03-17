@@ -59,8 +59,10 @@ class PostController extends Controller
         
         // Handle image upload
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('blog/posts', 'public');
-            $post->image = $imagePath;
+            $upload = \App\Helpers\ImageHelper::imageUploadHelper('post_', $request->file('image'));
+            if ($upload['status']) {
+                $post->image = $upload['data']['target_file'];
+            }
         }
 
         $post->save();
@@ -86,7 +88,10 @@ class PostController extends Controller
             ];
 
             if ($request->hasFile('seo_image')) {
-                $seoMeta['seo_image'] = $request->file('seo_image')->store('blog/seo', 'public');
+                $upload = \App\Helpers\ImageHelper::imageUploadHelper('seo_', $request->file('seo_image'));
+                if ($upload['status']) {
+                    $seoMeta['seo_image'] = $upload['data']['target_file'];
+                }
             }
 
             DB::table('meta_boxes')->updateOrInsert(
@@ -186,12 +191,10 @@ class PostController extends Controller
         $post->is_featured = $request->has('is_featured') ? 1 : 0;
         
         if ($request->hasFile('image')) {
-            // Delete old image if exists
-            if ($post->image && Storage::disk('public')->exists($post->image)) {
-                Storage::disk('public')->delete($post->image);
+            $upload = \App\Helpers\ImageHelper::imageUploadHelper('post_', $request->file('image'));
+            if ($upload['status']) {
+                $post->image = $upload['data']['target_file'];
             }
-            $imagePath = $request->file('image')->store('blog/posts', 'public');
-            $post->image = $imagePath;
         }
 
         $post->save();
@@ -226,11 +229,10 @@ class PostController extends Controller
             ];
 
             if ($request->hasFile('seo_image')) {
-                // Delete old SEO image if exists
-                if (!empty($seoMeta['seo_image']) && Storage::disk('public')->exists($seoMeta['seo_image'])) {
-                    Storage::disk('public')->delete($seoMeta['seo_image']);
+                $upload = \App\Helpers\ImageHelper::imageUploadHelper('seo_', $request->file('seo_image'));
+                if ($upload['status']) {
+                    $seoMeta['seo_image'] = $upload['data']['target_file'];
                 }
-                $seoMeta['seo_image'] = $request->file('seo_image')->store('blog/seo', 'public');
             }
 
             DB::table('meta_boxes')->updateOrInsert(

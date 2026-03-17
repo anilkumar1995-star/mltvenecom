@@ -21,6 +21,7 @@ use App\Models\Store;
 use App\Models\Tax;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Helpers\ImageHelper;
 
 
 class ProductController extends Controller
@@ -244,7 +245,6 @@ public function getAttributeValues(Request $request)
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'video_file' => 'nullable|mimes:mp4,mov,ogg,qt|max:20000',
         ]);
-
         DB::beginTransaction();
 
         try {
@@ -257,22 +257,32 @@ public function getAttributeValues(Request $request)
                 $data['status'] = 'pending';
             }
 
+            // 1. Handle Featured Image
             if ($request->hasFile('image_file')) {
-                $data['image'] = $request->file('image_file')->store('products', 'public');
+                $ImageUpload = ImageHelper::imageUploadHelper('product', $request->file('image_file'));
+                if ($ImageUpload['status']) {
+                    $data['image'] = $ImageUpload['data']['target_file'];
+                }
             }
 
-
+            // 2. Handle Gallery Images
             if ($request->hasFile('images')) {
                 $galleryImages = $product->images && is_array($product->images) ? $product->images : [];
                 foreach ($request->file('images') as $file) {
-                    $galleryImages[] = $file->store('products', 'public');
+                    $ImageUpload = ImageHelper::imageUploadHelper('gallery', $file);
+                    if ($ImageUpload['status']) {
+                        $galleryImages[] = $ImageUpload['data']['target_file'];
+                    }
                 }
                 $data['images'] = $galleryImages;
             }
 
-             if ($request->hasFile('video_file')) {
-                 $videoPath = $request->file('video_file')->store('products/videos', 'public');
-                 $data['video_media'] = [['file' => $videoPath]];
+            // 3. Handle Video
+            if ($request->hasFile('video_file')) {
+                $ImageUpload = ImageHelper::imageUploadHelper('video', $request->file('video_file'));
+                if ($ImageUpload['status']) {
+                    $data['video_media'] = [['file' => $ImageUpload['data']['target_file']]];
+                }
             }
 
              if ($request->has('faq_schema_config')) {

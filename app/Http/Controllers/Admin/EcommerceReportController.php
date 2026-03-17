@@ -190,9 +190,11 @@ class EcommerceReportController extends Controller
             ->get();
 
         // 3. Payment Methods
-        $paymentMethods = Order::whereBetween('created_at', [$startDate, $endDate])
-            ->select('payment_method', DB::raw('count(*) as total'))
-            ->groupBy('payment_method')
+        $paymentMethods = DB::table('ec_orders')
+            ->join('payments', 'ec_orders.payment_id', '=', 'payments.id')
+            ->whereBetween('ec_orders.created_at', [$startDate, $endDate])
+            ->select('payments.payment_channel as payment_method', DB::raw('count(*) as total'))
+            ->groupBy('payments.payment_channel')
             ->get();
 
         // 4. Shipping Methods

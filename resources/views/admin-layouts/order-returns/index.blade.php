@@ -54,7 +54,7 @@
                                     </div>
                                 </div>
                                 <div class="d-flex flex-column flex-sm-row align-items-stretch align-items-sm-center gap-1 table-action-buttons">
-                                    <a href="{{ route('order-returns.export') }}" class="btn" data-bs-toggle="tooltip" title="Export">
+                                    <a href="{{ route('admin.order-returns.export') }}" class="btn" data-bs-toggle="tooltip" title="Export">
                                         <svg class="icon me-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M11.5 21h-6.5a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v5m-5 6h7m-3 -3l3 3l-3 3" /></svg>
                                         Export
                                     </a>
@@ -103,7 +103,7 @@
                                             </td>
                                             <td>
                                                 @if($return->user)
-                                                    <a href="{{ route('customers.edit', $return->user->id) }}">{{ $return->user->name }}</a>
+                                                    <a href="{{ route('admin.customers.edit', $return->user->id) }}">{{ $return->user->name }}</a>
                                                 @else
                                                     Guest
                                                 @endif

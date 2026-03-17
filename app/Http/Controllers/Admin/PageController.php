@@ -37,7 +37,10 @@ class PageController extends Controller
 
         $data = $request->except(['_token', 'submitter']);
         if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('pages', 'public');
+            $upload = \App\Helpers\ImageHelper::imageUploadHelper('page_', $request->file('image'));
+            if ($upload['status']) {
+                $data['image'] = $upload['data']['target_file'];
+            }
         }
 
         $page = Page::create($data);
@@ -78,11 +81,10 @@ class PageController extends Controller
         $data = $request->except(['_token', '_method', 'submitter']);
 
         if ($request->hasFile('image')) {
-            // Delete old image if exists
-            if ($page->image && \Storage::disk('public')->exists($page->image)) {
-                \Storage::disk('public')->delete($page->image);
+            $upload = \App\Helpers\ImageHelper::imageUploadHelper('page_', $request->file('image'));
+            if ($upload['status']) {
+                $data['image'] = $upload['data']['target_file'];
             }
-            $data['image'] = $request->file('image')->store('pages', 'public');
         }
 
         $page->update($data);

@@ -39,7 +39,7 @@
             <div class="alert alert-success">{{ session('success') }}</div>
             @endif
 
-            <form action="{{ route('admin.simple-sliders.items.store') }}" method="POST" id="sliderItemForm">
+            <form action="{{ route('admin.simple-sliders.items.store') }}" method="POST" id="sliderItemForm" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="simple_slider_id" value="{{ $slider->id }}">
                 <div class="row">
@@ -112,7 +112,7 @@
                             <div class="card-body">
                                 <div class="d-flex align-items-center justify-content-between mb-3">
                                     <div class="d-flex align-items-center">
-                                        <img src="{{ asset('flags/us.svg') }}" style="width: 24px; margin-right: 8px;">
+                                        <img src="{{ asset('vendor/core/core/base/img/flags/us.svg') }}" style="width: 24px; margin-right: 8px;">
                                         <select class="form-select form-select-sm" style="width: auto;">
                                             <option>English</option>
                                         </select>
@@ -129,14 +129,11 @@
                             </div>
                             <div class="card-body">
                                 <div class="image-box">
-                                    <input type="hidden" name="image" value="{{ old('image') }}" class="image-data">
                                     <div class="preview-image-wrapper p-2 border rounded mb-2 text-center" style="min-height: 150px; display: flex; align-items: center; justify-content: center; background: #f8f9fa;">
-                                        <img src="{{ old('image') ? asset(old('image')) : 'https://via.placeholder.com/150' }}" alt="Preview image" class="preview_image img-fluid" style="max-height: 150px;">
+                                        <img src="https://via.placeholder.com/150" alt="Preview image" class="preview_image img-fluid" style="max-height: 150px;" id="image_preview">
                                     </div>
                                     <div class="image-box-actions text-center">
-                                        <a href="#" class="btn_gallery btn btn-primary btn-sm" data-result="image" data-action="select-image">
-                                            Choose image
-                                        </a>
+                                        <input type="file" name="image" id="image_input" class="form-control form-control-sm" accept="image/*">
                                     </div>
                                     @error('image')<span class="text-danger small mt-1 d-block">{{ $message }}</span>@enderror
                                 </div>
@@ -183,14 +180,11 @@
 
 @push('scripts')
 <script>
-    // Mock simple gallery button just to show an input prompt if laravel-filemanager is not fully integrated yet
-    $('.btn_gallery').on('click', function(e) {
-        e.preventDefault();
-        let url = prompt("Enter image URL:", "/uploads/sample-image.jpg");
-        if (url) {
-            $('.image-data').val(url);
-            $('.preview_image').attr('src', url);
+    document.getElementById('image_input').onchange = evt => {
+        const [file] = document.getElementById('image_input').files;
+        if (file) {
+            document.getElementById('image_preview').src = URL.createObjectURL(file);
         }
-    });
+    }
 </script>
 @endpush
