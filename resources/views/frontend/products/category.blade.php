@@ -1,4 +1,4 @@
-﻿@extends('frontend.layouts.app')
+@extends('frontend.layouts.app')
 
 @section('title', 'Products - Shofy E-commerce')
 
@@ -26,35 +26,72 @@
                                                     <path d="M6 6l12 12" />
                                                 </svg> Close </button></div>
                                         <div class="bb-shop-sidebar">
-                                            <form action="{{ route('frontend.products.index') }}" data-action="{{ route('frontend.products.index') }}" method="GET" class="bb-product-form-filter">
-                                                <div class="bb-ecommerce-filter-hidden-fields"><input name=layout type=hidden class="product-filter-item" value=""><input name=page type=hidden class="product-filter-item" value=""><input name=per-page type=hidden class="product-filter-item" value=""><input name=num type=hidden class="product-filter-item" value=""><input name=sort-by type=hidden class="product-filter-item" value=""><input name=collection type=hidden class="product-filter-item" value=""><input name=discounted_only type=hidden class="product-filter-item" value=""></div>
+                                            <form action="{{ url()->current() }}" method="GET" class="bb-product-form-filter">
+                                                <div class="bb-ecommerce-filter-hidden-fields">
+                                                    <input name="category" type="hidden" value="{{ $category->id }}">
+                                                    <input name="layout" type="hidden" class="product-filter-item" value="">
+                                                    <input name="page" type="hidden" class="product-filter-item" value="">
+                                                    <input name="per-page" type="hidden" class="product-filter-item" value="">
+                                                    <input name="num" type="hidden" class="product-filter-item" value="">
+                                                    <input name="sort-by" type="hidden" class="product-filter-item" value="">
+                                                    <input name="collection" type="hidden" class="product-filter-item" value="">
+                                                    <input name="discounted_only" type="hidden" class="product-filter-item" value="">
+                                                </div>
                                                 <div class="tp-shop-widget mb-35 tp-sidebar-search">
-                                                    <div class="tp-sidebar-search-input"><input type=search name=q placeholder="Search..." value=""><button type=submit title="Search"><svg width=18 height=18 viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <div class="tp-sidebar-search-input">
+                                                        <input type="search" name="q" placeholder="Search..." value="{{ request('q') }}">
+                                                        <button type="submit" title="Search">
+                                                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                 <path d="M8.11111 15.2222C12.0385 15.2222 15.2222 12.0385 15.2222 8.11111C15.2222 4.18375 12.0385 1 8.11111 1C4.18375 1 1 4.18375 1 8.11111C1 12.0385 4.18375 15.2222 8.11111 15.2222Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                                                                 <path d="M16.9995 17L13.1328 13.6667" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                                                            </svg></button></div>
+                                                            </svg>
+                                                        </button>
+                                                    </div>
                                                 </div>
                                                 <div class="bb-product-filter">
                                                     <h4 class="bb-product-filter-title">Categories</h4>
                                                     <div class="bb-product-filter-content">
-                                                        <ul class="page_speed_999999 bb-product-filter-items active ">
-                                                            <li class="bb-product-filter-item"><a href="{{ route('frontend.products.index') }}" class="bb-product-filter-link"><svg class="icon svg-icon-ti-ti-chevron-left" xmlns="http://www.w3.org/2000/svg" width=24 height=24 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                        <ul class="bb-product-filter-items active">
+                                                            <li class="bb-product-filter-item">
+                                                                <a href="{{ route('frontend.products.index') }}" class="bb-product-filter-link">
+                                                                    <svg class="icon svg-icon-ti-ti-chevron-left" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                                                         <path d="M6 6l6-6l6-6m-6-6l-6-6l-6-6m-6-6l-6-6l-6-6m-6-6l-6-6l-6-6m-6-6l-6-6l-6-6m-7 -7l7 -7l7 -7m7 -7l7 -7l7 -7m7 -7l7 -7l7 -7m7 -7l7 -7l7 -7m0 -4v4h4v4h4v4h4v4h4v4h4v4h4v4h4v4h4v4h4v4h4v4h4v4h4v4h0z"></path>
-                                                                    </svg> All categories </a></li>
-                                                            <li class="bb-product-filter-item"><a href="{{ route('frontend.products.index', ['category' => 1]) }}" class="bb-product-filter-link active" data-id="1"><svg class="icon svg-icon-ti-ti-folder" xmlns="http://www.w3.org/2000/svg" width=24 height=24 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                                        <path d="M5 4h4l3 3h7a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-11a2 2 0 0 1 2 -2" />
-                                                                    </svg> Frozen Food </a>
-                                                                <ul class="page_speed_18261875 bb-product-filter-items active ">
-                                                                    <li class="bb-product-filter-item"><a href="{{ route('frontend.products.index', ['category' => 'baby-food']) }}" class="bb-product-filter-link" data-id="2"> Baby Food </a></li>
-                                                                    <li class="bb-product-filter-item"><a href="{{ route('frontend.products.index', ['category' => 'strawberry']) }}" class="bb-product-filter-link" data-id="3"> Strawberry </a></li>
-                                                                    <li class="bb-product-filter-item"><a href="{{ route('frontend.products.index', ['category' => 'ice-cream']) }}" class="bb-product-filter-link" data-id="4"> Ice Cream </a></li>
-                                                                </ul><button data-bb-toggle="toggle-product-categories-tree"><svg class="icon svg-icon-ti-ti-plus" xmlns="http://www.w3.org/2000/svg" width=24 height=24 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                                        <path d="M12 5l0 14" />
-                                                                        <path d="M5 12l14 0" />
-                                                                    </svg><svg xmlns="http://www.w3.org/2000/svg" width=24 height=24 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon svg-icon-ti-ti-minus page_speed_726537333">
-                                                                        <path d="M5 12l14 0" />
-                                                                    </svg></button>
+                                                                    </svg> All categories
+                                                                </a>
                                                             </li>
+                                                            @foreach($categories as $cat)
+                                                                @php
+                                                                    $isActive = $category->id == $cat->id || ($category->parent_id == $cat->id && $category->parent_id != 0);
+                                                                    $hasChildren = $cat->children->count() > 0;
+                                                                @endphp
+                                                                <li class="bb-product-filter-item">
+                                                                    <a href="{{ route('frontend.categories.show', $cat->slug) }}" class="bb-product-filter-link {{ $isActive ? 'active' : '' }}" data-id="{{ $cat->id }}">
+                                                                        <svg class="icon svg-icon-ti-ti-folder" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                                            <path d="M5 4h4l3 3h7a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-11a2 2 0 0 1 2 -2" />
+                                                                        </svg> {{ $cat->name }}
+                                                                    </a>
+                                                                    @if($hasChildren)
+                                                                        <ul class="bb-product-filter-items {{ $isActive ? 'active' : '' }}">
+                                                                            @foreach($cat->children as $child)
+                                                                                <li class="bb-product-filter-item">
+                                                                                    <a href="{{ route('frontend.categories.show', $child->slug) }}" class="bb-product-filter-link {{ $category->id == $child->id ? 'active' : '' }}" data-id="{{ $child->id }}">
+                                                                                        {{ $child->name }}
+                                                                                    </a>
+                                                                                </li>
+                                                                            @endforeach
+                                                                        </ul>
+                                                                        <button type="button" data-bb-toggle="toggle-product-categories-tree">
+                                                                            <svg class="icon svg-icon-ti-ti-plus" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                                                <path d="M12 5l0 14" />
+                                                                                <path d="M5 12l14 0" />
+                                                                            </svg>
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon svg-icon-ti-ti-minus">
+                                                                                <path d="M5 12l14 0" />
+                                                                            </svg>
+                                                                        </button>
+                                                                    @endif
+                                                                </li>
+                                                            @endforeach
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -72,85 +109,23 @@
                                                     </div>
                                                 </div>
                                                 <div class="bb-product-filter">
-                                                    <h4 class="bb-product-filter-title">Tags</h4>
-                                                    <div class="bb-product-filter-content">
-                                                        <ul class="bb-product-filter-items filter-checkbox">
-                                                            <li class="bb-product-filter-item"><input id="attribute-tag-6" type=checkbox name=tags[] value="6"><label for="attribute-tag-6">IT</label></li>
-                                                            <li class="bb-product-filter-item"><input id="attribute-tag-1" type=checkbox name=tags[] value="1"><label for="attribute-tag-1">Electronic</label></li>
-                                                            <li class="bb-product-filter-item"><input id="attribute-tag-2" type=checkbox name=tags[] value="2"><label for="attribute-tag-2">Mobile</label></li>
-                                                            <li class="bb-product-filter-item"><input id="attribute-tag-5" type=checkbox name=tags[] value="5"><label for="attribute-tag-5">Office</label></li>
-                                                            <li class="bb-product-filter-item"><input id="attribute-tag-4" type=checkbox name=tags[] value="4"><label for="attribute-tag-4">Printer</label></li>
-                                                            <li class="bb-product-filter-item"><input id="attribute-tag-3" type=checkbox name=tags[] value="3"><label for="attribute-tag-3">Iphone</label></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                                <div class="bb-product-filter">
                                                     <h4 class="bb-product-filter-title border-0 mb-3">Price</h4>
                                                     <div class="bb-product-filter-content">
                                                         <div class="bb-product-price-filter">
-                                                            <div class="price-slider mb-20" data-min="0" data-max="2437"></div>
-                                                            <div class="bb-product-price-filter-info d-flex align-items-center justify-content-between"><span class="input-range"><input name=min_price type=hidden value=""><input name=max_price type=hidden value=""><span class="input-range-label"><span class="from"></span> &mdash; <span class="to"></span></span></span></div>
+                                                            <div class="price-slider mb-20" data-min="{{ $minPrice }}" data-max="{{ $maxPrice }}" data-current-min="{{ request('min_price', $minPrice) }}" data-current-max="{{ request('max_price', $maxPrice) }}"></div>
+                                                            <div class="bb-product-price-filter-info d-flex align-items-center justify-content-between">
+                                                                <span class="input-range">
+                                                                    <input name="min_price" type="hidden" value="{{ request('min_price', $minPrice) }}">
+                                                                    <input name="max_price" type="hidden" value="{{ request('max_price', $maxPrice) }}">
+                                                                    <span class="input-range-label"><span class="from"></span> &mdash; <span class="to"></span></span>
+                                                                </span>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="bb-product-filter">
-                                                    <div class="bb-product-filter-attribute-item">
-                                                        <h4 class="bb-product-filter-title">On Sale</h4>
-                                                        <div class="bb-product-filter-content">
-                                                            <ul class="bb-product-filter-items filter-checkbox">
-                                                                <li class="bb-product-filter-item"><input id="discounted_only" name=discounted_only type=checkbox value="1" data-bb-toggle="product-form-filter-item"><label for="discounted_only" class="page_speed_2141459466">Show only discounted products</label></li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="bb-product-filter bb-product-filter-attributes">
-                                                    <div class="bb-product-filter-attribute-item">
-                                                        <h4 class="bb-product-filter-title">Color</h4>
-                                                        <div class="bb-product-filter-content">
-                                                            <ul class="bb-product-filter-items filter-visual">
-                                                                <li class="bb-product-filter-item"><input id="attribute-1" name=attributes[color][] type=checkbox value="1"><label for="attribute-1">Green</label><span class="bb-product-attribute-swatch-display page_speed_1044014243"></span></li>
-                                                                <li class="bb-product-filter-item"><input id="attribute-2" name=attributes[color][] type=checkbox value="2"><label for="attribute-2">Blue</label><span class="bb-product-attribute-swatch-display page_speed_246796478"></span></li>
-                                                                <li class="bb-product-filter-item"><input id="attribute-3" name=attributes[color][] type=checkbox value="3"><label for="attribute-3">Red</label><span class="bb-product-attribute-swatch-display page_speed_271094587"></span></li>
-                                                                <li class="bb-product-filter-item"><input id="attribute-4" name=attributes[color][] type=checkbox value="4"><label for="attribute-4">Black</label><span class="bb-product-attribute-swatch-display page_speed_1074872316"></span></li>
-                                                                <li class="bb-product-filter-item"><input id="attribute-5" name=attributes[color][] type=checkbox value="5"><label for="attribute-5">Brown</label><span class="bb-product-attribute-swatch-display page_speed_901320309"></span></li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                    <div class="bb-product-filter-attribute-item">
-                                                        <h4 class="bb-product-filter-title">Weight</h4>
-                                                        <div class="bb-product-filter-content">
-                                                            <ul class="bb-product-filter-items filter-checkbox">
-                                                                <li class="bb-product-filter-item"><input id="attribute-11" name=attributes[weight][] type=checkbox value="11"><label for="attribute-11">1KG</label></li>
-                                                                <li class="bb-product-filter-item"><input id="attribute-12" name=attributes[weight][] type=checkbox value="12"><label for="attribute-12">2KG</label></li>
-                                                                <li class="bb-product-filter-item"><input id="attribute-13" name=attributes[weight][] type=checkbox value="13"><label for="attribute-13">3KG</label></li>
-                                                                <li class="bb-product-filter-item"><input id="attribute-14" name=attributes[weight][] type=checkbox value="14"><label for="attribute-14">4KG</label></li>
-                                                                <li class="bb-product-filter-item"><input id="attribute-15" name=attributes[weight][] type=checkbox value="15"><label for="attribute-15">5KG</label></li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                    <div class="bb-product-filter-attribute-item">
-                                                        <h4 class="bb-product-filter-title">Size</h4>
-                                                        <div class="bb-product-filter-content">
-                                                            <ul class="bb-product-filter-items filter-checkbox">
-                                                                <li class="bb-product-filter-item"><input id="attribute-6" name=attributes[size][] type=checkbox value="6"><label for="attribute-6">S</label></li>
-                                                                <li class="bb-product-filter-item"><input id="attribute-7" name=attributes[size][] type=checkbox value="7"><label for="attribute-7">M</label></li>
-                                                                <li class="bb-product-filter-item"><input id="attribute-8" name=attributes[size][] type=checkbox value="8"><label for="attribute-8">L</label></li>
-                                                                <li class="bb-product-filter-item"><input id="attribute-9" name=attributes[size][] type=checkbox value="9"><label for="attribute-9">XL</label></li>
-                                                                <li class="bb-product-filter-item"><input id="attribute-10" name=attributes[size][] type=checkbox value="10"><label for="attribute-10">XXL</label></li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                    <div class="bb-product-filter-attribute-item">
-                                                        <h4 class="bb-product-filter-title">Boxes</h4>
-                                                        <div class="bb-product-filter-content">
-                                                            <ul class="bb-product-filter-items filter-checkbox">
-                                                                <li class="bb-product-filter-item"><input id="attribute-16" name=attributes[boxes][] type=checkbox value="16"><label for="attribute-16">1 Box</label></li>
-                                                                <li class="bb-product-filter-item"><input id="attribute-17" name=attributes[boxes][] type=checkbox value="17"><label for="attribute-17">2 Boxes</label></li>
-                                                                <li class="bb-product-filter-item"><input id="attribute-19" name=attributes[boxes][] type=checkbox value="19"><label for="attribute-19">4 Boxes</label></li>
-                                                                <li class="bb-product-filter-item"><input id="attribute-20" name=attributes[boxes][] type=checkbox value="20"><label for="attribute-20">5 Boxes</label></li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
+
+                                                <div class="bb-product-filter mt-20">
+                                                    <button type="submit" class="tp-btn tp-btn-2 w-100" style="background-color: #010F1C; color: white; padding: 10px; border-radius: 5px; border: none;">Filter Products</button>
                                                 </div>
                                             </form>
                                         </div>
