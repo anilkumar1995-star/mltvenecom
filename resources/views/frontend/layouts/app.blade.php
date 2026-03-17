@@ -64,6 +64,23 @@
 
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('home/announcement.css') }}">
     <link href="{{ asset('') }}" hreflang="x-default" rel="alternate">
+    <script>
+        window.currencies = {
+            "display_big_money": false,
+            "billion": "Billion",
+            "million": "Million",
+            "is_prefix_symbol": true,
+            "symbol": "₹",
+            "title": "INR",
+            "decimal_separator": ".",
+            "thousands_separator": ",",
+            "number_after_dot": 2,
+            "show_symbol_or_title": true
+        };
+        window.siteConfig = {
+            "img_placeholder": "{{ asset('home/placeholder.png') }}"
+        };
+    </script>
     <script async="" defer="" src="{{ asset('js/js') }}"></script>
 
     <link href="{{ asset('') }}" hreflang="en" rel="alternate">
