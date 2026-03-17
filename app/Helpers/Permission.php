@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 use App\Models\Aepsreport;
 use App\Models\Microatmreport;
 use App\Models\UserPermission;
-use App\Models\Apilog;
+use App\Models\ApiLog;
 use App\Models\Scheme;
 use App\Models\Commission;
 use App\Models\Company;
@@ -108,7 +108,7 @@ class Permission
     public static function apiLog($url, $modal, $txnid, $header, $request, $response)
     {
         try {
-            $apiresponse = Apilog::create([
+            $apiresponse = ApiLog::create([
                 "url" => $url,
                 "modal" => $modal,
                 "txnid" => $txnid,
@@ -401,7 +401,7 @@ class Permission
 
         if ($log != "no") {
     
-            Apilog::create([
+            ApiLog::create([
                 "url" => $url,
                 "modal" => $modal,
                 "txnid" => $txnid,
