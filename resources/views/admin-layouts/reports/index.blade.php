@@ -103,36 +103,36 @@
             <!-- 10 Widgets Section -->
             <div class="row row-cards mb-4">
                 <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="card card-sm"><div class="card-body d-flex align-items-center"><span class="avatar-bt bg-pink-lt me-3" style="width: 60px !important; height: 60px !important; min-width: 60px !important; display: flex !important; align-items: center !important; justify-content: center !important; border-radius: 12px !important; flex-shrink: 0 !important;"><i class="ti ti-currency-rupee" style="font-size: 30px !important;"></i></span><div><div class="subheader">Revenue</div><div class="h2">₹{{ number_format($revenue, 2) }}</div></div></div></div>
+                    <div class="card card-sm"><div class="card-body d-flex align-items-center"><span class="avatar-bt bg-pink-lt me-3" style="width: 60px !important; height: 60px !important; min-width: 60px !important; display: flex !important; align-items: center !important; justify-content: center !important; border-radius: 12px !important; flex-shrink: 0 !important;"><i class="ti ti-currency-rupee" style="font-size: 30px !important;"></i></span><div><div class="subheader">Revenue</div><div class="h2">₹<span id="widget-revenue">{{ number_format($revenue, 2) }}</span></div></div></div></div>
                 </div>
                 <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="card card-sm"><div class="card-body d-flex align-items-center"><span class="avatar-bt bg-green-lt me-3" style="width: 60px !important; height: 60px !important; min-width: 60px !important; display: flex !important; align-items: center !important; justify-content: center !important; border-radius: 12px !important; flex-shrink: 0 !important;"><i class="ti ti-chart-line" style="font-size: 30px !important;"></i></span><div><div class="subheader">Profit</div><div class="h2">₹{{ number_format($profit, 2) }}</div></div></div></div>
+                    <div class="card card-sm"><div class="card-body d-flex align-items-center"><span class="avatar-bt bg-green-lt me-3" style="width: 60px !important; height: 60px !important; min-width: 60px !important; display: flex !important; align-items: center !important; justify-content: center !important; border-radius: 12px !important; flex-shrink: 0 !important;"><i class="ti ti-chart-line" style="font-size: 30px !important;"></i></span><div><div class="subheader">Profit</div><div class="h2">₹<span id="widget-profit">{{ number_format($profit, 2) }}</span></div></div></div></div>
                 </div>
                 <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="card card-sm"><div class="card-body d-flex align-items-center"><span class="avatar-bt bg-red-lt me-3" style="width: 60px !important; height: 60px !important; min-width: 60px !important; display: flex !important; align-items: center !important; justify-content: center !important; border-radius: 12px !important; flex-shrink: 0 !important;"><i class="ti ti-trending-down" style="font-size: 30px !important;"></i></span><div><div class="subheader">Expenses</div><div class="h2">₹{{ number_format($expenses, 2) }}</div></div></div></div>
+                    <div class="card card-sm"><div class="card-body d-flex align-items-center"><span class="avatar-bt bg-red-lt me-3" style="width: 60px !important; height: 60px !important; min-width: 60px !important; display: flex !important; align-items: center !important; justify-content: center !important; border-radius: 12px !important; flex-shrink: 0 !important;"><i class="ti ti-trending-down" style="font-size: 30px !important;"></i></span><div><div class="subheader">Expenses</div><div class="h2">₹<span id="widget-expenses">{{ number_format($expenses, 2) }}</span></div></div></div></div>
                 </div>
                 <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="card card-sm"><div class="card-body d-flex align-items-center"><span class="avatar-bt bg-blue-lt me-3" style="width: 60px !important; height: 60px !important; min-width: 60px !important; display: flex !important; align-items: center !important; justify-content: center !important; border-radius: 12px !important; flex-shrink: 0 !important;"><i class="ti ti-notebook" style="font-size: 30px !important;"></i></span><div><div class="subheader">Average Order Value</div><div class="h2">₹{{ number_format($averageOrderValue, 2) }}</div></div></div></div>
+                    <div class="card card-sm"><div class="card-body d-flex align-items-center"><span class="avatar-bt bg-blue-lt me-3" style="width: 60px !important; height: 60px !important; min-width: 60px !important; display: flex !important; align-items: center !important; justify-content: center !important; border-radius: 12px !important; flex-shrink: 0 !important;"><i class="ti ti-notebook" style="font-size: 30px !important;"></i></span><div><div class="subheader">Average Order Value</div><div class="h2">₹<span id="widget-aov">{{ number_format($averageOrderValue, 2) }}</span></div></div></div></div>
                 </div>
                 
                 <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="card card-sm"><div class="card-body d-flex align-items-center"><span class="avatar-bt bg-yellow-lt me-3" style="width: 60px !important; height: 60px !important; min-width: 60px !important; display: flex !important; align-items: center !important; justify-content: center !important; border-radius: 12px !important; flex-shrink: 0 !important;"><i class="ti ti-shopping-cart" style="font-size: 30px !important;"></i></span><div><div class="subheader">Orders</div><div class="h2">{{ $ordersCount }}</div></div></div></div>
+                    <div class="card card-sm"><div class="card-body d-flex align-items-center"><span class="avatar-bt bg-yellow-lt me-3" style="width: 60px !important; height: 60px !important; min-width: 60px !important; display: flex !important; align-items: center !important; justify-content: center !important; border-radius: 12px !important; flex-shrink: 0 !important;"><i class="ti ti-shopping-cart" style="font-size: 30px !important;"></i></span><div><div class="subheader">Orders</div><div class="h2" id="widget-orders">{{ $ordersCount }}</div></div></div></div>
                 </div>
                 <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="card card-sm"><div class="card-body d-flex align-items-center"><span class="avatar-bt bg-lime-lt me-3" style="width: 60px !important; height: 60px !important; min-width: 60px !important; display: flex !important; align-items: center !important; justify-content: center !important; border-radius: 12px !important; flex-shrink: 0 !important;"><i class="ti ti-users" style="font-size: 30px !important;"></i></span><div><div class="subheader">Customers</div><div class="h2">{{ $customersCount }}</div></div></div></div>
+                    <div class="card card-sm"><div class="card-body d-flex align-items-center"><span class="avatar-bt bg-lime-lt me-3" style="width: 60px !important; height: 60px !important; min-width: 60px !important; display: flex !important; align-items: center !important; justify-content: center !important; border-radius: 12px !important; flex-shrink: 0 !important;"><i class="ti ti-users" style="font-size: 30px !important;"></i></span><div><div class="subheader">Customers</div><div class="h2" id="widget-customers">{{ $customersCount }}</div></div></div></div>
                 </div>
                 <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="card card-sm"><div class="card-body d-flex align-items-center"><span class="avatar-bt bg-cyan-lt me-3" style="width: 60px !important; height: 60px !important; min-width: 60px !important; display: flex !important; align-items: center !important; justify-content: center !important; border-radius: 12px !important; flex-shrink: 0 !important;"><i class="ti ti-database" style="font-size: 30px !important;"></i></span><div><div class="subheader">Products</div><div class="h2">{{ $productsCount }}</div></div></div></div>
+                    <div class="card card-sm"><div class="card-body d-flex align-items-center"><span class="avatar-bt bg-cyan-lt me-3" style="width: 60px !important; height: 60px !important; min-width: 60px !important; display: flex !important; align-items: center !important; justify-content: center !important; border-radius: 12px !important; flex-shrink: 0 !important;"><i class="ti ti-database" style="font-size: 30px !important;"></i></span><div><div class="subheader">Products</div><div class="h2" id="widget-products">{{ $productsCount }}</div></div></div></div>
                 </div>
                 <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="card card-sm"><div class="card-body d-flex align-items-center"><span class="avatar-bt bg-orange-lt me-3" style="width: 60px !important; height: 60px !important; min-width: 60px !important; display: flex !important; align-items: center !important; justify-content: center !important; border-radius: 12px !important; flex-shrink: 0 !important;"><i class="ti ti-chart-pie" style="font-size: 30px !important;"></i></span><div><div class="subheader">Conversion Rate</div><div class="h2">{{ number_format($conversionRate, 2) }}%</div></div></div></div>
+                    <div class="card card-sm"><div class="card-body d-flex align-items-center"><span class="avatar-bt bg-orange-lt me-3" style="width: 60px !important; height: 60px !important; min-width: 60px !important; display: flex !important; align-items: center !important; justify-content: center !important; border-radius: 12px !important; flex-shrink: 0 !important;"><i class="ti ti-chart-pie" style="font-size: 30px !important;"></i></span><div><div class="subheader">Conversion Rate</div><div class="h2"><span id="widget-conversion">{{ number_format($conversionRate, 2) }}</span>%</div></div></div></div>
                 </div>
 
                 <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="card card-sm"><div class="card-body d-flex align-items-center"><span class="avatar-bt bg-purple-lt me-3" style="width: 60px !important; height: 60px !important; min-width: 60px !important; display: flex !important; align-items: center !important; justify-content: center !important; border-radius: 12px !important; flex-shrink: 0 !important;"><i class="ti ti-discount-2" style="font-size: 30px !important;"></i></span><div><div class="subheader">Tax Collection</div><div class="h2">₹{{ number_format($taxAmount, 2) }}</div></div></div></div>
+                    <div class="card card-sm"><div class="card-body d-flex align-items-center"><span class="avatar-bt bg-purple-lt me-3" style="width: 60px !important; height: 60px !important; min-width: 60px !important; display: flex !important; align-items: center !important; justify-content: center !important; border-radius: 12px !important; flex-shrink: 0 !important;"><i class="ti ti-discount-2" style="font-size: 30px !important;"></i></span><div><div class="subheader">Tax Collection</div><div class="h2">₹<span id="widget-tax">{{ number_format($taxAmount, 2) }}</span></div></div></div></div>
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-6">
-                    <div class="card card-sm"><div class="card-body d-flex align-items-center"><span class="avatar-bt bg-teal-lt me-3" style="width: 60px !important; height: 60px !important; min-width: 60px !important; display: flex !important; align-items: center !important; justify-content: center !important; border-radius: 12px !important; flex-shrink: 0 !important;"><i class="ti ti-star" style="font-size: 30px !important;"></i></span><div><div class="subheader">Product Reviews</div><div class="h2">{{ number_format($reviewsAvg, 1) }} ({{ $reviewsCount }} reviews)</div></div></div></div>
+                    <div class="card card-sm"><div class="card-body d-flex align-items-center"><span class="avatar-bt bg-teal-lt me-3" style="width: 60px !important; height: 60px !important; min-width: 60px !important; display: flex !important; align-items: center !important; justify-content: center !important; border-radius: 12px !important; flex-shrink: 0 !important;"><i class="ti ti-star" style="font-size: 30px !important;"></i></span><div><div class="subheader">Product Reviews</div><div class="h2"><span id="widget-reviews-avg">{{ number_format($reviewsAvg, 1) }}</span> (<span id="widget-reviews-count">{{ $reviewsCount }}</span> reviews)</div></div></div></div>
                 </div>
             </div>
 
@@ -217,62 +217,167 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        flatpickr("#report-range", { mode: "range", dateFormat: "Y-m-d", defaultDate: "{{ $dateRange }}", onChange: function(dates, str) { if(dates.length === 2) window.location.href = "?date_range=" + str; } });
-
-        // Initialize DataTables
+        let charts = {};
         const dtConfig = {
             pageLength: 10,
-            lengthMenu: [5, 10, 25, 50],
-            language: {
-                search: "",
-                searchPlaceholder: "Search...",
-                lengthMenu: "_MENU_",
-            },
+            destroy: true,
+            language: { search: "", searchPlaceholder: "Search...", lengthMenu: "_MENU_" },
             dom: '<"d-flex justify-content-between align-items-center p-3"lf>rt<"d-flex justify-content-between align-items-center p-3"ip>'
         };
-        $('#recent-orders-table, #top-selling-table, #trending-table').DataTable(dtConfig);
 
-        $.ajax({
-            url: '{{ route("admin.reports.data") }}',
-            data: { date_range: '{{ $dateRange }}' },
-            success: function(res) {
-                // Sales Chart
-                new ApexCharts(document.querySelector("#sales-chart"), {
-                    series: [{ name: 'Revenue', data: res.revenue }, { name: 'Profit', data: res.profit }, { name: 'Expenses', data: res.expenses }],
-                    chart: { type: 'area', height: 400, toolbar: { show: false } },
-                    colors: ['#206bc4', '#2fb344', '#d63939'],
-                    stroke: { curve: 'smooth', width: 2 },
-                    xaxis: { categories: res.dates },
-                    fill: { type: 'gradient', gradient: { opacityFrom: 0.2, opacityTo: 0.05 } },
-                    legend: { position: 'top', horizontalAlign: 'right' },
-                    yaxis: { labels: { formatter: (val) => "₹" + val.toLocaleString() } },
-                    tooltip: { y: { formatter: (val) => "₹" + val.toLocaleString() } }
-                }).render();
+        function initCharts(res) {
+            // Main Sales Chart
+            if(charts.sales) charts.sales.destroy();
+            charts.sales = new ApexCharts(document.querySelector("#sales-chart"), {
+                series: [{ name: 'Revenue', data: res.revenue }, { name: 'Profit', data: res.profit }, { name: 'Expenses', data: res.expenses }],
+                chart: { type: 'area', height: 400, toolbar: { show: false } },
+                colors: ['#206bc4', '#2fb344', '#d63939'],
+                stroke: { curve: 'smooth', width: 2 },
+                xaxis: { categories: res.dates },
+                fill: { type: 'gradient', gradient: { opacityFrom: 0.2, opacityTo: 0.05 } },
+                legend: { position: 'top', horizontalAlign: 'right' },
+                yaxis: { labels: { formatter: (val) => "₹" + val.toLocaleString() } },
+                tooltip: { y: { formatter: (val) => "₹" + val.toLocaleString() } }
+            });
+            charts.sales.render();
 
-                // Line Charts
-                [['customers', '#customers-chart', '#4299e1'], ['orders', '#orders-chart', '#f59f00']].forEach(([key, sel, color]) => {
-                    new ApexCharts(document.querySelector(sel), {
-                        series: [{ name: key.toUpperCase(), data: res[key] }],
-                        chart: { type: 'line', height: 300, toolbar: { show: false } },
-                        colors: [color],
-                        stroke: { curve: 'smooth', width: 3 },
-                        xaxis: { categories: res.dates }
-                    }).render();
+            // Customers & Orders Line Charts
+            [['customers', '#customers-chart', '#4299e1'], ['orders', '#orders-chart', '#f59f00']].forEach(([key, sel, color]) => {
+                if(charts[key]) charts[key].destroy();
+                charts[key] = new ApexCharts(document.querySelector(sel), {
+                    series: [{ name: key.toUpperCase(), data: res[key] }],
+                    chart: { type: 'line', height: 300, toolbar: { show: false } },
+                    colors: [color],
+                    stroke: { curve: 'smooth', width: 3 },
+                    xaxis: { categories: res.dates }
                 });
+                charts[key].render();
+            });
 
-                // Other Charts
-                new ApexCharts(document.querySelector("#retention-chart"), { series: [{ name: 'Retention', data: Array(res.dates.length).fill(0) }], chart: { type: 'line', height: 300, toolbar: { show: false } }, stroke: { curve: 'smooth', width: 3 }, colors: ['#74b816'], xaxis: { categories: res.dates } }).render();
-                new ApexCharts(document.querySelector("#categories-chart"), { 
-                    series: res.categorySales.map(i => parseFloat(i.total)), 
-                    labels: res.categorySales.map(i => i.name), 
-                    chart: { type: 'donut', height: 300 },
-                    tooltip: { y: { formatter: (val) => "₹" + val.toLocaleString() } }
-                }).render();
-                new ApexCharts(document.querySelector("#statuses-chart"), { series: [{ name: 'Status', data: res.orderStatuses.map(i => parseInt(i.total)) }], chart: { type: 'bar', height: 300, toolbar: { show: false } }, plotOptions: { bar: { horizontal: true, borderRadius: 2 } }, xaxis: { categories: res.orderStatuses.map(i => i.status) }, colors: ['#206bc4'] }).render();
-                new ApexCharts(document.querySelector("#payments-chart"), { series: res.paymentMethods.map(i => parseInt(i.total)), labels: res.paymentMethods.map(i => i.payment_method), chart: { type: 'pie', height: 300 } }).render();
-                new ApexCharts(document.querySelector("#shipping-chart"), { series: [{ name: 'Shipping', data: res.shippingMethods.map(i => parseInt(i.total)) }], chart: { type: 'bar', height: 300, toolbar: { show: false } }, xaxis: { categories: res.shippingMethods.map(i => i.shipping_method) }, colors: ['#206bc4'] }).render();
-            }
+            // Retention Chart
+            if(charts.retention) charts.retention.destroy();
+            charts.retention = new ApexCharts(document.querySelector("#retention-chart"), { 
+                series: [{ name: 'Retention', data: res.retention }], 
+                chart: { type: 'line', height: 300, toolbar: { show: false } }, 
+                stroke: { curve: 'smooth', width: 3 }, 
+                colors: ['#74b816'], 
+                xaxis: { categories: res.dates } 
+            });
+            charts.retention.render();
+
+            // Categories Donut
+            if(charts.categories) charts.categories.destroy();
+            charts.categories = new ApexCharts(document.querySelector("#categories-chart"), { 
+                series: res.categorySales.map(i => parseFloat(i.total)), 
+                labels: res.categorySales.map(i => i.name), 
+                chart: { type: 'donut', height: 300 },
+                tooltip: { y: { formatter: (val) => "₹" + val.toLocaleString() } }
+            });
+            charts.categories.render();
+
+            // Statuses Bar
+            if(charts.statuses) charts.statuses.destroy();
+            charts.statuses = new ApexCharts(document.querySelector("#statuses-chart"), { 
+                series: [{ name: 'Status', data: res.orderStatuses.map(i => parseInt(i.total)) }], 
+                chart: { type: 'bar', height: 300, toolbar: { show: false } }, 
+                plotOptions: { bar: { horizontal: true, borderRadius: 2 } }, 
+                xaxis: { categories: res.orderStatuses.map(i => i.status) }, 
+                colors: ['#206bc4'] 
+            });
+            charts.statuses.render();
+
+            // Payments Pie
+            if(charts.payments) charts.payments.destroy();
+            charts.payments = new ApexCharts(document.querySelector("#payments-chart"), { 
+                series: res.paymentMethods.map(i => parseInt(i.total)), 
+                labels: res.paymentMethods.map(i => i.payment_method || 'Unknown'), 
+                chart: { type: 'pie', height: 300 } 
+            });
+            charts.payments.render();
+
+            // Shipping Bar
+            if(charts.shipping) charts.shipping.destroy();
+            charts.shipping = new ApexCharts(document.querySelector("#shipping-chart"), { 
+                series: [{ name: 'Shipping', data: res.shippingMethods.map(i => parseInt(i.total)) }], 
+                chart: { type: 'bar', height: 300, toolbar: { show: false } }, 
+                xaxis: { categories: res.shippingMethods.map(i => i.shipping_method || 'N/A') }, 
+                colors: ['#206bc4'] 
+            });
+            charts.shipping.render();
+        }
+
+        function updateTables(res) {
+            // Recent Orders
+            const recentOrdersTbody = document.querySelector("#recent-orders-table tbody");
+            recentOrdersTbody.innerHTML = res.recentOrders.map(order => `
+                <tr>
+                    <td>#${order.id}</td>
+                    <td>${order.customer}</td>
+                    <td class="font-weight-bold">₹${order.amount}</td>
+                    <td class="text-uppercase small">${order.payment_method}</td>
+                    <td><span class="badge bg-${order.payment_status === 'completed' ? 'green' : 'orange'}-lt">${order.payment_status.charAt(0).toUpperCase() + order.payment_status.slice(1)}</span></td>
+                </tr>
+            `).join('');
+
+            // Top Selling
+            const topSellingTbody = document.querySelector("#top-selling-table tbody");
+            topSellingTbody.innerHTML = res.topProducts.map(p => `
+                <tr><td>#${p.product_id}</td><td>${p.name}</td><td class="text-end">${p.total_qty}</td></tr>
+            `).join('');
+
+            // Trending
+            const trendingTbody = document.querySelector("#trending-table tbody");
+            trendingTbody.innerHTML = res.trendingProducts.map(p => `
+                <tr><td>#${p.id}</td><td>${p.name}</td><td class="text-end">${p.views}</td></tr>
+            `).join('');
+
+            // Re-initialize DataTables
+            $('#recent-orders-table, #top-selling-table, #trending-table').DataTable().destroy();
+            $('#recent-orders-table, #top-selling-table, #trending-table').DataTable(dtConfig);
+        }
+
+        function updateWidgets(widgets) {
+            document.getElementById('widget-revenue').innerText = widgets.revenue;
+            document.getElementById('widget-profit').innerText = widgets.profit;
+            document.getElementById('widget-expenses').innerText = widgets.expenses;
+            document.getElementById('widget-aov').innerText = widgets.averageOrderValue;
+            document.getElementById('widget-orders').innerText = widgets.ordersCount;
+            document.getElementById('widget-customers').innerText = widgets.customersCount;
+            document.getElementById('widget-products').innerText = widgets.productsCount;
+            document.getElementById('widget-conversion').innerText = widgets.conversionRate;
+            document.getElementById('widget-tax').innerText = widgets.taxAmount;
+            document.getElementById('widget-reviews-avg').innerText = widgets.reviewsAvg;
+            document.getElementById('widget-reviews-count').innerText = widgets.reviewsCount;
+        }
+
+        function loadData(range) {
+            $.ajax({
+                url: '{{ route("admin.reports.data") }}',
+                data: { date_range: range },
+                success: function(res) {
+                    updateWidgets(res.widgets);
+                    initCharts(res);
+                    updateTables(res);
+                }
+            });
+        }
+
+        flatpickr("#report-range", { 
+            mode: "range", 
+            dateFormat: "Y-m-d", 
+            defaultDate: "{{ $dateRange }}", 
+            onChange: function(dates, str) { 
+                if(dates.length === 2) {
+                    loadData(str);
+                    const url = new URL(window.location);
+                    url.searchParams.set('date_range', str);
+                    window.history.pushState({}, '', url);
+                }
+            } 
         });
+
+        // Initial Load
+        loadData("{{ $dateRange }}");
     });
 </script>
 @endpush

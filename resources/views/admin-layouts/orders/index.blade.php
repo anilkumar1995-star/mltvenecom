@@ -256,7 +256,7 @@
                                             <td>₹{{ number_format($order->shipping_amount, 2) }}</td>
                                             <td class="text-end">
                                                 <div class="btn-group">
-                                                    <a href="{{ route('admin.orders.create') }}" class="btn btn-sm btn-outline-info" title="Edit">
+                                                    <a href="{{ route('admin.orders.edit', $order->id) }}" class="btn btn-sm btn-outline-info" title="Edit">
                                                         <i class="fa fa-edit"></i>
                                                     </a>
                                                     <button type="button" class="btn btn-sm btn-outline-danger delete-btn" data-id="{{ $order->id }}" data-url="{{ route('admin.orders.destroy', $order->id) }}" title="Delete">

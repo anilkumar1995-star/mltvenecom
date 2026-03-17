@@ -13,7 +13,7 @@ class ProfileController extends Controller
     public function edit()
     {
         $user = Auth::user();
-        return view('admin.profile', compact('user'));
+        return view('admin-layouts.profile', compact('user'));
     }
 
     public function update(Request $request)
