@@ -15,11 +15,6 @@ class ProductController extends Controller
         $query = EcProduct::published()
             ->with(['brand', 'categories']);
 
-        // Search
-        if ($search = $request->get('search')) {
-            $query->where('name', 'like', "%{$search}%");
-        }
-
         // Filter by category
         if ($category_id = $request->get('category')) {
             $query->whereHas('categories', function ($q) use ($category_id) {
@@ -27,37 +22,10 @@ class ProductController extends Controller
             });
         }
 
-        // Filter by brand
-        if ($brand_id = $request->get('brand')) {
-            $query->where('brand_id', $brand_id);
-        }
+        $query = $this->applyFilters($query, $request);
 
-        // Price range
-        if ($min_price = $request->get('min_price')) {
-            $query->where('price', '>=', $min_price);
-        }
-        if ($max_price = $request->get('max_price')) {
-            $query->where('price', '<=', $max_price);
-        }
-
-        // Sorting
-        $sort = $request->get('sort', 'latest');
-        switch ($sort) {
-            case 'price_asc':
-                $query->orderBy('price', 'asc');
-                break;
-            case 'price_desc':
-                $query->orderBy('price', 'desc');
-                break;
-            case 'name':
-                $query->orderBy('name', 'asc');
-                break;
-            default:
-                $query->latest();
-        }
-
-        $products = $query->paginate(12);
-        $categories = EcProductCategory::published()->parent()->get();
+        $products = $query->paginate(12)->appends($request->all());
+        $categories = EcProductCategory::published()->parent()->with('children')->get();
         $brands = EcBrand::published()->get();
 
         return view('frontend.products.index', compact('products', 'categories', 'brands'));
@@ -74,7 +42,6 @@ class ProductController extends Controller
             })
             ->with(['brand', 'categories', 'reviews.customer', 'tags'])
             ->firstOrFail();
-        // dd($product);
 
         // Increment views
         $product->increment('views');
@@ -95,24 +62,24 @@ class ProductController extends Controller
     {
         $category = EcProductCategory::published()
             ->where('slug', $slug)
+            ->with('children')
             ->firstOrFail();
 
+        $allCategoryIds = $this->getAllCategoryIds($category);
+
         $query = EcProduct::published()
-            ->whereHas('categories', function ($q) use ($category) {
-                $q->where('ec_product_categories.id', $category->id);
+            ->whereHas('categories', function ($q) use ($allCategoryIds) {
+                $q->whereIn('ec_product_categories.id', $allCategoryIds);
             })
             ->with(['brand', 'categories']);
 
-        // filter by brand
-        if ($request->has('brands') && is_array($request->brands)) {
-            $query->whereIn('brand_id', $request->brands);
-        }
+        $query = $this->applyFilters($query, $request);
 
         $products = $query->paginate(12)->appends($request->all());
 
         $brandIds = EcProduct::published()
-            ->whereHas('categories', function ($q) use ($category) {
-                $q->where('ec_product_categories.id', $category->id);
+            ->whereHas('categories', function ($q) use ($allCategoryIds) {
+                $q->whereIn('ec_product_categories.id', $allCategoryIds);
             })
             ->pluck('brand_id')
             ->unique()
@@ -120,7 +87,93 @@ class ProductController extends Controller
             
         $brands = EcBrand::whereIn('id', $brandIds)->get();
 
-        return view('frontend.products.category', compact('category', 'products', 'brands'));
+        $categories = EcProductCategory::published()->parent()->with('children')->get();
+
+        // Dynamic price range
+        $minPrice = EcProduct::published()
+            ->whereHas('categories', function ($q) use ($allCategoryIds) {
+                $q->whereIn('ec_product_categories.id', $allCategoryIds);
+            })
+            ->min('price') ?? 0;
+
+        $maxPrice = EcProduct::published()
+            ->whereHas('categories', function ($q) use ($allCategoryIds) {
+                $q->whereIn('ec_product_categories.id', $allCategoryIds);
+            })
+            ->max('price') ?? 1000;
+
+        return view('frontend.products.category', compact('category', 'products', 'brands', 'categories', 'minPrice', 'maxPrice'));
+    }
+
+    protected function applyFilters($query, Request $request)
+    {
+        // Search
+        if ($search = $request->get('q') ?: $request->get('search')) {
+            $query->where('name', 'like', "%{$search}%");
+        }
+
+        // Filter by brand
+        if ($brands = $request->get('brands')) {
+            if (is_array($brands)) {
+                $query->whereIn('brand_id', $brands);
+            } else {
+                $query->where('brand_id', $brands);
+            }
+        } elseif ($brand_id = $request->get('brand')) {
+            $query->where('brand_id', $brand_id);
+        }
+
+        // Price range
+        if ($min_price = $request->get('min_price')) {
+            $query->where('price', '>=', $min_price);
+        }
+        if ($max_price = $request->get('max_price')) {
+            $query->where('price', '<=', $max_price);
+        }
+
+        // Sorting
+        $sort = $request->get('sort-by') ?: $request->get('sort', 'latest');
+        switch ($sort) {
+            case 'price_asc':
+                $query->orderBy('price', 'asc');
+                break;
+            case 'price_desc':
+                $query->orderBy('price', 'desc');
+                break;
+            case 'name_asc':
+                $query->orderBy('name', 'asc');
+                break;
+            case 'name_desc':
+                $query->orderBy('name', 'desc');
+                break;
+            case 'date_asc':
+                $query->orderBy('created_at', 'asc');
+                break;
+            case 'date_desc':
+                $query->orderBy('created_at', 'desc');
+                break;
+            case 'rating_asc':
+                // Assuming you have a way to sort by rating, if not default to latest
+                // For now just latest as placeholder if ratings table not joined
+                $query->latest();
+                break;
+            case 'rating_desc':
+                $query->latest();
+                break;
+            default:
+                $query->latest();
+        }
+
+        return $query;
+    }
+
+    protected function getAllCategoryIds($category)
+    {
+        $ids = [$category->id];
+        foreach ($category->children as $child) {
+            $ids = array_merge($ids, $this->getAllCategoryIds($child));
+        }
+        return $ids;
     }
 
     public function brand($slug)
