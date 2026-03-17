@@ -11,7 +11,12 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->redirectGuestsTo(fn (\Illuminate\Http\Request $request) => route('login'));
+        $middleware->redirectGuestsTo(function (\Illuminate\Http\Request $request) {
+            if ($request->is('admin/*')) {
+                return route('admin.login');
+            }
+            return route('login');
+        });
         $middleware->redirectUsersTo(function (\Illuminate\Http\Request $request) {
             if (auth('web')->check() && auth('web')->user()->role === 'admin') {
                 return route('admin.dashboard');

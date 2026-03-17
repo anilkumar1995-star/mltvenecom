@@ -1,17 +1,7 @@
 <div class="tp-product-item-5 p-relative white-bg mb-40">
     <div class="tp-product-thumb-5 w-img fix mb-15">
         <a href="{{ route('frontend.products.show', $product->slug ?: $product->id) }}">
-        <a href="{{ route('frontend.products.show', $product->slug ?: $product->id) }}">
-            @php
-                $imgUrl = asset('home/placeholder.png');
-                if ($product->image && file_exists(public_path('storage/' . $product->image))) {
-                    $imgUrl = asset('storage/' . $product->image);
-                } elseif ($product->images && count($product->images) > 0) {
-                     $imgUrl = asset('uploads/' . $product->images[0]);
-                }
-            @endphp
-            <img src="{{ $imgUrl }}" alt="{{ $product->name }}" onerror="this.src='{{ asset('home/placeholder.png') }}'">
-        </a>
+            <img src="{{ $product->image_url }}" alt="{{ $product->name }}" onerror="this.src='{{ asset('home/placeholder.png') }}'">
         </a>
 
         @if($product->on_sale)
@@ -57,11 +47,11 @@
         </h3>
 
         <div class="tp-product-price-wrapper-5">
-            <span class="tp-product-price-5 new-price">${{ number_format($product->price, 2) }}</span>
+            <span class="tp-product-price-5 new-price">₹{{ number_format($product->price, 2) }}</span>
             @if($product->original_price > $product->price)
                 <span class="">
                     <small>
-                        <del class="tp-product-price-5 old-price">${{ number_format($product->original_price, 2) }}</del>
+                        <del class="tp-product-price-5 old-price">₹{{ number_format($product->original_price, 2) }}</del>
                     </small>
                 </span>
             @endif

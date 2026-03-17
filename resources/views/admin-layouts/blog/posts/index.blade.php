@@ -99,7 +99,7 @@
                                         <td class="text-start">{{ $post->id }}</td>
                                         <td class="text-start">
                                             @if($post->image)
-                                            <img src="{{ Storage::url($post->image) }}" alt="{{ $post->name }}" style="width: 50px; height: auto;">
+                                            <img src="{{ 'https://images.incomeowl.in/incomeowl/b2b/images/' . $post->image }}" alt="{{ $post->name }}" style="width: 50px; height: auto;" onerror="this.src='https://via.placeholder.com/50'">
                                             @else
                                             <img src="https://via.placeholder.com/50" alt="Placeholder">
                                             @endif

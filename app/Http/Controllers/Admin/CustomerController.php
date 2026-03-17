@@ -59,8 +59,10 @@ class CustomerController extends Controller
         ];
 
         if ($request->hasFile('avatar')) {
-            $path = $request->file('avatar')->store('customers', 'public');
-            $data['avatar'] = $path;
+            $upload = \App\Helpers\ImageHelper::imageUploadHelper('avatar_', $request->file('avatar'));
+            if ($upload['status']) {
+                $data['avatar'] = $upload['data']['target_file'];
+            }
         }
 
         // Handle is_vendor logic if needed.
@@ -137,7 +139,10 @@ class CustomerController extends Controller
         }
 
         if ($request->hasFile('avatar')) {
-            $data['avatar'] = $request->file('avatar')->store('customers', 'public');
+            $upload = \App\Helpers\ImageHelper::imageUploadHelper('avatar_', $request->file('avatar'));
+            if ($upload['status']) {
+                $data['avatar'] = $upload['data']['target_file'];
+            }
         }
 
         $customer->update($data);

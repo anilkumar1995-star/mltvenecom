@@ -39,7 +39,7 @@
             <div class="alert alert-success">{{ session('success') }}</div>
             @endif
 
-            <form action="{{ route('admin.simple-sliders.items.update', $item->id) }}" method="POST" id="sliderItemForm">
+            <form action="{{ route('admin.simple-sliders.items.update', $item->id) }}" method="POST" id="sliderItemForm" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="row">
@@ -112,7 +112,7 @@
                             <div class="card-body">
                                 <div class="d-flex align-items-center justify-content-between mb-3">
                                     <div class="d-flex align-items-center">
-                                        <img src="{{ asset('flags/us.svg') }}" style="width: 24px; margin-right: 8px;">
+                                        <img src="{{ asset('vendor/core/core/base/img/flags/us.svg') }}" style="width: 24px; margin-right: 8px;">
                                         <select class="form-select form-select-sm" style="width: auto;">
                                             <option>English</option>
                                         </select>
@@ -122,15 +122,15 @@
                                     <div class="text-muted small mb-2 fw-bold">Translations</div>
                                     <ul class="list-unstyled mb-0 small">
                                         <li class="mb-2 d-flex align-items-center justify-content-between">
-                                            <span><img src="{{ asset('flags/sa.svg') }}" style="width: 16px; margin-right: 5px;"> Arabic</span>
+                                            <span><img src="{{ asset('vendor/core/core/base/img/flags/sa.svg') }}" style="width: 16px; margin-right: 5px;"> Arabic</span>
                                             <a href="#" class="text-decoration-none"><i class="fas fa-plus"></i></a>
                                         </li>
                                         <li class="mb-2 d-flex align-items-center justify-content-between">
-                                            <span><img src="{{ asset('flags/vn.svg') }}" style="width: 16px; margin-right: 5px;"> Tiếng Việt</span>
+                                            <span><img src="{{ asset('vendor/core/core/base/img/flags/vn.svg') }}" style="width: 16px; margin-right: 5px;"> Tiếng Việt</span>
                                             <a href="#" class="text-decoration-none"><i class="fas fa-plus"></i></a>
                                         </li>
                                         <li class="mb-2 d-flex align-items-center justify-content-between">
-                                            <span><img src="{{ asset('flags/fr.svg') }}" style="width: 16px; margin-right: 5px;"> Français</span>
+                                            <span><img src="{{ asset('vendor/core/core/base/img/flags/fr.svg') }}" style="width: 16px; margin-right: 5px;"> Français</span>
                                             <a href="#" class="text-decoration-none"><i class="fas fa-plus"></i></a>
                                         </li>
                                     </ul>
@@ -146,14 +146,14 @@
                             </div>
                             <div class="card-body">
                                 <div class="image-box">
-                                    <input type="hidden" name="image" value="{{ old('image', $item->image) }}" class="image-data">
                                     <div class="preview-image-wrapper p-2 border rounded mb-2 text-center" style="min-height: 150px; display: flex; align-items: center; justify-content: center; background: #f8f9fa;">
-                                        <img src="{{ old('image', $item->image) ? asset(old('image', $item->image)) : 'https://via.placeholder.com/150' }}" alt="Preview image" class="preview_image img-fluid" style="max-height: 150px;">
+                                        @php
+                                            $imageUrl = $item->image ? (str_starts_with($item->image, 'http') ? $item->image : \App\Helpers\ImageHelper::getImageUrl() . $item->image) : 'https://via.placeholder.com/150';
+                                        @endphp
+                                        <img src="{{ $imageUrl }}" alt="Preview image" class="preview_image img-fluid" style="max-height: 150px;" id="image_preview">
                                     </div>
                                     <div class="image-box-actions text-center">
-                                        <a href="#" class="btn_gallery btn btn-primary btn-sm" data-result="image" data-action="select-image">
-                                            Choose image
-                                        </a>
+                                        <input type="file" name="image" id="image_input" class="form-control form-control-sm" accept="image/*">
                                     </div>
                                     @error('image')<span class="text-danger small mt-1 d-block">{{ $message }}</span>@enderror
                                 </div>
@@ -200,15 +200,11 @@
 
 @push('scripts')
 <script>
-    // Mock simple gallery button just to show an input prompt if laravel-filemanager is not fully integrated yet
-    $('.btn_gallery').on('click', function(e) {
-        e.preventDefault();
-        let currentImage = $('.image-data').val();
-        let url = prompt("Enter image URL:", currentImage ? currentImage : "/uploads/sample-image.jpg");
-        if (url) {
-            $('.image-data').val(url);
-            $('.preview_image').attr('src', url);
+    document.getElementById('image_input').onchange = evt => {
+        const [file] = document.getElementById('image_input').files;
+        if (file) {
+            document.getElementById('image_preview').src = URL.createObjectURL(file);
         }
-    });
+    }
 </script>
 @endpush

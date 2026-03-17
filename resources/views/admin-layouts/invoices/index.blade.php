@@ -108,7 +108,7 @@
                                         <td class="text-start">
                                             <a href="{{ route('admin.invoices.show', $invoice->id) }}">{{ $invoice->code }}</a>
                                         </td>
-                                        <td class="text-start">${{ number_format($invoice->amount, 2) }}</td>
+                                        <td class="text-start">₹{{ number_format($invoice->amount, 2) }}</td>
                                         <td class="text-start">{{ $invoice->created_at->format('Y-m-d') }}</td>
                                         <td class="text-center">
                                             @if($invoice->status == 'completed')

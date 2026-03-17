@@ -105,6 +105,10 @@ Route::name('frontend.')->group(function () {
     Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
     Route::delete('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
 
+    // Wishlist
+    Route::post('/wishlist/toggle', [\App\Http\Controllers\Frontend\WishlistController::class, 'toggle'])->name('wishlist.toggle');
+    Route::get('/wishlist', [\App\Http\Controllers\Frontend\WishlistController::class, 'index'])->name('wishlist.index');
+
     // Checkout
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
     Route::post('/checkout/process', [CheckoutController::class, 'process'])->name('checkout.process');
@@ -142,17 +146,16 @@ Route::name('frontend.')->group(function () {
 
 Auth::routes();
 
-Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/dashboard-home', [HomeController::class, 'index'])->name('home');
 Route::get('/page/{id}', [AdminPageController::class, 'show'])->name('pages.show');
 
-// Admin demo route
-Route::get('/admin/dashboard', function () {
-    return view('home');
-})->name('admin.dashboard');
 
 // Admin profile routes
 // Route::middleware(['auth', 'role_id:1'])->prefix('admin')->name('admin.')->group(function () {
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('home');
+    })->name('dashboard');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 

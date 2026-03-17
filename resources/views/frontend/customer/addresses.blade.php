@@ -268,9 +268,6 @@
             </div>
             
         </div>
-        <form id="dashboard-logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-            @csrf
-        </form>
     </main>
 @endsection
 

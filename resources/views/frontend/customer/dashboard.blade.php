@@ -108,7 +108,7 @@
                                                     </div>
                                                     <div>
                                                         <div class="text-muted small">Total Spent</div>
-                                                        <div class="fw-bold h4 mb-0">${{ number_format($total_spent ?? 0, 2) }}</div>
+                                                        <div class="fw-bold h4 mb-0">₹{{ number_format($total_spent ?? 0, 2) }}</div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -206,7 +206,7 @@
                                                             <td class="ps-4"><strong>#{{ $order->id }}</strong></td>
                                                             <td>{{ $order->created_at->format('M d, Y') }}</td>
                                                             <td>{{ $order->items ? $order->items->count() : 0 }} items</td>
-                                                            <td><strong>${{ number_format($order->amount, 2) }}</strong></td>
+                                                            <td><strong>₹{{ number_format($order->amount, 2) }}</strong></td>
                                                             <td>
                                                                 @php
                                                                     $statusColors = [
@@ -303,8 +303,5 @@
             </div>
         </div>
 
-        <form id="dashboard-logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-            @csrf
-        </form>
     </main>
 @endsection

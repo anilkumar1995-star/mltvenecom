@@ -14,24 +14,24 @@
                         class="tp-slider-item-5 scene tp-slider-height-5 d-flex align-items-center page_speed_1993509786">
                         <div class="tp-slider-shape-5">
                             <div class="tp-slider-shape-5-1"><img
-                                    src="https://shofy-grocery.botble.com/storage/main/general/placeholder.png"
+                                    src="{{ asset('/') }}/storage/main/general/placeholder.png"
                                     data-bb-lazy="true" class="layer" data-depth="0.2" loading="lazy"
-                                    data-src="https://shofy-grocery.botble.com/storage/grocery/sliders/shape-1.png"
+                                    data-src="{{ asset('/') }}/storage/grocery/sliders/shape-1.png"
                                     alt="The Online Grocery Store"></div>
                             <div class="tp-slider-shape-5-2"><img
-                                    src="https://shofy-grocery.botble.com/storage/main/general/placeholder.png"
+                                    src="{{ asset('/') }}/storage/main/general/placeholder.png"
                                     data-bb-lazy="true" class="layer" data-depth="0.2" loading="lazy"
-                                    data-src="https://shofy-grocery.botble.com/storage/grocery/sliders/shape-2.png"
+                                    data-src="{{ asset('/') }}/storage/grocery/sliders/shape-2.png"
                                     alt="The Online Grocery Store"></div>
                             <div class="tp-slider-shape-5-3"><img
-                                    src="https://shofy-grocery.botble.com/storage/main/general/placeholder.png"
+                                    src="{{ asset('/') }}/storage/main/general/placeholder.png"
                                     data-bb-lazy="true" class="layer" data-depth="0.2" loading="lazy"
-                                    data-src="https://shofy-grocery.botble.com/storage/grocery/sliders/shape-3.png"
+                                    data-src="{{ asset('/') }}/storage/grocery/sliders/shape-3.png"
                                     alt="The Online Grocery Store"></div>
                             <div class="tp-slider-shape-5-4"><img
-                                    src="https://shofy-grocery.botble.com/storage/main/general/placeholder.png"
+                                    src="{{ asset('/') }}/storage/main/general/placeholder.png"
                                     data-bb-lazy="true" class="layer" data-depth="0.2" loading="lazy"
-                                    data-src="https://shofy-grocery.botble.com/storage/grocery/sliders/shape-4.png"
+                                    data-src="{{ asset('/') }}/storage/grocery/sliders/shape-4.png"
                                     alt="The Online Grocery Store"></div>
                         </div>
                         <div class="container">
@@ -47,20 +47,20 @@
                                 <div class="col-xxl-5 col-xl-5 col-lg-6">
                                     <div class="tp-slider-thumb-wrapper-5 p-relative">
                                         <div class="tp-slider-thumb-5 main-img"><a
-                                                href="https://shofy-grocery.botble.com/products">
+                                                href="{{ asset('/') }}/products">
                                                 <picture>
                                                     <source
-                                                        srcset="https://shofy-grocery.botble.com/storage/grocery/sliders/slider-1.png"
+                                                        srcset="{{ asset('/') }}/storage/grocery/sliders/slider-1.png"
                                                         media="(min-width: 1200px)">
                                                     <source
-                                                        srcset="https://shofy-grocery.botble.com/storage/grocery/sliders/slider-1.png"
+                                                        srcset="{{ asset('/') }}/storage/grocery/sliders/slider-1.png"
                                                         media="(min-width: 768px)">
                                                     <source
-                                                        srcset="https://shofy-grocery.botble.com/storage/grocery/sliders/slider-1.png"
+                                                        srcset="{{ asset('/') }}/storage/grocery/sliders/slider-1.png"
                                                         media="(max-width: 767px)"><img
-                                                        src="https://shofy-grocery.botble.com/storage/main/general/placeholder.png"
+                                                        src="{{ asset('/') }}/storage/main/general/placeholder.png"
                                                         data-bb-lazy="true" loading="eager" fetchpriority="high"
-                                                        data-src="https://shofy-grocery.botble.com/storage/grocery/sliders/slider-1.png"
+                                                        data-src="{{ asset('/') }}/storage/grocery/sliders/slider-1.png"
                                                         alt="The Online Grocery Store">
                                                 </picture>
                                             </a><span class="tp-slider-thumb-5-gradient"></span></div>
@@ -75,24 +75,24 @@
                         class="tp-slider-item-5 scene tp-slider-height-5 d-flex align-items-center page_speed_1993509786">
                         <div class="tp-slider-shape-5">
                             <div class="tp-slider-shape-5-1"><img
-                                    src="https://shofy-grocery.botble.com/storage/main/general/placeholder.png"
+                                    src="{{ asset('/') }}/storage/main/general/placeholder.png"
                                     data-bb-lazy="true" class="layer" data-depth="0.2" loading="lazy"
-                                    data-src="https://shofy-grocery.botble.com/storage/grocery/sliders/shape-1.png"
+                                    data-src="{{ asset('/') }}/storage/grocery/sliders/shape-1.png"
                                     alt="The Online Grocery Store"></div>
                             <div class="tp-slider-shape-5-2"><img
-                                    src="https://shofy-grocery.botble.com/storage/main/general/placeholder.png"
+                                    src="{{ asset('/') }}/storage/main/general/placeholder.png"
                                     data-bb-lazy="true" class="layer" data-depth="0.2" loading="lazy"
-                                    data-src="https://shofy-grocery.botble.com/storage/grocery/sliders/shape-2.png"
+                                    data-src="{{ asset('/') }}/storage/grocery/sliders/shape-2.png"
                                     alt="The Online Grocery Store"></div>
                             <div class="tp-slider-shape-5-3"><img
-                                    src="https://shofy-grocery.botble.com/storage/main/general/placeholder.png"
+                                    src="{{ asset('/') }}/storage/main/general/placeholder.png"
                                     data-bb-lazy="true" class="layer" data-depth="0.2" loading="lazy"
-                                    data-src="https://shofy-grocery.botble.com/storage/grocery/sliders/shape-3.png"
+                                    data-src="{{ asset('/') }}/storage/grocery/sliders/shape-3.png"
                                     alt="The Online Grocery Store"></div>
                             <div class="tp-slider-shape-5-4"><img
-                                    src="https://shofy-grocery.botble.com/storage/main/general/placeholder.png"
+                                    src="{{ asset('/') }}/storage/main/general/placeholder.png"
                                     data-bb-lazy="true" class="layer" data-depth="0.2" loading="lazy"
-                                    data-src="https://shofy-grocery.botble.com/storage/grocery/sliders/shape-4.png"
+                                    data-src="{{ asset('/') }}/storage/grocery/sliders/shape-4.png"
                                     alt="The Online Grocery Store"></div>
                         </div>
                         <div class="container">
@@ -108,20 +108,20 @@
                                 <div class="col-xxl-5 col-xl-5 col-lg-6">
                                     <div class="tp-slider-thumb-wrapper-5 p-relative">
                                         <div class="tp-slider-thumb-5 main-img"><a
-                                                href="https://shofy-grocery.botble.com/products">
+                                                href="{{ asset('/') }}/products">
                                                 <picture>
                                                     <source
-                                                        srcset="https://shofy-grocery.botble.com/storage/grocery/sliders/slider-1.png"
+                                                        srcset="{{ asset('/') }}/storage/grocery/sliders/slider-1.png"
                                                         media="(min-width: 1200px)">
                                                     <source
-                                                        srcset="https://shofy-grocery.botble.com/storage/grocery/sliders/slider-1.png"
+                                                        srcset="{{ asset('/') }}/storage/grocery/sliders/slider-1.png"
                                                         media="(min-width: 768px)">
                                                     <source
-                                                        srcset="https://shofy-grocery.botble.com/storage/grocery/sliders/slider-1.png"
+                                                        srcset="{{ asset('/') }}/storage/grocery/sliders/slider-1.png"
                                                         media="(max-width: 767px)"><img
-                                                        src="https://shofy-grocery.botble.com/storage/grocery/sliders/slider-1.png"
+                                                        src="{{ asset('/') }}/storage/grocery/sliders/slider-1.png"
                                                         data-bb-lazy="true" loading="eager" fetchpriority="high"
-                                                        data-src="https://shofy-grocery.botble.com/storage/grocery/sliders/slider-1.png"
+                                                        data-src="{{ asset('/') }}/storage/grocery/sliders/slider-1.png"
                                                         alt="The Online Grocery Store" data-ll-status="loaded"
                                                         class="entered loaded">
                                                 </picture>
@@ -137,24 +137,24 @@
                         class="tp-slider-item-5 scene tp-slider-height-5 d-flex align-items-center page_speed_1993509786">
                         <div class="tp-slider-shape-5">
                             <div class="tp-slider-shape-5-1"><img
-                                    src="https://shofy-grocery.botble.com/storage/grocery/sliders/shape-1.png"
+                                    src="{{ asset('/') }}/storage/grocery/sliders/shape-1.png"
                                     data-bb-lazy="true" class="layer entered loaded" data-depth="0.2" loading="lazy"
-                                    data-src="https://shofy-grocery.botble.com/storage/grocery/sliders/shape-1.png"
+                                    data-src="{{ asset('/') }}/storage/grocery/sliders/shape-1.png"
                                     alt="The Online Grocery Store" data-ll-status="loaded"></div>
                             <div class="tp-slider-shape-5-2"><img
-                                    src="https://shofy-grocery.botble.com/storage/grocery/sliders/shape-2.png"
+                                    src="{{ asset('/') }}/storage/grocery/sliders/shape-2.png"
                                     data-bb-lazy="true" class="layer entered loaded" data-depth="0.2" loading="lazy"
-                                    data-src="https://shofy-grocery.botble.com/storage/grocery/sliders/shape-2.png"
+                                    data-src="{{ asset('/') }}/storage/grocery/sliders/shape-2.png"
                                     alt="The Online Grocery Store" data-ll-status="loaded"></div>
                             <div class="tp-slider-shape-5-3"><img
-                                    src="https://shofy-grocery.botble.com/storage/grocery/sliders/shape-3.png"
+                                    src="{{ asset('/') }}/storage/grocery/sliders/shape-3.png"
                                     data-bb-lazy="true" class="layer entered loaded" data-depth="0.2" loading="lazy"
-                                    data-src="https://shofy-grocery.botble.com/storage/grocery/sliders/shape-3.png"
+                                    data-src="{{ asset('/') }}/storage/grocery/sliders/shape-3.png"
                                     alt="The Online Grocery Store" data-ll-status="loaded"></div>
                             <div class="tp-slider-shape-5-4"><img
-                                    src="https://shofy-grocery.botble.com/storage/grocery/sliders/shape-4.png"
+                                    src="{{ asset('/') }}/storage/grocery/sliders/shape-4.png"
                                     data-bb-lazy="true" class="layer entered loaded" data-depth="0.2" loading="lazy"
-                                    data-src="https://shofy-grocery.botble.com/storage/grocery/sliders/shape-4.png"
+                                    data-src="{{ asset('/') }}/storage/grocery/sliders/shape-4.png"
                                     alt="The Online Grocery Store" data-ll-status="loaded"></div>
                         </div>
                         <div class="container">
@@ -170,20 +170,20 @@
                                 <div class="col-xxl-5 col-xl-5 col-lg-6">
                                     <div class="tp-slider-thumb-wrapper-5 p-relative">
                                         <div class="tp-slider-thumb-5 main-img"><a
-                                                href="https://shofy-grocery.botble.com/products">
+                                                href="{{ asset('/') }}/products">
                                                 <picture>
                                                     <source
-                                                        srcset="https://shofy-grocery.botble.com/storage/grocery/sliders/slider-1.png"
+                                                        srcset="{{ asset('/') }}/storage/grocery/sliders/slider-1.png"
                                                         media="(min-width: 1200px)">
                                                     <source
-                                                        srcset="https://shofy-grocery.botble.com/storage/grocery/sliders/slider-1.png"
+                                                        srcset="{{ asset('/') }}/storage/grocery/sliders/slider-1.png"
                                                         media="(min-width: 768px)">
                                                     <source
-                                                        srcset="https://shofy-grocery.botble.com/storage/grocery/sliders/slider-1.png"
+                                                        srcset="{{ asset('/') }}/storage/grocery/sliders/slider-1.png"
                                                         media="(max-width: 767px)"><img
-                                                        src="https://shofy-grocery.botble.com/storage/grocery/sliders/slider-1.png"
+                                                        src="{{ asset('/') }}/storage/grocery/sliders/slider-1.png"
                                                         data-bb-lazy="true" loading="eager" fetchpriority="high"
-                                                        data-src="https://shofy-grocery.botble.com/storage/grocery/sliders/slider-1.png"
+                                                        data-src="{{ asset('/') }}/storage/grocery/sliders/slider-1.png"
                                                         alt="The Online Grocery Store" data-ll-status="loaded"
                                                         class="entered loaded">
                                                 </picture>
@@ -199,24 +199,24 @@
                         class="tp-slider-item-5 scene tp-slider-height-5 d-flex align-items-center page_speed_1993509786">
                         <div class="tp-slider-shape-5">
                             <div class="tp-slider-shape-5-1"><img
-                                    src="https://shofy-grocery.botble.com/storage/main/general/placeholder.png"
+                                    src="{{ asset('/') }}/storage/main/general/placeholder.png"
                                     data-bb-lazy="true" class="layer" data-depth="0.2" loading="lazy"
-                                    data-src="https://shofy-grocery.botble.com/storage/grocery/sliders/shape-1.png"
+                                    data-src="{{ asset('/') }}/storage/grocery/sliders/shape-1.png"
                                     alt="The Online Grocery Store"></div>
                             <div class="tp-slider-shape-5-2"><img
-                                    src="https://shofy-grocery.botble.com/storage/main/general/placeholder.png"
+                                    src="{{ asset('/') }}/storage/main/general/placeholder.png"
                                     data-bb-lazy="true" class="layer" data-depth="0.2" loading="lazy"
-                                    data-src="https://shofy-grocery.botble.com/storage/grocery/sliders/shape-2.png"
+                                    data-src="{{ asset('/') }}/storage/grocery/sliders/shape-2.png"
                                     alt="The Online Grocery Store"></div>
                             <div class="tp-slider-shape-5-3"><img
-                                    src="https://shofy-grocery.botble.com/storage/main/general/placeholder.png"
+                                    src="{{ asset('/') }}/storage/main/general/placeholder.png"
                                     data-bb-lazy="true" class="layer" data-depth="0.2" loading="lazy"
-                                    data-src="https://shofy-grocery.botble.com/storage/grocery/sliders/shape-3.png"
+                                    data-src="{{ asset('/') }}/storage/grocery/sliders/shape-3.png"
                                     alt="The Online Grocery Store"></div>
                             <div class="tp-slider-shape-5-4"><img
-                                    src="https://shofy-grocery.botble.com/storage/main/general/placeholder.png"
+                                    src="{{ asset('/') }}/storage/main/general/placeholder.png"
                                     data-bb-lazy="true" class="layer" data-depth="0.2" loading="lazy"
-                                    data-src="https://shofy-grocery.botble.com/storage/grocery/sliders/shape-4.png"
+                                    data-src="{{ asset('/') }}/storage/grocery/sliders/shape-4.png"
                                     alt="The Online Grocery Store"></div>
                         </div>
                         <div class="container">
@@ -232,20 +232,20 @@
                                 <div class="col-xxl-5 col-xl-5 col-lg-6">
                                     <div class="tp-slider-thumb-wrapper-5 p-relative">
                                         <div class="tp-slider-thumb-5 main-img"><a
-                                                href="https://shofy-grocery.botble.com/products">
+                                                href="{{ asset('/') }}/products">
                                                 <picture>
                                                     <source
-                                                        srcset="https://shofy-grocery.botble.com/storage/grocery/sliders/slider-1.png"
+                                                        srcset="{{ asset('/') }}/storage/grocery/sliders/slider-1.png"
                                                         media="(min-width: 1200px)">
                                                     <source
-                                                        srcset="https://shofy-grocery.botble.com/storage/grocery/sliders/slider-1.png"
+                                                        srcset="{{ asset('/') }}/storage/grocery/sliders/slider-1.png"
                                                         media="(min-width: 768px)">
                                                     <source
-                                                        srcset="https://shofy-grocery.botble.com/storage/grocery/sliders/slider-1.png"
+                                                        srcset="{{ asset('/') }}/storage/grocery/sliders/slider-1.png"
                                                         media="(max-width: 767px)"><img
-                                                        src="https://shofy-grocery.botble.com/storage/main/general/placeholder.png"
+                                                        src="{{ asset('/') }}/storage/main/general/placeholder.png"
                                                         data-bb-lazy="true" loading="eager" fetchpriority="high"
-                                                        data-src="https://shofy-grocery.botble.com/storage/grocery/sliders/slider-1.png"
+                                                        data-src="{{ asset('/') }}/storage/grocery/sliders/slider-1.png"
                                                         alt="The Online Grocery Store">
                                                 </picture>
                                             </a><span class="tp-slider-thumb-5-gradient"></span></div>
@@ -260,24 +260,24 @@
                         class="tp-slider-item-5 scene tp-slider-height-5 d-flex align-items-center page_speed_1993509786">
                         <div class="tp-slider-shape-5">
                             <div class="tp-slider-shape-5-1"><img
-                                    src="https://shofy-grocery.botble.com/storage/main/general/placeholder.png"
+                                    src="{{ asset('/') }}/storage/main/general/placeholder.png"
                                     data-bb-lazy="true" class="layer" data-depth="0.2" loading="lazy"
-                                    data-src="https://shofy-grocery.botble.com/storage/grocery/sliders/shape-1.png"
+                                    data-src="{{ asset('/') }}/storage/grocery/sliders/shape-1.png"
                                     alt="The Online Grocery Store"></div>
                             <div class="tp-slider-shape-5-2"><img
-                                    src="https://shofy-grocery.botble.com/storage/main/general/placeholder.png"
+                                    src="{{ asset('/') }}/storage/main/general/placeholder.png"
                                     data-bb-lazy="true" class="layer" data-depth="0.2" loading="lazy"
-                                    data-src="https://shofy-grocery.botble.com/storage/grocery/sliders/shape-2.png"
+                                    data-src="{{ asset('/') }}/storage/grocery/sliders/shape-2.png"
                                     alt="The Online Grocery Store"></div>
                             <div class="tp-slider-shape-5-3"><img
-                                    src="https://shofy-grocery.botble.com/storage/main/general/placeholder.png"
+                                    src="{{ asset('/') }}/storage/main/general/placeholder.png"
                                     data-bb-lazy="true" class="layer" data-depth="0.2" loading="lazy"
-                                    data-src="https://shofy-grocery.botble.com/storage/grocery/sliders/shape-3.png"
+                                    data-src="{{ asset('/') }}/storage/grocery/sliders/shape-3.png"
                                     alt="The Online Grocery Store"></div>
                             <div class="tp-slider-shape-5-4"><img
-                                    src="https://shofy-grocery.botble.com/storage/main/general/placeholder.png"
+                                    src="{{ asset('/') }}/storage/main/general/placeholder.png"
                                     data-bb-lazy="true" class="layer" data-depth="0.2" loading="lazy"
-                                    data-src="https://shofy-grocery.botble.com/storage/grocery/sliders/shape-4.png"
+                                    data-src="{{ asset('/') }}/storage/grocery/sliders/shape-4.png"
                                     alt="The Online Grocery Store"></div>
                         </div>
                         <div class="container">
@@ -293,20 +293,20 @@
                                 <div class="col-xxl-5 col-xl-5 col-lg-6">
                                     <div class="tp-slider-thumb-wrapper-5 p-relative">
                                         <div class="tp-slider-thumb-5 main-img"><a
-                                                href="https://shofy-grocery.botble.com/products">
+                                                href="{{ asset('/') }}/products">
                                                 <picture>
                                                     <source
-                                                        srcset="https://shofy-grocery.botble.com/storage/grocery/sliders/slider-1.png"
+                                                        srcset="{{ asset('/') }}/storage/grocery/sliders/slider-1.png"
                                                         media="(min-width: 1200px)">
                                                     <source
-                                                        srcset="https://shofy-grocery.botble.com/storage/grocery/sliders/slider-1.png"
+                                                        srcset="{{ asset('/') }}/storage/grocery/sliders/slider-1.png"
                                                         media="(min-width: 768px)">
                                                     <source
-                                                        srcset="https://shofy-grocery.botble.com/storage/grocery/sliders/slider-1.png"
+                                                        srcset="{{ asset('/') }}/storage/grocery/sliders/slider-1.png"
                                                         media="(max-width: 767px)"><img
-                                                        src="https://shofy-grocery.botble.com/storage/main/general/placeholder.png"
+                                                        src="{{ asset('/') }}/storage/main/general/placeholder.png"
                                                         data-bb-lazy="true" loading="eager" fetchpriority="high"
-                                                        data-src="https://shofy-grocery.botble.com/storage/grocery/sliders/slider-1.png"
+                                                        data-src="{{ asset('/') }}/storage/grocery/sliders/slider-1.png"
                                                         alt="The Online Grocery Store">
                                                 </picture>
                                             </a><span class="tp-slider-thumb-5-gradient"></span></div>
@@ -346,11 +346,11 @@
                         <div class="swiper-wrapper" id="swiper-wrapper-3726405316975fe4" aria-live="polite">
                             <div class="tp-category-item-5 p-relative z-index-1 fix swiper-slide swiper-slide-active"
                                 role="group" aria-label="1 / 6" style="width: 213.6px; margin-right: 12px;"><a
-                                    href="https://shofy-grocery.botble.com/product-categories/frozen-food"
+                                    href="{{ asset('/') }}/product-categories/frozen-food"
                                     title="Frozen Food">
                                     <div class="tp-category-thumb-5 include-bg"
-                                        data-background="https://shofy-grocery.botble.com/storage/grocery/product-categories/1.jpg"
-                                        style="background-image: url(&quot;https://shofy-grocery.botble.com/storage/grocery/product-categories/1.jpg&quot;);">
+                                        data-background="{{ asset('/') }}/storage/grocery/product-categories/1.jpg"
+                                        style="background-image: url(&quot;{{ asset('/') }}/storage/grocery/product-categories/1.jpg&quot;);">
                                     </div>
                                     <div class="tp-category-content-5">
                                         <h3 class="tp-category-title-5">Frozen Food</h3><span> 22 products </span>
@@ -358,11 +358,11 @@
                                 </a></div>
                             <div class="tp-category-item-5 p-relative z-index-1 fix swiper-slide swiper-slide-next"
                                 role="group" aria-label="2 / 6" style="width: 213.6px; margin-right: 12px;"><a
-                                    href="https://shofy-grocery.botble.com/product-categories/meat-seafood"
+                                    href="{{ asset('/') }}/product-categories/meat-seafood"
                                     title="Meat &amp; Seafood">
                                     <div class="tp-category-thumb-5 include-bg"
-                                        data-background="https://shofy-grocery.botble.com/storage/grocery/product-categories/2.jpg"
-                                        style="background-image: url(&quot;https://shofy-grocery.botble.com/storage/grocery/product-categories/2.jpg&quot;);">
+                                        data-background="{{ asset('/') }}/storage/grocery/product-categories/2.jpg"
+                                        style="background-image: url(&quot;{{ asset('/') }}/storage/grocery/product-categories/2.jpg&quot;);">
                                     </div>
                                     <div class="tp-category-content-5">
                                         <h3 class="tp-category-title-5">Meat &amp; Seafood</h3><span> 23 products
@@ -371,11 +371,11 @@
                                 </a></div>
                             <div class="tp-category-item-5 p-relative z-index-1 fix swiper-slide" role="group"
                                 aria-label="3 / 6" style="width: 213.6px; margin-right: 12px;"><a
-                                    href="https://shofy-grocery.botble.com/product-categories/milk-dairy"
+                                    href="{{ asset('/') }}/product-categories/milk-dairy"
                                     title="Milk &amp; Dairy">
                                     <div class="tp-category-thumb-5 include-bg"
-                                        data-background="https://shofy-grocery.botble.com/storage/grocery/product-categories/3.jpg"
-                                        style="background-image: url(&quot;https://shofy-grocery.botble.com/storage/grocery/product-categories/3.jpg&quot;);">
+                                        data-background="{{ asset('/') }}/storage/grocery/product-categories/3.jpg"
+                                        style="background-image: url(&quot;{{ asset('/') }}/storage/grocery/product-categories/3.jpg&quot;);">
                                     </div>
                                     <div class="tp-category-content-5">
                                         <h3 class="tp-category-title-5">Milk &amp; Dairy</h3><span> 17 products </span>
@@ -383,11 +383,11 @@
                                 </a></div>
                             <div class="tp-category-item-5 p-relative z-index-1 fix swiper-slide" role="group"
                                 aria-label="4 / 6" style="width: 213.6px; margin-right: 12px;"><a
-                                    href="https://shofy-grocery.botble.com/product-categories/beverages"
+                                    href="{{ asset('/') }}/product-categories/beverages"
                                     title="Beverages">
                                     <div class="tp-category-thumb-5 include-bg"
-                                        data-background="https://shofy-grocery.botble.com/storage/grocery/product-categories/4.jpg"
-                                        style="background-image: url(&quot;https://shofy-grocery.botble.com/storage/grocery/product-categories/4.jpg&quot;);">
+                                        data-background="{{ asset('/') }}/storage/grocery/product-categories/4.jpg"
+                                        style="background-image: url(&quot;{{ asset('/') }}/storage/grocery/product-categories/4.jpg&quot;);">
                                     </div>
                                     <div class="tp-category-content-5">
                                         <h3 class="tp-category-title-5">Beverages</h3><span> 8 products </span>
@@ -395,11 +395,11 @@
                                 </a></div>
                             <div class="tp-category-item-5 p-relative z-index-1 fix swiper-slide" role="group"
                                 aria-label="5 / 6" style="width: 213.6px; margin-right: 12px;"><a
-                                    href="https://shofy-grocery.botble.com/product-categories/vegetables"
+                                    href="{{ asset('/') }}/product-categories/vegetables"
                                     title="Vegetables">
                                     <div class="tp-category-thumb-5 include-bg"
-                                        data-background="https://shofy-grocery.botble.com/storage/grocery/product-categories/5.jpg"
-                                        style="background-image: url(&quot;https://shofy-grocery.botble.com/storage/grocery/product-categories/5.jpg&quot;);">
+                                        data-background="{{ asset('/') }}/storage/grocery/product-categories/5.jpg"
+                                        style="background-image: url(&quot;{{ asset('/') }}/storage/grocery/product-categories/5.jpg&quot;);">
                                     </div>
                                     <div class="tp-category-content-5">
                                         <h3 class="tp-category-title-5">Vegetables</h3><span> 19 products </span>
@@ -407,10 +407,10 @@
                                 </a></div>
                             <div class="tp-category-item-5 p-relative z-index-1 fix swiper-slide" role="group"
                                 aria-label="6 / 6" style="width: 213.6px; margin-right: 12px;"><a
-                                    href="https://shofy-grocery.botble.com/product-categories/fruits" title="Fruits">
+                                    href="{{ asset('/') }}/product-categories/fruits" title="Fruits">
                                     <div class="tp-category-thumb-5 include-bg"
-                                        data-background="https://shofy-grocery.botble.com/storage/grocery/product-categories/6.jpg"
-                                        style="background-image: url(&quot;https://shofy-grocery.botble.com/storage/grocery/product-categories/6.jpg&quot;);">
+                                        data-background="{{ asset('/') }}/storage/grocery/product-categories/6.jpg"
+                                        style="background-image: url(&quot;{{ asset('/') }}/storage/grocery/product-categories/6.jpg&quot;);">
                                     </div>
                                     <div class="tp-category-content-5">
                                         <h3 class="tp-category-title-5">Fruits</h3><span> 11 products </span>
@@ -458,7 +458,7 @@
                         class="tp-product-tab-inner-3 d-flex align-items-center justify-content-center justify-content-lg-end">
                         <nav>
                             <div class="nav nav-tabs justify-content-center tp-product-tab tp-tab-menu p-relative"
-                                id="productTab" data-ajax-url="https://shofy-grocery.botble.com/ajax/products?limit=8"
+                                id="productTab" data-ajax-url="{{ asset('/') }}/ajax/products?limit=8"
                                 role="tablist">
 
                                 <button class="nav-link active" id="all-tab" data-bs-toggle="tab"
@@ -520,10 +520,10 @@
                             <div class="col">
                                 <div class="tp-product-item-5 p-relative white-bg mb-40 ">
                                     <div class="tp-product-thumb-5 w-img fix mb-15">
-                                        <a href="https://shofy-grocery.botble.com/products/whole-grain-bread">
+                                        <a href="{{ asset('/') }}/products/whole-grain-bread">
                                             <img data-bb-lazy="true" loading="lazy" alt="Whole Grain Bread"
                                                 class="entered exited"
-                                                src="https://shofy-grocery.botble.com/storage/main/products/product-11-600x600.jpg">
+                                                src="{{ asset('/') }}/storage/main/products/product-11-600x600.jpg">
                                         </a>
 
                                         <div class="tp-product-badge">
@@ -536,7 +536,7 @@
                                                 <button type="button"
                                                     class="tp-product-action-btn-2 tp-product-add-cart-btn"
                                                     data-bb-toggle="add-to-cart" data-show-toast-on-success="false"
-                                                    data-url="https://shofy-grocery.botble.com/cart/add-to-cart"
+                                                    data-url="{{ asset('/') }}/cart/add-to-cart"
                                                     data-id="2" title="Add To Cart">
                                                     <svg width="17" height="17" viewBox="0 0 17 17"
                                                         fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -567,7 +567,7 @@
                                                     class="tp-product-action-btn-2 tp-product-quick-view-btn"
                                                     title="Quick View" data-bs-toggle="modal"
                                                     data-bs-target="#product-quick-view-modal"
-                                                    data-url="https://shofy-grocery.botble.com/ajax/quick-view/2">
+                                                    data-url="{{ asset('/') }}/ajax/quick-view/2">
                                                     <svg width="18" height="15" viewBox="0 0 18 15"
                                                         fill="none" xmlns="http://www.w3.org/2000/svg">
                                                         <path fill-rule="evenodd" clip-rule="evenodd"
@@ -583,7 +583,7 @@
                                                 <button type="button"
                                                     class="tp-product-action-btn-2 tp-product-add-to-wishlist-btn"
                                                     data-bb-toggle="add-to-wishlist" title="Add To Wishlist"
-                                                    data-url="https://shofy-grocery.botble.com/wishlist/2"
+                                                    data-url="{{ asset('/') }}/wishlist/2"
                                                     data-add-text="Add To Wishlist"
                                                     data-remove-text="Remove From Wishlist">
                                                     <svg width="18" height="18" viewBox="0 0 18 18"
@@ -602,8 +602,8 @@
                                                 <button type="button"
                                                     class="tp-product-action-btn-2 tp-product-add-to-compare-btn"
                                                     data-bb-toggle="add-to-compare" title="Add To Compare"
-                                                    data-url="https://shofy-grocery.botble.com/compare/2"
-                                                    data-remove-url="https://shofy-grocery.botble.com/compare/2"
+                                                    data-url="{{ asset('/') }}/compare/2"
+                                                    data-remove-url="{{ asset('/') }}/compare/2"
                                                     data-add-text="Add To Compare"
                                                     data-remove-text="Remove From Compare">
                                                     <svg width="15" height="15" viewBox="0 0 15 15"
@@ -633,12 +633,12 @@
 
                                         <div class="tp-product-tag-5">
                                             <span><a
-                                                    href="https://shofy-grocery.botble.com/stores/starkist">StarKist</a>
+                                                    href="{{ asset('/') }}/stores/starkist">StarKist</a>
                                             </span>
                                         </div>
 
                                         <h3 class="tp-product-title-2 line-clamp-2">
-                                            <a href="https://shofy-grocery.botble.com/products/whole-grain-bread"
+                                            <a href="{{ asset('/') }}/products/whole-grain-bread"
                                                 title="Whole Grain Bread">Whole Grain Bread</a>
                                         </h3>
 
@@ -650,7 +650,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="tp-product-rating-text">
-                                                    <a href="https://shofy-grocery.botble.com/products/whole-grain-bread#product-review"
+                                                    <a href="{{ asset('/') }}/products/whole-grain-bread#product-review"
                                                         data-bb-toggle="scroll-to-review">
                                                         <span class="d-none d-sm-block">(9 reviews)</span>
                                                         <span class="d-block d-sm-none">(9)</span>
@@ -678,10 +678,10 @@
                             <div class="col">
                                 <div class="tp-product-item-5 p-relative white-bg mb-40 ">
                                     <div class="tp-product-thumb-5 w-img fix mb-15">
-                                        <a href="https://shofy-grocery.botble.com/products/free-range-eggs">
+                                        <a href="{{ asset('/') }}/products/free-range-eggs">
                                             <img data-bb-lazy="true" loading="lazy" alt="Free-Range Eggs"
                                                 class="entered exited"
-                                                src="https://shofy-grocery.botble.com/storage/main/products/product-9-600x600.jpg">
+                                                src="{{ asset('/') }}/storage/main/products/product-9-600x600.jpg">
                                         </a>
 
                                         <div class="tp-product-badge">
@@ -694,7 +694,7 @@
                                                 <button type="button"
                                                     class="tp-product-action-btn-2 tp-product-add-cart-btn"
                                                     data-bb-toggle="add-to-cart" data-show-toast-on-success="false"
-                                                    data-url="https://shofy-grocery.botble.com/cart/add-to-cart"
+                                                    data-url="{{ asset('/') }}/cart/add-to-cart"
                                                     data-id="3" title="Add To Cart">
                                                     <svg width="17" height="17" viewBox="0 0 17 17"
                                                         fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -725,7 +725,7 @@
                                                     class="tp-product-action-btn-2 tp-product-quick-view-btn"
                                                     title="Quick View" data-bs-toggle="modal"
                                                     data-bs-target="#product-quick-view-modal"
-                                                    data-url="https://shofy-grocery.botble.com/ajax/quick-view/3">
+                                                    data-url="{{ asset('/') }}/ajax/quick-view/3">
                                                     <svg width="18" height="15" viewBox="0 0 18 15"
                                                         fill="none" xmlns="http://www.w3.org/2000/svg">
                                                         <path fill-rule="evenodd" clip-rule="evenodd"
@@ -741,7 +741,7 @@
                                                 <button type="button"
                                                     class="tp-product-action-btn-2 tp-product-add-to-wishlist-btn"
                                                     data-bb-toggle="add-to-wishlist" title="Add To Wishlist"
-                                                    data-url="https://shofy-grocery.botble.com/wishlist/3"
+                                                    data-url="{{ asset('/') }}/wishlist/3"
                                                     data-add-text="Add To Wishlist"
                                                     data-remove-text="Remove From Wishlist">
                                                     <svg width="18" height="18" viewBox="0 0 18 18"
@@ -760,8 +760,8 @@
                                                 <button type="button"
                                                     class="tp-product-action-btn-2 tp-product-add-to-compare-btn"
                                                     data-bb-toggle="add-to-compare" title="Add To Compare"
-                                                    data-url="https://shofy-grocery.botble.com/compare/3"
-                                                    data-remove-url="https://shofy-grocery.botble.com/compare/3"
+                                                    data-url="{{ asset('/') }}/compare/3"
+                                                    data-remove-url="{{ asset('/') }}/compare/3"
                                                     data-add-text="Add To Compare"
                                                     data-remove-text="Remove From Compare">
                                                     <svg width="15" height="15" viewBox="0 0 15 15"
@@ -790,12 +790,12 @@
 
 
                                         <div class="tp-product-tag-5">
-                                            <span><a href="https://shofy-grocery.botble.com/stores/gopro">GoPro</a>
+                                            <span><a href="{{ asset('/') }}/stores/gopro">GoPro</a>
                                             </span>
                                         </div>
 
                                         <h3 class="tp-product-title-2 line-clamp-2">
-                                            <a href="https://shofy-grocery.botble.com/products/free-range-eggs"
+                                            <a href="{{ asset('/') }}/products/free-range-eggs"
                                                 title="Free-Range Eggs">Free-Range Eggs</a>
                                         </h3>
 
@@ -807,7 +807,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="tp-product-rating-text">
-                                                    <a href="https://shofy-grocery.botble.com/products/free-range-eggs#product-review"
+                                                    <a href="{{ asset('/') }}/products/free-range-eggs#product-review"
                                                         data-bb-toggle="scroll-to-review">
                                                         <span class="d-none d-sm-block">(10 reviews)</span>
                                                         <span class="d-block d-sm-none">(10)</span>
@@ -836,10 +836,10 @@
                                 <div class="tp-product-item-5 p-relative white-bg mb-40 ">
                                     <div class="tp-product-thumb-5 w-img fix mb-15">
                                         <a
-                                            href="https://shofy-grocery.botble.com/products/fresh-salmon-fillet-digital">
+                                            href="{{ asset('/') }}/products/fresh-salmon-fillet-digital">
                                             <img data-bb-lazy="true" loading="lazy"
                                                 alt="Fresh Salmon Fillet (Digital)" class="entered exited"
-                                                src="https://shofy-grocery.botble.com/storage/main/products/product-11-600x600.jpg">
+                                                src="{{ asset('/') }}/storage/main/products/product-11-600x600.jpg">
                                         </a>
 
                                         <div class="tp-product-badge">
@@ -852,7 +852,7 @@
                                                 <button type="button"
                                                     class="tp-product-action-btn-2 tp-product-add-cart-btn"
                                                     data-bb-toggle="add-to-cart" data-show-toast-on-success="false"
-                                                    data-url="https://shofy-grocery.botble.com/cart/add-to-cart"
+                                                    data-url="{{ asset('/') }}/cart/add-to-cart"
                                                     data-id="4" title="Add To Cart">
                                                     <svg width="17" height="17" viewBox="0 0 17 17"
                                                         fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -883,7 +883,7 @@
                                                     class="tp-product-action-btn-2 tp-product-quick-view-btn"
                                                     title="Quick View" data-bs-toggle="modal"
                                                     data-bs-target="#product-quick-view-modal"
-                                                    data-url="https://shofy-grocery.botble.com/ajax/quick-view/4">
+                                                    data-url="{{ asset('/') }}/ajax/quick-view/4">
                                                     <svg width="18" height="15" viewBox="0 0 18 15"
                                                         fill="none" xmlns="http://www.w3.org/2000/svg">
                                                         <path fill-rule="evenodd" clip-rule="evenodd"
@@ -899,7 +899,7 @@
                                                 <button type="button"
                                                     class="tp-product-action-btn-2 tp-product-add-to-wishlist-btn"
                                                     data-bb-toggle="add-to-wishlist" title="Add To Wishlist"
-                                                    data-url="https://shofy-grocery.botble.com/wishlist/4"
+                                                    data-url="{{ asset('/') }}/wishlist/4"
                                                     data-add-text="Add To Wishlist"
                                                     data-remove-text="Remove From Wishlist">
                                                     <svg width="18" height="18" viewBox="0 0 18 18"
@@ -918,8 +918,8 @@
                                                 <button type="button"
                                                     class="tp-product-action-btn-2 tp-product-add-to-compare-btn"
                                                     data-bb-toggle="add-to-compare" title="Add To Compare"
-                                                    data-url="https://shofy-grocery.botble.com/compare/4"
-                                                    data-remove-url="https://shofy-grocery.botble.com/compare/4"
+                                                    data-url="{{ asset('/') }}/compare/4"
+                                                    data-remove-url="{{ asset('/') }}/compare/4"
                                                     data-add-text="Add To Compare"
                                                     data-remove-text="Remove From Compare">
                                                     <svg width="15" height="15" viewBox="0 0 15 15"
@@ -948,7 +948,7 @@
 
 
                                         <div class="tp-product-tag-5">
-                                            <span><a href="https://shofy-grocery.botble.com/stores/young-shop">Young
+                                            <span><a href="{{ asset('/') }}/stores/young-shop">Young
                                                     Shop</a> <span class="store-verified-badge badge-sm"
                                                     data-bs-toggle="tooltip" data-bs-placement="top"
                                                     title="Verified"
@@ -963,7 +963,7 @@
                                         </div>
 
                                         <h3 class="tp-product-title-2 line-clamp-2">
-                                            <a href="https://shofy-grocery.botble.com/products/fresh-salmon-fillet-digital"
+                                            <a href="{{ asset('/') }}/products/fresh-salmon-fillet-digital"
                                                 title="Fresh Salmon Fillet (Digital)">Fresh Salmon Fillet
                                                 (Digital)</a>
                                         </h3>
@@ -976,7 +976,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="tp-product-rating-text">
-                                                    <a href="https://shofy-grocery.botble.com/products/fresh-salmon-fillet-digital#product-review"
+                                                    <a href="{{ asset('/') }}/products/fresh-salmon-fillet-digital#product-review"
                                                         data-bb-toggle="scroll-to-review">
                                                         <span class="d-none d-sm-block">(10 reviews)</span>
                                                         <span class="d-block d-sm-none">(10)</span>
@@ -1004,10 +1004,10 @@
                             <div class="col">
                                 <div class="tp-product-item-5 p-relative white-bg mb-40 ">
                                     <div class="tp-product-thumb-5 w-img fix mb-15">
-                                        <a href="https://shofy-grocery.botble.com/products/organic-spinach">
+                                        <a href="{{ asset('/') }}/products/organic-spinach">
                                             <img data-bb-lazy="true" loading="lazy" alt="Organic Spinach"
                                                 class="entered exited"
-                                                src="https://shofy-grocery.botble.com/storage/main/products/product-8-600x600.jpg">
+                                                src="{{ asset('/') }}/storage/main/products/product-8-600x600.jpg">
                                         </a>
 
                                         <div class="tp-product-badge">
@@ -1020,7 +1020,7 @@
                                                 <button type="button"
                                                     class="tp-product-action-btn-2 tp-product-add-cart-btn"
                                                     data-bb-toggle="add-to-cart" data-show-toast-on-success="false"
-                                                    data-url="https://shofy-grocery.botble.com/cart/add-to-cart"
+                                                    data-url="{{ asset('/') }}/cart/add-to-cart"
                                                     data-id="5" title="Add To Cart">
                                                     <svg width="17" height="17" viewBox="0 0 17 17"
                                                         fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1051,7 +1051,7 @@
                                                     class="tp-product-action-btn-2 tp-product-quick-view-btn"
                                                     title="Quick View" data-bs-toggle="modal"
                                                     data-bs-target="#product-quick-view-modal"
-                                                    data-url="https://shofy-grocery.botble.com/ajax/quick-view/5">
+                                                    data-url="{{ asset('/') }}/ajax/quick-view/5">
                                                     <svg width="18" height="15" viewBox="0 0 18 15"
                                                         fill="none" xmlns="http://www.w3.org/2000/svg">
                                                         <path fill-rule="evenodd" clip-rule="evenodd"
@@ -1067,7 +1067,7 @@
                                                 <button type="button"
                                                     class="tp-product-action-btn-2 tp-product-add-to-wishlist-btn"
                                                     data-bb-toggle="add-to-wishlist" title="Add To Wishlist"
-                                                    data-url="https://shofy-grocery.botble.com/wishlist/5"
+                                                    data-url="{{ asset('/') }}/wishlist/5"
                                                     data-add-text="Add To Wishlist"
                                                     data-remove-text="Remove From Wishlist">
                                                     <svg width="18" height="18" viewBox="0 0 18 18"
@@ -1086,8 +1086,8 @@
                                                 <button type="button"
                                                     class="tp-product-action-btn-2 tp-product-add-to-compare-btn"
                                                     data-bb-toggle="add-to-compare" title="Add To Compare"
-                                                    data-url="https://shofy-grocery.botble.com/compare/5"
-                                                    data-remove-url="https://shofy-grocery.botble.com/compare/5"
+                                                    data-url="{{ asset('/') }}/compare/5"
+                                                    data-remove-url="{{ asset('/') }}/compare/5"
                                                     data-add-text="Add To Compare"
                                                     data-remove-text="Remove From Compare">
                                                     <svg width="15" height="15" viewBox="0 0 15 15"
@@ -1117,12 +1117,12 @@
 
                                         <div class="tp-product-tag-5">
                                             <span><a
-                                                    href="https://shofy-grocery.botble.com/stores/starkist">StarKist</a>
+                                                    href="{{ asset('/') }}/stores/starkist">StarKist</a>
                                             </span>
                                         </div>
 
                                         <h3 class="tp-product-title-2 line-clamp-2">
-                                            <a href="https://shofy-grocery.botble.com/products/organic-spinach"
+                                            <a href="{{ asset('/') }}/products/organic-spinach"
                                                 title="Organic Spinach">Organic Spinach</a>
                                         </h3>
 
@@ -1134,7 +1134,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="tp-product-rating-text">
-                                                    <a href="https://shofy-grocery.botble.com/products/organic-spinach#product-review"
+                                                    <a href="{{ asset('/') }}/products/organic-spinach#product-review"
                                                         data-bb-toggle="scroll-to-review">
                                                         <span class="d-none d-sm-block">(9 reviews)</span>
                                                         <span class="d-block d-sm-none">(9)</span>
@@ -1162,10 +1162,10 @@
                             <div class="col">
                                 <div class="tp-product-item-5 p-relative white-bg mb-40 ">
                                     <div class="tp-product-thumb-5 w-img fix mb-15">
-                                        <a href="https://shofy-grocery.botble.com/products/grass-fed-ground-beef">
+                                        <a href="{{ asset('/') }}/products/grass-fed-ground-beef">
                                             <img data-bb-lazy="true" loading="lazy" alt="Grass-Fed Ground Beef"
                                                 class="entered exited"
-                                                src="https://shofy-grocery.botble.com/storage/main/products/product-13-600x600.jpg">
+                                                src="{{ asset('/') }}/storage/main/products/product-13-600x600.jpg">
                                         </a>
 
                                         <div class="tp-product-badge">
@@ -1178,7 +1178,7 @@
                                                 <button type="button"
                                                     class="tp-product-action-btn-2 tp-product-add-cart-btn"
                                                     data-bb-toggle="quick-shop"
-                                                    data-url="https://shofy-grocery.botble.com/ajax/quick-shop/grass-fed-ground-beef"
+                                                    data-url="{{ asset('/') }}/ajax/quick-shop/grass-fed-ground-beef"
                                                     title="Quick Shop">
                                                     <svg width="17" height="17" viewBox="0 0 17 17"
                                                         fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1209,7 +1209,7 @@
                                                     class="tp-product-action-btn-2 tp-product-quick-view-btn"
                                                     title="Quick View" data-bs-toggle="modal"
                                                     data-bs-target="#product-quick-view-modal"
-                                                    data-url="https://shofy-grocery.botble.com/ajax/quick-view/6">
+                                                    data-url="{{ asset('/') }}/ajax/quick-view/6">
                                                     <svg width="18" height="15" viewBox="0 0 18 15"
                                                         fill="none" xmlns="http://www.w3.org/2000/svg">
                                                         <path fill-rule="evenodd" clip-rule="evenodd"
@@ -1225,7 +1225,7 @@
                                                 <button type="button"
                                                     class="tp-product-action-btn-2 tp-product-add-to-wishlist-btn"
                                                     data-bb-toggle="add-to-wishlist" title="Add To Wishlist"
-                                                    data-url="https://shofy-grocery.botble.com/wishlist/6"
+                                                    data-url="{{ asset('/') }}/wishlist/6"
                                                     data-add-text="Add To Wishlist"
                                                     data-remove-text="Remove From Wishlist">
                                                     <svg width="18" height="18" viewBox="0 0 18 18"
@@ -1244,8 +1244,8 @@
                                                 <button type="button"
                                                     class="tp-product-action-btn-2 tp-product-add-to-compare-btn"
                                                     data-bb-toggle="add-to-compare" title="Add To Compare"
-                                                    data-url="https://shofy-grocery.botble.com/compare/6"
-                                                    data-remove-url="https://shofy-grocery.botble.com/compare/6"
+                                                    data-url="{{ asset('/') }}/compare/6"
+                                                    data-remove-url="{{ asset('/') }}/compare/6"
                                                     data-add-text="Add To Compare"
                                                     data-remove-text="Remove From Compare">
                                                     <svg width="15" height="15" viewBox="0 0 15 15"
@@ -1275,12 +1275,12 @@
 
                                         <div class="tp-product-tag-5">
                                             <span><a
-                                                    href="https://shofy-grocery.botble.com/stores/starkist">StarKist</a>
+                                                    href="{{ asset('/') }}/stores/starkist">StarKist</a>
                                             </span>
                                         </div>
 
                                         <h3 class="tp-product-title-2 line-clamp-2">
-                                            <a href="https://shofy-grocery.botble.com/products/grass-fed-ground-beef"
+                                            <a href="{{ asset('/') }}/products/grass-fed-ground-beef"
                                                 title="Grass-Fed Ground Beef">Grass-Fed Ground Beef</a>
                                         </h3>
 
@@ -1292,7 +1292,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="tp-product-rating-text">
-                                                    <a href="https://shofy-grocery.botble.com/products/grass-fed-ground-beef#product-review"
+                                                    <a href="{{ asset('/') }}/products/grass-fed-ground-beef#product-review"
                                                         data-bb-toggle="scroll-to-review">
                                                         <span class="d-none d-sm-block">(10 reviews)</span>
                                                         <span class="d-block d-sm-none">(10)</span>
@@ -1320,10 +1320,10 @@
                             <div class="col">
                                 <div class="tp-product-item-5 p-relative white-bg mb-40 ">
                                     <div class="tp-product-thumb-5 w-img fix mb-15">
-                                        <a href="https://shofy-grocery.botble.com/products/almond-milk">
+                                        <a href="{{ asset('/') }}/products/almond-milk">
                                             <img data-bb-lazy="true" loading="lazy" alt="Almond Milk"
                                                 class="entered exited"
-                                                src="https://shofy-grocery.botble.com/storage/main/products/product-1-600x600.jpg">
+                                                src="{{ asset('/') }}/storage/main/products/product-1-600x600.jpg">
                                         </a>
 
                                         <div class="tp-product-badge">
@@ -1336,7 +1336,7 @@
                                                 <button type="button"
                                                     class="tp-product-action-btn-2 tp-product-add-cart-btn"
                                                     data-bb-toggle="add-to-cart" data-show-toast-on-success="false"
-                                                    data-url="https://shofy-grocery.botble.com/cart/add-to-cart"
+                                                    data-url="{{ asset('/') }}/cart/add-to-cart"
                                                     data-id="7" title="Add To Cart">
                                                     <svg width="17" height="17" viewBox="0 0 17 17"
                                                         fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1367,7 +1367,7 @@
                                                     class="tp-product-action-btn-2 tp-product-quick-view-btn"
                                                     title="Quick View" data-bs-toggle="modal"
                                                     data-bs-target="#product-quick-view-modal"
-                                                    data-url="https://shofy-grocery.botble.com/ajax/quick-view/7">
+                                                    data-url="{{ asset('/') }}/ajax/quick-view/7">
                                                     <svg width="18" height="15" viewBox="0 0 18 15"
                                                         fill="none" xmlns="http://www.w3.org/2000/svg">
                                                         <path fill-rule="evenodd" clip-rule="evenodd"
@@ -1383,7 +1383,7 @@
                                                 <button type="button"
                                                     class="tp-product-action-btn-2 tp-product-add-to-wishlist-btn"
                                                     data-bb-toggle="add-to-wishlist" title="Add To Wishlist"
-                                                    data-url="https://shofy-grocery.botble.com/wishlist/7"
+                                                    data-url="{{ asset('/') }}/wishlist/7"
                                                     data-add-text="Add To Wishlist"
                                                     data-remove-text="Remove From Wishlist">
                                                     <svg width="18" height="18" viewBox="0 0 18 18"
@@ -1402,8 +1402,8 @@
                                                 <button type="button"
                                                     class="tp-product-action-btn-2 tp-product-add-to-compare-btn"
                                                     data-bb-toggle="add-to-compare" title="Add To Compare"
-                                                    data-url="https://shofy-grocery.botble.com/compare/7"
-                                                    data-remove-url="https://shofy-grocery.botble.com/compare/7"
+                                                    data-url="{{ asset('/') }}/compare/7"
+                                                    data-remove-url="{{ asset('/') }}/compare/7"
                                                     data-add-text="Add To Compare"
                                                     data-remove-text="Remove From Compare">
                                                     <svg width="15" height="15" viewBox="0 0 15 15"
@@ -1433,12 +1433,12 @@
 
                                         <div class="tp-product-tag-5">
                                             <span><a
-                                                    href="https://shofy-grocery.botble.com/stores/starkist">StarKist</a>
+                                                    href="{{ asset('/') }}/stores/starkist">StarKist</a>
                                             </span>
                                         </div>
 
                                         <h3 class="tp-product-title-2 line-clamp-2">
-                                            <a href="https://shofy-grocery.botble.com/products/almond-milk"
+                                            <a href="{{ asset('/') }}/products/almond-milk"
                                                 title="Almond Milk">Almond Milk</a>
                                         </h3>
 
@@ -1450,7 +1450,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="tp-product-rating-text">
-                                                    <a href="https://shofy-grocery.botble.com/products/almond-milk#product-review"
+                                                    <a href="{{ asset('/') }}/products/almond-milk#product-review"
                                                         data-bb-toggle="scroll-to-review">
                                                         <span class="d-none d-sm-block">(10 reviews)</span>
                                                         <span class="d-block d-sm-none">(10)</span>
@@ -1478,8 +1478,8 @@
                             <div class="col">
                                 <div class="tp-product-item-5 p-relative white-bg mb-40 ">
                                     <div class="tp-product-thumb-5 w-img fix mb-15">
-                                        <a href="https://shofy-grocery.botble.com/products/quinoa-digital">
-                                            <img src="https://shofy-grocery.botble.com/storage/main/products/product-13-600x600.jpg"
+                                        <a href="{{ asset('/') }}/products/quinoa-digital">
+                                            <img src="{{ asset('/') }}/storage/main/products/product-13-600x600.jpg"
                                                 data-bb-lazy="true" loading="lazy" alt="Quinoa (Digital)">
                                         </a>
 
@@ -1493,7 +1493,7 @@
                                                 <button type="button"
                                                     class="tp-product-action-btn-2 tp-product-add-cart-btn"
                                                     data-bb-toggle="quick-shop"
-                                                    data-url="https://shofy-grocery.botble.com/ajax/quick-shop/quinoa-digital"
+                                                    data-url="{{ asset('/') }}/ajax/quick-shop/quinoa-digital"
                                                     title="Quick Shop">
                                                     <svg width="17" height="17" viewBox="0 0 17 17"
                                                         fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1524,7 +1524,7 @@
                                                     class="tp-product-action-btn-2 tp-product-quick-view-btn"
                                                     title="Quick View" data-bs-toggle="modal"
                                                     data-bs-target="#product-quick-view-modal"
-                                                    data-url="https://shofy-grocery.botble.com/ajax/quick-view/8">
+                                                    data-url="{{ asset('/') }}/ajax/quick-view/8">
                                                     <svg width="18" height="15" viewBox="0 0 18 15"
                                                         fill="none" xmlns="http://www.w3.org/2000/svg">
                                                         <path fill-rule="evenodd" clip-rule="evenodd"
@@ -1540,7 +1540,7 @@
                                                 <button type="button"
                                                     class="tp-product-action-btn-2 tp-product-add-to-wishlist-btn"
                                                     data-bb-toggle="add-to-wishlist" title="Add To Wishlist"
-                                                    data-url="https://shofy-grocery.botble.com/wishlist/8"
+                                                    data-url="{{ asset('/') }}/wishlist/8"
                                                     data-add-text="Add To Wishlist"
                                                     data-remove-text="Remove From Wishlist">
                                                     <svg width="18" height="18" viewBox="0 0 18 18"
@@ -1559,8 +1559,8 @@
                                                 <button type="button"
                                                     class="tp-product-action-btn-2 tp-product-add-to-compare-btn"
                                                     data-bb-toggle="add-to-compare" title="Add To Compare"
-                                                    data-url="https://shofy-grocery.botble.com/compare/8"
-                                                    data-remove-url="https://shofy-grocery.botble.com/compare/8"
+                                                    data-url="{{ asset('/') }}/compare/8"
+                                                    data-remove-url="{{ asset('/') }}/compare/8"
                                                     data-add-text="Add To Compare"
                                                     data-remove-text="Remove From Compare">
                                                     <svg width="15" height="15" viewBox="0 0 15 15"
@@ -1590,12 +1590,12 @@
 
                                         <div class="tp-product-tag-5">
                                             <span><a
-                                                    href="https://shofy-grocery.botble.com/stores/starkist">StarKist</a>
+                                                    href="{{ asset('/') }}/stores/starkist">StarKist</a>
                                             </span>
                                         </div>
 
                                         <h3 class="tp-product-title-2 line-clamp-2">
-                                            <a href="https://shofy-grocery.botble.com/products/quinoa-digital"
+                                            <a href="{{ asset('/') }}/products/quinoa-digital"
                                                 title="Quinoa (Digital)">Quinoa (Digital)</a>
                                         </h3>
 
@@ -1607,7 +1607,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="tp-product-rating-text">
-                                                    <a href="https://shofy-grocery.botble.com/products/quinoa-digital#product-review"
+                                                    <a href="{{ asset('/') }}/products/quinoa-digital#product-review"
                                                         data-bb-toggle="scroll-to-review">
                                                         <span class="d-none d-sm-block">(10 reviews)</span>
                                                         <span class="d-block d-sm-none">(10)</span>
@@ -1635,8 +1635,8 @@
                             <div class="col">
                                 <div class="tp-product-item-5 p-relative white-bg mb-40 ">
                                     <div class="tp-product-thumb-5 w-img fix mb-15">
-                                        <a href="https://shofy-grocery.botble.com/products/avocado">
-                                            <img src="https://shofy-grocery.botble.com/storage/main/products/product-2-600x600.jpg"
+                                        <a href="{{ asset('/') }}/products/avocado">
+                                            <img src="{{ asset('/') }}/storage/main/products/product-2-600x600.jpg"
                                                 data-bb-lazy="true" loading="lazy" alt="Avocado">
                                         </a>
 
@@ -1650,7 +1650,7 @@
                                                 <button type="button"
                                                     class="tp-product-action-btn-2 tp-product-add-cart-btn"
                                                     data-bb-toggle="quick-shop"
-                                                    data-url="https://shofy-grocery.botble.com/ajax/quick-shop/avocado"
+                                                    data-url="{{ asset('/') }}/ajax/quick-shop/avocado"
                                                     title="Quick Shop">
                                                     <svg width="17" height="17" viewBox="0 0 17 17"
                                                         fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1681,7 +1681,7 @@
                                                     class="tp-product-action-btn-2 tp-product-quick-view-btn"
                                                     title="Quick View" data-bs-toggle="modal"
                                                     data-bs-target="#product-quick-view-modal"
-                                                    data-url="https://shofy-grocery.botble.com/ajax/quick-view/9">
+                                                    data-url="{{ asset('/') }}/ajax/quick-view/9">
                                                     <svg width="18" height="15" viewBox="0 0 18 15"
                                                         fill="none" xmlns="http://www.w3.org/2000/svg">
                                                         <path fill-rule="evenodd" clip-rule="evenodd"
@@ -1697,7 +1697,7 @@
                                                 <button type="button"
                                                     class="tp-product-action-btn-2 tp-product-add-to-wishlist-btn"
                                                     data-bb-toggle="add-to-wishlist" title="Add To Wishlist"
-                                                    data-url="https://shofy-grocery.botble.com/wishlist/9"
+                                                    data-url="{{ asset('/') }}/wishlist/9"
                                                     data-add-text="Add To Wishlist"
                                                     data-remove-text="Remove From Wishlist">
                                                     <svg width="18" height="18" viewBox="0 0 18 18"
@@ -1716,8 +1716,8 @@
                                                 <button type="button"
                                                     class="tp-product-action-btn-2 tp-product-add-to-compare-btn"
                                                     data-bb-toggle="add-to-compare" title="Add To Compare"
-                                                    data-url="https://shofy-grocery.botble.com/compare/9"
-                                                    data-remove-url="https://shofy-grocery.botble.com/compare/9"
+                                                    data-url="{{ asset('/') }}/compare/9"
+                                                    data-remove-url="{{ asset('/') }}/compare/9"
                                                     data-add-text="Add To Compare"
                                                     data-remove-text="Remove From Compare">
                                                     <svg width="15" height="15" viewBox="0 0 15 15"
@@ -1746,12 +1746,12 @@
 
 
                                         <div class="tp-product-tag-5">
-                                            <span><a href="https://shofy-grocery.botble.com/stores/gopro">GoPro</a>
+                                            <span><a href="{{ asset('/') }}/stores/gopro">GoPro</a>
                                             </span>
                                         </div>
 
                                         <h3 class="tp-product-title-2 line-clamp-2">
-                                            <a href="https://shofy-grocery.botble.com/products/avocado"
+                                            <a href="{{ asset('/') }}/products/avocado"
                                                 title="Avocado">Avocado</a>
                                         </h3>
 
@@ -1763,7 +1763,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="tp-product-rating-text">
-                                                    <a href="https://shofy-grocery.botble.com/products/avocado#product-review"
+                                                    <a href="{{ asset('/') }}/products/avocado#product-review"
                                                         data-bb-toggle="scroll-to-review">
                                                         <span class="d-none d-sm-block">(9 reviews)</span>
                                                         <span class="d-block d-sm-none">(9)</span>
@@ -1798,7 +1798,7 @@
 </section>
 <section data-shortcode-id="sc_1769254755_0" data-shortcode-name="ecommerce-flash-sale"
     data-block-id="ecommerce-flash-sale"
-    style="--block-ecommerce-flash-sale-background-image: url(https://shofy-grocery.botble.com/storage/grocery/banners/3.png); background-image: var(--block-ecommerce-flash-sale-background-image) !important; background-size: cover;"
+    style="--block-ecommerce-flash-sale-background-image: url({{ asset('/') }}/storage/grocery/banners/3.png); background-image: var(--block-ecommerce-flash-sale-background-image) !important; background-size: cover;"
     class="tp-deal-area pt-50 pb-35 p-relative z-index-1 fix scene shortcode-lazy-loading-loaded">
     <div class="container">
         <div class="row justify-content-center">
@@ -1839,19 +1839,19 @@
         <div class="row">
             <div class="col-xl-4 col-lg-4 col-md-6">
                 <div class="tp-product-side-banner-thumb">
-                    <a href="https://shofy-grocery.botble.com/ac-3d3bbe2bd0c863d0331bd84875ea725c0ae5b12b/GA3K1VZWNMPF"
+                    <a href="{{ asset('/') }}/ac-3d3bbe2bd0c863d0331bd84875ea725c0ae5b12b/GA3K1VZWNMPF"
                         target="_blank">
                         <picture>
                             <source media="(min-width: 1200px)"
-                                srcset="https://shofy-grocery.botble.com/storage/grocery/banners/2.png">
+                                srcset="{{ asset('/') }}/storage/grocery/banners/2.png">
                             <source media="(min-width: 768px)"
-                                srcset="https://shofy-grocery.botble.com/storage/grocery/banners/2.png">
+                                srcset="{{ asset('/') }}/storage/grocery/banners/2.png">
                             <source media="(max-width: 767px)"
-                                srcset="https://shofy-grocery.botble.com/storage/grocery/banners/2.png">
+                                srcset="{{ asset('/') }}/storage/grocery/banners/2.png">
 
                             <img data-bb-lazy="true" style="width: 100%" loading="lazy" alt="Ads 4"
                                 class="entered loading"
-                                src="https://shofy-grocery.botble.com/storage/grocery/banners/2.png"
+                                src="{{ asset('/') }}/storage/grocery/banners/2.png"
                                 data-ll-status="loading">
                         </picture>
                     </a>
@@ -1870,21 +1870,21 @@
                             <div class="tp-product-sm-item-wrapper-5">
                                 <div class="tp-product-sm-item-5 d-flex align-items-center">
                                     <div class="tp-product-sm-thumb-5 fix">
-                                        <a href="https://shofy-grocery.botble.com/products/almond-butter-digital">
+                                        <a href="{{ asset('/') }}/products/almond-butter-digital">
                                             <img data-bb-lazy="true" loading="lazy" alt="Almond Butter (Digital)"
                                                 class="entered loading"
-                                                src="https://shofy-grocery.botble.com/storage/main/products/product-8-150x150.jpg"
+                                                src="{{ asset('/') }}/storage/main/products/product-8-150x150.jpg"
                                                 data-ll-status="loading">
                                         </a>
                                     </div>
                                     <div class="tp-product-sm-content-5">
                                         <div class="tp-product-sm-tag-5">
-                                            <a href="https://shofy-grocery.botble.com/stores/global-store">Global
+                                            <a href="{{ asset('/') }}/stores/global-store">Global
                                                 Store</a>
                                         </div>
 
                                         <h4 class="tp-product-sm-title-5">
-                                            <a href="https://shofy-grocery.botble.com/products/almond-butter-digital">Almond
+                                            <a href="{{ asset('/') }}/products/almond-butter-digital">Almond
                                                 Butter (Digital)</a>
                                         </h4>
 
@@ -1909,21 +1909,21 @@
                                 </div>
                                 <div class="tp-product-sm-item-5 d-flex align-items-center">
                                     <div class="tp-product-sm-thumb-5 fix">
-                                        <a href="https://shofy-grocery.botble.com/products/organic-apples">
+                                        <a href="{{ asset('/') }}/products/organic-apples">
                                             <img data-bb-lazy="true" loading="lazy" alt="Organic Apples"
                                                 class="entered loading"
-                                                src="https://shofy-grocery.botble.com/storage/main/products/product-14-150x150.jpg"
+                                                src="{{ asset('/') }}/storage/main/products/product-14-150x150.jpg"
                                                 data-ll-status="loading">
                                         </a>
                                     </div>
                                     <div class="tp-product-sm-content-5">
                                         <div class="tp-product-sm-tag-5">
-                                            <a href="https://shofy-grocery.botble.com/stores/young-shop">Young
+                                            <a href="{{ asset('/') }}/stores/young-shop">Young
                                                 Shop</a>
                                         </div>
 
                                         <h4 class="tp-product-sm-title-5">
-                                            <a href="https://shofy-grocery.botble.com/products/organic-apples">Organic
+                                            <a href="{{ asset('/') }}/products/organic-apples">Organic
                                                 Apples</a>
                                         </h4>
 
@@ -1948,21 +1948,21 @@
                                 </div>
                                 <div class="tp-product-sm-item-5 d-flex align-items-center">
                                     <div class="tp-product-sm-thumb-5 fix">
-                                        <a href="https://shofy-grocery.botble.com/products/honeycrisp-apples">
+                                        <a href="{{ asset('/') }}/products/honeycrisp-apples">
                                             <img data-bb-lazy="true" loading="lazy" alt="Honeycrisp Apples"
                                                 class="entered loading"
-                                                src="https://shofy-grocery.botble.com/storage/main/products/product-details-desc-1-150x150.jpg"
+                                                src="{{ asset('/') }}/storage/main/products/product-details-desc-1-150x150.jpg"
                                                 data-ll-status="loading">
                                         </a>
                                     </div>
                                     <div class="tp-product-sm-content-5">
                                         <div class="tp-product-sm-tag-5">
-                                            <a href="https://shofy-grocery.botble.com/stores/global-store">Global
+                                            <a href="{{ asset('/') }}/stores/global-store">Global
                                                 Store</a>
                                         </div>
 
                                         <h4 class="tp-product-sm-title-5">
-                                            <a href="https://shofy-grocery.botble.com/products/honeycrisp-apples">Honeycrisp
+                                            <a href="{{ asset('/') }}/products/honeycrisp-apples">Honeycrisp
                                                 Apples</a>
                                         </h4>
 
@@ -1992,21 +1992,21 @@
                             <div class="tp-product-sm-item-wrapper-5">
                                 <div class="tp-product-sm-item-5 d-flex align-items-center">
                                     <div class="tp-product-sm-thumb-5 fix">
-                                        <a href="https://shofy-grocery.botble.com/products/cucumber">
+                                        <a href="{{ asset('/') }}/products/cucumber">
                                             <img data-bb-lazy="true" loading="lazy" alt="Cucumber"
                                                 class="entered loading"
-                                                src="https://shofy-grocery.botble.com/storage/main/products/product-details-desc-3-150x150.jpg"
+                                                src="{{ asset('/') }}/storage/main/products/product-details-desc-3-150x150.jpg"
                                                 data-ll-status="loading">
                                         </a>
                                     </div>
                                     <div class="tp-product-sm-content-5">
                                         <div class="tp-product-sm-tag-5">
-                                            <a href="https://shofy-grocery.botble.com/stores/global-store">Global
+                                            <a href="{{ asset('/') }}/stores/global-store">Global
                                                 Store</a>
                                         </div>
 
                                         <h4 class="tp-product-sm-title-5">
-                                            <a href="https://shofy-grocery.botble.com/products/cucumber">Cucumber</a>
+                                            <a href="{{ asset('/') }}/products/cucumber">Cucumber</a>
                                         </h4>
 
                                         <div class="tp-product-sm-rating-5">
@@ -2031,21 +2031,21 @@
                                 <div class="tp-product-sm-item-5 d-flex align-items-center">
                                     <div class="tp-product-sm-thumb-5 fix">
                                         <a
-                                            href="https://shofy-grocery.botble.com/products/organic-cherry-tomatoes-digital">
+                                            href="{{ asset('/') }}/products/organic-cherry-tomatoes-digital">
                                             <img data-bb-lazy="true" loading="lazy"
                                                 alt="Organic Cherry Tomatoes (Digital)" class="entered loading"
-                                                src="https://shofy-grocery.botble.com/storage/main/products/product-16-150x150.jpg"
+                                                src="{{ asset('/') }}/storage/main/products/product-16-150x150.jpg"
                                                 data-ll-status="loading">
                                         </a>
                                     </div>
                                     <div class="tp-product-sm-content-5">
                                         <div class="tp-product-sm-tag-5">
-                                            <a href="https://shofy-grocery.botble.com/stores/gopro">GoPro</a>
+                                            <a href="{{ asset('/') }}/stores/gopro">GoPro</a>
                                         </div>
 
                                         <h4 class="tp-product-sm-title-5">
                                             <a
-                                                href="https://shofy-grocery.botble.com/products/organic-cherry-tomatoes-digital">Organic
+                                                href="{{ asset('/') }}/products/organic-cherry-tomatoes-digital">Organic
                                                 Cherry Tomatoes (Digital)</a>
                                         </h4>
 
@@ -2071,21 +2071,21 @@
                                 <div class="tp-product-sm-item-5 d-flex align-items-center">
                                     <div class="tp-product-sm-thumb-5 fix">
                                         <a
-                                            href="https://shofy-grocery.botble.com/products/extra-virgin-olive-oil-digital">
+                                            href="{{ asset('/') }}/products/extra-virgin-olive-oil-digital">
                                             <img data-bb-lazy="true" loading="lazy"
                                                 alt="Extra Virgin Olive Oil (Digital)" class="entered loading"
-                                                src="https://shofy-grocery.botble.com/storage/main/products/product-11-150x150.jpg"
+                                                src="{{ asset('/') }}/storage/main/products/product-11-150x150.jpg"
                                                 data-ll-status="loading">
                                         </a>
                                     </div>
                                     <div class="tp-product-sm-content-5">
                                         <div class="tp-product-sm-tag-5">
-                                            <a href="https://shofy-grocery.botble.com/stores/gopro">GoPro</a>
+                                            <a href="{{ asset('/') }}/stores/gopro">GoPro</a>
                                         </div>
 
                                         <h4 class="tp-product-sm-title-5">
                                             <a
-                                                href="https://shofy-grocery.botble.com/products/extra-virgin-olive-oil-digital">Extra
+                                                href="{{ asset('/') }}/products/extra-virgin-olive-oil-digital">Extra
                                                 Virgin Olive Oil (Digital)</a>
                                         </h4>
 
@@ -2148,12 +2148,12 @@
                                     <div class="tp-testimonial-avater-wrapper-5 p-relative">
                                         <div class="tp-avater-rounded mr-60">
                                             <div class="tp-testimonial-avater-5">
-                                                <img src="https://shofy-grocery.botble.com/storage/main/users/3.jpg"
+                                                <img src="{{ asset('/') }}/storage/main/users/3.jpg"
                                                     data-bb-lazy="true" loading="lazy" alt="Albert Flores">
                                             </div>
                                         </div>
                                         <span class="quote-icon">
-                                            <img src="https://shofy-grocery.botble.com/themes/shofy-grocery/images/testimonial-quote.png"
+                                            <img src="{{ asset('/') }}/themes/shofy-grocery/images/testimonial-quote.png"
                                                 alt="quote">
                                         </span>
                                     </div>
@@ -2227,13 +2227,13 @@
                                     <div class="tp-testimonial-avater-wrapper-5 p-relative">
                                         <div class="tp-avater-rounded mr-60">
                                             <div class="tp-testimonial-avater-5">
-                                                <img src="https://shofy-grocery.botble.com/storage/main/users/8.jpg"
+                                                <img src="{{ asset('/') }}/storage/main/users/8.jpg"
                                                     data-bb-lazy="true" loading="lazy" alt="James Dopli"
                                                     data-ll-status="loading" class="entered loading">
                                             </div>
                                         </div>
                                         <span class="quote-icon">
-                                            <img src="https://shofy-grocery.botble.com/themes/shofy-grocery/images/testimonial-quote.png"
+                                            <img src="{{ asset('/') }}/themes/shofy-grocery/images/testimonial-quote.png"
                                                 alt="quote">
                                         </span>
                                     </div>
@@ -2307,12 +2307,12 @@
                                     <div class="tp-testimonial-avater-wrapper-5 p-relative">
                                         <div class="tp-avater-rounded mr-60">
                                             <div class="tp-testimonial-avater-5">
-                                                <img src="https://shofy-grocery.botble.com/storage/main/users/3.jpg"
+                                                <img src="{{ asset('/') }}/storage/main/users/3.jpg"
                                                     data-bb-lazy="true" loading="lazy" alt="Theodore Handle">
                                             </div>
                                         </div>
                                         <span class="quote-icon">
-                                            <img src="https://shofy-grocery.botble.com/themes/shofy-grocery/images/testimonial-quote.png"
+                                            <img src="{{ asset('/') }}/themes/shofy-grocery/images/testimonial-quote.png"
                                                 alt="quote">
                                         </span>
                                     </div>
@@ -2386,12 +2386,12 @@
                                     <div class="tp-testimonial-avater-wrapper-5 p-relative">
                                         <div class="tp-avater-rounded mr-60">
                                             <div class="tp-testimonial-avater-5">
-                                                <img src="https://shofy-grocery.botble.com/storage/main/users/4.jpg"
+                                                <img src="{{ asset('/') }}/storage/main/users/4.jpg"
                                                     data-bb-lazy="true" loading="lazy" alt="Shahnewaz Sakil">
                                             </div>
                                         </div>
                                         <span class="quote-icon">
-                                            <img src="https://shofy-grocery.botble.com/themes/shofy-grocery/images/testimonial-quote.png"
+                                            <img src="{{ asset('/') }}/themes/shofy-grocery/images/testimonial-quote.png"
                                                 alt="quote">
                                         </span>
                                     </div>
@@ -2465,12 +2465,12 @@
                                     <div class="tp-testimonial-avater-wrapper-5 p-relative">
                                         <div class="tp-avater-rounded mr-60">
                                             <div class="tp-testimonial-avater-5">
-                                                <img src="https://shofy-grocery.botble.com/storage/main/users/3.jpg"
+                                                <img src="{{ asset('/') }}/storage/main/users/3.jpg"
                                                     data-bb-lazy="true" loading="lazy" alt="Albert Flores">
                                             </div>
                                         </div>
                                         <span class="quote-icon">
-                                            <img src="https://shofy-grocery.botble.com/themes/shofy-grocery/images/testimonial-quote.png"
+                                            <img src="{{ asset('/') }}/themes/shofy-grocery/images/testimonial-quote.png"
                                                 alt="quote">
                                         </span>
                                     </div>
@@ -2544,12 +2544,12 @@
                                     <div class="tp-testimonial-avater-wrapper-5 p-relative">
                                         <div class="tp-avater-rounded mr-60">
                                             <div class="tp-testimonial-avater-5">
-                                                <img src="https://shofy-grocery.botble.com/storage/main/users/8.jpg"
+                                                <img src="{{ asset('/') }}/storage/main/users/8.jpg"
                                                     data-bb-lazy="true" loading="lazy" alt="James Dopli">
                                             </div>
                                         </div>
                                         <span class="quote-icon">
-                                            <img src="https://shofy-grocery.botble.com/themes/shofy-grocery/images/testimonial-quote.png"
+                                            <img src="{{ asset('/') }}/themes/shofy-grocery/images/testimonial-quote.png"
                                                 alt="quote">
                                         </span>
                                     </div>
@@ -2666,27 +2666,27 @@
                             <div class="tp-best-banner-item-5 p-relative fix swiper-slide swiper-slide-active"
                                 role="group" aria-label="1 / 2"
                                 style="width: 241px; opacity: 1; transform: translate3d(0px, 0px, 0px);">
-                                <a href="https://shofy-grocery.botble.com/ac-4cb48712bb1efb319baa65b586894cdf1e0a53ed/L1WDL8YGZUOR"
+                                <a href="{{ asset('/') }}/ac-4cb48712bb1efb319baa65b586894cdf1e0a53ed/L1WDL8YGZUOR"
                                     target="_blank">
                                 </a>
                                 <div class="tp-best-banner-thumb-5 include-bg grey-bg"><a
-                                        href="https://shofy-grocery.botble.com/ac-4cb48712bb1efb319baa65b586894cdf1e0a53ed/L1WDL8YGZUOR"
+                                        href="{{ asset('/') }}/ac-4cb48712bb1efb319baa65b586894cdf1e0a53ed/L1WDL8YGZUOR"
                                         target="_blank">
                                     </a><a
-                                        href="https://shofy-grocery.botble.com/ac-4cb48712bb1efb319baa65b586894cdf1e0a53ed/L1WDL8YGZUOR"
+                                        href="{{ asset('/') }}/ac-4cb48712bb1efb319baa65b586894cdf1e0a53ed/L1WDL8YGZUOR"
                                         target="_blank">
                                         <picture>
                                             <source
-                                                srcset="https://shofy-grocery.botble.com/storage/grocery/banners/1.jpg"
+                                                srcset="{{ asset('/') }}/storage/grocery/banners/1.jpg"
                                                 media="(min-width: 1200px)">
                                             <source
-                                                srcset="https://shofy-grocery.botble.com/storage/grocery/banners/1.jpg"
+                                                srcset="{{ asset('/') }}/storage/grocery/banners/1.jpg"
                                                 media="(min-width: 768px)">
                                             <source
-                                                srcset="https://shofy-grocery.botble.com/storage/grocery/banners/1.jpg"
+                                                srcset="{{ asset('/') }}/storage/grocery/banners/1.jpg"
                                                 media="(max-width: 767px)">
 
-                                            <img src="https://shofy-grocery.botble.com/storage/grocery/banners/1.jpg"
+                                            <img src="{{ asset('/') }}/storage/grocery/banners/1.jpg"
                                                 data-bb-lazy="true" style="width: 100%" loading="lazy"
                                                 alt="Ads 3" data-ll-status="loading" class="entered loading">
                                         </picture>
@@ -2698,27 +2698,27 @@
                             <div class="tp-best-banner-item-5 p-relative fix swiper-slide swiper-slide-next"
                                 role="group" aria-label="2 / 2"
                                 style="width: 241px; opacity: 0; transform: translate3d(-241px, 0px, 0px);">
-                                <a href="https://shofy-grocery.botble.com/ac-3d3bbe2bd0c863d0331bd84875ea725c0ae5b12b/GA3K1VZWNMPF"
+                                <a href="{{ asset('/') }}/ac-3d3bbe2bd0c863d0331bd84875ea725c0ae5b12b/GA3K1VZWNMPF"
                                     target="_blank">
                                 </a>
                                 <div class="tp-best-banner-thumb-5 include-bg grey-bg"><a
-                                        href="https://shofy-grocery.botble.com/ac-3d3bbe2bd0c863d0331bd84875ea725c0ae5b12b/GA3K1VZWNMPF"
+                                        href="{{ asset('/') }}/ac-3d3bbe2bd0c863d0331bd84875ea725c0ae5b12b/GA3K1VZWNMPF"
                                         target="_blank">
                                     </a><a
-                                        href="https://shofy-grocery.botble.com/ac-3d3bbe2bd0c863d0331bd84875ea725c0ae5b12b/GA3K1VZWNMPF"
+                                        href="{{ asset('/') }}/ac-3d3bbe2bd0c863d0331bd84875ea725c0ae5b12b/GA3K1VZWNMPF"
                                         target="_blank">
                                         <picture>
                                             <source
-                                                srcset="https://shofy-grocery.botble.com/storage/grocery/banners/2.png"
+                                                srcset="{{ asset('/') }}/storage/grocery/banners/2.png"
                                                 media="(min-width: 1200px)">
                                             <source
-                                                srcset="https://shofy-grocery.botble.com/storage/grocery/banners/2.png"
+                                                srcset="{{ asset('/') }}/storage/grocery/banners/2.png"
                                                 media="(min-width: 768px)">
                                             <source
-                                                srcset="https://shofy-grocery.botble.com/storage/grocery/banners/2.png"
+                                                srcset="{{ asset('/') }}/storage/grocery/banners/2.png"
                                                 media="(max-width: 767px)">
 
-                                            <img src="https://shofy-grocery.botble.com/storage/grocery/banners/2.png"
+                                            <img src="{{ asset('/') }}/storage/grocery/banners/2.png"
                                                 data-bb-lazy="true" style="width: 100%" loading="lazy"
                                                 alt="Ads 4" data-ll-status="loading" class="entered loading">
                                         </picture>
@@ -2762,8 +2762,8 @@
                                     aria-label="1 / 5" style="width: 261px; margin-right: 24px;">
                                     <div class="tp-product-item-5 p-relative white-bg mb-40 swiper-slide">
                                         <div class="tp-product-thumb-5 w-img fix mb-15">
-                                            <a href="https://shofy-grocery.botble.com/products/whole-grain-bread">
-                                                <img src="https://shofy-grocery.botble.com/storage/main/products/product-11-600x600.jpg"
+                                            <a href="{{ asset('/') }}/products/whole-grain-bread">
+                                                <img src="{{ asset('/') }}/storage/main/products/product-11-600x600.jpg"
                                                     data-bb-lazy="true" loading="lazy" alt="Whole Grain Bread"
                                                     data-ll-status="loading" class="entered loading">
                                             </a>
@@ -2779,7 +2779,7 @@
                                                         class="tp-product-action-btn-2 tp-product-add-cart-btn"
                                                         data-bb-toggle="add-to-cart"
                                                         data-show-toast-on-success="false"
-                                                        data-url="https://shofy-grocery.botble.com/cart/add-to-cart"
+                                                        data-url="{{ asset('/') }}/cart/add-to-cart"
                                                         data-id="2" title="Add To Cart">
                                                         <svg width="17" height="17" viewBox="0 0 17 17"
                                                             fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2810,7 +2810,7 @@
                                                         class="tp-product-action-btn-2 tp-product-quick-view-btn"
                                                         title="Quick View" data-bs-toggle="modal"
                                                         data-bs-target="#product-quick-view-modal"
-                                                        data-url="https://shofy-grocery.botble.com/ajax/quick-view/2">
+                                                        data-url="{{ asset('/') }}/ajax/quick-view/2">
                                                         <svg width="18" height="15" viewBox="0 0 18 15"
                                                             fill="none" xmlns="http://www.w3.org/2000/svg">
                                                             <path fill-rule="evenodd" clip-rule="evenodd"
@@ -2827,7 +2827,7 @@
                                                     <button type="button"
                                                         class="tp-product-action-btn-2 tp-product-add-to-wishlist-btn"
                                                         data-bb-toggle="add-to-wishlist" title="Add To Wishlist"
-                                                        data-url="https://shofy-grocery.botble.com/wishlist/2"
+                                                        data-url="{{ asset('/') }}/wishlist/2"
                                                         data-add-text="Add To Wishlist"
                                                         data-remove-text="Remove From Wishlist">
                                                         <svg width="18" height="18" viewBox="0 0 18 18"
@@ -2846,8 +2846,8 @@
                                                     <button type="button"
                                                         class="tp-product-action-btn-2 tp-product-add-to-compare-btn"
                                                         data-bb-toggle="add-to-compare" title="Add To Compare"
-                                                        data-url="https://shofy-grocery.botble.com/compare/2"
-                                                        data-remove-url="https://shofy-grocery.botble.com/compare/2"
+                                                        data-url="{{ asset('/') }}/compare/2"
+                                                        data-remove-url="{{ asset('/') }}/compare/2"
                                                         data-add-text="Add To Compare"
                                                         data-remove-text="Remove From Compare">
                                                         <svg width="15" height="15" viewBox="0 0 15 15"
@@ -2880,12 +2880,12 @@
 
                                             <div class="tp-product-tag-5">
                                                 <span><a
-                                                        href="https://shofy-grocery.botble.com/stores/starkist">StarKist</a>
+                                                        href="{{ asset('/') }}/stores/starkist">StarKist</a>
                                                 </span>
                                             </div>
 
                                             <h3 class="tp-product-title-2 line-clamp-2">
-                                                <a href="https://shofy-grocery.botble.com/products/whole-grain-bread"
+                                                <a href="{{ asset('/') }}/products/whole-grain-bread"
                                                     title="Whole Grain Bread">Whole Grain Bread</a>
                                             </h3>
 
@@ -2898,7 +2898,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="tp-product-rating-text">
-                                                        <a href="https://shofy-grocery.botble.com/products/whole-grain-bread#product-review"
+                                                        <a href="{{ asset('/') }}/products/whole-grain-bread#product-review"
                                                             data-bb-toggle="scroll-to-review">
                                                             <span class="d-none d-sm-block">(9 reviews)</span>
                                                             <span class="d-block d-sm-none">(9)</span>
@@ -2927,8 +2927,8 @@
                                     aria-label="2 / 5" style="width: 261px; margin-right: 24px;">
                                     <div class="tp-product-item-5 p-relative white-bg mb-40 swiper-slide">
                                         <div class="tp-product-thumb-5 w-img fix mb-15">
-                                            <a href="https://shofy-grocery.botble.com/products/free-range-eggs">
-                                                <img src="https://shofy-grocery.botble.com/storage/main/products/product-9-600x600.jpg"
+                                            <a href="{{ asset('/') }}/products/free-range-eggs">
+                                                <img src="{{ asset('/') }}/storage/main/products/product-9-600x600.jpg"
                                                     data-bb-lazy="true" loading="lazy" alt="Free-Range Eggs"
                                                     data-ll-status="loading" class="entered loading">
                                             </a>
@@ -2944,7 +2944,7 @@
                                                         class="tp-product-action-btn-2 tp-product-add-cart-btn"
                                                         data-bb-toggle="add-to-cart"
                                                         data-show-toast-on-success="false"
-                                                        data-url="https://shofy-grocery.botble.com/cart/add-to-cart"
+                                                        data-url="{{ asset('/') }}/cart/add-to-cart"
                                                         data-id="3" title="Add To Cart">
                                                         <svg width="17" height="17" viewBox="0 0 17 17"
                                                             fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2975,7 +2975,7 @@
                                                         class="tp-product-action-btn-2 tp-product-quick-view-btn"
                                                         title="Quick View" data-bs-toggle="modal"
                                                         data-bs-target="#product-quick-view-modal"
-                                                        data-url="https://shofy-grocery.botble.com/ajax/quick-view/3">
+                                                        data-url="{{ asset('/') }}/ajax/quick-view/3">
                                                         <svg width="18" height="15" viewBox="0 0 18 15"
                                                             fill="none" xmlns="http://www.w3.org/2000/svg">
                                                             <path fill-rule="evenodd" clip-rule="evenodd"
@@ -2992,7 +2992,7 @@
                                                     <button type="button"
                                                         class="tp-product-action-btn-2 tp-product-add-to-wishlist-btn"
                                                         data-bb-toggle="add-to-wishlist" title="Add To Wishlist"
-                                                        data-url="https://shofy-grocery.botble.com/wishlist/3"
+                                                        data-url="{{ asset('/') }}/wishlist/3"
                                                         data-add-text="Add To Wishlist"
                                                         data-remove-text="Remove From Wishlist">
                                                         <svg width="18" height="18" viewBox="0 0 18 18"
@@ -3011,8 +3011,8 @@
                                                     <button type="button"
                                                         class="tp-product-action-btn-2 tp-product-add-to-compare-btn"
                                                         data-bb-toggle="add-to-compare" title="Add To Compare"
-                                                        data-url="https://shofy-grocery.botble.com/compare/3"
-                                                        data-remove-url="https://shofy-grocery.botble.com/compare/3"
+                                                        data-url="{{ asset('/') }}/compare/3"
+                                                        data-remove-url="{{ asset('/') }}/compare/3"
                                                         data-add-text="Add To Compare"
                                                         data-remove-text="Remove From Compare">
                                                         <svg width="15" height="15" viewBox="0 0 15 15"
@@ -3045,12 +3045,12 @@
 
                                             <div class="tp-product-tag-5">
                                                 <span><a
-                                                        href="https://shofy-grocery.botble.com/stores/gopro">GoPro</a>
+                                                        href="{{ asset('/') }}/stores/gopro">GoPro</a>
                                                 </span>
                                             </div>
 
                                             <h3 class="tp-product-title-2 line-clamp-2">
-                                                <a href="https://shofy-grocery.botble.com/products/free-range-eggs"
+                                                <a href="{{ asset('/') }}/products/free-range-eggs"
                                                     title="Free-Range Eggs">Free-Range Eggs</a>
                                             </h3>
 
@@ -3063,7 +3063,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="tp-product-rating-text">
-                                                        <a href="https://shofy-grocery.botble.com/products/free-range-eggs#product-review"
+                                                        <a href="{{ asset('/') }}/products/free-range-eggs#product-review"
                                                             data-bb-toggle="scroll-to-review">
                                                             <span class="d-none d-sm-block">(10 reviews)</span>
                                                             <span class="d-block d-sm-none">(10)</span>
@@ -3092,8 +3092,8 @@
                                     style="width: 261px; margin-right: 24px;">
                                     <div class="tp-product-item-5 p-relative white-bg mb-40 swiper-slide">
                                         <div class="tp-product-thumb-5 w-img fix mb-15">
-                                            <a href="https://shofy-grocery.botble.com/products/grass-fed-ground-beef">
-                                                <img src="https://shofy-grocery.botble.com/storage/main/products/product-13-600x600.jpg"
+                                            <a href="{{ asset('/') }}/products/grass-fed-ground-beef">
+                                                <img src="{{ asset('/') }}/storage/main/products/product-13-600x600.jpg"
                                                     data-bb-lazy="true" loading="lazy" alt="Grass-Fed Ground Beef"
                                                     data-ll-status="loading" class="entered loading">
                                             </a>
@@ -3108,7 +3108,7 @@
                                                     <button type="button"
                                                         class="tp-product-action-btn-2 tp-product-add-cart-btn"
                                                         data-bb-toggle="quick-shop"
-                                                        data-url="https://shofy-grocery.botble.com/ajax/quick-shop/grass-fed-ground-beef"
+                                                        data-url="{{ asset('/') }}/ajax/quick-shop/grass-fed-ground-beef"
                                                         title="Quick Shop">
                                                         <svg width="17" height="17" viewBox="0 0 17 17"
                                                             fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -3139,7 +3139,7 @@
                                                         class="tp-product-action-btn-2 tp-product-quick-view-btn"
                                                         title="Quick View" data-bs-toggle="modal"
                                                         data-bs-target="#product-quick-view-modal"
-                                                        data-url="https://shofy-grocery.botble.com/ajax/quick-view/6">
+                                                        data-url="{{ asset('/') }}/ajax/quick-view/6">
                                                         <svg width="18" height="15" viewBox="0 0 18 15"
                                                             fill="none" xmlns="http://www.w3.org/2000/svg">
                                                             <path fill-rule="evenodd" clip-rule="evenodd"
@@ -3156,7 +3156,7 @@
                                                     <button type="button"
                                                         class="tp-product-action-btn-2 tp-product-add-to-wishlist-btn"
                                                         data-bb-toggle="add-to-wishlist" title="Add To Wishlist"
-                                                        data-url="https://shofy-grocery.botble.com/wishlist/6"
+                                                        data-url="{{ asset('/') }}/wishlist/6"
                                                         data-add-text="Add To Wishlist"
                                                         data-remove-text="Remove From Wishlist">
                                                         <svg width="18" height="18" viewBox="0 0 18 18"
@@ -3175,8 +3175,8 @@
                                                     <button type="button"
                                                         class="tp-product-action-btn-2 tp-product-add-to-compare-btn"
                                                         data-bb-toggle="add-to-compare" title="Add To Compare"
-                                                        data-url="https://shofy-grocery.botble.com/compare/6"
-                                                        data-remove-url="https://shofy-grocery.botble.com/compare/6"
+                                                        data-url="{{ asset('/') }}/compare/6"
+                                                        data-remove-url="{{ asset('/') }}/compare/6"
                                                         data-add-text="Add To Compare"
                                                         data-remove-text="Remove From Compare">
                                                         <svg width="15" height="15" viewBox="0 0 15 15"
@@ -3209,12 +3209,12 @@
 
                                             <div class="tp-product-tag-5">
                                                 <span><a
-                                                        href="https://shofy-grocery.botble.com/stores/starkist">StarKist</a>
+                                                        href="{{ asset('/') }}/stores/starkist">StarKist</a>
                                                 </span>
                                             </div>
 
                                             <h3 class="tp-product-title-2 line-clamp-2">
-                                                <a href="https://shofy-grocery.botble.com/products/grass-fed-ground-beef"
+                                                <a href="{{ asset('/') }}/products/grass-fed-ground-beef"
                                                     title="Grass-Fed Ground Beef">Grass-Fed Ground Beef</a>
                                             </h3>
 
@@ -3227,7 +3227,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="tp-product-rating-text">
-                                                        <a href="https://shofy-grocery.botble.com/products/grass-fed-ground-beef#product-review"
+                                                        <a href="{{ asset('/') }}/products/grass-fed-ground-beef#product-review"
                                                             data-bb-toggle="scroll-to-review">
                                                             <span class="d-none d-sm-block">(10 reviews)</span>
                                                             <span class="d-block d-sm-none">(10)</span>
@@ -3256,8 +3256,8 @@
                                     style="width: 261px; margin-right: 24px;">
                                     <div class="tp-product-item-5 p-relative white-bg mb-40 swiper-slide">
                                         <div class="tp-product-thumb-5 w-img fix mb-15">
-                                            <a href="https://shofy-grocery.botble.com/products/brown-rice">
-                                                <img src="https://shofy-grocery.botble.com/storage/main/products/product-12-600x600.jpg"
+                                            <a href="{{ asset('/') }}/products/brown-rice">
+                                                <img src="{{ asset('/') }}/storage/main/products/product-12-600x600.jpg"
                                                     data-bb-lazy="true" loading="lazy" alt="Brown Rice">
                                             </a>
 
@@ -3270,7 +3270,7 @@
                                                     <button type="button"
                                                         class="tp-product-action-btn-2 tp-product-add-cart-btn"
                                                         data-bb-toggle="quick-shop"
-                                                        data-url="https://shofy-grocery.botble.com/ajax/quick-shop/brown-rice"
+                                                        data-url="{{ asset('/') }}/ajax/quick-shop/brown-rice"
                                                         title="Quick Shop">
                                                         <svg width="17" height="17" viewBox="0 0 17 17"
                                                             fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -3301,7 +3301,7 @@
                                                         class="tp-product-action-btn-2 tp-product-quick-view-btn"
                                                         title="Quick View" data-bs-toggle="modal"
                                                         data-bs-target="#product-quick-view-modal"
-                                                        data-url="https://shofy-grocery.botble.com/ajax/quick-view/14">
+                                                        data-url="{{ asset('/') }}/ajax/quick-view/14">
                                                         <svg width="18" height="15" viewBox="0 0 18 15"
                                                             fill="none" xmlns="http://www.w3.org/2000/svg">
                                                             <path fill-rule="evenodd" clip-rule="evenodd"
@@ -3318,7 +3318,7 @@
                                                     <button type="button"
                                                         class="tp-product-action-btn-2 tp-product-add-to-wishlist-btn"
                                                         data-bb-toggle="add-to-wishlist" title="Add To Wishlist"
-                                                        data-url="https://shofy-grocery.botble.com/wishlist/14"
+                                                        data-url="{{ asset('/') }}/wishlist/14"
                                                         data-add-text="Add To Wishlist"
                                                         data-remove-text="Remove From Wishlist">
                                                         <svg width="18" height="18" viewBox="0 0 18 18"
@@ -3337,8 +3337,8 @@
                                                     <button type="button"
                                                         class="tp-product-action-btn-2 tp-product-add-to-compare-btn"
                                                         data-bb-toggle="add-to-compare" title="Add To Compare"
-                                                        data-url="https://shofy-grocery.botble.com/compare/14"
-                                                        data-remove-url="https://shofy-grocery.botble.com/compare/14"
+                                                        data-url="{{ asset('/') }}/compare/14"
+                                                        data-remove-url="{{ asset('/') }}/compare/14"
                                                         data-add-text="Add To Compare"
                                                         data-remove-text="Remove From Compare">
                                                         <svg width="15" height="15" viewBox="0 0 15 15"
@@ -3371,7 +3371,7 @@
 
                                             <div class="tp-product-tag-5">
                                                 <span><a
-                                                        href="https://shofy-grocery.botble.com/stores/stouffer">Stouffer</a>
+                                                        href="{{ asset('/') }}/stores/stouffer">Stouffer</a>
                                                     <span class="store-verified-badge badge-sm"
                                                         data-bs-toggle="tooltip" data-bs-placement="top"
                                                         title="Verified"
@@ -3386,7 +3386,7 @@
                                             </div>
 
                                             <h3 class="tp-product-title-2 line-clamp-2">
-                                                <a href="https://shofy-grocery.botble.com/products/brown-rice"
+                                                <a href="{{ asset('/') }}/products/brown-rice"
                                                     title="Brown Rice">Brown Rice</a>
                                             </h3>
 
@@ -3399,7 +3399,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="tp-product-rating-text">
-                                                        <a href="https://shofy-grocery.botble.com/products/brown-rice#product-review"
+                                                        <a href="{{ asset('/') }}/products/brown-rice#product-review"
                                                             data-bb-toggle="scroll-to-review">
                                                             <span class="d-none d-sm-block">(9 reviews)</span>
                                                             <span class="d-block d-sm-none">(9)</span>
@@ -3423,8 +3423,8 @@
                                     <div class="tp-product-item-5 p-relative white-bg mb-40 swiper-slide">
                                         <div class="tp-product-thumb-5 w-img fix mb-15">
                                             <a
-                                                href="https://shofy-grocery.botble.com/products/organic-chicken-breast">
-                                                <img src="https://shofy-grocery.botble.com/storage/main/products/product-4-600x600.jpg"
+                                                href="{{ asset('/') }}/products/organic-chicken-breast">
+                                                <img src="{{ asset('/') }}/storage/main/products/product-4-600x600.jpg"
                                                     data-bb-lazy="true" loading="lazy"
                                                     alt="Organic Chicken Breast">
                                             </a>
@@ -3440,7 +3440,7 @@
                                                         class="tp-product-action-btn-2 tp-product-add-cart-btn"
                                                         data-bb-toggle="add-to-cart"
                                                         data-show-toast-on-success="false"
-                                                        data-url="https://shofy-grocery.botble.com/cart/add-to-cart"
+                                                        data-url="{{ asset('/') }}/cart/add-to-cart"
                                                         data-id="15" title="Add To Cart">
                                                         <svg width="17" height="17" viewBox="0 0 17 17"
                                                             fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -3471,7 +3471,7 @@
                                                         class="tp-product-action-btn-2 tp-product-quick-view-btn"
                                                         title="Quick View" data-bs-toggle="modal"
                                                         data-bs-target="#product-quick-view-modal"
-                                                        data-url="https://shofy-grocery.botble.com/ajax/quick-view/15">
+                                                        data-url="{{ asset('/') }}/ajax/quick-view/15">
                                                         <svg width="18" height="15" viewBox="0 0 18 15"
                                                             fill="none" xmlns="http://www.w3.org/2000/svg">
                                                             <path fill-rule="evenodd" clip-rule="evenodd"
@@ -3488,7 +3488,7 @@
                                                     <button type="button"
                                                         class="tp-product-action-btn-2 tp-product-add-to-wishlist-btn"
                                                         data-bb-toggle="add-to-wishlist" title="Add To Wishlist"
-                                                        data-url="https://shofy-grocery.botble.com/wishlist/15"
+                                                        data-url="{{ asset('/') }}/wishlist/15"
                                                         data-add-text="Add To Wishlist"
                                                         data-remove-text="Remove From Wishlist">
                                                         <svg width="18" height="18" viewBox="0 0 18 18"
@@ -3507,8 +3507,8 @@
                                                     <button type="button"
                                                         class="tp-product-action-btn-2 tp-product-add-to-compare-btn"
                                                         data-bb-toggle="add-to-compare" title="Add To Compare"
-                                                        data-url="https://shofy-grocery.botble.com/compare/15"
-                                                        data-remove-url="https://shofy-grocery.botble.com/compare/15"
+                                                        data-url="{{ asset('/') }}/compare/15"
+                                                        data-remove-url="{{ asset('/') }}/compare/15"
                                                         data-add-text="Add To Compare"
                                                         data-remove-text="Remove From Compare">
                                                         <svg width="15" height="15" viewBox="0 0 15 15"
@@ -3541,7 +3541,7 @@
 
                                             <div class="tp-product-tag-5">
                                                 <span><a
-                                                        href="https://shofy-grocery.botble.com/stores/stouffer">Stouffer</a>
+                                                        href="{{ asset('/') }}/stores/stouffer">Stouffer</a>
                                                     <span class="store-verified-badge badge-sm"
                                                         data-bs-toggle="tooltip" data-bs-placement="top"
                                                         title="Verified"
@@ -3556,7 +3556,7 @@
                                             </div>
 
                                             <h3 class="tp-product-title-2 line-clamp-2">
-                                                <a href="https://shofy-grocery.botble.com/products/organic-chicken-breast"
+                                                <a href="{{ asset('/') }}/products/organic-chicken-breast"
                                                     title="Organic Chicken Breast">Organic Chicken Breast</a>
                                             </h3>
 
@@ -3569,7 +3569,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="tp-product-rating-text">
-                                                        <a href="https://shofy-grocery.botble.com/products/organic-chicken-breast#product-review"
+                                                        <a href="{{ asset('/') }}/products/organic-chicken-breast#product-review"
                                                             data-bb-toggle="scroll-to-review">
                                                             <span class="d-none d-sm-block">(8 reviews)</span>
                                                             <span class="d-block d-sm-none">(8)</span>
@@ -3736,10 +3736,10 @@
 
         <div class="tp-cta-shape">
             <img data-bb-lazy="true" class="tp-cta-shape-1 entered loading" loading="lazy" alt="shape-left"
-                src="https://shofy-grocery.botble.com/storage/main/general/cta-shape-1.png"
+                src="{{ asset('/') }}/storage/main/general/cta-shape-1.png"
                 data-ll-status="loading">
             <img data-bb-lazy="true" class="tp-cta-shape-2 entered loading" loading="lazy" alt="shape-right"
-                src="https://shofy-grocery.botble.com/storage/main/general/cta-shape-2.png"
+                src="{{ asset('/') }}/storage/main/general/cta-shape-2.png"
                 data-ll-status="loading">
         </div>
 
@@ -3804,7 +3804,7 @@
                 <div class="col-lg-6">
                     <div class="tp-cta-thumb">
                         <span class="tp-cta-thumb-mobile"></span>
-                        <img src="https://shofy-grocery.botble.com/storage/main/general/cta-thumb-1.jpg"
+                        <img src="{{ asset('/') }}/storage/main/general/cta-thumb-1.jpg"
                             data-bb-lazy="false" class="w-100" loading="lazy" alt="mobile-screenshot">
                     </div>
                     <span class="tp-cta-thumb-gradient"></span>

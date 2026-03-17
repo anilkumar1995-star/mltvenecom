@@ -75,7 +75,7 @@
                                             </div>
                                             <div class="text-end">
                                                 <h6 class="text-muted mb-1">Total Amount</h6>
-                                                <p class="mb-0 fw-bold fs-5">${{ number_format($order->amount, 2) }}</p>
+                                                <p class="mb-0 fw-bold fs-5">₹{{ number_format($order->amount, 2) }}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -113,16 +113,16 @@
                                                                     </div>
                                                                 </div>
                                                             </td>
-                                                            <td class="py-3">${{ number_format($item->price, 2) }}</td>
+                                                            <td class="py-3">₹{{ number_format($item->price, 2) }}</td>
                                                             <td class="py-3">{{ $item->qty }}</td>
-                                                            <td class="pe-4 py-3 text-end fw-semibold">${{ number_format($item->price * $item->qty, 2) }}</td>
+                                                            <td class="pe-4 py-3 text-end fw-semibold">₹{{ number_format($item->price * $item->qty, 2) }}</td>
                                                         </tr>
                                                     @endforeach
                                                 </tbody>
                                                 <tfoot class="table-light">
                                                     <tr>
                                                         <td colspan="3" class="text-end fw-semibold py-3">Total Amount:</td>
-                                                        <td class="pe-4 py-3 text-end fw-bold text-primary">${{ number_format($order->amount, 2) }}</td>
+                                                        <td class="pe-4 py-3 text-end fw-bold text-primary">₹{{ number_format($order->amount, 2) }}</td>
                                                     </tr>
                                                 </tfoot>
                                             </table>

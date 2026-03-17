@@ -11,11 +11,11 @@
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item">
                                     <a class="mb-0 d-inline-block fs-6 lh-1"
-                                        href="https://shofy-grocery.botble.com/admin">Dashboard</a>
+                                        href="{{ asset('/') }}/admin">Dashboard</a>
                                 </li>
                                 <li class="breadcrumb-item">
                                     <a class="mb-0 d-inline-block fs-6 lh-1"
-                                        href="https://shofy-grocery.botble.com/admin/ecommerce/products">Ecommerce</a>
+                                        href="{{ asset('/') }}/admin/ecommerce/products">Ecommerce</a>
                                 </li>
                                 <li class="breadcrumb-item active" aria-current="page">
                                     <h1 class="mb-0 d-inline-block fs-6 lh-1">Taxes</h1>
@@ -42,7 +42,7 @@
                 <div class="col-12 col-md-9">
                     <div class="d-flex align-items-center justify-content-between gap-3 mb-3 flex-wrap">
                         <button type="button" class="btn btn-primary btn-create-tax"
-                            data-href="https://shofy-grocery.botble.com/admin/ecommerce/taxes/create">
+                            data-href="{{ asset('/') }}/admin/ecommerce/taxes/create">
                             <svg class="icon svg-icon-ti-ti-plus" xmlns="http://www.w3.org/2000/svg" width="24"
                                 height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                 stroke-linecap="round" stroke-linejoin="round">
@@ -92,7 +92,7 @@
                                         <span class="badge bg-success text-success-fg">Published</span>
                                     </div>
                                     <div class="card-actions">
-                                        <a href="https://shofy-grocery.botble.com/admin/ecommerce/taxes/edit/1"
+                                        <a href="{{ asset('/') }}/admin/ecommerce/taxes/edit/1"
                                             class="btn btn-icon btn-edit-tax" title="Edit">
                                             <svg class="icon svg-icon-ti-ti-edit" xmlns="http://www.w3.org/2000/svg"
                                                 width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -105,7 +105,7 @@
                                             </svg>
                                         </a>
                                         <button type="button" class="btn btn-icon text-danger btn-delete-tax"
-                                            data-url="https://shofy-grocery.botble.com/admin/ecommerce/taxes/1"
+                                            data-url="{{ asset('/') }}/admin/ecommerce/taxes/1"
                                             title="Delete">
                                             <svg class="icon svg-icon-ti-ti-trash" xmlns="http://www.w3.org/2000/svg"
                                                 width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -161,7 +161,7 @@
                                 <div class="card-body p-0 flex-grow-1"></div>
                                 <div class="card-footer py-2 bg-transparent">
                                     <div class="d-flex justify-content-between align-items-center gap-2 flex-wrap">
-                                        <a href="https://shofy-grocery.botble.com/admin/ecommerce/taxes/rules/create?tax_id=1"
+                                        <a href="{{ asset('/') }}/admin/ecommerce/taxes/rules/create?tax_id=1"
                                             class="btn btn-outline-primary btn-sm create-tax-rule-item">
                                             <svg class="icon svg-icon-ti-ti-plus" xmlns="http://www.w3.org/2000/svg"
                                                 width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -172,7 +172,7 @@
                                             </svg> Add rule
                                         </a>
                                         <button type="button" class="btn btn-ghost-primary btn-sm btn-set-default-tax"
-                                            data-url="https://shofy-grocery.botble.com/admin/ecommerce/taxes/1/set-default"
+                                            data-url="{{ asset('/') }}/admin/ecommerce/taxes/1/set-default"
                                             title="Set as default">
                                             <svg class="icon svg-icon-ti-ti-star" xmlns="http://www.w3.org/2000/svg"
                                                 width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -195,7 +195,7 @@
                                         <span class="badge bg-success text-success-fg">Published</span>
                                     </div>
                                     <div class="card-actions">
-                                        <a href="https://shofy-grocery.botble.com/admin/ecommerce/taxes/edit/2"
+                                        <a href="{{ asset('/') }}/admin/ecommerce/taxes/edit/2"
                                             class="btn btn-icon btn-edit-tax" title="Edit">
                                             <svg class="icon svg-icon-ti-ti-edit" xmlns="http://www.w3.org/2000/svg"
                                                 width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -208,7 +208,7 @@
                                             </svg>
                                         </a>
                                         <button type="button" class="btn btn-icon text-danger btn-delete-tax"
-                                            data-url="https://shofy-grocery.botble.com/admin/ecommerce/taxes/2"
+                                            data-url="{{ asset('/') }}/admin/ecommerce/taxes/2"
                                             title="Delete">
                                             <svg class="icon svg-icon-ti-ti-trash" xmlns="http://www.w3.org/2000/svg"
                                                 width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -266,7 +266,7 @@
 
                                 <div class="card-footer py-2 bg-transparent">
                                     <div class="d-flex justify-content-between align-items-center gap-2 flex-wrap">
-                                        <a href="https://shofy-grocery.botble.com/admin/ecommerce/taxes/rules/create?tax_id=2"
+                                        <a href="{{ asset('/') }}/admin/ecommerce/taxes/rules/create?tax_id=2"
                                             class="btn btn-outline-primary btn-sm create-tax-rule-item">
                                             <svg class="icon svg-icon-ti-ti-plus" xmlns="http://www.w3.org/2000/svg"
                                                 width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -277,7 +277,7 @@
                                             </svg> Add rule
                                         </a>
                                         <button type="button" class="btn btn-ghost-primary btn-sm btn-set-default-tax"
-                                            data-url="https://shofy-grocery.botble.com/admin/ecommerce/taxes/2/set-default"
+                                            data-url="{{ asset('/') }}/admin/ecommerce/taxes/2/set-default"
                                             title="Set as default">
                                             <svg class="icon svg-icon-ti-ti-star" xmlns="http://www.w3.org/2000/svg"
                                                 width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -300,7 +300,7 @@
                                         <span class="badge bg-success text-success-fg">Published</span>
                                     </div>
                                     <div class="card-actions">
-                                        <a href="https://shofy-grocery.botble.com/admin/ecommerce/taxes/edit/3"
+                                        <a href="{{ asset('/') }}/admin/ecommerce/taxes/edit/3"
                                             class="btn btn-icon btn-edit-tax" title="Edit">
                                             <svg class="icon svg-icon-ti-ti-edit" xmlns="http://www.w3.org/2000/svg"
                                                 width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -313,7 +313,7 @@
                                             </svg>
                                         </a>
                                         <button type="button" class="btn btn-icon text-danger btn-delete-tax"
-                                            data-url="https://shofy-grocery.botble.com/admin/ecommerce/taxes/3"
+                                            data-url="{{ asset('/') }}/admin/ecommerce/taxes/3"
                                             title="Delete">
                                             <svg class="icon svg-icon-ti-ti-trash" xmlns="http://www.w3.org/2000/svg"
                                                 width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -372,7 +372,7 @@
 
                                 <div class="card-footer py-2 bg-transparent">
                                     <div class="d-flex justify-content-between align-items-center gap-2 flex-wrap">
-                                        <a href="https://shofy-grocery.botble.com/admin/ecommerce/taxes/rules/create?tax_id=3"
+                                        <a href="{{ asset('/') }}/admin/ecommerce/taxes/rules/create?tax_id=3"
                                             class="btn btn-outline-primary btn-sm create-tax-rule-item">
                                             <svg class="icon svg-icon-ti-ti-plus" xmlns="http://www.w3.org/2000/svg"
                                                 width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -383,7 +383,7 @@
                                             </svg> Add rule
                                         </a>
                                         <button type="button" class="btn btn-ghost-primary btn-sm btn-set-default-tax"
-                                            data-url="https://shofy-grocery.botble.com/admin/ecommerce/taxes/3/set-default"
+                                            data-url="{{ asset('/') }}/admin/ecommerce/taxes/3/set-default"
                                             title="Set as default">
                                             <svg class="icon svg-icon-ti-ti-star" xmlns="http://www.w3.org/2000/svg"
                                                 width="24" height="24" viewBox="0 0 24 24" fill="none"

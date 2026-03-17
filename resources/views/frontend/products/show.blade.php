@@ -175,17 +175,17 @@
                     <div class="product-custom-gallery">
                         <div class="product-thumbnails">
                             @if($product->image)
-                                <img src="{{ asset('uploads/' . $product->image) }}" class="active" onclick="changeMainImage(this.src)">
+                                <img src="{{ $product->image_url }}" class="active" onclick="changeMainImage(this.src)">
                             @endif
-                            @foreach($product->images ?? [] as $img)
-                                <img src="{{ asset('uploads/' . $img) }}" onclick="changeMainImage(this.src)">
+                            @foreach($product->gallery_image_urls as $imgUrl)
+                                <img src="{{ $imgUrl }}" onclick="changeMainImage(this.src)">
                             @endforeach
                         </div>
                         <div class="product-main-image">
                             @if($product->isOnSale())
                                 <span class="badge bg-primary product-badge">-{{ $product->getDiscountPercentage() }}%</span>
                             @endif
-                            <img id="mainImage" src="{{ $product->image ? asset('uploads/' . $product->image) : 'https://via.placeholder.com/600x600' }}" alt="{{ $product->name }}">
+                            <img id="mainImage" src="{{ $product->image_url }}" alt="{{ $product->name }}">
                         </div>
                     </div>
                 </div>
@@ -210,10 +210,10 @@
 
                         <div class="product__details-price">
                             @if($product->isOnSale())
-                                <span class="new-price">${{ number_format($product->sale_price, 0) }}</span>
-                                <span class="old-price">${{ number_format($product->price, 0) }}</span>
+                                <span class="new-price">₹{{ number_format($product->sale_price, 0) }}</span>
+                                <span class="old-price">₹{{ number_format($product->price, 0) }}</span>
                             @else
-                                <span class="new-price">${{ number_format($product->price, 0) }}</span>
+                                <span class="new-price">₹{{ number_format($product->price, 0) }}</span>
                             @endif
                             <span class="ms-2 text-success small">{{ $product->quantity }} products available</span>
                         </div>
@@ -236,38 +236,40 @@
 
 
 
-                        <form action="{{ route('frontend.cart.add') }}" method="POST" class="product-form">
+                        <form action="{{ route('frontend.cart.add') }}" method="POST" class="product-form add-to-cart-form">
                             @csrf
                             <input type="hidden" name="product_id" value="{{ $product->id }}">
                             
                             <div class="tp-product-details-action-wrapper">
-                                <!-- Row 1: Quantity + Add to Cart -->
-                                <div class="tp-product-details-add-to-cart mb-3 d-flex align-items-center gap-3">
-                                    <div class="tp-product-details-quantity">
+                                <!-- Quantity Row -->
+                                <div class="mb-3">
+                                    <div class="tp-product-details-quantity" style="width: 100%;">
                                         <div class="tp-product-quantity d-flex align-items-center">
                                             <span class="tp-cart-minus" onclick="decrementValue()">
-                                                <svg width="10" height="2" viewBox="0 0 10 2" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M1 1H9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                <svg width="12" height="2" viewBox="0 0 12 2" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M1 1H11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                                 </svg>
                                             </span>
                                             <input class="tp-cart-input" type="text" name="quantity" id="qty" value="1" readonly>
                                             <span class="tp-cart-plus" onclick="incrementValue()">
-                                                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M5 1V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                                    <path d="M1 5H9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M6 1V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <path d="M1 6H11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                                 </svg>
                                             </span>
                                         </div>
                                     </div>
-                                    <button type="submit" class="tp-product-details-add-to-cart-btn w-100">Add To Cart</button>
                                 </div>
 
-                                <!-- Row 2: Buy Now -->
-                                <button type="button" 
-                                    onclick="var form = this.closest('form'); form.action = '{{ route('frontend.cart.buyNow') }}'; form.submit();" 
-                                    class="tp-product-details-buy-now-btn w-100">
-                                    Buy Now
-                                </button>
+                                <!-- Buttons Row: 50/50 -->
+                                <div class="d-flex gap-3">
+                                    <button type="submit" class="tp-product-details-add-to-cart-btn flex-grow-1">Add To Cart</button>
+                                    <button type="button" 
+                                        onclick="var form = this.closest('form'); form.action = '{{ route('frontend.cart.buyNow') }}'; form.submit();" 
+                                        class="tp-product-details-buy-now-btn flex-grow-1">
+                                        Buy Now
+                                    </button>
+                                </div>
                             </div>
                         </form>
 
@@ -431,7 +433,7 @@
                                 <div class="tp-frequently-total mb-2 text-end">
                                     <span class="text-muted">Total Price:</span>
                                     <span class="fw-bold text-dark fs-5">
-                                        ${{ number_format($product->price + $product->crossSellingProducts->sum('price'), 2) }}
+                                        ₹{{ number_format($product->price + $product->crossSellingProducts->sum('price'), 2) }}
                                     </span>
                                 </div>
                                 <button type="submit" class="tp-btn-dark w-100">Add Bundle To Cart</button>
@@ -588,20 +590,20 @@
                                 <div class="product-item shadow-sm rounded overflow-hidden">
                                     <div class="product-thumb position-relative">
                                         <a href="{{ route('frontend.products.show', $related->slug ?: $related->id) }}">
-                                            <img src="{{ asset('uploads/' . $related->image) }}" alt="{{ $related->name }}" style="width:100%; height: 250px; object-fit:cover;">
+                                            <img src="{{ $related->image_url }}" alt="{{ $related->name }}" style="width:100%; height: 250px; object-fit:cover;">
                                         </a>
                                         @if($related->isOnSale())
                                             <span class="badge bg-danger position-absolute top-0 start-0 m-2">-{{ $related->getDiscountPercentage() }}%</span>
                                         @endif
                                     </div>
                                     <div class="product-content p-3">
-                                        <h6 class="product-title mb-2"><a href="{{ route('frontend.products.show', $related->slug ?: $related->id) }}" class="text-dark text-decoration-none">{{ $related->name }}</a></h6>
+                                        <h6 class="product-title mb-2"><a href="{{ route('frontend.products.show', $related->slug ?: $related->id) }}" class="text-dark text-decoration-none text-truncate d-block">{{ $related->name }}</a></h6>
                                         <div class="product-price">
                                             @if($related->isOnSale())
-                                                <span class="text-danger fw-bold">${{ number_format($related->sale_price, 2) }}</span>
-                                                <span class="text-muted text-decoration-line-through ms-2">${{ number_format($related->price, 2) }}</span>
+                                                <span class="text-danger fw-bold">₹{{ number_format($related->sale_price, 2) }}</span>
+                                                <span class="text-muted text-decoration-line-through ms-2 small">₹{{ number_format($related->price, 2) }}</span>
                                             @else
-                                                <span class="fw-bold">${{ number_format($related->price, 2) }}</span>
+                                                <span class="fw-bold">₹{{ number_format($related->price, 2) }}</span>
                                             @endif
                                         </div>
                                     </div>
@@ -623,14 +625,14 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-md-6 d-flex align-items-center">
-                    <img src="{{ $product->image ? asset('uploads/' . $product->image) : 'https://via.placeholder.com/60x60' }}" class="sticky-thumb me-3" alt="Thumb">
+                    <img src="{{ $product->image_url }}" class="sticky-thumb me-3" alt="Thumb">
                     <div>
-                        <h6 class="mb-0">{{ $product->name }}</h6>
-                        <span class="text-muted">${{ number_format($product->final_price, 0) }}</span>
+                        <h6 class="mb-0 text-truncate" style="max-width: 300px;">{{ $product->name }}</h6>
+                        <span class="text-success fw-bold">₹{{ number_format($product->final_price, 0) }}</span>
                     </div>
                 </div>
                 <div class="col-md-6 text-end">
-                    <form action="{{ route('frontend.cart.add') }}" method="POST" class="d-inline-flex gap-2">
+                    <form action="{{ route('frontend.cart.add') }}" method="POST" class="add-to-cart-form d-inline-flex gap-2">
                         @csrf
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
                         <input type="hidden" name="quantity" value="1">

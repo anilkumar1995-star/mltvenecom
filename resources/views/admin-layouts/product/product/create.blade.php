@@ -11,14 +11,14 @@
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item">
                                         <a class="mb-0 d-inline-block fs-6 lh-1"
-                                            href="https://shofy-grocery.botble.com/admin">Dashboard</a>
+                                            href="{{ route('admin.dashboard') }}">Dashboard</a>
                                     </li>
                                     <li class="breadcrumb-item">
                                         <h1 class="mb-0 d-inline-block fs-6 lh-1">Ecommerce</h1>
                                     </li>
                                     <li class="breadcrumb-item">
                                         <a class="mb-0 d-inline-block fs-6 lh-1"
-                                            href="https://shofy-grocery.botble.com/admin/ecommerce/products">Products</a>
+                                            href="{{ route('admin.products.index') }}">Products</a>
                                     </li>
                                     <li class="breadcrumb-item">
                                         <h1 class="mb-0 d-inline-block fs-6 lh-1">New product</h1>
@@ -82,7 +82,7 @@
                                                     </label>
                                                     <div class="input-group input-group-flat">
                                                         <span class="input-group-text">
-                                                            https://shofy-grocery.botble.com/products/
+                                                            {{ url('/products') }}/
                                                         </span>
                                                         <input class="form-control ps-0" type="text" name="slug"
                                                             id="slug" required="required" />
@@ -108,12 +108,12 @@
                                                     </div>
                                                 </div>
                                                 <small class="form-hint mt-n2 text-truncate">Preview: <a
-                                                        href="https://shofy-grocery.botble.com/products/"
-                                                        target="_blank">https://shofy-grocery.botble.com/products/</a></small>
+                                                        href="{{ url('/products') }}/"
+                                                        target="_blank">{{ url('/products') }}/</a></small>
                                                 <input class="slug-current" name="slug" type="hidden" value="">
                                                 <div class="slug-data"
-                                                    data-url="https://shofy-grocery.botble.com/ajax/slug/create"
-                                                    data-view="https://shofy-grocery.botble.com/products/" data-id="0">
+                                                    data-url="{{ url('/ajax/slug/create') }}"
+                                                    data-view="{{ url('/products') }}/" data-id="0">
                                                 </div>
                                                 <input name="slug_id" type="hidden" value="0">
                                                 <input name="is_slug_editable" type="hidden" value="1">
@@ -320,7 +320,7 @@
                                                         Price
                                                     </label>
                                                     <div class="input-group input-group-flat">
-                                                        <span class="input-group-text currency-symbol">$</span>
+                                                        <span class="input-group-text currency-symbol">₹</span>
                                                         <input class="form-control input-mask-number" type="text"
                                                             name="price" id="price" value="0"
                                                             data-thousands-separator="," data-decimal-separator="."
@@ -344,7 +344,7 @@
                                                         </span>
                                                     </label>
                                                     <div class="input-group input-group-flat">
-                                                        <span class="input-group-text currency-symbol">$</span>
+                                                        <span class="input-group-text currency-symbol">₹</span>
                                                         <input class="form-control input-mask-number" type="text"
                                                             name="sale_price" id="sale_price"
                                                             data-thousands-separator="," data-decimal-separator="."
@@ -398,7 +398,7 @@
                                                         Cost per item
                                                     </label>
                                                     <div class="input-group input-group-flat">
-                                                        <span class="input-group-text currency-symbol">$</span>
+                                                        <span class="input-group-text currency-symbol">₹</span>
                                                         <input class="form-control input-mask-number" type="text"
                                                             name="cost_per_item" id="cost_per_item" value="0"
                                                             placeholder="Enter cost per item" step="any" />

@@ -100,7 +100,7 @@
                             <div class="card-body">
                                 <div class="d-flex align-items-center justify-content-between mb-3">
                                     <div class="d-flex align-items-center">
-                                        <img src="{{ asset('flags/us.svg') }}" style="width: 24px; margin-right: 8px;">
+                                        <img src="{{ asset('vendor/core/core/base/img/flags/us.svg') }}" style="width: 24px; margin-right: 8px;">
                                         <select class="form-select form-select-sm" style="width: auto;">
                                             <option>English</option>
                                         </select>

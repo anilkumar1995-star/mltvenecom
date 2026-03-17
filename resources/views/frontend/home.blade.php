@@ -23,12 +23,10 @@
     border-radius: 12px 12px 0 0 !important;
     position: relative !important;
 }
-.tp-product-thumb-2 img {
+.tp-product-thumb-2 div img {
     transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1) !important;
-    width: 100% !important;
-    object-fit: cover !important;
 }
-.tp-product-item-2:hover .tp-product-thumb-2 img {
+.tp-product-item-2:hover .tp-product-thumb-2 div img {
     transform: scale(1.08) !important;
 }
 .tp-product-action-2 {
@@ -138,7 +136,7 @@
 @endpush
     <section data-block-id="simple-slider" class="tp-slider-area p-relative z-index-1 fix">
         <div class="tp-slider-active-5 owl-carousel" data-owl-auto="true" data-owl-loop="true" data-owl-speed="5000"
-            data-owl-gap="0" data-owl-nav="false" data-owl-dots="false" data-owl-item="1" data-owl-item-xs="1"
+            data-owl-gap="0" data-owl-nav="true" data-owl-dots="true" data-owl-item="1" data-owl-item-xs="1"
             data-owl-item-sm="1" data-owl-item-md="1" data-owl-item-lg="1" data-owl-duration="1000" data-owl-mousedrag="on"
             data-owl-animate-out="fadeOut" data-owl-animate-in="fadeIn">
             
@@ -166,7 +164,10 @@
                                 <div class="col-xxl-5 col-xl-5 col-lg-6">
                                     <div class="tp-slider-thumb-wrapper-5 p-relative">
                                         <div class="tp-slider-thumb-5 main-img">
-                                            <img src="{{ $item->image ? asset($item->image) : asset('home/slider-1.png') }}" alt="{{ $item->title }}">
+                                            @php
+                                                $imageUrl = $item->image ? (str_starts_with($item->image, 'http') ? $item->image : \App\Helpers\ImageHelper::getImageUrl() . $item->image) : asset('home/slider-1.png');
+                                            @endphp
+                                            <img src="{{ $imageUrl }}" alt="{{ $item->title }}">
                                             <span class="tp-slider-thumb-5-gradient"></span>
                                         </div>
                                     </div>

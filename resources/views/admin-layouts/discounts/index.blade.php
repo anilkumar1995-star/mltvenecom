@@ -91,7 +91,7 @@
                                         <div class="mb-2">
                                             Discount 
                                             @if($discount->type_option == 'amount')
-                                                {{ number_format($discount->value, 2) }} {{-- Add Currency Symbol logic here later --}}
+                                                ₹{{ number_format($discount->value, 2) }}
                                             @else
                                                 {{ $discount->value }}%
                                             @endif
@@ -109,7 +109,7 @@
                                         <div class="mb-1">
                                             Discount 
                                             @if($discount->type_option == 'amount')
-                                                {{ number_format($discount->value, 2) }}
+                                                ₹{{ number_format($discount->value, 2) }}
                                             @else
                                                 {{ $discount->value }}%
                                             @endif

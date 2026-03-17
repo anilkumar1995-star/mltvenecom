@@ -45,15 +45,23 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td>${{ number_format($item['price'], 2) }}</td>
+                                    <td>₹{{ number_format($item['price'], 2) }}</td>
                                     <td>
-                                        <form action="{{ route('frontend.cart.update') }}" method="POST" class="d-inline">
-                                            @csrf
-                                            <input type="hidden" name="product_id" value="{{ $id }}">
-                                            <input type="number" name="quantity" value="{{ $item['quantity'] }}" min="1" class="form-control form-control-sm" style="width: 80px;" onchange="this.form.submit()">
-                                        </form>
+                                        <div class="tp-product-quantity d-inline-flex align-items-center" style="background: #f3f5f6; padding: 5px 10px; border-radius: 4px;">
+                                            <form action="{{ route('frontend.cart.update') }}" method="POST" class="d-flex align-items-center">
+                                                @csrf
+                                                <input type="hidden" name="product_id" value="{{ $id }}">
+                                                <button type="button" class="btn btn-link text-dark p-0" onclick="this.nextElementSibling.value--; this.form.submit()">
+                                                    <i class="fas fa-minus"></i>
+                                                </button>
+                                                <input type="number" name="quantity" value="{{ $item['quantity'] }}" min="1" class="form-control form-control-sm text-center border-0 bg-transparent" style="width: 50px;" onchange="this.form.submit()">
+                                                <button type="button" class="btn btn-link text-dark p-0" onclick="this.previousElementSibling.value++; this.form.submit()">
+                                                    <i class="fas fa-plus"></i>
+                                                </button>
+                                            </form>
+                                        </div>
                                     </td>
-                                    <td><strong>${{ number_format($item['price'] * $item['quantity'], 2) }}</strong></td>
+                                    <td><strong>₹{{ number_format($item['price'] * $item['quantity'], 2) }}</strong></td>
                                     <td>
                                         <form action="{{ route('frontend.cart.remove', $id) }}" method="POST">
                                             @csrf
@@ -79,27 +87,29 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-2">
                             <span>Subtotal:</span>
-                            <strong>${{ number_format($total, 2) }}</strong>
+                            <strong>₹{{ number_format($total, 2) }}</strong>
                         </div>
                         <div class="d-flex justify-content-between mb-2">
                             <span>Tax (15%):</span>
-                            <strong>${{ number_format($total * 0.15, 2) }}</strong>
+                            <strong>₹{{ number_format($total * 0.15, 2) }}</strong>
                         </div>
                         <div class="d-flex justify-content-between mb-2">
                             <span>Shipping:</span>
-                            <strong>$20.00</strong>
+                            <strong>₹20.00</strong>
                         </div>
                         <hr>
                         <div class="d-flex justify-content-between mb-3">
                             <strong>Total:</strong>
-                            <strong class="text-primary">${{ number_format($total + ($total * 0.15) + 20, 2) }}</strong>
+                            <strong class="text-primary">₹{{ number_format($total + ($total * 0.15) + 20, 2) }}</strong>
                         </div>
-                        <a href="{{ route('frontend.checkout.index') }}" class="btn btn-primary w-100 mb-2">
-                            Proceed to Checkout
-                        </a>
-                        <a href="{{ route('frontend.products.index') }}" class="btn btn-outline-secondary w-100">
-                            Continue Shopping
-                        </a>
+                        <div class="d-flex gap-2">
+                            <a href="{{ route('frontend.checkout.index') }}" class="btn btn-primary flex-grow-1">
+                                Checkout
+                            </a>
+                            <a href="{{ route('frontend.products.index') }}" class="btn btn-outline-secondary flex-grow-1">
+                                Continue
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

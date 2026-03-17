@@ -246,7 +246,7 @@
                                         <td>
                                             <div class="brand-logo-wrap p-1 border rounded bg-white d-flex align-items-center justify-content-center"
                                                 style="width: 50px; height: 50px;">
-                                                <img src="{{ $brand->logo ? asset($brand->logo) : asset('img/noimg.png') }}"
+                                                <img src="{{ $brand->logo ? 'https://images.incomeowl.in/incomeowl/b2b/images/' . $brand->logo : asset('img/noimg.png') }}"
                                                     onerror="this.src='{{ asset('img/noimg.png') }}'"
                                                     alt="{{ $brand->name }}" class="img-fluid"
                                                     style="max-height: 100%;">
