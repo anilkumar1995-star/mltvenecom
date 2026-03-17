@@ -69,9 +69,10 @@ class BrandController extends Controller
             }
 
             if ($post->hasFile('logo')) {
-                $imageName = time() . '.' . $post->logo->extension();
-                $post->logo->move(public_path('uploads/brands'), $imageName);
-                $data['logo'] = 'uploads/brands/' . $imageName;
+                $upload = \App\Helpers\ImageHelper::imageUploadHelper('brand_', $post->file('logo'));
+                if ($upload['status']) {
+                    $data['logo'] = $upload['data']['target_file'];
+                }
             }
 
             $brand = EcBrand::create($data);
@@ -120,12 +121,10 @@ class BrandController extends Controller
             }
 
             if ($post->hasFile('logo')) {
-                if ($brand->logo && file_exists(public_path($brand->logo))) {
-                    unlink(public_path($brand->logo));
+                $upload = \App\Helpers\ImageHelper::imageUploadHelper('brand_', $post->file('logo'));
+                if ($upload['status']) {
+                    $data['logo'] = $upload['data']['target_file'];
                 }
-                $imageName = time() . '.' . $post->logo->extension();
-                $post->logo->move(public_path('uploads/brands'), $imageName);
-                $data['logo'] = 'uploads/brands/' . $imageName;
             }
 
             $brand->update($data);

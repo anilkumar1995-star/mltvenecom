@@ -79,9 +79,10 @@ class ReviewController extends Controller
         $images = [];
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
-                $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
-                $image->move(public_path('uploads/reviews'), $imageName);
-                $images[] = $imageName;
+                $upload = \App\Helpers\ImageHelper::imageUploadHelper('review_', $image);
+                if ($upload['status']) {
+                    $images[] = $upload['data']['target_file'];
+                }
             }
         }
         $review->images = $images;
@@ -122,9 +123,10 @@ class ReviewController extends Controller
         $currentImages = $review->images ?? [];
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
-                $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
-                $image->move(public_path('uploads/reviews'), $imageName);
-                $currentImages[] = $imageName;
+                $upload = \App\Helpers\ImageHelper::imageUploadHelper('review_', $image);
+                if ($upload['status']) {
+                    $currentImages[] = $upload['data']['target_file'];
+                }
             }
         }
         $review->images = $currentImages;

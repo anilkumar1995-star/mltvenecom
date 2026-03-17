@@ -9,10 +9,10 @@
                                 <div class="tp-footer-logo">
                                     <a href="{{ asset('/') }}">
                                         <img src="{{ asset('/') }}home/logo.png"
-                                            alt="Shofy - Multipurpose eCommerce Laravel Script">
+                                            alt="Multive - Multipurpose eCommerce Laravel Script">
                                     </a>
                                 </div>
-                                <div class="tp-footer-desc"> Shofy is a powerful tool eCommerce Laravel script for
+                                <div class="tp-footer-desc"> Multive is a powerful tool eCommerce Laravel script for
                                     creating a professional and visually appealing online store. </div>
                                 <div class="tp-footer-social">
                                     <a href="#" title="Facebook" target="_blank">
@@ -73,7 +73,7 @@
                                             <i class="far fa-envelope"></i>
                                         </div>
                                         <div class="tp-footer-contact-content">
-                                            <p><a href="mailto:support@shofy.com">support@shofy.com</a></p>
+                                            <p><a href="mailto:support@multive.com">support@multive.com</a></p>
                                         </div>
                                     </div>
                                     <div class="tp-footer-contact-item d-flex align-items-start">

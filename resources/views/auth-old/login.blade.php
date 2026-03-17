@@ -156,9 +156,9 @@
     <title>Admin | Botble Technologies</title>
     <meta name="csrf-token" content="GFkR5VbE4gqD2PeBVLUMg1U78EuvAiPyzmyKxBlc">
 
-    <link href="https://shofy-grocery.botble.com/storage/main/general/favicon.png" rel="icon shortcut"
+    <link href="{{ asset('storage/main/general/favicon.png') }}" rel="icon shortcut"
         type="image/x-icon">
-    <meta property="og:image" content="https://shofy-grocery.botble.com/storage/main/general/favicon.png">
+    <meta property="og:image" content="{{ asset('storage/main/general/favicon.png') }}">
 
     <meta name="description" content="Copyright 2026 © Botble Technologies. Version 1.4.4">
     <meta property="og:description" content="Copyright 2026 © Botble Technologies. Version 1.4.4">
@@ -171,7 +171,7 @@
             font-style: normal;
             font-weight: 300;
             font-display: swap;
-            src: url(https://shofy-grocery.botble.com/storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma2jl7w0q5n-wu.woff2) format('woff2');
+            src: url({{ asset('storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma2jl7w0q5n-wu.woff2') }}) format('woff2');
             unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
         }
 
@@ -180,7 +180,7 @@
             font-style: normal;
             font-weight: 300;
             font-display: swap;
-            src: url(https://shofy-grocery.botble.com/storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma0zl7w0q5n-wu.woff2) format('woff2');
+            src: url({{ asset('storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma0zl7w0q5n-wu.woff2') }}) format('woff2');
             unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
         }
 
@@ -189,7 +189,7 @@
             font-style: normal;
             font-weight: 300;
             font-display: swap;
-            src: url(https://shofy-grocery.botble.com/storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma2zl7w0q5n-wu.woff2) format('woff2');
+            src: url({{ asset('storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma2zl7w0q5n-wu.woff2') }}) format('woff2');
             unicode-range: U+1F00-1FFF;
         }
 
@@ -198,7 +198,7 @@
             font-style: normal;
             font-weight: 300;
             font-display: swap;
-            src: url(https://shofy-grocery.botble.com/storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma1pl7w0q5n-wu.woff2) format('woff2');
+            src: url({{ asset('storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma1pl7w0q5n-wu.woff2') }}) format('woff2');
             unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
         }
 
@@ -207,7 +207,7 @@
             font-style: normal;
             font-weight: 300;
             font-display: swap;
-            src: url(https://shofy-grocery.botble.com/storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma2pl7w0q5n-wu.woff2) format('woff2');
+            src: url({{ asset('storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma2pl7w0q5n-wu.woff2') }}) format('woff2');
             unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
         }
 
@@ -216,7 +216,7 @@
             font-style: normal;
             font-weight: 300;
             font-display: swap;
-            src: url(https://shofy-grocery.botble.com/storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma25l7w0q5n-wu.woff2) format('woff2');
+            src: url({{ asset('storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma25l7w0q5n-wu.woff2') }}) format('woff2');
             unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
         }
 
@@ -225,7 +225,7 @@
             font-style: normal;
             font-weight: 300;
             font-display: swap;
-            src: url(https://shofy-grocery.botble.com/storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma1zl7w0q5nw.woff2) format('woff2');
+            src: url({{ asset('storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma1zl7w0q5nw.woff2') }}) format('woff2');
             unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
         }
 
@@ -234,7 +234,7 @@
             font-style: normal;
             font-weight: 400;
             font-display: swap;
-            src: url(https://shofy-grocery.botble.com/storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma2jl7w0q5n-wu.woff2) format('woff2');
+            src: url({{ asset('storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma2jl7w0q5n-wu.woff2') }}) format('woff2');
             unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
         }
 
@@ -243,7 +243,7 @@
             font-style: normal;
             font-weight: 400;
             font-display: swap;
-            src: url(https://shofy-grocery.botble.com/storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma0zl7w0q5n-wu.woff2) format('woff2');
+            src: url({{ asset('storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma0zl7w0q5n-wu.woff2') }}) format('woff2');
             unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
         }
 
@@ -252,7 +252,7 @@
             font-style: normal;
             font-weight: 400;
             font-display: swap;
-            src: url(https://shofy-grocery.botble.com/storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma2zl7w0q5n-wu.woff2) format('woff2');
+            src: url({{ asset('storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma2zl7w0q5n-wu.woff2') }}) format('woff2');
             unicode-range: U+1F00-1FFF;
         }
 
@@ -261,7 +261,7 @@
             font-style: normal;
             font-weight: 400;
             font-display: swap;
-            src: url(https://shofy-grocery.botble.com/storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma1pl7w0q5n-wu.woff2) format('woff2');
+            src: url({{ asset('storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma1pl7w0q5n-wu.woff2') }}) format('woff2');
             unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
         }
 
@@ -270,7 +270,7 @@
             font-style: normal;
             font-weight: 400;
             font-display: swap;
-            src: url(https://shofy-grocery.botble.com/storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma2pl7w0q5n-wu.woff2) format('woff2');
+            src: url({{ asset('storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma2pl7w0q5n-wu.woff2') }}) format('woff2');
             unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
         }
 
@@ -279,7 +279,7 @@
             font-style: normal;
             font-weight: 400;
             font-display: swap;
-            src: url(https://shofy-grocery.botble.com/storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma25l7w0q5n-wu.woff2) format('woff2');
+            src: url({{ asset('storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma25l7w0q5n-wu.woff2') }}) format('woff2');
             unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
         }
 
@@ -288,7 +288,7 @@
             font-style: normal;
             font-weight: 400;
             font-display: swap;
-            src: url(https://shofy-grocery.botble.com/storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma1zl7w0q5nw.woff2) format('woff2');
+            src: url({{ asset('storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma1zl7w0q5nw.woff2') }}) format('woff2');
             unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
         }
 
@@ -297,7 +297,7 @@
             font-style: normal;
             font-weight: 500;
             font-display: swap;
-            src: url(https://shofy-grocery.botble.com/storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma2jl7w0q5n-wu.woff2) format('woff2');
+            src: url({{ asset('storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma2jl7w0q5n-wu.woff2') }}) format('woff2');
             unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
         }
 
@@ -306,7 +306,7 @@
             font-style: normal;
             font-weight: 500;
             font-display: swap;
-            src: url(https://shofy-grocery.botble.com/storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma0zl7w0q5n-wu.woff2) format('woff2');
+            src: url({{ asset('storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma0zl7w0q5n-wu.woff2') }}) format('woff2');
             unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
         }
 
@@ -315,7 +315,7 @@
             font-style: normal;
             font-weight: 500;
             font-display: swap;
-            src: url(https://shofy-grocery.botble.com/storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma2zl7w0q5n-wu.woff2) format('woff2');
+            src: url({{ asset('storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma2zl7w0q5n-wu.woff2') }}) format('woff2');
             unicode-range: U+1F00-1FFF;
         }
 
@@ -324,7 +324,7 @@
             font-style: normal;
             font-weight: 500;
             font-display: swap;
-            src: url(https://shofy-grocery.botble.com/storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma1pl7w0q5n-wu.woff2) format('woff2');
+            src: url({{ asset('storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma1pl7w0q5n-wu.woff2') }}) format('woff2');
             unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
         }
 
@@ -333,7 +333,7 @@
             font-style: normal;
             font-weight: 500;
             font-display: swap;
-            src: url(https://shofy-grocery.botble.com/storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma2pl7w0q5n-wu.woff2) format('woff2');
+            src: url({{ asset('storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma2pl7w0q5n-wu.woff2') }}) format('woff2');
             unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
         }
 
@@ -342,7 +342,7 @@
             font-style: normal;
             font-weight: 500;
             font-display: swap;
-            src: url(https://shofy-grocery.botble.com/storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma25l7w0q5n-wu.woff2) format('woff2');
+            src: url({{ asset('storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma25l7w0q5n-wu.woff2') }}) format('woff2');
             unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
         }
 
@@ -351,7 +351,7 @@
             font-style: normal;
             font-weight: 500;
             font-display: swap;
-            src: url(https://shofy-grocery.botble.com/storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma1zl7w0q5nw.woff2) format('woff2');
+            src: url({{ asset('storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma1zl7w0q5nw.woff2') }}) format('woff2');
             unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
         }
 
@@ -360,7 +360,7 @@
             font-style: normal;
             font-weight: 600;
             font-display: swap;
-            src: url(https://shofy-grocery.botble.com/storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma2jl7w0q5n-wu.woff2) format('woff2');
+            src: url({{ asset('storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma2jl7w0q5n-wu.woff2') }}) format('woff2');
             unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
         }
 
@@ -369,7 +369,7 @@
             font-style: normal;
             font-weight: 600;
             font-display: swap;
-            src: url(https://shofy-grocery.botble.com/storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma0zl7w0q5n-wu.woff2) format('woff2');
+            src: url({{ asset('storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma0zl7w0q5n-wu.woff2') }}) format('woff2');
             unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
         }
 
@@ -378,7 +378,7 @@
             font-style: normal;
             font-weight: 600;
             font-display: swap;
-            src: url(https://shofy-grocery.botble.com/storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma2zl7w0q5n-wu.woff2) format('woff2');
+            src: url({{ asset('storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma2zl7w0q5n-wu.woff2') }}) format('woff2');
             unicode-range: U+1F00-1FFF;
         }
 
@@ -387,7 +387,7 @@
             font-style: normal;
             font-weight: 600;
             font-display: swap;
-            src: url(https://shofy-grocery.botble.com/storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma1pl7w0q5n-wu.woff2) format('woff2');
+            src: url({{ asset('storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma1pl7w0q5n-wu.woff2') }}) format('woff2');
             unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
         }
 
@@ -396,7 +396,7 @@
             font-style: normal;
             font-weight: 600;
             font-display: swap;
-            src: url(https://shofy-grocery.botble.com/storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma2pl7w0q5n-wu.woff2) format('woff2');
+            src: url({{ asset('storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma2pl7w0q5n-wu.woff2') }}) format('woff2');
             unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
         }
 
@@ -405,7 +405,7 @@
             font-style: normal;
             font-weight: 600;
             font-display: swap;
-            src: url(https://shofy-grocery.botble.com/storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma25l7w0q5n-wu.woff2) format('woff2');
+            src: url({{ asset('storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma25l7w0q5n-wu.woff2') }}) format('woff2');
             unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
         }
 
@@ -414,7 +414,7 @@
             font-style: normal;
             font-weight: 600;
             font-display: swap;
-            src: url(https://shofy-grocery.botble.com/storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma1zl7w0q5nw.woff2) format('woff2');
+            src: url({{ asset('storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma1zl7w0q5nw.woff2') }}) format('woff2');
             unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
         }
 
@@ -423,7 +423,7 @@
             font-style: normal;
             font-weight: 700;
             font-display: swap;
-            src: url(https://shofy-grocery.botble.com/storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma2jl7w0q5n-wu.woff2) format('woff2');
+            src: url({{ asset('storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma2jl7w0q5n-wu.woff2') }}) format('woff2');
             unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
         }
 
@@ -432,7 +432,7 @@
             font-style: normal;
             font-weight: 700;
             font-display: swap;
-            src: url(https://shofy-grocery.botble.com/storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma0zl7w0q5n-wu.woff2) format('woff2');
+            src: url({{ asset('storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma0zl7w0q5n-wu.woff2') }}) format('woff2');
             unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
         }
 
@@ -441,7 +441,7 @@
             font-style: normal;
             font-weight: 700;
             font-display: swap;
-            src: url(https://shofy-grocery.botble.com/storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma2zl7w0q5n-wu.woff2) format('woff2');
+            src: url({{ asset('storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma2zl7w0q5n-wu.woff2') }}) format('woff2');
             unicode-range: U+1F00-1FFF;
         }
 
@@ -450,7 +450,7 @@
             font-style: normal;
             font-weight: 700;
             font-display: swap;
-            src: url(https://shofy-grocery.botble.com/storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma1pl7w0q5n-wu.woff2) format('woff2');
+            src: url({{ asset('storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma1pl7w0q5n-wu.woff2') }}) format('woff2');
             unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
         }
 
@@ -459,7 +459,7 @@
             font-style: normal;
             font-weight: 700;
             font-display: swap;
-            src: url(https://shofy-grocery.botble.com/storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma2pl7w0q5n-wu.woff2) format('woff2');
+            src: url({{ asset('storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma2pl7w0q5n-wu.woff2') }}) format('woff2');
             unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
         }
 
@@ -468,7 +468,7 @@
             font-style: normal;
             font-weight: 700;
             font-display: swap;
-            src: url(https://shofy-grocery.botble.com/storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma25l7w0q5n-wu.woff2) format('woff2');
+            src: url({{ asset('storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma25l7w0q5n-wu.woff2') }}) format('woff2');
             unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
         }
 
@@ -477,7 +477,7 @@
             font-style: normal;
             font-weight: 700;
             font-display: swap;
-            src: url(https://shofy-grocery.botble.com/storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma1zl7w0q5nw.woff2) format('woff2');
+            src: url({{ asset('storage/fonts/2832c0ff63/sinterv13ucc73fwrk3iltehus-fvqtmwcp50knma1zl7w0q5nw.woff2') }}) format('woff2');
             unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
         }
     </style>
@@ -499,16 +499,21 @@
     </style>
 
     <link media="all" type="text/css" rel="stylesheet"
-        href="https://shofy-grocery.botble.com/vendor/core/core/base/css/core.css?v=1.4.4">
+        href="{{ asset('vendor/core/core/base/css/core.css?v=1.4.4') }}">
     <link media="all" type="text/css" rel="stylesheet"
-        href="https://shofy-grocery.botble.com/vendor/core/plugins/language/css/language.css?v=1.4.4">
+        href="{{ asset('vendor/core/plugins/language/css/language.css?v=1.4.4') }}">
 
-    <script src="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/jquery.min.js?v=1.4.4"></script>
-    <script src="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/jquery-compat/jquery4-compat.js?v=1.4.4">
-    </script>
-    <script src="https://shofy-grocery.botble.com/vendor/core/core/base/js/app.js?v=1.4.4"></script>
+    <script src="{{ asset('vendor/core/core/base/libraries/jquery.min.js?v=1.4.4') }}"></script>
+    {{-- <script src="{{ asset('vendor/core/core/base/libraries/jquery-compat/jquery4-compat.js?v=1.4.4') }}"></script> --}}
+    <script src="{{ asset('vendor/core/core/base/js/app.js?v=1.4.4') }}"></script>
     <script>
-        window.siteUrl = "https://shofy-grocery.botble.com";
+        window.siteUrl = "{{ asset('') }}";
+        window.BotbleVariables = {
+            languages: {
+                notices_msg: 'Success!',
+                error_msg: 'Error!',
+            }
+        };
     </script>
 </head>
 
@@ -520,8 +525,8 @@
                 class="col-12 col-lg-6 col-xl-4 border-top-wide border-primary d-flex flex-column justify-content-center">
                 <div class="container container-tight my-5 px-lg-5">
                     <div class="text-center mb-4">
-                        <a href="https://shofy-grocery.botble.com/admin">
-                            <img src="https://shofy-grocery.botble.com/storage/main/general/logo-white.png"
+                        <a href="{{ asset('admin') }}">
+                            <img src="{{ asset('storage/main/general/logo-white.png') }}"
                                 style="max-height: 50px; height: auto;" alt="Botble Technologies"
                                 class="navbar-brand-image">
                         </a>
@@ -530,13 +535,23 @@
                         @csrf
                         <div class="form-body">
                             <h2 class="h3 text-center mb-3">Sign In Below</h2>
+
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul class="mb-0">
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
                             <div class="mb-3 position-relative">
                                 <label class="form-label form-label required" for="username">
                                     Email/Username
                                 </label>
-                                <input class="form-control" tabindex="1"
+                                <input class="form-control @error('email') is-invalid @enderror" tabindex="1"
                                     placeholder="Enter your username or email address" required="required"
-                                    name="email" type="text" value="admin" id="username">
+                                    name="email" type="text" value="{{ old('email') ?? 'admin' }}" id="username">
                             </div>
                             <div class="mb-3 position-relative">
                                 <label class="form-label form-label required" for="password">
@@ -547,7 +562,7 @@
                                     </span>
                                 </label>
                                 <div class="input-group">
-                                    <input type="password" name="password" id="password" class="form-control"
+                                    <input type="password" name="password" id="password" class="form-control @error('password') is-invalid @enderror"
                                         tabindex="2" placeholder="Enter your password" required="required"
                                         data-bb-password>
                                     <span class="input-password-toggle" data-bb-toggle-password>
@@ -688,7 +703,7 @@
             </div>
             <div class="position-relative col-12 col-lg-6 col-xl-8 d-none d-lg-block">
                 <div class="bg-cover bg-white h-100 min-vh-100"
-                    style="background-image: url(https://shofy-grocery.botble.com/vendor/core/core/acl/images/backgrounds/10.jpg)">
+                    style="background-image: url({{ asset('vendor/core/core/acl/images/backgrounds/10.jpg') }})">
                 </div>
                 <div class="end-0 bottom-0 position-absolute">
                     <div class="text-white me-5 mb-4">
@@ -702,19 +717,19 @@
     </div>
 
 
-    <script src="https://shofy-grocery.botble.com/vendor/core/core/base/js/core-ui.js?v=1.4.4"></script>
-    <script src="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/flatpickr/flatpickr.min.js?v=1.4.4">
+    <script src="{{ asset('vendor/core/core/base/js/core-ui.js?v=1.4.4') }}"></script>
+    <script src="{{ asset('vendor/core/core/base/libraries/flatpickr/flatpickr.min.js?v=1.4.4') }}">
     </script>
-    <script src="https://shofy-grocery.botble.com/vendor/core/core/base/js/core.js?v=1.4.4"></script>
+    <script src="{{ asset('vendor/core/core/base/js/core.js?v=1.4.4') }}"></script>
     <script
-        src="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/mcustom-scrollbar/jquery.mCustomScrollbar.js?v=1.4.4">
+        src="{{ asset('vendor/core/core/base/libraries/mcustom-scrollbar/jquery.mCustomScrollbar.js?v=1.4.4') }}">
     </script>
-    <script src="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/fslightbox.js?v=1.4.4"></script>
-    <script src="https://shofy-grocery.botble.com/vendor/core/core/js-validation/js/js-validation.js?v=1.4.4"></script>
+    <script src="{{ asset('vendor/core/core/base/libraries/fslightbox.js?v=1.4.4') }}"></script>
+    <script src="{{ asset('vendor/core/core/js-validation/js/js-validation.js?v=1.4.4') }}"></script>
     <script
-        src="https://shofy-grocery.botble.com/vendor/core/core/base/libraries/jquery.are-you-sure/jquery.are-you-sure.js?v=1.4.4">
+        src="{{ asset('vendor/core/core/base/libraries/jquery.are-you-sure/jquery.are-you-sure.js?v=1.4.4') }}">
     </script>
-    <script src="https://shofy-grocery.botble.com/vendor/core/plugins/language/js/language-global.js?v=1.4.4"></script>
+    <script src="{{ asset('vendor/core/plugins/language/js/language-global.js?v=1.4.4') }}"></script>
 
 </body>
 

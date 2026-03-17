@@ -73,22 +73,28 @@ public function store(Request $request)
     ];
 
     if ($request->hasFile('logo')) {
-        $path = $request->file('logo')->store('stores', 'public');
-        $data['logo'] = 'storage/' . $path;
+        $upload = \App\Helpers\ImageHelper::imageUploadHelper('logo_', $request->file('logo'));
+        if ($upload['status']) {
+            $data['logo'] = $upload['data']['target_file'];
+        }
     } elseif ($request->logo) {
         $data['logo'] = $request->logo;
     }
 
     if ($request->hasFile('logo_square')) {
-        $path = $request->file('logo_square')->store('stores', 'public');
-        $data['logo_square'] = 'storage/' . $path;
+        $upload = \App\Helpers\ImageHelper::imageUploadHelper('logo_sq_', $request->file('logo_square'));
+        if ($upload['status']) {
+            $data['logo_square'] = $upload['data']['target_file'];
+        }
     } elseif ($request->logo_square) {
         $data['logo_square'] = $request->logo_square;
     }
 
     if ($request->hasFile('cover_image')) {
-        $path = $request->file('cover_image')->store('stores', 'public');
-        $data['cover_image'] = 'storage/' . $path;
+        $upload = \App\Helpers\ImageHelper::imageUploadHelper('cover_', $request->file('cover_image'));
+        if ($upload['status']) {
+            $data['cover_image'] = $upload['data']['target_file'];
+        }
     } elseif ($request->cover_image) {
         $data['cover_image'] = $request->cover_image;
     }
@@ -153,18 +159,24 @@ public function store(Request $request)
         ];
 
         if ($request->hasFile('logo')) {
-            $path = $request->file('logo')->store('stores', 'public');
-            $data['logo'] = 'storage/' . $path;
+            $upload = \App\Helpers\ImageHelper::imageUploadHelper('logo_', $request->file('logo'));
+            if ($upload['status']) {
+                $data['logo'] = $upload['data']['target_file'];
+            }
         }
 
         if ($request->hasFile('logo_square')) {
-            $path = $request->file('logo_square')->store('stores', 'public');
-            $data['logo_square'] = 'storage/' . $path;
+            $upload = \App\Helpers\ImageHelper::imageUploadHelper('logo_sq_', $request->file('logo_square'));
+            if ($upload['status']) {
+                $data['logo_square'] = $upload['data']['target_file'];
+            }
         }
 
         if ($request->hasFile('cover_image')) {
-            $path = $request->file('cover_image')->store('stores', 'public');
-            $data['cover_image'] = 'storage/' . $path;
+            $upload = \App\Helpers\ImageHelper::imageUploadHelper('cover_', $request->file('cover_image'));
+            if ($upload['status']) {
+                $data['cover_image'] = $upload['data']['target_file'];
+            }
         }
 
         $store->update($data);

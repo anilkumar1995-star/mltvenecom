@@ -30,15 +30,10 @@ class ProfileController extends Controller
             ]);
 
             if ($request->hasFile('avatar')) {
-                $file = $request->file('avatar');
-                $path = $file->store('avatars', 'public');
-
-                // delete old avatar if exists and is in storage
-                if ($user->avatar && !str_starts_with($user->avatar, 'http')) {
-                    Storage::disk('public')->delete($user->avatar);
+                $upload = \App\Helpers\ImageHelper::imageUploadHelper('avatar_', $request->file('avatar'));
+                if ($upload['status']) {
+                    $data['avatar'] = $upload['data']['target_file'];
                 }
-
-                $data['avatar'] = $path;
             }
 
             $user->update($data);

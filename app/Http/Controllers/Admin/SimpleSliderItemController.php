@@ -30,32 +30,14 @@ class SimpleSliderItemController extends Controller
             $slider_id = $request->query('slider_id', $request->simple_slider_id);
 
             $data = $request->only([
-                'title', 'subtitle', 'link', 'button_label', 'description', 
-                'order', 'status', 'background_color'
+                'title', 'link', 'description', 'order'
             ]);
-            $data['background_color_light'] = $request->has('background_color_light') ? 1 : 0;
             $data['simple_slider_id'] = $slider_id;
 
             // Handle uploads
             if ($request->hasFile('image')) {
-                $file = $request->file('image');
-                $filename = time() . '_' . $file->getClientOriginalName();
-                $file->move(public_path('uploads/sliders'), $filename);
-                $data['image'] = 'uploads/sliders/' . $filename;
-            }
-
-            if ($request->hasFile('tablet_image')) {
-                $file = $request->file('tablet_image');
-                $filename = time() . '_tablet_' . $file->getClientOriginalName();
-                $file->move(public_path('uploads/sliders'), $filename);
-                $data['tablet_image'] = 'uploads/sliders/' . $filename;
-            }
-
-            if ($request->hasFile('mobile_image')) {
-                $file = $request->file('mobile_image');
-                $filename = time() . '_mobile_' . $file->getClientOriginalName();
-                $file->move(public_path('uploads/sliders'), $filename);
-                $data['mobile_image'] = 'uploads/sliders/' . $filename;
+                $upload = \App\Helpers\ImageHelper::imageUploadHelper('slider_', $request->file('image'));
+                if ($upload['status']) { $data['image'] = $upload['data']['target_file']; }
             }
 
             SimpleSliderItem::create($data);
@@ -81,33 +63,15 @@ class SimpleSliderItemController extends Controller
             DB::beginTransaction();
 
             $item = SimpleSliderItem::findOrFail($id);
-            
+
             $data = $request->only([
-                'title', 'subtitle', 'link', 'button_label', 'description', 
-                'order', 'status', 'background_color'
+                'title', 'link', 'description', 'order'
             ]);
-            $data['background_color_light'] = $request->has('background_color_light') ? 1 : 0;
 
             // Handle uploads
             if ($request->hasFile('image')) {
-                $file = $request->file('image');
-                $filename = time() . '_' . $file->getClientOriginalName();
-                $file->move(public_path('uploads/sliders'), $filename);
-                $data['image'] = 'uploads/sliders/' . $filename;
-            }
-
-            if ($request->hasFile('tablet_image')) {
-                $file = $request->file('tablet_image');
-                $filename = time() . '_tablet_' . $file->getClientOriginalName();
-                $file->move(public_path('uploads/sliders'), $filename);
-                $data['tablet_image'] = 'uploads/sliders/' . $filename;
-            }
-
-            if ($request->hasFile('mobile_image')) {
-                $file = $request->file('mobile_image');
-                $filename = time() . '_mobile_' . $file->getClientOriginalName();
-                $file->move(public_path('uploads/sliders'), $filename);
-                $data['mobile_image'] = 'uploads/sliders/' . $filename;
+                $upload = \App\Helpers\ImageHelper::imageUploadHelper('slider_', $request->file('image'));
+                if ($upload['status']) { $data['image'] = $upload['data']['target_file']; }
             }
 
             $item->update($data);
@@ -118,7 +82,7 @@ class SimpleSliderItemController extends Controller
                              ->with('success', 'Slider item updated successfully.');
         } catch (Exception $e) {
             DB::rollBack();
-            return back()->with('error', 'Something went wrong: ' . $e->getMessage())->withInput();
+            return back()->with('error', 'Something went wrong: ' . $e->getMessage());
         }
     }
 

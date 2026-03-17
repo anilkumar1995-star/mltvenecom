@@ -25,53 +25,49 @@
     <meta property="og:type" content="article">
     <meta property="og:title" content="MLTVE - Multipurpose eCommerce Laravel Script">
     <meta property="og:description"
-        content="Shofy is a powerful tool eCommerce Laravel script for creating a professional and visually appealing online store.">
+        content="Multive is a powerful tool eCommerce Laravel script for creating a professional and visually appealing online store.">
     <meta property="og:url" content="{{ asset('/') }}">
     <meta property="og:image" content="{{ asset('/') }}storage/i-university-logo-01.png">
-    <meta name="twitter:title" content="Shofy - Multipurpose eCommerce Laravel Script">
+    <meta name="twitter:title" content="Multive - Multipurpose eCommerce Laravel Script">
     <meta name="twitter:description"
-        content="Shofy is a powerful tool eCommerce Laravel script for creating a professional and visually appealing online store.">
+        content="Multive is a powerful tool eCommerce Laravel script for creating a professional and visually appealing online store.">
     <link rel="sitemap" title="Sitemap" href="{{ asset('/') }}sitemap.xml" type="application/xml">
 
     <link rel="icon" type="image/x-icon" href="{{ asset('/') }}storage/main/general/favicon.png">
 
 
     <!-- <link rel="preload" as="image" href="./home/newsletter-popup.jpg"> -->
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home/content-styles.css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home/bootstrap.min.css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/front-auth.css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/social-login.css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home/front-ecommerce.css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home/animate.css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home/swiper-bundle.css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home/owl.carousel.css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home/slick.css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home/theme.css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home/theme(1).css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home/lightgallery.min.css">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('home/content-styles.css') }}">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('home/bootstrap.min.css') }}">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('css/front-auth.css') }}">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('css/social-login.css') }}">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('home/front-ecommerce.css') }}">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('home/animate.css') }}">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('home/swiper-bundle.css') }}">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('home/owl.carousel.css') }}">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('home/slick.css') }}">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('home/theme.css') }}">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('home/theme(1).css') }}">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('home/lightgallery.min.css') }}">
 
-    {{--  <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/fontawesome.min.css">  --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" />
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/select2.min.css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/select2.css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/toastr.min.css">
-    <link media="all" type="text/css" rel="stylesheet"
-        href="{{ asset('/') }}css/jquery.mCustomScrollbar.css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/flatpickr.min.css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/spectrum.css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/jquery.fancybox.min.css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/core.css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/language.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"/>
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('css/select2.min.css') }}">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('css/select2.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-notify@0.5.5/dist/simple-notify.min.css" />
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('css/jquery.mCustomScrollbar.css') }}">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('css/flatpickr.min.css') }}">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('css/spectrum.css') }}">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('css/jquery.fancybox.min.css') }}">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('css/core.css') }}">
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('css/language.css') }}">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home/announcement.css">
-    <link href="{{ asset('/') }}" hreflang="x-default" rel="alternate">
-    <script async="" defer="" src="{{ asset('/') }}js/js"></script>
+    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('home/announcement.css') }}">
+    <link href="{{ asset('') }}" hreflang="x-default" rel="alternate">
+    <script async="" defer="" src="{{ asset('js/js') }}"></script>
 
-
-    <link href="{{ asset('/') }}" hreflang="en" rel="alternate">
-    <link href="{{ asset('/') }}" hreflang="en-us" rel="alternate">
+    <link href="{{ asset('') }}" hreflang="en" rel="alternate">
+    <link href="{{ asset('') }}" hreflang="en-us" rel="alternate">
     <style>
         :root {
             --primary-color: #678E61;
@@ -309,7 +305,7 @@
         }
 
         .page_speed_464693960 {
-            background-image: url(https://shofy-grocery.botble.com/storage/main/general/breadcrumb.jpg);
+            background-image: url({{ asset('/') }}/storage/main/general/breadcrumb.jpg);
             display: flex;
             align-items: center;
             height: 120px;
@@ -432,6 +428,275 @@
         }
     </style>
     @stack('styles')
+    <style>
+        /* Premium Mini Cart Sidebar Styles */
+        .cartmini__area {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 400px;
+            height: 100%;
+            background: #fff;
+            z-index: 100000;
+            transform: translateX(105%);
+            transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+            display: flex !important;
+            flex-direction: column;
+        }
+
+        .cartmini__area.cartmini-opened {
+            transform: translateX(0);
+        }
+
+        .cartmini__wrapper {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .cartmini__title {
+            padding: 20px 25px;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fff;
+        }
+
+        .cartmini__title h4 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+            color: #010f1c;
+        }
+
+        .cartmini__close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            z-index: 10;
+        }
+
+        .cartmini__close-btn {
+            font-size: 18px;
+            color: #010f1c;
+            background: #f5f5f5;
+            border: none;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .cartmini__close-btn:hover {
+            background: #678E61;
+            color: #fff;
+            transform: rotate(90deg);
+        }
+
+        .cartmini__widget {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 20px 25px;
+            scrollbar-width: thin;
+            scrollbar-color: #678E61 #f0f0f0;
+        }
+
+        .cartmini__widget::-webkit-scrollbar {
+            width: 5px;
+        }
+        .cartmini__widget::-webkit-scrollbar-thumb {
+            background: #678E61;
+            border-radius: 10px;
+        }
+
+        .cartmini__inner ul {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+
+        .cartmini__inner ul li {
+            display: flex;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #f5f5f5;
+            position: relative;
+        }
+
+        .cartmini__thumb {
+            width: 80px;
+            height: 80px;
+            flex-shrink: 0;
+            margin-right: 15px;
+            border: 1px solid #f0f0f0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .cartmini__thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .cartmini__content {
+            flex-grow: 1;
+            padding-right: 20px;
+        }
+
+        .cartmini__content h5 {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .cartmini__content h5 a:hover {
+            color: #678E61;
+        }
+
+        .cartmini__del {
+            position: absolute;
+            top: 0;
+            right: 0;
+            color: #999;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .cartmini__del:hover {
+            color: #ff4d4f;
+        }
+
+        .cartmini__checkout {
+            padding: 25px;
+            background: #fff;
+            border-top: 1px solid #f0f0f0;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.02);
+        }
+
+        .cartmini__checkout-title span {
+            font-size: 15px;
+            color: #55585b;
+        }
+
+        .cartmini__checkout-title h4 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #010f1c;
+        }
+
+        .cartmini__checkout-btn .tp-btn {
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            padding: 12px;
+            text-transform: uppercase;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+        }
+
+        .cartmini__checkout-btn .tp-btn:hover {
+            background: #678E61;
+            border-color: #678E61;
+            color: #fff;
+        }
+
+        /* Mini Cart Quantity Styling */
+        .product-quantity {
+            display: flex;
+            align-items: center;
+            background: #f3f5f6;
+            width: fit-content;
+            border-radius: 4px;
+            padding: 2px;
+        }
+        .cart-minus, .cart-plus {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 12px;
+            color: #010f1c;
+            transition: 0.3s;
+        }
+        .cart-minus:hover, .cart-plus:hover {
+            color: #678E61;
+        }
+        .cart-input {
+            width: 35px;
+            text-align: center;
+            border: none;
+            background: transparent;
+            font-size: 14px;
+            font-weight: 600;
+            color: #010f1c;
+            pointer-events: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .body-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(1, 15, 28, 0.6);
+            z-index: 99999;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            backdrop-filter: blur(3px);
+        }
+
+        .body-overlay.opened {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        @media (max-width: 480px) {
+            .cartmini__area {
+                width: 100%;
+            }
+        }
+
+        /* Loading state for buttons */
+        .tp-add-cart-btn.loading {
+            position: relative;
+            color: transparent !important;
+            pointer-events: none;
+        }
+        .tp-add-cart-btn.loading::after {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            top: 50%;
+            left: 50%;
+            margin-top: -10px;
+            margin-left: -10px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 
 <body>
@@ -440,110 +705,217 @@
     @yield('content')
     @include('frontend.layouts.footer')
 
-    <script src="{{ asset('/') }}home/jquery-3.7.1.min.js"></script>
+    <script src="{{ asset('home/jquery-3.7.1.min.js') }}"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
-    <script src="{{ asset('/') }}home/bootstrap.min.js"></script>
-    <script src="{{ asset('/') }}home/lazyload.min.js"></script>
-    <script src="{{ asset('/') }}home/swiper-bundle.js"></script>
-    <script src="{{ asset('/') }}home/owl.carousel.js"></script>
-    <script src="{{ asset('/') }}home/slick.min.js"></script>
-    <script src="{{ asset('/') }}home/meanmenu.js"></script>
-    <script src="{{ asset('/') }}home/theme.js"></script>
-    <script src="{{ asset('/') }}home/front-ecommerce.js"></script>
-    <script src="{{ asset('/') }}assets/js/core/sweetalert2@11.js"></script>
-    <script src="{{ asset('/') }}home/ecommerce.js"></script>
-    <script src="{{ asset('/') }}js/toastr.min.js"></script>
+    <script src="{{ asset('home/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('home/lazyload.min.js') }}"></script>
+    <script src="{{ asset('home/swiper-bundle.js') }}"></script>
+    <script src="{{ asset('home/owl.carousel.js') }}"></script>
+    <script src="{{ asset('home/slick.min.js') }}"></script>
+    <script src="{{ asset('home/meanmenu.js') }}"></script>
+    <script src="{{ asset('home/theme.js') }}"></script>
+    <script src="{{ asset('home/front-ecommerce.js') }}"></script>
+    <script src="{{ asset('assets/js/core/sweetalert2@11.js') }}"></script>
+    <script src="{{ asset('home/ecommerce.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-notify@0.5.5/dist/simple-notify.min.js"></script>
 
     @include('frontend.partials.mini-cart')
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/shopify-cartjs/1.1.0/cart.min.js"></script>     -->
+
+    <!-- Quick View Modal -->
+    <div class="modal fade tp-product-modal" id="quickViewModal" tabindex="-1" aria-labelledby="quickViewModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0">
+                <div class="modal-header border-0 pb-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body pt-0">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <div class="tp-product-modal-thumb">
+                                <img src="" id="qv-image" alt="product" class="img-fluid rounded-4 h-100 w-100 object-fit-cover" style="max-height: 400px;">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="tp-product-modal-content p-4">
+                                <h3 class="tp-product-modal-title mb-2 h4 fw-bold" id="qv-name">Product Name</h3>
+                                <div class="tp-product-modal-price mb-3">
+                                    <span class="h4 fw-bold text-primary">₹<span id="qv-price">0.00</span></span>
+                                </div>
+                                <p class="text-muted mb-4 small">Discover high-quality products curated just for you. Add this item to your cart and enjoy the best shopping experience.</p>
+                                
+                                <div class="tp-product-modal-action d-flex align-items-center gap-3 mt-4">
+                                    <button class="btn btn-primary w-100 py-3 rounded-3 fw-bold qv-add-btn" id="qv-add-to-cart-btn">
+                                        <i class="fas fa-shopping-basket me-2"></i> Add to Cart
+                                    </button>
+                                </div>
+                                <div class="mt-3 text-center">
+                                    <a href="#" id="qv-view-details" class="text-primary text-decoration-none fw-medium small">View Full Details <i class="fas fa-arrow-right ms-1"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @stack('scripts')
     <script>
-        toastr.options = {
-            "closeButton": true,
-            "progressBar": true,
-            "positionClass": "toast-top-right",
-            "timeOut": "5000",
-        };
+        $(document).ready(function() {
+            var csrfToken = $('meta[name="csrf-token"]').attr('content');
 
-        @if(session('success'))
-            toastr.success("{{ session('success') }}");
-        @endif
+            // --- Utility Functions ---
 
-        @if(session('error'))
-            toastr.error("{{ session('error') }}");
-        @endif
-
-        @if(session('status'))
-            toastr.info("{{ session('status') }}");
-        @endif
-
-        @if($errors->any())
-            @foreach($errors->all() as $error)
-                toastr.error("{{ $error }}");
-            @endforeach
-        @endif
-    </script>
-    <script>
-        window.themeOptions = {
-            ecommerce_auto_open_mini_cart: 'yes',
-        };
-    </script>
-
-    {{-- Cart AJAX Functionality --}}
-    <script>
-    $(document).ready(function() {
-        var csrfToken = $('meta[name="csrf-token"]').attr('content');
-
-        // Update cart badge count in header
-        function updateCartBadge(count) {
-            $('[data-bb-value="cart-count"]').text(count);
-        }
-
-        // Refresh mini-cart HTML
-        function refreshMiniCart(html) {
-            if (html) {
-                var $temp = $('<div>').html(html);
-                var $newCartArea = $temp.find('.cartmini__area');
-                if ($newCartArea.length) {
-                    $('.cartmini__area').html($newCartArea.html());
-                }
+            function updateCartBadge(count) {
+                $('[data-bb-value="cart-count"]').text(count);
+                $('.tp-cart-count').text(count);
             }
-        }
 
-        // Mini-cart PLUS button
-        $(document).on('click', '.cart-plus', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            var id = $(this).data('id');
-            var $input = $(this).siblings('.cart-input');
-            var currentQty = parseInt($input.val()) || 1;
-            var newQty = currentQty + 1;
-            $input.val(newQty);
-
-            $.ajax({
-                url: '{{ route("frontend.cart.update") }}',
-                method: 'POST',
-                data: { _token: csrfToken, product_id: id, quantity: newQty },
-                success: function(res) {
-                    if (res.success) {
-                        updateCartBadge(res.count);
-                        refreshMiniCart(res.html);
+            function refreshMiniCart(html) {
+                if (html) {
+                    var $temp = $('<div>').append($.parseHTML(html));
+                    var $newWrapper = $temp.find('.cartmini__wrapper');
+                    if ($newWrapper.length) {
+                        $('.cartmini__wrapper').html($newWrapper.html());
                     }
                 }
+            }
+
+            function openMiniCart() {
+                $('.cartmini__area').addClass('cartmini-opened');
+                $('.body-overlay').addClass('opened');
+                $('body').css('overflow', 'hidden');
+            }
+
+            function closeMiniCart() {
+                $('.cartmini__area').removeClass('cartmini-opened');
+                $('.body-overlay').removeClass('opened');
+                $('body').css('overflow', '');
+            }
+
+            // --- Event Listeners ---
+
+            // Close actions
+            $(document).on('click', '.cartmini-close-btn, .body-overlay', function(e) {
+                closeMiniCart();
             });
-        });
 
-        // Mini-cart MINUS button - removes item when qty reaches 0
-        $(document).on('click', '.cart-minus', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            var id = $(this).data('id');
-            var $input = $(this).siblings('.cart-input');
-            var currentQty = parseInt($input.val()) || 1;
-            var newQty = currentQty - 1;
+            // Open actions (from header)
+            $(document).on('click', '.cartmini-open-btn', function(e) {
+                e.preventDefault();
+                openMiniCart();
+            });
 
-            if (newQty <= 0) {
-                // Remove item completely
+            // Add to Cart AJAX (for standalone buttons)
+            $(document).on('click', '.tp-add-cart-btn', function(e) {
+                e.preventDefault();
+                var $btn = $(this);
+                var id = $btn.data('id');
+                var url = $btn.data('url') || '{{ route("frontend.cart.add") }}';
+                
+                $btn.addClass('loading');
+
+                $.ajax({
+                    url: url,
+                    method: 'POST',
+                    data: { _token: csrfToken, product_id: id, quantity: 1 },
+                    success: function(res) {
+                        if (res.success) {
+                            updateCartBadge(res.count);
+                            refreshMiniCart(res.html);
+                            notify(res.message, 'success');
+                            openMiniCart();
+                        }
+                    },
+                    error: function() { notify('Failed to add product.', 'error'); },
+                    complete: function() { $btn.removeClass('loading'); }
+                });
+            });
+
+            // Add to Cart AJAX (for forms)
+            $(document).on('submit', '.add-to-cart-form', function(e) {
+                e.preventDefault();
+                var $form = $(this);
+                var $btn = $form.find('button[type="submit"]');
+                var originalText = $btn.html();
+
+                $btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i>');
+
+                $.ajax({
+                    url: $form.attr('action'),
+                    method: 'POST',
+                    data: $form.serialize(),
+                    success: function(res) {
+                        if (res.success) {
+                            updateCartBadge(res.count);
+                            refreshMiniCart(res.html);
+                            notify(res.message, 'success');
+                            openMiniCart();
+                        }
+                    },
+                    error: function() { notify('Failed to add product.', 'error'); },
+                    complete: function() { $btn.prop('disabled', false).html(originalText); }
+                });
+            });
+
+            // Wishlist Toggle AJAX
+            $(document).on('click', '.tp-wishlist-btn', function(e) {
+                e.preventDefault();
+                var $btn = $(this);
+                var id = $btn.data('id');
+                var url = $btn.data('url') || '{{ route("frontend.wishlist.toggle") }}';
+
+                $.ajax({
+                    url: url,
+                    method: 'POST',
+                    data: { _token: csrfToken, product_id: id },
+                    success: function(res) {
+                        if (res.success) {
+                            notify(res.message, 'success');
+                            if (res.in_wishlist) {
+                                $btn.find('i').removeClass('far').addClass('fas text-danger');
+                            } else {
+                                $btn.find('i').removeClass('fas text-danger').addClass('far');
+                            }
+                            $('[data-bb-value="wishlist-count"]').text(res.count);
+                        }
+                    }
+                });
+            });
+
+            // Mini-cart Quantity Controls
+            $(document).on('click', '.cart-plus, .cart-minus', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var $btn = $(this);
+                var id = $btn.data('id');
+                var $input = $btn.siblings('.cart-input');
+                var currentQty = parseInt($input.val()) || 1;
+                var isPlus = $btn.hasClass('cart-plus');
+                var newQty = isPlus ? currentQty + 1 : currentQty - 1;
+
+                if (newQty <= 0) {
+                    removeItem(id);
+                } else {
+                    $input.val(newQty);
+                    updateQty(id, newQty);
+                }
+            });
+
+            function updateQty(id, qty) {
+                $.ajax({
+                    url: '{{ route("frontend.cart.update") }}',
+                    method: 'POST',
+                    data: { _token: csrfToken, product_id: id, quantity: qty },
+                    success: function(res) {
+                        if (res.success) {
+                            updateCartBadge(res.count);
+                            refreshMiniCart(res.html);
+                        }
+                    }
+                });
+            }
+
+            function removeItem(id) {
                 $.ajax({
                     url: '/cart/remove/' + id,
                     method: 'POST',
@@ -552,87 +924,63 @@
                         if (res.success) {
                             updateCartBadge(res.count);
                             refreshMiniCart(res.html);
-                            toastr.success('Product removed from cart!');
+                            notify('Product removed!', 'success');
                         }
                     }
                 });
-                return;
             }
 
-            $input.val(newQty);
-            $.ajax({
-                url: '{{ route("frontend.cart.update") }}',
-                method: 'POST',
-                data: { _token: csrfToken, product_id: id, quantity: newQty },
-                success: function(res) {
-                    if (res.success) {
-                        updateCartBadge(res.count);
-                        refreshMiniCart(res.html);
-                    }
-                }
+            // Mini-cart Delete Button
+            $(document).on('click', '.cartmini__del', function(e) {
+                e.preventDefault();
+                removeItem($(this).data('id'));
+            });
+
+            // Quick View Logic
+            $(document).on('click', '.tp-quick-view-btn', function(e) {
+                e.preventDefault();
+                var data = $(this).data();
+                $('#qv-name').text(data.name);
+                $('#qv-price').text(data.price);
+                $('#qv-image').attr('src', data.image);
+                $('#qv-view-details').attr('href', data.url);
+                $('#qv-add-to-cart-btn').data('id', data.id);
+                $('#quickViewModal').modal('show');
+            });
+            
+            // Modal Add to Cart
+            $(document).on('click', '#qv-add-to-cart-btn', function() {
+                var id = $(this).data('id');
+                $('#quickViewModal').modal('hide');
+                $('.tp-add-cart-btn[data-id="' + id + '"]').first().trigger('click');
             });
         });
 
-        // Mini-cart DELETE (X) button
-        $(document).on('click', '.cartmini__del', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            var $li = $(this).closest('li');
-            var $form = $li.find('form[id^="remove-cart-"]');
-            var action = $form.attr('action');
-            if (!action) return;
+        function notify(text, status) {
+            new Notify({
+                status: status,
+                title: null,
+                text: text,
+                effect: 'fade',
+                customClass: null,
+                customIcon: null,
+                showIcon: true,
+                showCloseButton: true,
+                autoclose: true,
+                autotimeout: 2000,
+                gap: 20,
+                distance: 15,
+                type: 1,
+                position: 'right top'
+            })
+        }
 
-            $.ajax({
-                url: action,
-                method: 'POST',
-                data: { _token: csrfToken, _method: 'DELETE' },
-                success: function(res) {
-                    if (res.success) {
-                        updateCartBadge(res.count);
-                        refreshMiniCart(res.html);
-                        toastr.success(res.message);
-                    }
-                }
-            });
-        });
-
-        // Add to Cart AJAX (for forms with class .add-to-cart-form)
-        $(document).on('submit', '.add-to-cart-form', function(e) {
-            e.preventDefault();
-            var $form = $(this);
-            var $btn = $form.find('button[type="submit"]');
-            var originalText = $btn.html();
-
-            $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-1"></span> Adding...');
-
-            $.ajax({
-                url: $form.attr('action'),
-                method: 'POST',
-                data: $form.serialize(),
-                headers: { 'X-Requested-With': 'XMLHttpRequest' },
-                success: function(res) {
-                    if (res.success) {
-                        updateCartBadge(res.count);
-                        refreshMiniCart(res.html);
-                        toastr.success(res.message);
-
-                        // Auto open mini-cart
-                        if (window.themeOptions && window.themeOptions.ecommerce_auto_open_mini_cart === 'yes') {
-                            $('.cartmini__area').addClass('cartmini-opened');
-                            $('.body-overlay').addClass('opened');
-                        }
-                    }
-                },
-                error: function(xhr) {
-                    toastr.error('Something went wrong!');
-                },
-                complete: function() {
-                    $btn.prop('disabled', false).html(originalText);
-                }
-            });
-        });
-    });
+        @if(session('success')) notify("{{ session('success') }}", 'success'); @endif
+        @if(session('error')) notify("{{ session('error') }}", 'error'); @endif
+        @if($errors->any()) @foreach($errors->all() as $error) notify("{{ $error }}", 'error'); @endforeach @endif
     </script>
+    <form id="global-logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+        @csrf
+    </form>
 </body>
-
 </html>

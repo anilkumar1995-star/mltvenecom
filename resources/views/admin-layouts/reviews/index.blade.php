@@ -304,7 +304,7 @@
                                         <td>{{ $item->id }}</td>
                                         <td>
                                             @if($item->product && $item->product->image)
-                                                <img src="{{ asset('uploads/' . $item->product->image) }}" alt="{{ $item->product->name }}" width="50">
+                                                <img src="{{ 'https://images.incomeowl.in/incomeowl/b2b/images/' . $item->product->image }}" alt="{{ $item->product->name }}" width="50" onerror="this.src='{{ asset('home/placeholder.png') }}'">
                                             @else
                                                 <img src="{{ asset('home/placeholder.png') }}" alt="Placeholder" width="50">
                                             @endif

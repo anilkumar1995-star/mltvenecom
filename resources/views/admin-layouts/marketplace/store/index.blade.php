@@ -409,7 +409,7 @@
                                                     <tr>
                                                         <td><input class="form-check-input m-0 align-middle checkboxes" type="checkbox" value="{{ $store->id }}"></td>
                                                         <td class="text-center">{{ $store->id }}</td>
-                                                        <td><img src="{{ asset($store->logo) }}" alt="{{ $store->name }}" width="50"></td>
+                                                        <td><img src="{{ $store->logo ? 'https://images.incomeowl.in/incomeowl/b2b/images/' . $store->logo : asset('img/noimg.png') }}" alt="{{ $store->name }}" width="50" onerror="this.src='{{ asset('img/noimg.png') }}'"></td>
                                                         <td>{{ $store->name }}</td>
                                                         <td>{{ $store->earnings ?? 0 }}</td>
                                                         <td>{{ $store->products_count ?? 0 }}</td>

@@ -79,12 +79,12 @@
                 @forelse($products as $product)
                 <div class="col-md-4">
                     <div class="product-card">
-                        <div class="position-relative">
-                            @if($product->image)
-                                <img src="{{ asset('uploads/' . $product->image) }}" alt="{{ $product->name }}" class="product-image">
-                            @else
-                                <img src="{{ asset('uploads/products/no-img.png') }}" alt="{{ $product->name }}" class="product-image">
-                            @endif
+                        <div class="position-relative" style="height:200px; overflow:hidden; background:#f8f8f8; display:flex; align-items:center; justify-content:center; border-radius:8px;">
+                            <img src="{{ $product->image_url }}" 
+                                 alt="{{ $product->name }}" 
+                                 class="product-image"
+                                 onerror="this.src='{{ asset('home/placeholder.png') }}'"
+                                 style="width:100%; height:200px; object-fit:contain;">
                             
                             @if($product->isOnSale())
                                 <span class="product-badge">-{{ $product->getDiscountPercentage() }}%</span>

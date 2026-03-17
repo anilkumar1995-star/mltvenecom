@@ -225,7 +225,7 @@
                                                     <span class="text-muted">Guest</span>
                                                 @endif
                                             </td>
-                                            <td>${{ number_format($order->amount, 2) }}</td>
+                                            <td>₹{{ number_format($order->amount, 2) }}</td>
                                             <td>{{ $order->payment ? ucfirst(str_replace('_', ' ', $order->payment->payment_channel ?? 'N/A')) : 'N/A' }}</td>
                                             <td class="text-center">
                                                 @php $payStatus = $order->payment->status ?? 'N/A'; @endphp
@@ -252,8 +252,8 @@
                                                     <span class="badge bg-secondary text-white">{{ ucfirst($order->status) }}</span>
                                                 @endif
                                             </td>
-                                            <td>${{ number_format($order->tax_amount, 2) }}</td>
-                                            <td>{{ number_format($order->shipping_amount, 2) }}</td>
+                                            <td>₹{{ number_format($order->tax_amount, 2) }}</td>
+                                            <td>₹{{ number_format($order->shipping_amount, 2) }}</td>
                                             <td class="text-end">
                                                 <div class="btn-group">
                                                     <a href="{{ route('admin.orders.create') }}" class="btn btn-sm btn-outline-info" title="Edit">

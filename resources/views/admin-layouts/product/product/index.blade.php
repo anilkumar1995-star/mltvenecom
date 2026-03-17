@@ -50,7 +50,7 @@
                             <div class="wrapper-filter">
                                 <p>Filters</p>
                                 <input type="hidden" class="filter-data-url"
-                                    value="https://shofy-grocery.botble.com/admin/tables/filters" />
+                                    value="{{ asset('/') }}/admin/tables/filters" />
 
                                 <div class="sample-filter-item-wrap hidden">
                                     <div class="row filter-item form-filter">
@@ -112,7 +112,7 @@
                                     </div>
                                 </div>
 
-                                <form method="GET" action="https://shofy-grocery.botble.com/admin/ecommerce/products"
+                                <form method="GET" action="{{ asset('/') }}/admin/ecommerce/products"
                                     accept-charset="UTF-8" class="filter-form">
                                     <input type="hidden" name="filter_table_id" class="filter-data-table-id"
                                         value="botble-ecommerce-tables-product-table">
@@ -175,7 +175,7 @@
 
                                         </button>
                                         <a class="btn btn-icon   w-6" style="display: none;" type="button"
-                                            href="https://shofy-grocery.botble.com/admin/ecommerce/products"
+                                            href="{{ asset('/') }}/admin/ecommerce/products"
                                             data-bb-toggle="datatable-reset-filter">
                                             <svg class="icon icon-left svg-icon-ti-ti-refresh"
                                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -218,56 +218,56 @@
                                                 <div class="dropdown-menu">
                                                     <button class="dropdown-item bulk-change-item" data-key="category"
                                                         data-class-item="Botble\Ecommerce\Tables\ProductTable"
-                                                        data-save-url="https://shofy-grocery.botble.com/admin/tables/bulk-changes/save">
+                                                        data-save-url="{{ asset('/') }}/admin/tables/bulk-changes/save">
 
                                                         Category
 
                                                     </button>
                                                     <button class="dropdown-item bulk-change-item" data-key="brand_id"
                                                         data-class-item="Botble\Ecommerce\Tables\ProductTable"
-                                                        data-save-url="https://shofy-grocery.botble.com/admin/tables/bulk-changes/save">
+                                                        data-save-url="{{ asset('/') }}/admin/tables/bulk-changes/save">
 
                                                         Brand
 
                                                     </button>
                                                     <button class="dropdown-item bulk-change-item" data-key="name"
                                                         data-class-item="Botble\Ecommerce\Tables\ProductTable"
-                                                        data-save-url="https://shofy-grocery.botble.com/admin/tables/bulk-changes/save">
+                                                        data-save-url="{{ asset('/') }}/admin/tables/bulk-changes/save">
 
                                                         Name
 
                                                     </button>
                                                     <button class="dropdown-item bulk-change-item" data-key="order"
                                                         data-class-item="Botble\Ecommerce\Tables\ProductTable"
-                                                        data-save-url="https://shofy-grocery.botble.com/admin/tables/bulk-changes/save">
+                                                        data-save-url="{{ asset('/') }}/admin/tables/bulk-changes/save">
 
                                                         Sort order
 
                                                     </button>
                                                     <button class="dropdown-item bulk-change-item" data-key="status"
                                                         data-class-item="Botble\Ecommerce\Tables\ProductTable"
-                                                        data-save-url="https://shofy-grocery.botble.com/admin/tables/bulk-changes/save">
+                                                        data-save-url="{{ asset('/') }}/admin/tables/bulk-changes/save">
 
                                                         Status
 
                                                     </button>
                                                     <button class="dropdown-item bulk-change-item" data-key="stock_status"
                                                         data-class-item="Botble\Ecommerce\Tables\ProductTable"
-                                                        data-save-url="https://shofy-grocery.botble.com/admin/tables/bulk-changes/save">
+                                                        data-save-url="{{ asset('/') }}/admin/tables/bulk-changes/save">
 
                                                         Stock status
 
                                                     </button>
                                                     <button class="dropdown-item bulk-change-item" data-key="created_at"
                                                         data-class-item="Botble\Ecommerce\Tables\ProductTable"
-                                                        data-save-url="https://shofy-grocery.botble.com/admin/tables/bulk-changes/save">
+                                                        data-save-url="{{ asset('/') }}/admin/tables/bulk-changes/save">
 
                                                         Created At
 
                                                     </button>
                                                     <button class="dropdown-item bulk-change-item" data-key="is_featured"
                                                         data-class-item="Botble\Ecommerce\Tables\ProductTable"
-                                                        data-save-url="https://shofy-grocery.botble.com/admin/tables/bulk-changes/save">
+                                                        data-save-url="{{ asset('/') }}/admin/tables/bulk-changes/save">
 
                                                         Is featured?
 
@@ -276,7 +276,7 @@
                                             </div>
 
                                             <a class="dropdown-item"
-                                                href="https://shofy-grocery.botble.com/admin/tables/bulk-actions"
+                                                href="{{ asset('/') }}/admin/tables/bulk-actions"
                                                 data-trigger-bulk-action="data-trigger-bulk-action" data-method="POST"
                                                 data-table-target="Botble\Ecommerce\Tables\ProductTable"
                                                 data-target="Botble\Table\BulkActions\DeleteBulkAction"
@@ -308,7 +308,7 @@
                                         aria-controls="botble-ecommerce-tables-product-table" type="button"
                                         aria-haspopup="dialog" aria-expanded="false">
                                         <span data-action="export"
-                                            data-href="https://shofy-grocery.botble.com/admin/tools/data-synchronize/export/products">
+                                            data-href="{{ asset('/') }}/admin/tools/data-synchronize/export/products">
                                             <svg class="icon svg-icon-ti-ti-file-export" xmlns="http://www.w3.org/2000/svg"
                                                 width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -324,7 +324,7 @@
                                         aria-controls="botble-ecommerce-tables-product-table" type="button"
                                         aria-haspopup="dialog" aria-expanded="false">
                                         <span data-action="import"
-                                            data-href="https://shofy-grocery.botble.com/admin/tools/data-synchronize/import/products">
+                                            data-href="{{ asset('/') }}/admin/tools/data-synchronize/import/products">
                                             <svg class="icon svg-icon-ti-ti-file-import" xmlns="http://www.w3.org/2000/svg"
                                                 width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -425,27 +425,20 @@
                                         </td>
                                         <td>{{ $product->id }}</td>
                                         <td>
-                                            <!-- <div class="d-flex align-items-center"> -->
-                                                @php
-                                                    $displayImage = $product->image ?: (is_array($product->images) && !empty($product->images) ? $product->images[0] : null);
-                                                    $imageUrl = $displayImage ? asset('uploads/' . $displayImage) : asset('home/placeholder.png');
-                                                @endphp
-
-                                                <a data-fslightbox="gallery" href="{{ $imageUrl }}">
-                                                    <img src="{{ $imageUrl }}" 
-                                                         alt="{{ $product->name }}" 
-                                                         class="img-thumbnail me-2" 
-                                                         style="width: 50px; height: 50px; object-fit: cover;"
-                                                         onerror="this.src='{{ asset('home/placeholder.png') }}'">
-                                                </a>
-                                                <!-- <div>
-                                                    <a href="{{ route('admin.products.edit', $product->id) }}" class="fw-bold text-decoration-none text-dark">{{ $product->name }}</a>
-                                                    <div class="small text-muted">{{ $product->sku }}</div>
-                                                </div> -->
-                                            <!-- </div> -->
+                                            @php
+                                                $gallery = $product->gallery_image_urls;
+                                                $imageUrl = !empty($product->image) ? $product->image_url : (!empty($gallery) ? $gallery[0] : asset('home/placeholder.png'));
+                                            @endphp
+                                            <a data-fslightbox="gallery" href="{{ $imageUrl }}">
+                                                <img src="{{ $imageUrl }}" 
+                                                     alt="{{ $product->name }}" 
+                                                     class="img-thumbnail me-2" 
+                                                     style="width: 50px; height: 50px; object-fit: cover;"
+                                                     onerror="this.src='{{ asset('home/placeholder.png') }}'">
+                                            </a>
                                         </td>
                                         <td>{{ $product->name }}</td>
-                                        <td>{{ number_format($product->price ?? 0, 2) }}</td>
+                                        <td>₹{{ number_format($product->price ?? 0, 2) }}</td>
                                         <td>{{ $product->stock_status  }}</td>
                                         <td>{{ $product->quantity   }}</td>
                                         <td>{{ $product->sku }}</td>

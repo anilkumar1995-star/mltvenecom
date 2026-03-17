@@ -194,7 +194,7 @@
                                         <label class="form-label fw-bold mb-2">SEO Image</label>
                                         <div class="image-box text-center border rounded p-4 bg-light cursor-pointer" onclick="document.getElementById('seo_image_input').click();" style="border: 2px dashed #cbd5e1 !important; background: #f8fafc;">
                                             <input type="file" name="seo_image" id="seo_image_input" class="d-none" accept="image/*">
-                                            <img id="seo-image-preview" src="{{ $post->seo_image ? Storage::url($post->seo_image) : '#' }}" alt="Preview" style="max-height: 100px; {{ $post->seo_image ? '' : 'display: none;' }} margin: 0 auto;" class="mb-2 rounded">
+                                            <img id="seo-image-preview" src="{{ $post->seo_image ? 'https://images.incomeowl.in/incomeowl/b2b/images/' . $post->seo_image : '#' }}" alt="Preview" style="max-height: 100px; {{ $post->seo_image ? '' : 'display: none;' }} margin: 0 auto;" class="mb-2 rounded">
                                             <div id="seo-image-placeholder" style="{{ $post->seo_image ? 'display: none;' : '' }}">
                                                 <i class="fas fa-image fa-2x text-muted mb-2"></i>
                                                 <div class="text-primary fw-bold" style="font-size: 13px;">Choose image</div>
@@ -297,7 +297,7 @@
                                         <div id="image-placeholder" style="{{ $post->image ? 'display: none;' : '' }}">
                                             <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 24 24' fill='none' stroke='%23cbd5e1' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='3' width='18' height='18' rx='2' ry='2'%3E%3C/rect%3E%3Ccircle cx='8.5' cy='8.5' r='1.5'%3E%3C/circle%3E%3Cpolyline points='21 15 16 10 5 21'%3E%3C/polyline%3E%3C/svg%3E" alt="Placeholder" style="width: 48px; opacity: 0.5;">
                                         </div>
-                                        <img id="image-preview" src="{{ $post->image ? Storage::url($post->image) : '#' }}" alt="Preview" style="max-width: 100%; max-height: 100%; {{ $post->image ? '' : 'display: none;' }}" class="rounded">
+                                        <img id="image-preview" src="{{ $post->image ? 'https://images.incomeowl.in/incomeowl/b2b/images/' . $post->image : '#' }}" alt="Preview" style="max-width: 100%; max-height: 100%; {{ $post->image ? '' : 'display: none;' }}" class="rounded">
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-center gap-1 align-items-center mt-2" style="font-size: 13px;">
