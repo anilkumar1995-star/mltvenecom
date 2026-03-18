@@ -6,13 +6,30 @@ use App\Http\Controllers\Controller;
 use App\Models\EcFlashSale;
 use App\Models\EcProduct;
 use Illuminate\Http\Request;
+use App\Helpers\TableHelpers;
 
 class FlashSaleController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $flashSales = EcFlashSale::orderBy('id', 'desc')->paginate(10);
-        return view('admin-layouts.flash-sales.index', compact('flashSales'));
+        $query = EcFlashSale::withCount('products');
+
+        TableHelpers::applyTableLogic($query, $request,
+            ['id', 'name'], // Searchable
+            ['id', 'name', 'status', 'end_date', 'created_at'] // Filterable
+        );
+
+        $flashSales = $query->orderBy('id', 'desc')->paginate(15);
+
+        $filterColumns = [
+            'id'         => 'ID',
+            'name'       => 'Name',
+            'status'     => 'Status',
+            'end_date'   => 'End Date',
+            'created_at' => 'Created At',
+        ];
+
+        return view('admin-layouts.flash-sales.index', compact('flashSales', 'filterColumns'));
     }
 
     public function create()
@@ -28,7 +45,7 @@ class FlashSaleController extends Controller
             'end_date' => 'required|date',
             'status' => 'required|in:published,draft,closed',
             'products' => 'nullable|array',
-            'products.*.product_id' => 'required|exists:ec_products,id', // Validate product_id inside the array
+            'products.*.product_id' => 'required|exists:ec_products,id',
             'products.*.price' => 'required|numeric|min:0',
             'products.*.quantity' => 'required|integer|min:1',
         ]);
@@ -46,7 +63,7 @@ class FlashSaleController extends Controller
                     $syncData[$product['product_id']] = [
                         'price' => $product['price'],
                         'quantity' => $product['quantity'],
-                        'sold' => 0, // Default sold count
+                        'sold' => 0,
                     ];
                 }
             }
@@ -91,7 +108,6 @@ class FlashSaleController extends Controller
             $syncData = [];
             foreach ($request->products as $product) {
                  if (isset($product['product_id'])) {
-                    // Keep existing sold count if product was already in flash sale
                     $existingPivot = $flashSale->products()->where('ec_flash_sale_products.product_id', $product['product_id'])->first();
                     $sold = $existingPivot ? $existingPivot->pivot->sold : 0;
 
@@ -118,7 +134,11 @@ class FlashSaleController extends Controller
     {
         $flashSale = EcFlashSale::findOrFail($id);
         $flashSale->products()->detach();
-        $flashSale->delete();
-        return redirect()->back()->with('success', 'Flash sale deleted successfully.');
+        return TableHelpers::performDelete($flashSale, EcFlashSale::class, 'flash sale');
+    }
+
+    public function bulkDelete(Request $request)
+    {
+        return TableHelpers::performBulkDelete($request, EcFlashSale::class, 'flash sales');
     }
 }

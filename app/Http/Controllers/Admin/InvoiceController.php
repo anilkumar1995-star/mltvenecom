@@ -5,13 +5,31 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Invoice;
 use Illuminate\Http\Request;
+use App\Helpers\TableHelpers;
 
 class InvoiceController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $invoices = Invoice::orderBy('created_at', 'desc')->paginate(20);
-        return view('admin-layouts.invoices.index', compact('invoices'));
+        $query = Invoice::query();
+
+        TableHelpers::applyTableLogic($query, $request,
+            ['id', 'customer_name', 'customer_email', 'amount', 'status'],
+            ['id', 'status', 'created_at']
+        );
+
+        $invoices = $query->orderBy('created_at', 'desc')->paginate(TableHelpers::getPerPage($request));
+        
+        $filterColumns = [
+            'id' => 'ID',
+            'customer_name' => 'Customer Name',
+            'customer_email' => 'Customer Email',
+            'amount' => 'Amount',
+            'status' => 'Status',
+            'created_at' => 'Created At',
+        ];
+
+        return view('admin-layouts.invoices.index', compact('invoices', 'filterColumns'));
     }
 
     public function generate(Request $request)
@@ -76,8 +94,11 @@ class InvoiceController extends Controller
 
     public function destroy($id)
     {
-        $invoice = Invoice::findOrFail($id);
-        $invoice->delete();
-        return redirect()->back()->with('success', 'Invoice deleted successfully');
+        return TableHelpers::performDelete($id, Invoice::class, 'invoice');
+    }
+
+    public function bulkDelete(Request $request)
+    {
+        return TableHelpers::performBulkDelete($request, Invoice::class, 'invoices');
     }
 }

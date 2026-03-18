@@ -17,6 +17,7 @@ class Review extends Model
         'comment',
         'status',
         'images',
+        'badge',
     ];
 
     protected $casts = [
@@ -25,6 +26,10 @@ class Review extends Model
     ];
 
     // Relationships
+    public function replies(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(ReviewReply::class, 'review_id');
+    }
     public function product(): BelongsTo
     {
         return $this->belongsTo(EcProduct::class, 'product_id');

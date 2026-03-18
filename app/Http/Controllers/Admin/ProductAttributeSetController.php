@@ -9,6 +9,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use App\Helpers\TableHelpers;
 
 class ProductAttributeSetController extends Controller
 {
@@ -16,16 +17,21 @@ class ProductAttributeSetController extends Controller
     {
         $query = ProductAttributeSet::with('attributes');
 
-        if ($request->has('search') && $request->search != '') {
-            $query->where('title', 'like', '%' . $request->search . '%');
-        }
+        TableHelpers::applyTableLogic($query, $request,
+            ['id', 'title', 'slug'], // Searchable
+            ['id', 'title', 'status', 'created_at'] // Filterable
+        );
 
-        if ($request->has('status') && $request->status != '') {
-            $query->where('status', $request->status);
-        }
+        $attributeSets = $query->orderBy('order')->orderBy('id', 'desc')->paginate(TableHelpers::getPerPage($request));
 
-        $data['attributeSets'] = $query->orderBy('order')->orderBy('id', 'desc')->get();
-        return view('admin-layouts.product.attribute-sets.index', $data);
+        $filterColumns = [
+            'id'         => 'ID',
+            'title'      => 'Name',
+            'status'     => 'Status',
+            'created_at' => 'Created At',
+        ];
+
+        return view('admin-layouts.product.attribute-sets.index', compact('attributeSets', 'filterColumns'));
     }
 
     public function create()
@@ -59,12 +65,12 @@ class ProductAttributeSetController extends Controller
                     if (!empty($attr['title'])) {
                         ProductAttribute::create([
                             'attribute_set_id' => $set->id,
-                            'title' => $attr['title'],
-                            'slug' => Str::slug($attr['title']),
-                            'color' => $attr['color'] ?? null,
-                            'image' => $attr['image'] ?? null,
-                            'is_default' => isset($attr['is_default']) ? 1 : 0,
-                            'order' => $index,
+                            'title'           => $attr['title'],
+                            'slug'            => Str::slug($attr['title']),
+                            'color'           => $attr['color'] ?? null,
+                            'image'           => $attr['image'] ?? null,
+                            'is_default'      => isset($attr['is_default']) ? 1 : 0,
+                            'order'           => $index,
                         ]);
                     }
                 }
@@ -87,8 +93,8 @@ class ProductAttributeSetController extends Controller
 
     public function edit($id)
     {
-        $data['attributeSet'] = ProductAttributeSet::with('attributes')->findOrFail($id);
-        return view('admin-layouts.product.attribute-sets.edit', $data);
+        $attributeSet = ProductAttributeSet::with('attributes')->findOrFail($id);
+        return view('admin-layouts.product.attribute-sets.edit', compact('attributeSet'));
     }
 
     public function update(Request $request, $id)
@@ -120,12 +126,12 @@ class ProductAttributeSetController extends Controller
                     if (!empty($attr['title'])) {
                         ProductAttribute::create([
                             'attribute_set_id' => $set->id,
-                            'title' => $attr['title'],
-                            'slug' => Str::slug($attr['title']),
-                            'color' => $attr['color'] ?? null,
-                            'image' => $attr['image'] ?? null,
-                            'is_default' => isset($attr['is_default']) ? 1 : 0,
-                            'order' => $index,
+                            'title'           => $attr['title'],
+                            'slug'            => Str::slug($attr['title']),
+                            'color'           => $attr['color'] ?? null,
+                            'image'           => $attr['image'] ?? null,
+                            'is_default'      => isset($attr['is_default']) ? 1 : 0,
+                            'order'           => $index,
                         ]);
                     }
                 }
@@ -146,47 +152,19 @@ class ProductAttributeSetController extends Controller
         }
     }
 
-    public function destroy(Request $request)
+    public function destroy($id)
     {
-        try {
-            DB::beginTransaction();
-            $set = ProductAttributeSet::findOrFail($request->id);
-            $set->attributes()->delete();
-            $set->delete();
-            DB::commit();
-
-            return response()->json([
-                'status' => true,
-                'message' => 'Product attribute set deleted successfully.'
-            ]);
-        } catch (Exception $e) {
-            DB::rollBack();
-            return response()->json([
-                'status' => false,
-                'message' => 'Something went wrong: ' . $e->getMessage()
-            ], 500);
-        }
+        $set = ProductAttributeSet::findOrFail($id);
+        $set->attributes()->delete();
+        return TableHelpers::performDelete($set, ProductAttributeSet::class, 'attribute set');
     }
 
     public function bulkDelete(Request $request)
     {
-        try {
-            DB::beginTransaction();
-            $ids = $request->ids;
+        $ids = $request->ids;
+        if ($ids) {
             ProductAttribute::whereIn('attribute_set_id', $ids)->delete();
-            ProductAttributeSet::whereIn('id', $ids)->delete();
-            DB::commit();
-
-            return response()->json([
-                'status' => true,
-                'message' => 'Selected attribute sets deleted successfully.'
-            ]);
-        } catch (Exception $e) {
-            DB::rollBack();
-            return response()->json([
-                'status' => false,
-                'message' => 'Something went wrong: ' . $e->getMessage()
-            ], 500);
         }
+        return TableHelpers::performBulkDelete($request, ProductAttributeSet::class, 'attribute sets');
     }
 }

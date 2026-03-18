@@ -226,7 +226,7 @@
                                         <div class="tp-category-item-5 p-relative z-index-1 fix mb-30">
                                             <a href="{{ route('frontend.categories.show', $category->slug) }}">
                                                 <div class="tp-category-thumb-5 include-bg"
-                                                    style="background-image: url({{ $category->image ? asset('uploads/' . $category->image) : asset('home/placeholder.png') }});">
+                                                    style="background-image: url({{ $category->image ? (str_starts_with($category->image, 'http') ? $category->image : rtrim(\App\Helpers\ImageHelper::getImageUrl(), '/') . '/' . ltrim($category->image, '/')) : asset('home/placeholder.png') }});">
                                                 </div>
                                                 <div class="tp-category-content-5">
                                                     <h3 class="tp-category-title-5">{{ $category->name }}</h3>

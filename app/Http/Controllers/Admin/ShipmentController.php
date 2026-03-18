@@ -7,30 +7,42 @@ use App\Models\Shipment;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ShipmentsExport;
+use App\Helpers\TableHelpers;
 
 class ShipmentController extends Controller
 {
-    public function index()
+
+    public function index(Request $request)
     {
-        $shipments = Shipment::with(['order', 'order.user', 'store'])->orderBy('created_at', 'desc')->paginate(10);
-        return view('admin-layouts.shipments.index', compact('shipments'));
+        $query = Shipment::with(['order', 'order.user', 'store']);
+
+        TableHelpers::applyTableLogic($query, $request,
+        ['id', 'order_id', 'order.user.name', 'status', 'cod_status', 'tracking_id'],
+        ['id', 'order_id', 'status', 'cod_status', 'created_at']
+        );
+
+        $shipments = $query->orderBy('created_at', 'desc')->paginate(TableHelpers::getPerPage($request));
+
+        $filterColumns = [
+            'id' => 'Shipment ID',
+            'order_id' => 'Order ID',
+            'status' => 'Status',
+            'cod_status' => 'COD Status',
+            'tracking_id' => 'Tracking ID',
+            'created_at' => 'Created At'
+        ];
+
+        return view('admin-layouts.shipments.index', compact('shipments', 'filterColumns'));
     }
 
     public function destroy($id)
     {
-        $shipment = Shipment::findOrFail($id);
-        $shipment->delete();
-        return redirect()->back()->with('success', 'Shipment deleted successfully');
+        return TableHelpers::performDelete($id, Shipment::class , 'shipment');
     }
 
     public function bulkDelete(Request $request)
     {
-        $ids = $request->ids;
-        if ($ids && is_array($ids)) {
-            Shipment::whereIn('id', $ids)->delete();
-            return response()->json(['success' => true, 'message' => 'Selected shipments deleted successfully']);
-        }
-        return response()->json(['success' => false, 'message' => 'No items selected'], 400);
+        return TableHelpers::performBulkDelete($request, Shipment::class , 'shipments');
     }
 
     public function edit($id)
@@ -42,7 +54,7 @@ class ShipmentController extends Controller
     public function update(Request $request, $id)
     {
         $shipment = Shipment::findOrFail($id);
-        
+
         $request->validate([
             'status' => 'required|in:pending,delivering,delivered,canceled',
             'cod_status' => 'required|in:pending,completed',
@@ -61,7 +73,7 @@ class ShipmentController extends Controller
         ]));
 
         if ($request->has('save_and_exit')) {
-             return redirect()->route('admin.shipments.index')->with('success', 'Shipment updated successfully.');
+            return redirect()->route('admin.shipments.index')->with('success', 'Shipment updated successfully.');
         }
 
         return redirect()->route('admin.shipments.edit', $shipment->id)->with('success', 'Shipment updated successfully.');
@@ -69,6 +81,6 @@ class ShipmentController extends Controller
 
     public function export(Request $request)
     {
-        return Excel::download(new ShipmentsExport, 'shipments_'.date('Y-m-d_H-i-s').'.xlsx');
+        return Excel::download(new ShipmentsExport, 'shipments_' . date('Y-m-d_H-i-s') . '.xlsx');
     }
 }

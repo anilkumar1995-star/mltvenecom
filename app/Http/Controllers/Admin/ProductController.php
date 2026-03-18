@@ -22,6 +22,7 @@ use App\Models\Tax;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Helpers\ImageHelper;
+use App\Helpers\TableHelpers;
 
 
 class ProductController extends Controller
@@ -33,8 +34,27 @@ class ProductController extends Controller
 
     public function index(Request $request)
     {
-        $data['products'] = EcProduct::with(['brand', 'store'])->orderBy('id', 'desc')->get();
-        return view('admin-layouts.product.product.index',$data);
+        $query = EcProduct::with(['brand', 'store']);
+
+        TableHelpers::applyTableLogic($query, $request,
+        ['id', 'name', 'sku', 'price', 'status', 'brand.name', 'store.name'],
+        ['id', 'status', 'brand_id', 'store_id', 'created_at']
+        );
+
+        $products = $query->orderBy('id', 'desc')->paginate(TableHelpers::getPerPage($request));
+
+        $filterColumns = [
+            'id' => 'ID',
+            'name' => 'Name',
+            'sku' => 'SKU',
+            'price' => 'Price',
+            'status' => 'Status',
+            'brand_id' => 'Brand',
+            'store_id' => 'Store',
+            'created_at' => 'Created At',
+        ];
+
+        return view('admin-layouts.product.product.index', compact('products', 'filterColumns'));
     }
 
     public function create()
@@ -53,7 +73,7 @@ class ProductController extends Controller
         $data['collections'] = ProductCollection::orderBy('id', 'desc')->get();
         $data['productionlabels'] = ProductLabel::orderBy('id', 'desc')->get();
         $data['taxes'] = Tax::orderBy('id', 'desc')->get();
-        return view('admin-layouts.product.product.create',$data);
+        return view('admin-layouts.product.product.create', $data);
     }
 
     public function getRelationProducts(Request $request)
@@ -84,8 +104,9 @@ class ProductController extends Controller
         return EcProductTag::pluck('name')->all();
     }
 
-    public function getSpecificationtablesData(Request $post){
-        try{
+    public function getSpecificationtablesData(Request $post)
+    {
+        try {
             $rules = array(
                 'group_id' => 'required|integer|exists:ec_specification_tables,id',
             );
@@ -96,28 +117,26 @@ class ProductController extends Controller
 
             $table = EcSpecificationTable::with(['groups.attributes'])->where('id', $post->group_id)->first();
 
-            if(!$table){
+            if (!$table) {
                 return response()->json(['success' => false, 'message' => 'Specification table not found.'], 404);
             }
 
             return response()->json(['success' => true, 'data' => $table->groups], 200);
-        }catch(\Exception $e){
+        }
+        catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => 'Error fetching data: ' . $e->getMessage()], 500);
         }
     }
 
+    public function getAttributeValues(Request $request)    {
+        $values = DB::table('ec_product_attributes')
+            ->where('attribute_set_id', $request->attribute_set_id)
+            ->orderBy('order')
+            ->get(['id', 'title']);
 
-public function getAttributeValues(Request $request)
-{
-    $values = DB::table('ec_product_attributes')
-        ->where('attribute_set_id', $request->attribute_set_id)
-        ->orderBy('order')
-        ->get(['id', 'title']);
-
-    return response()->json([
-        'data' => $values
-    ]);
-}
+        return response()->json([
+            'data' => $values
+        ]);    }
 
 
 
@@ -167,7 +186,7 @@ public function getAttributeValues(Request $request)
             // 4. Handle Video
             if ($request->hasFile('video_file')) {
                 $videoPath = $request->file('video_file')->store('products/videos', 'public');
-                 $data['video_media'] = [['file' => $videoPath]];
+                $data['video_media'] = [['file' => $videoPath]];
             }
 
             // Defaults
@@ -199,7 +218,8 @@ public function getAttributeValues(Request $request)
                 'message' => 'Product created successfully.',
             ]);
 
-        } catch (\Exception $e) {
+        }
+        catch (\Exception $e) {
             DB::rollBack();
             return response()->json([
                 'status' => false,
@@ -285,10 +305,11 @@ public function getAttributeValues(Request $request)
                 }
             }
 
-             if ($request->has('faq_schema_config')) {
+            if ($request->has('faq_schema_config')) {
                 $data['faq_schema_config'] = array_values($request->input('faq_schema_config', []));
-            } else {
-                 $data['faq_schema_config'] = null;
+            }
+            else {
+                $data['faq_schema_config'] = null;
             }
 
             // Handle Tax ID
@@ -310,14 +331,14 @@ public function getAttributeValues(Request $request)
                 // Check if it is a JSON string
                 $tagsData = json_decode($tagInput, true);
                 if (json_last_error() === JSON_ERROR_NONE && is_array($tagsData)) {
-                     $tagIds = [];
-                     foreach ($tagsData as $tagItem) {
-                         if (!empty($tagItem['value'])) {
-                             $tag = EcProductTag::firstOrCreate(['name' => $tagItem['value']]);
-                             $tagIds[] = $tag->id;
-                         }
-                     }
-                     $product->tags()->sync($tagIds);
+                    $tagIds = [];
+                    foreach ($tagsData as $tagItem) {
+                        if (!empty($tagItem['value'])) {
+                            $tag = EcProductTag::firstOrCreate(['name' => $tagItem['value']]);
+                            $tagIds[] = $tag->id;
+                        }
+                    }
+                    $product->tags()->sync($tagIds);
                 }
             }
 
@@ -329,8 +350,9 @@ public function getAttributeValues(Request $request)
                 'redirect' => route('admin.products.index')
             ]);
 
-        } catch (\Exception $e) {
-             DB::rollBack();
+        }
+        catch (\Exception $e) {
+            DB::rollBack();
             return response()->json([
                 'status' => false,
                 'message' => 'Error: ' . $e->getMessage()
@@ -341,12 +363,12 @@ public function getAttributeValues(Request $request)
     protected function syncProductRelations($product, $request)
     {
         $relations = [
-            'related_products'       => 'relatedProducts',
-            'up_selling_products'    => 'upSellingProducts',
+            'related_products' => 'relatedProducts',
+            'up_selling_products' => 'upSellingProducts',
             'cross_selling_products' => 'crossSellingProducts',
             'selected_existing_faqs' => 'productFaqs',
-            'product_collections'    => 'productCollections',
-            'product_labels'         => 'productLabels',
+            'product_collections' => 'productCollections',
+            'product_labels' => 'productLabels',
         ];
 
         foreach ($relations as $inputKey => $relationMethod) {
@@ -392,60 +414,49 @@ public function getAttributeValues(Request $request)
 
     public function destroy(EcProduct $product)
     {
-        DB::beginTransaction();
-        try {
-            $product->delete();
+        return TableHelpers::performDelete($product, EcProduct::class , 'product');
+    }
 
-            // Optionally delete related data if not handled by foreign keys or model events
-            // $product->options()->delete();
-            // $product->relatedProducts()->detach();
-            // etc.
+    public function show(EcProduct $product)
+    {
+        $product->load(['brand', 'categories', 'productCollections', 'productLabels', 'tags', 'store']);
 
-            DB::commit();
+        $stats = [
+            'views' => $product->views ?? 0,
+            'completed_orders' => 0, // Placeholder
+            'total_sold' => 0, // Placeholder
+            'revenue' => 0, // Placeholder
+            'pending_orders' => 0, // Placeholder
+            'pending_revenue' => 0, // Placeholder
+            'conversion_rate' => 0.00, // Placeholder
+            'reviews_count' => $product->reviews_count ?? 0,
+            'average_rating' => $product->reviews_avg ?? 0,
+        ];
 
-            if (request()->ajax()) {
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Product deleted successfully.'
-                ]);
-            }
+        // Fetch real data for placeholders
+        $recentOrders = DB::table('ec_orders')
+            ->join('ec_order_product', 'ec_orders.id', '=', 'ec_order_product.order_id')
+            ->leftJoin('payments', 'ec_orders.payment_id', '=', 'payments.id')
+            ->leftJoin('ec_customers', 'ec_orders.user_id', '=', 'ec_customers.id')
+            ->where('ec_order_product.product_id', $product->id)
+            ->select(
+                'ec_orders.id', 'ec_orders.status', 'ec_orders.created_at',
+                'ec_customers.name as customer_name',
+                'ec_order_product.qty', 'ec_order_product.price as product_price',
+                'payments.status as payment_status'
+            )
+            ->orderBy('ec_orders.created_at', 'desc')
+            ->take(10)
+            ->get();
 
-            return redirect()->route('admin.products.index')->with('success', 'Product deleted.');
-        } catch (\Exception $e) {
-            DB::rollBack();
-            if (request()->ajax()) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Error: ' . $e->getMessage()
-                ], 500);
-            }
-            return redirect()->route('admin.products.index')->with('error', 'Error deleting product.');
-        }
+        $relatedProducts = $product->relatedProducts()->with('brand')->take(5)->get();
+
+        return view('admin-layouts.product.product.show', compact('product', 'stats', 'recentOrders', 'relatedProducts'));
     }
 
     public function bulkDelete(Request $request)
     {
-        $ids = $request->input('ids', []);
-        if (empty($ids)) {
-            return response()->json(['success' => false, 'message' => 'No products selected.'], 400);
-        }
-
-        DB::beginTransaction();
-        try {
-            EcProduct::whereIn('id', $ids)->delete();
-            DB::commit();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Selected products deleted successfully.'
-            ]);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return response()->json([
-                'success' => false,
-                'message' => 'Error: ' . $e->getMessage()
-            ], 500);
-        }
+        return TableHelpers::performBulkDelete($request, EcProduct::class , 'products');
     }
 
 

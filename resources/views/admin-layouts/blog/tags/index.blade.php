@@ -1,8 +1,9 @@
 @extends('admin-layouts.app')
 @section('title', 'Blog Tags')
+
 @section('content')
 <div class="page-wrapper">
-    <div class="page-header d-print-none">
+    <div class="page-header d-print-none text-uppercase">
         <div class="container-xl">
             <div class="row g-2 align-items-center">
                 <div class="col">
@@ -13,10 +14,10 @@
                                     <a class="mb-0 d-inline-block fs-6 lh-1" href="{{ route('admin.dashboard') }}">Dashboard</a>
                                 </li>
                                 <li class="breadcrumb-item">
-                                    <a class="mb-0 d-inline-block fs-6 lh-1" href="#">Blog</a>
+                                    <span class="mb-0 d-inline-block fs-6 lh-1 text-muted">Blog</span>
                                 </li>
                                 <li class="breadcrumb-item active" aria-current="page">
-                                    <h1 class="mb-0 d-inline-block fs-6 lh-1">Tags</h1>
+                                    <h1 class="mb-0 d-inline-block fs-6 lh-1 text-dark">Tags</h1>
                                 </li>
                             </ol>
                         </nav>
@@ -26,124 +27,107 @@
         </div>
     </div>
 
-    <main class="page-body page-content">
+    <main class="page-body page-content mt-0">
         <div class="container-xl">
-            <div class="table-wrapper">
-                <div class="card has-actions has-filter">
-                    <div class="card-header">
-                        <div class="w-100 justify-content-between d-flex flex-wrap align-items-center gap-1">
-                            <div class="d-flex flex-wrap flex-md-nowrap align-items-center gap-1">
-                                <div class="dropdown d-inline-block">
-                                    <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                                        Bulk Actions
-                                    </button>
-                                    <div class="dropdown-menu">
-                                        <button class="dropdown-item text-danger" id="bulk-delete" style="display: none;">Delete</button>
-                                    </div>
-                                </div>
+            {{-- Shared Filter Panel --}}
+            @include('admin-layouts.partials.table-filters', ['filterColumns' => $filterColumns])
 
-                                <button class="btn btn-show-table-options" type="button">
-                                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4h16v2.172a2 2 0 0 1 -.586 1.414l-4.414 4.414v7l-6 2v-8.5l-4.48 -4.928a2 2 0 0 1 -.52 -1.345v-2.227z" /></svg>
-                                    Filters
-                                </button>
+            <div class="card has-actions has-filter">
+                {{-- Create Button Section --}}
+                @section('table_actions')
+                    <a href="{{ route('admin.blog.tags.create') }}" class="btn btn-primary d-flex align-items-center">
+                        <i class="fas fa-plus me-1"></i>
+                        Create
+                    </a>
+                @endsection
 
-                                <div class="table-search-input">
-                                    <label>
-                                        <input type="search" class="form-control input-sm" id="table-search" placeholder="Search..." style="min-width: 120px" value="{{ request('search') }}">
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="d-flex flex-column flex-sm-row align-items-stretch align-items-sm-center gap-1 table-action-buttons">
-                                <a href="{{ route('admin.blog.tags.create') }}" class="btn btn-primary" type="button">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
-                                    Create
-                                </a>
-                                <button class="btn" type="button" onclick="window.location.reload()">
-                                    <svg class="icon icon-left" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" />
-                                        <path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" />
-                                    </svg>
-                                    Reload
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                {{-- Shared Header --}}
+                @include('admin-layouts.partials.table-header', [
+                    'bulkActions' => true,
+                    'tableId'     => 'tagsTable'
+                ])
 
-                    <div class="card-table">
-                        <div class="table-responsive table-has-actions table-has-filter">
-                            <table class="table card-table table-vcenter table-hover datatable" id="tagsTable">
-                                <thead>
+                <div class="card-table mt-1">
+                    <div class="table-responsive">
+                        <table class="table card-table table-vcenter table-hover datatable" id="tagsTable">
+                            <thead class="bg-light">
                                 <tr>
-                                    <th class="text-center" style="width: 20px;">
-                                        <input class="form-check-input m-0 align-middle table-check-all" type="checkbox" aria-label="Select all tags">
+                                    <th width="40" class="text-center">
+                                        <input type="checkbox" class="form-check-input" id="check-all">
                                     </th>
-                                    <th title="ID" width="50" class="text-start">ID</th>
-                                    <th title="NAME" class="text-start">NAME</th>
-                                    <th title="CREATED AT" class="text-center">CREATED AT</th>
-                                    <th title="STATUS" width="120" class="text-center">STATUS</th>
-                                    <th title="OPERATIONS" class="text-center" width="120">OPERATIONS</th>
+                                    <th width="70" class="text-start">ID</th>
+                                    <th width="300">Name</th>
+                                    <th class="text-center">Status</th>
+                                    <th width="150" class="text-center">Created At</th>
+                                    <th width="120" class="text-center">Operations</th>
                                 </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse($tags as $tag)
-                                    <tr>
-                                        <td class="text-center">
-                                            <input type="checkbox" class="form-check-input bulk-checkbox" value="{{ $tag->id }}">
-                                        </td>
-                                        <td class="text-start">{{ $tag->id }}</td>
-                                        <td class="text-start">
-                                            <a href="{{ route('admin.blog.tags.edit', $tag->id) }}" class="text-primary fw-medium">{{ $tag->name }}</a>
-                                        </td>
-                                        <td class="text-center text-muted">{{ $tag->created_at->format('Y-m-d') }}</td>
-                                        <td class="text-center">
-                                            @if($tag->status == 'published')
-                                                <span class="badge bg-success text-white">Published</span>
-                                            @elseif($tag->status == 'pending')
-                                                <span class="badge bg-warning text-white">Pending</span>
-                                            @elseif($tag->status == 'draft')
-                                                <span class="badge bg-secondary text-white">Draft</span>
-                                            @else
-                                                <span class="badge bg-secondary text-white">{{ ucfirst($tag->status) }}</span>
-                                            @endif
-                                        </td>
-                                        <td class="text-center">
-                                            <div class="table-actions d-flex justify-content-center gap-1">
-                                                <a href="{{ route('admin.blog.tags.edit', $tag->id) }}" class="btn btn-sm btn-icon btn-primary" data-bs-toggle="tooltip" data-bs-title="Edit">
-                                                    <svg class="icon svg-icon-ti-ti-edit" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                        <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
-                                                        <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415" />
-                                                        <path d="M16 5l3 3" />
-                                                    </svg>            
-                                                </a>
-                                                <button type="button" class="btn btn-sm btn-icon btn-danger delete-btn" data-url="{{ route('admin.blog.tags.destroy', $tag->id) }}" data-bs-toggle="tooltip" data-bs-title="Delete">
-                                                    <svg class="icon svg-icon-ti-ti-trash" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                        <path d="M4 7l16 0" />
-                                                        <path d="M10 11l0 6" />
-                                                        <path d="M14 11l0 6" />
-                                                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
-                                                        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
-                                                    </svg>            
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    @empty
-                                    <tr>
-                                        <td colspan="6" class="text-center text-muted py-4">
-                                            No tags found
-                                        </td>
-                                    </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
+                            </thead>
+                            <tbody>
+                                @forelse($tags as $tag)
+                                <tr>
+                                    <td class="text-center">
+                                        <input type="checkbox" class="form-check-input bulk-checkbox" value="{{ $tag->id }}">
+                                    </td>
+                                    <td class="text-muted small">{{ $tag->id }}</td>
+                                    <td>
+                                        <div class="d-flex flex-column">
+                                            <a href="{{ route('admin.blog.tags.edit', $tag->id) }}" class="fw-bold text-dark text-decoration-none">
+                                                {{ $tag->name }}
+                                            </a>
+                                            <small class="text-muted">{{ $tag->slug }}</small>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        @php
+                                            $statusClass = match(strtolower($tag->status ?? '')) {
+                                                'published' => 'bg-success text-success-fg',
+                                                'draft'     => 'bg-secondary text-secondary-fg',
+                                                'pending'   => 'bg-warning text-warning-fg',
+                                                default     => 'bg-secondary text-secondary-fg'
+                                            };
+                                        @endphp
+                                        <span class="badge {{ $statusClass }} px-3 rounded-pill shadow-xs">
+                                            {{ ucwords($tag->status ?? 'N/A') }}
+                                        </span>
+                                    </td>
+                                    <td class="text-center text-muted small">
+                                        {{ $tag->created_at ? $tag->created_at->format('M d, Y') : 'N/A' }}
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="btn-group">
+                                            <a href="{{ route('admin.blog.tags.edit', $tag->id) }}" class="btn btn-sm btn-outline-info" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <button type="button" class="btn btn-sm btn-outline-danger delete-confirm-btn" 
+                                                data-url="{{ route('admin.blog.tags.destroy', $tag->id) }}"
+                                                title="Delete">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="6" class="text-center py-5 text-muted bg-white shadow-xs rounded-1">
+                                        No tags found.
+                                    </td>
+                                </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {{-- Pagination --}}
+                    @if(method_exists($tags, 'links'))
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        <div class="text-muted small">
+                            Showing {{ $tags->firstItem() ?? 0 }} to {{ $tags->lastItem() ?? 0 }} of {{ $tags->total() }} entries
                         </div>
-                        <div class="card-footer d-flex justify-content-between align-items-center">
-                            <div class="text-muted">
-                                Showing {{ $tags->firstItem() ?? 0 }} to {{ $tags->lastItem() ?? 0 }} of {{ $tags->total() ?? 0 }} records
-                            </div>
-                            {{ $tags->appends(request()->query())->links('pagination::bootstrap-5') }}
+                        <div>
+                            {{ $tags->appends(request()->query())->links() }}
                         </div>
                     </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -152,115 +136,8 @@
 @endsection
 
 @push('scripts')
-    <script>
-        $(document).ready(function () {
-            // Check all
-            $('.table-check-all').on('change', function () {
-                $('.bulk-checkbox').prop('checked', $(this).is(':checked'));
-                updateBulkDeleteButton();
-            });
-
-            $(document).on('change', '.bulk-checkbox', function () {
-                updateBulkDeleteButton();
-            });
-
-            function updateBulkDeleteButton() {
-                let checkedCount = $('.bulk-checkbox:checked').length;
-                if (checkedCount > 0) {
-                    $('#bulk-delete').show().text(`Delete (${checkedCount})`);
-                } else {
-                    $('#bulk-delete').hide();
-                }
-            }
-
-            // Bulk Delete
-            $(document).on('click', '#bulk-delete', function() {
-                let ids = [];
-                $('.bulk-checkbox:checked').each(function() {
-                    ids.push($(this).val());
-                });
-
-                Swal.fire({
-                    title: 'Confirm bulk delete',
-                    text: `Do you really want to delete ${ids.length} selected tags?`,
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Delete',
-                    cancelButtonText: 'Cancel'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            url: "{{ route('admin.blog.tags.bulk_delete') }}",
-                            type: 'POST',
-                            data: { 
-                                _token: '{{ csrf_token() }}',
-                                ids: ids
-                            },
-                            success: function (response) {
-                                if(response.status) {
-                                    Swal.fire('Deleted!', response.message, 'success').then(() => {
-                                        window.location.reload();
-                                    });
-                                } else {
-                                    Swal.fire('Error!', response.message, 'error');
-                                }
-                            },
-                            error: function(xhr) {
-                                Swal.fire('Error!', 'Something went wrong.', 'error');
-                            }
-                        });
-                    }
-                });
-            });
-
-            // Individual Delete
-            $(document).on('click', '.delete-btn', function () {
-                let btn = $(this);
-                let url = btn.data('url');
-
-                Swal.fire({
-                    title: 'Confirm delete',
-                    text: "Do you really want to delete this tag?",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Delete',
-                    cancelButtonText: 'Cancel'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            url: url,
-                            type: 'DELETE',
-                            data: { _token: '{{ csrf_token() }}' },
-                            success: function (response) {
-                                if(response.status) {
-                                    Swal.fire('Deleted!', response.message, 'success').then(() => {
-                                        window.location.reload();
-                                    });
-                                } else {
-                                    Swal.fire('Error!', response.message, 'error');
-                                }
-                            },
-                            error: function(xhr) {
-                                Swal.fire('Error!', 'Something went wrong.', 'error');
-                            }
-                        });
-                    }
-                });
-            });
-
-            // Search
-            let searchTimer;
-            $('#table-search').on('keyup', function () {
-                clearTimeout(searchTimer);
-                let query = $(this).val();
-                searchTimer = setTimeout(function() {
-                    window.location.href = "{{ route('admin.blog.tags.index') }}?search=" + query;
-                }, 1000);
-            });
-        });
-    </script>
+    @include('admin-layouts.partials.table-scripts', [
+        'tableId'       => 'tagsTable',
+        'bulkDeleteUrl' => route('admin.blog.tags.bulk-delete')
+    ])
 @endpush

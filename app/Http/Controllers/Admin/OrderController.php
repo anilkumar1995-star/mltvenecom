@@ -6,76 +6,42 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Helpers\TableHelpers;
 
 class OrderController extends Controller
 {
+
     public function index(Request $request)
     {
         $query = Order::with('user', 'payment');
 
-        // Search
-        if ($request->filled('search')) {
-            $search = $request->search;
-            $query->where(function($q) use ($search) {
-                $q->where('id', 'like', "%{$search}%")
-                  ->orWhere('status', 'like', "%{$search}%")
-                  ->orWhere('payment_method', 'like', "%{$search}%")
-                  ->orWhere('payment_status', 'like', "%{$search}%")
-                  ->orWhereHas('user', function($q2) use ($search) {
-                      $q2->where('name', 'like', "%{$search}%");
-                  });
-            });
-        }
+        TableHelpers::applyTableLogic($query, $request, 
+            ['id', 'status', 'payment_method', 'payment_status', 'user.name'], // searchable
+            ['id', 'status', 'payment_method', 'payment_status', 'amount', 'created_at'] // filterable
+        );
 
-        // Filters
-        if ($request->filled('filter_columns')) {
-            $columns = $request->input('filter_columns', []);
-            $operators = $request->input('filter_operators', []);
-            $values = $request->input('filter_values', []);
+        $orders = $query->orderBy('created_at', 'desc')->paginate(TableHelpers::getPerPage($request));
+        
+        $filterColumns = [
+            'id' => 'Order ID',
+            'status' => 'Status',
+            'payment_method' => 'Payment Method',
+            'payment_status' => 'Payment Status',
+            'amount' => 'Amount',
+            'created_at' => 'Created At'
+        ];
 
-            foreach ($columns as $i => $column) {
-                if (!empty($column) && isset($values[$i]) && $values[$i] !== '') {
-                    $operator = $operators[$i] ?? '=';
-                    $value = $values[$i];
-
-                    $allowed = ['id', 'status', 'payment_method', 'payment_status', 'amount', 'created_at'];
-                    if (in_array($column, $allowed)) {
-                        if ($operator === 'like') {
-                            $query->where($column, 'like', "%{$value}%");
-                        } else {
-                            $query->where($column, $operator, $value);
-                        }
-                    }
-                }
-            }
-        }
-
-        $orders = $query->orderBy('created_at', 'desc')->paginate(20);
-        return view('admin-layouts.orders.index', compact('orders'));
+        return view('admin-layouts.orders.index', compact('orders', 'filterColumns'));
     }
 
     public function destroy($id)
     {
-        $order = Order::findOrFail($id);
-        $order->delete();
-
-        if (request()->ajax()) {
-            return response()->json(['success' => true, 'message' => 'Order deleted successfully']);
-        }
-
-        return redirect()->back()->with('success', 'Order deleted successfully');
+        return TableHelpers::performDelete($id, Order::class, 'order');
     }
 
     public function bulkDelete(Request $request)
     {
-        $ids = $request->input('ids', []);
-        if (empty($ids)) {
-            return response()->json(['success' => false, 'message' => 'No orders selected']);
-        }
-
-        Order::whereIn('id', $ids)->delete();
-
-        return response()->json(['success' => true, 'message' => count($ids) . ' orders deleted successfully']);
+        return TableHelpers::performBulkDelete($request, Order::class, 'orders');
     }
 
     public function create()
@@ -196,6 +162,131 @@ class OrderController extends Controller
         return redirect()->route('admin.orders.index')->with('success', 'Order created successfully!');
     }
 
+
+    public function edit($id)
+    {
+        $order = Order::with(['user', 'payment', 'items'])->findOrFail($id);
+        
+        // Get items in a way the view expects
+        $products = DB::table('ec_order_product')
+            ->join('ec_products', 'ec_order_product.product_id', '=', 'ec_products.id')
+            ->where('ec_order_product.order_id', $id)
+            ->select('ec_products.*', 'ec_order_product.qty', 'ec_order_product.price as order_price')
+            ->get();
+
+        // Standardize products for the view
+        $products->transform(function($p) {
+            $p->price = $p->order_price; // Use the price from the order
+            return $p;
+        });
+
+        $shippingAddress = DB::table('ec_order_addresses')->where('order_id', $id)->where('type', 'shipping')->first();
+        $billingAddress = DB::table('ec_order_addresses')->where('order_id', $id)->where('type', 'billing')->first();
+
+        return view('admin-layouts.orders.edit', compact('order', 'products', 'shippingAddress', 'billingAddress'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $order = Order::findOrFail($id);
+
+        $request->validate([
+            'products' => 'required|array',
+            'products.*.id' => 'exists:ec_products,id',
+            'products.*.quantity' => 'required|integer|min:1',
+            'products.*.price' => 'required|numeric|min:0',
+        ]);
+
+        // Calculate totals
+        $subTotal = 0;
+        foreach ($request->products as $productData) {
+            $subTotal += $productData['price'] * $productData['quantity'];
+        }
+
+        $shippingAmount = (float) ($request->shipping_amount ?? 0);
+        $discountAmount = (float) ($request->discount_amount ?? 0);
+        $totalAmount = $subTotal + (float) ($order->tax_amount ?? 0) + $shippingAmount - $discountAmount;
+
+        // Update Order
+        $order->amount = $totalAmount;
+        $order->sub_total = $subTotal;
+        $order->shipping_amount = $shippingAmount;
+        $order->discount_amount = $discountAmount;
+        $order->status = $request->status ?? 'pending';
+        $order->payment_id = $request->payment_id ?? $order->payment_id;
+        $order->description = $request->description;
+        $order->store_id = $request->store_id ?? $order->store_id;
+        $order->save();
+
+        // Update Payment
+        if ($order->payment_id) {
+            DB::table('payments')->where('id', $order->payment_id)->update([
+                'payment_channel' => $request->payment_method ?? 'cod',
+                'amount' => $totalAmount,
+                'status' => $request->payment_status ?? 'pending',
+                'updated_at' => now(),
+            ]);
+        }
+
+        // Update Products (Delete and Re-insert is easiest)
+        DB::table('ec_order_product')->where('order_id', $order->id)->delete();
+        foreach ($request->products as $productData) {
+            DB::table('ec_order_product')->insert([
+                'order_id' => $order->id,
+                'product_id' => $productData['id'],
+                'product_name' => $productData['name'] ?? '',
+                'qty' => $productData['quantity'],
+                'price' => $productData['price'],
+                'tax_amount' => 0,
+                'options' => '[]',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
+
+        // Update Addresses
+        DB::table('ec_order_addresses')->where('order_id', $order->id)->delete();
+
+        // Shipping
+        if ($request->filled('shipping_name')) {
+            DB::table('ec_order_addresses')->insert([
+                'order_id' => $order->id,
+                'name' => $request->shipping_name,
+                'phone' => $request->shipping_phone,
+                'email' => $request->shipping_email,
+                'country' => $request->shipping_country,
+                'state' => $request->shipping_state,
+                'city' => $request->shipping_city,
+                'address' => $request->shipping_address,
+                'zip_code' => $request->shipping_zipcode,
+                'type' => 'shipping',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
+
+        // Billing
+        if (!$request->has('same_as_shipping')) {
+            if ($request->filled('billing_name')) {
+                DB::table('ec_order_addresses')->insert([
+                    'order_id' => $order->id,
+                    'name' => $request->billing_name,
+                    'phone' => $request->billing_phone,
+                    'email' => $request->billing_email,
+                    'country' => $request->shipping_country, // fallback
+                    'state' => $request->billing_state,
+                    'city' => $request->billing_city,
+                    'address' => $request->billing_address,
+                    'zip_code' => $request->billing_zipcode,
+                    'type' => 'billing',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
+        }
+
+        return redirect()->route('admin.orders.index')->with('success', 'Order updated successfully!');
+    }
 
     public function searchCustomer(Request $request)
     {

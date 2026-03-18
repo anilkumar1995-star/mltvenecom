@@ -5,25 +5,36 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Store;
 use App\Models\Countries;
-use App\Models\User;
+use App\Models\Customer;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
-
-
+use App\Helpers\TableHelpers;
+use App\Helpers\ImageHelper;
+use Illuminate\Support\Facades\DB;
+use Exception;
 
 class StoreController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Store::query();
+        $query = Store::query()->with('customer');
 
-        if ($request->filled('q')) {
-            $q = $request->get('q');
-            $query->where('name', 'like', "%{$q}%");
-        }
+        TableHelpers::applyTableLogic($query, $request,
+            ['id', 'name', 'email', 'phone'],
+            ['id', 'status', 'is_verified', 'created_at']
+        );
 
-        $stores = $query->with('customer')->orderBy('id', 'desc')->paginate(20)->withQueryString();
-        return view('admin-layouts.marketplace.store.index', compact('stores'));
+        $stores = $query->orderBy('id', 'desc')->paginate(TableHelpers::getPerPage($request));
+
+        $filterColumns = [
+            'id' => 'ID',
+            'name' => 'Name',
+            'email' => 'Email',
+            'status' => 'Status',
+            'is_verified' => 'Is Verified',
+            'created_at' => 'Created At',
+        ];
+
+        return view('admin-layouts.marketplace.store.index', compact('stores', 'filterColumns'));
     }
 
     public function create()
@@ -31,95 +42,93 @@ class StoreController extends Controller
         $countries = Countries::where('status', 'published')
             ->orderBy('order')
             ->get();
-        $customers = \DB::table('ec_customers')->get();
+        $customers = Customer::all();
 
         return view('admin-layouts.marketplace.store.create', compact('countries', 'customers'));
     }
 
-  
-public function store(Request $request)
-{
-    $request->validate([
-        'name'        => 'required|max:191',
-        'slug'        => 'required|max:191|unique:mp_stores,slug',
-        'email'       => 'required|email|max:255',
-        'phone'       => 'required|max:20',
-        'status'      => 'required|in:published,draft,pending',
-        'customer_id' => 'required|exists:ec_customers,id',
-        'logo'        => 'nullable|image|max:2048',
-        'logo_square' => 'nullable|image|max:2048',
-        'cover_image' => 'nullable|image|max:2048',
-    ]);
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name'        => 'required|max:191',
+            'slug'        => 'required|max:191|unique:mp_stores,slug',
+            'email'       => 'required|email|max:255',
+            'phone'       => 'required|max:20',
+            'status'      => 'required|in:published,draft,pending',
+            'customer_id' => 'required|exists:ec_customers,id',
+            'logo'        => 'nullable|image|max:2048',
+            'logo_square' => 'nullable|image|max:2048',
+            'cover_image' => 'nullable|image|max:2048',
+        ]);
 
-    $data = [
-        'name'        => $request->name,
-        'slug'        => $request->slug,
-        'email'       => $request->email,
-        'phone'       => $request->phone,
-        'address'     => $request->address,
-        'country'     => $request->country,
-        'state'       => $request->state,
-        'city'        => $request->city,
-        'company'     => $request->company,
-        'tax_id'      => $request->tax_id,
-        'description' => $request->description,
-        'content'     => $request->content,
-        'status'      => $request->status,
-        'customer_id' => $request->customer_id,
-        'social_links' => $request->social_links,
-        'seo_title'   => $request->input('seo_meta.seo_title'),
-        'seo_description' => $request->input('seo_meta.seo_description'),
-        'seo_index'   => $request->input('seo_meta.index', 'index'),
-    ];
+        try {
+            DB::beginTransaction();
 
-    if ($request->hasFile('logo')) {
-        $upload = \App\Helpers\ImageHelper::imageUploadHelper('logo_', $request->file('logo'));
-        if ($upload['status']) {
-            $data['logo'] = $upload['data']['target_file'];
+            $data = $request->only([
+                'name', 'slug', 'email', 'phone', 'address', 'country', 'state', 'city',
+                'company', 'tax_id', 'description', 'content', 'status', 'customer_id',
+                'social_links', 'zip_code'
+            ]);
+            
+            $data['seo_title'] = $request->input('seo_meta.seo_title');
+            $data['seo_description'] = $request->input('seo_meta.seo_description');
+            $data['seo_index'] = $request->input('seo_meta.index', 'index');
+
+            if ($request->hasFile('logo')) {
+                $upload = ImageHelper::imageUploadHelper('logo_', $request->file('logo'));
+                if ($upload['status']) {
+                    $data['logo'] = $upload['data']['target_file'];
+                }
+            }
+
+            if ($request->hasFile('logo_square')) {
+                $upload = ImageHelper::imageUploadHelper('logo_sq_', $request->file('logo_square'));
+                if ($upload['status']) {
+                    $data['logo_square'] = $upload['data']['target_file'];
+                }
+            }
+
+            if ($request->hasFile('cover_image')) {
+                $upload = ImageHelper::imageUploadHelper('cover_', $request->file('cover_image'));
+                if ($upload['status']) {
+                    $data['cover_image'] = $upload['data']['target_file'];
+                }
+            }
+
+            Store::create($data);
+
+            DB::commit();
+
+            if ($request->ajax()) {
+                return response()->json([
+                    'status'  => true,
+                    'message' => 'Store created successfully',
+                    'redirect_url' => route('admin.marketplace.store.index')
+                ]);
+            }
+
+            return redirect()->route('admin.marketplace.store.index')->with('success', 'Store created successfully.');
+        } catch (Exception $e) {
+            DB::rollBack();
+            if ($request->ajax()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Something went wrong: ' . $e->getMessage()
+                ], 500);
+            }
+            return back()->with('error', 'Something went wrong: ' . $e->getMessage())->withInput();
         }
-    } elseif ($request->logo) {
-        $data['logo'] = $request->logo;
     }
 
-    if ($request->hasFile('logo_square')) {
-        $upload = \App\Helpers\ImageHelper::imageUploadHelper('logo_sq_', $request->file('logo_square'));
-        if ($upload['status']) {
-            $data['logo_square'] = $upload['data']['target_file'];
-        }
-    } elseif ($request->logo_square) {
-        $data['logo_square'] = $request->logo_square;
+    public function edit($id)
+    {
+        $store = Store::findOrFail($id);
+        $customers = Customer::all();
+        $countries = Countries::where('status', 'published')
+            ->orderBy('order')
+            ->get();
+        return view('admin-layouts.marketplace.store.edit', compact('store', 'customers', 'countries'));
     }
-
-    if ($request->hasFile('cover_image')) {
-        $upload = \App\Helpers\ImageHelper::imageUploadHelper('cover_', $request->file('cover_image'));
-        if ($upload['status']) {
-            $data['cover_image'] = $upload['data']['target_file'];
-        }
-    } elseif ($request->cover_image) {
-        $data['cover_image'] = $request->cover_image;
-    }
-
-    $store = Store::create($data);
-
-    return response()->json([
-        'status'  => true,
-        'message' => 'Store created successfully',
-        'redirect_url' => route('admin.marketplace.store.index')
-    ]);
-}
-
-
-
-   public function edit($id)
-{
-    $store = Store::findOrFail($id);
-    $customers = \DB::table('ec_customers')->get();
-    $countries = Countries::where('status', 'published')
-        ->orderBy('order')
-        ->get();
-    return view('admin-layouts.marketplace.store.edit', compact('store', 'customers', 'countries'));
-}
-
 
     public function update(Request $request, $id)
     {
@@ -137,59 +146,68 @@ public function store(Request $request)
             'cover_image' => 'nullable|image|max:2048',
         ]);
 
-        $data = [
-            'name'        => $request->name,
-            'slug'        => $request->slug,
-            'email'       => $request->email,
-            'phone'       => $request->phone,
-            'description' => $request->description,
-            'content'     => $request->content,
-            'country'     => $request->country,
-            'state'       => $request->state,
-            'city'        => $request->city,
-            'address'     => $request->address,
-            'company'     => $request->company,
-            'tax_id'      => $request->tax_id,
-            'status'      => $request->status,
-            'customer_id' => $request->customer_id,
-            'social_links' => $request->social_links,
-            'seo_title'   => $request->input('seo_meta.seo_title'),
-            'seo_description' => $request->input('seo_meta.seo_description'),
-            'seo_index'   => $request->input('seo_meta.index', 'index'),
-        ];
+        try {
+            DB::beginTransaction();
 
-        if ($request->hasFile('logo')) {
-            $upload = \App\Helpers\ImageHelper::imageUploadHelper('logo_', $request->file('logo'));
-            if ($upload['status']) {
-                $data['logo'] = $upload['data']['target_file'];
+            $data = $request->only([
+                'name', 'slug', 'email', 'phone', 'description', 'content', 'country',
+                'state', 'city', 'address', 'company', 'tax_id', 'status', 'customer_id',
+                'social_links', 'zip_code'
+            ]);
+            
+            $data['seo_title'] = $request->input('seo_meta.seo_title');
+            $data['seo_description'] = $request->input('seo_meta.seo_description');
+            $data['seo_index'] = $request->input('seo_meta.index', 'index');
+
+            if ($request->hasFile('logo')) {
+                $upload = ImageHelper::imageUploadHelper('logo_', $request->file('logo'));
+                if ($upload['status']) {
+                    $data['logo'] = $upload['data']['target_file'];
+                }
             }
-        }
 
-        if ($request->hasFile('logo_square')) {
-            $upload = \App\Helpers\ImageHelper::imageUploadHelper('logo_sq_', $request->file('logo_square'));
-            if ($upload['status']) {
-                $data['logo_square'] = $upload['data']['target_file'];
+            if ($request->hasFile('logo_square')) {
+                $upload = ImageHelper::imageUploadHelper('logo_sq_', $request->file('logo_square'));
+                if ($upload['status']) {
+                    $data['logo_square'] = $upload['data']['target_file'];
+                }
             }
-        }
 
-        if ($request->hasFile('cover_image')) {
-            $upload = \App\Helpers\ImageHelper::imageUploadHelper('cover_', $request->file('cover_image'));
-            if ($upload['status']) {
-                $data['cover_image'] = $upload['data']['target_file'];
+            if ($request->hasFile('cover_image')) {
+                $upload = ImageHelper::imageUploadHelper('cover_', $request->file('cover_image'));
+                if ($upload['status']) {
+                    $data['cover_image'] = $upload['data']['target_file'];
+                }
             }
+
+            $store->update($data);
+
+            DB::commit();
+
+            if ($request->ajax()) {
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Store updated successfully',
+                    'redirect_url' => route('admin.marketplace.store.index')
+                ]);
+            }
+
+            return redirect()->route('admin.marketplace.store.index')->with('success', 'Store updated successfully.');
+        } catch (Exception $e) {
+            DB::rollBack();
+            if ($request->ajax()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Something went wrong: ' . $e->getMessage()
+                ], 500);
+            }
+            return back()->with('error', 'Something went wrong: ' . $e->getMessage())->withInput();
         }
-
-        $store->update($data);
-
-        return response()->json([
-            'status' => true,
-            'message' => 'Store updated successfully',
-            'redirect_url' => route('admin.marketplace.store.index')
-        ]);
     }
 
-    public function show(Store $store)
+    public function show($id)
     {
+        $store = Store::findOrFail($id);
         $store->load('customer');
         $store->loadCount('products');
         
@@ -200,27 +218,39 @@ public function store(Request $request)
         return view('admin-layouts.marketplace.store.show', compact('store', 'statements'));
     }
 
-    public function destroy(Store $store)
+    public function destroy($id)
     {
-        $store->delete();
-
-        return response()->json([
-            'status' => true,
-            'message' => 'Store deleted successfully.'
-        ]);
+        return TableHelpers::performDelete($id, Store::class, 'Store');
     }
-    public function verify(Store $store)
-    {
-        $store->update([
-            'is_verified' => 1,
-            'verified_at' => now(),
-            'verified_by' => auth()->id(),
-        ]);
 
-        return response()->json([
-            'status' => true,
-            'message' => 'Store verified successfully',
-            'reload' => true
-        ]);
+    public function bulkDelete(Request $request)
+    {
+        return TableHelpers::performBulkDelete($request, Store::class, 'Stores');
+    }
+
+    public function verify($id)
+    {
+        try {
+            DB::beginTransaction();
+            $store = Store::findOrFail($id);
+            $store->update([
+                'is_verified' => 1,
+                'verified_at' => now(),
+                'verified_by' => auth()->id(),
+            ]);
+            DB::commit();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Store verified successfully',
+                'reload' => true
+            ]);
+        } catch (Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'status' => false,
+                'message' => 'Something went wrong: ' . $e->getMessage()
+            ], 500);
+        }
     }
 }

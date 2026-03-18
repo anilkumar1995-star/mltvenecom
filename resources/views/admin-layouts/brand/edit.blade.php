@@ -114,52 +114,12 @@
                                         <div class=" card-body">
                                             <input type="file" name="logo" id="logo" class="form-control" accept="image/*" onchange="previewImage(this)">
                                             <div id="imagePreview" class="mt-2">
-                                                <img src="{{ $brand->logo ? asset($brand->logo) : 'https://shofy-grocery.botble.com/vendor/core/core/base/images/placeholder.png' }}" alt="Preview" style="max-width: 100%; height: auto;">
+                                                <img src="{{ $brand->logo ? (str_starts_with($brand->logo, 'http') ? $brand->logo : rtrim(\App\Helpers\ImageHelper::getImageUrl(), '/') . '/' . ltrim($brand->logo, '/')) : asset('home/placeholder.png') }}" alt="Preview" id="logoPreviewImg" style="max-width: 100%; height: auto;">
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="card meta-boxes mb-3">
-                                        <div class="card-header">
-                                            <h4 class="card-title">
-                                                <label class="form-label" for="categories[]">Categories</label>
-                                            </h4>
-                                        </div>
 
-                                        <div class="card-body">
-                                            <div class="tree-categories-list">
-                                                @php
-                                                    $selectedCategories = $brand->categories->pluck('id')->toArray();
-                                                @endphp
-                                                <ul class="list-unstyled">
-                                                    @foreach($categories->where('parent_id', 0) as $parent)
-                                                        <li>
-                                                            <label class="form-check">
-                                                                <input type="checkbox" name="categories[]" class="form-check-input parent-category" value="{{ $parent->id }}" {{ in_array($parent->id, $selectedCategories) ? 'checked' : '' }}>
-                                                                <span class="form-check-label">{{ $parent->name }}</span>
-                                                            </label>
-
-                                                            @php
-                                                                $subcategories = $categories->where('parent_id', $parent->id);
-                                                            @endphp
-
-                                                            @if($subcategories->count())
-                                                                <ul class="list-unstyled ms-3 mt-2 sub-categories-list">
-                                                                    @foreach($subcategories as $sub)
-                                                                        <li>
-                                                                            <label class="form-check">
-                                                                                <input type="checkbox" name="categories[]" class="form-check-input child-category" value="{{ $sub->id }}" data-parent="{{ $parent->id }}" {{ in_array($sub->id, $selectedCategories) ? 'checked' : '' }}>
-                                                                                <span class="form-check-label">{{ $sub->name }}</span>
-                                                                            </label>
-                                                                        </li>
-                                                                    @endforeach
-                                                                </ul>
-                                                            @endif
-                                                        </li>
-                                                    @endforeach
-                                                </ul>
-                                            </div>
-                                        </div>
                                     <div class="card meta-boxes mb-3">
                                         <div class="card-header">
                                             <h4 class="card-title">
