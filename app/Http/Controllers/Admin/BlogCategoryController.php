@@ -5,21 +5,50 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Helpers\TableHelpers;
 
 class BlogCategoryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::orderBy('order', 'asc')->get();
-        // Return view with categories for the list and an empty form for create
-        return view('admin-layouts.blog.categories.index', compact('categories'));
+        $query = Category::query();
+
+        TableHelpers::applyTableLogic($query, $request,
+            ['id', 'name', 'description'],
+            ['id', 'status', 'created_at']
+        );
+
+        $categories = $query->orderBy('order', 'asc')->paginate(TableHelpers::getPerPage($request));
+
+        $filterColumns = [
+            'id' => 'ID',
+            'name' => 'Name',
+            'status' => 'Status',
+            'created_at' => 'Created At',
+        ];
+
+        return view('admin-layouts.blog.categories.index', compact('categories', 'filterColumns'));
     }
 
-    public function edit(Category $category)
+    public function edit(Category $category, Request $request)
     {
-        $categories = Category::orderBy('order', 'asc')->get();
-        // Return same view but with the specific category selected for editing
-        return view('admin-layouts.blog.categories.index', compact('categories', 'category'));
+        // For blog categories, we usually edit on the list page or a separate page.
+        // If the view handles it on the list page, we need the list as well.
+        $query = Category::query();
+        TableHelpers::applyTableLogic($query, $request,
+            ['id', 'name', 'description'],
+            ['id', 'status', 'created_at']
+        );
+        $categories = $query->orderBy('order', 'asc')->paginate(TableHelpers::getPerPage($request));
+
+        $filterColumns = [
+            'id' => 'ID',
+            'name' => 'Name',
+            'status' => 'Status',
+            'created_at' => 'Created At',
+        ];
+
+        return view('admin-layouts.blog.categories.index', compact('categories', 'category', 'filterColumns'));
     }
 
     public function store(Request $request)
@@ -41,9 +70,7 @@ class BlogCategoryController extends Controller
             $category->author_id = auth()->id();
         }
         
-        if(!$request->parent_id) {
-            $category->parent_id = 0;
-        }
+        $category->parent_id = $request->parent_id ?? 0;
 
         $category->save();
 
@@ -64,9 +91,7 @@ class BlogCategoryController extends Controller
         $category->is_featured = $request->has('is_featured') ? 1 : 0;
         $category->is_default = $request->has('is_default') ? 1 : 0;
         
-        if(!$request->parent_id) {
-            $category->parent_id = 0;
-        }
+        $category->parent_id = $request->parent_id ?? 0;
 
         $category->save();
 
@@ -77,14 +102,13 @@ class BlogCategoryController extends Controller
         return redirect()->route('admin.blog.categories.edit', $category->id)->with('success', 'Category updated successfully.');
     }
 
-    public function destroy(Category $category)
+    public function bulkDelete(Request $request)
     {
-        // Check if there are child categories
-        if(Category::where('parent_id', $category->id)->count() > 0) {
-            return response()->json(['success' => false, 'message' => 'Cannot delete, category has sub-categories.']);
-        }
+        return TableHelpers::performBulkDelete($request, Category::class, 'blog categories');
+    }
 
-        $category->delete();
-        return response()->json(['success' => true, 'message' => 'Category deleted successfully.']);
+    public function destroy($id)
+    {
+        return TableHelpers::performDelete($id, Category::class, 'blog category');
     }
 }

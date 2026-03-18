@@ -8,6 +8,16 @@ class EcProductTag extends Model
 {
     protected $fillable = ['name','description','status'];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($tag) {
+            $tag->translations()->delete();
+            $tag->products()->detach();
+        });
+    }
+
     public function translations()
     {
         return $this->hasMany(EcProductTagTranslation::class,'ec_product_tags_id');

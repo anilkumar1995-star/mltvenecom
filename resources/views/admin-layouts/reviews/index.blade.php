@@ -1,441 +1,214 @@
 @extends('admin-layouts.app')
 @section('title', 'Reviews')
+
 @section('content')
-
-    <div class="page-wrapper">
-        <div class="page-header d-print-none">
-            <div class="container-xl">
-                <div class="row g-2 align-items-center">
-                    <div class="col">
-                        <div class="page-pretitle">
-                            <nav aria-label="breadcrumb">
-                                <ol class="breadcrumb">
-                                    <li class="breadcrumb-item">
-                                        <a class="mb-0 d-inline-block fs-6 lh-1"
-                                            href="{{ route('admin.dashboard') }}">Dashboard</a>
-                                    </li>
-                                    <li class="breadcrumb-item">
-                                        <h1 class="mb-0 d-inline-block fs-6 lh-1">Ecommerce</h1>
-                                    </li>
-                                    <li class="breadcrumb-item active" aria-current="page">
-                                        <h1 class="mb-0 d-inline-block fs-6 lh-1">Reviews</h1>
-                                    </li>
-                                </ol>
-                            </nav>
-
-                        </div>
+<div class="page-wrapper">
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <div class="page-pretitle">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a class="mb-0 d-inline-block fs-6 lh-1" href="{{ route('admin.dashboard') }}">Dashboard</a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a class="mb-0 d-inline-block fs-6 lh-1" href="#">Ecommerce</a>
+                                </li>
+                                <li class="breadcrumb-item active" aria-current="page">
+                                    <h1 class="mb-0 d-inline-block fs-6 lh-1">Reviews</h1>
+                                </li>
+                            </ol>
+                        </nav>
                     </div>
-                    <div class="col-auto ms-auto d-print-none">
-                        <div class="btn-list">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main class="page-body page-content">
+        <div class="container-xl">
+            {{-- Shared Filter Panel --}}
+            @include('admin-layouts.partials.table-filters', ['filterColumns' => $filterColumns])
+
+            <div class="card">
+                {{-- Create Button (must be BEFORE table-header include) --}}
+                @section('table_actions')
+                    <a href="{{ route('admin.reviews.create') }}" class="btn btn-primary d-flex align-items-center">
+                        <svg class="me-1" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 5v14" />
+                            <path d="M5 12h14" />
+                        </svg>
+                        Create Review
+                    </a>
+                @endsection
+
+                @include('admin-layouts.partials.table-header', [
+                    'bulkActions' => true,
+                    'tableId'     => 'reviewsTable'
+                ])
+
+                <div class="card-table">
+                    <div class="table-responsive">
+                        <table class="table card-table table-vcenter table-hover datatable" id="reviewsTable">
+                            <thead>
+                                <tr>
+                                    <th width="40" class="text-center">
+                                        <input type="checkbox" class="form-check-input" id="check-all">
+                                    </th>
+                                    <th width="60">ID</th>
+                                    <th width="70" class="text-center">Image</th>
+                                    <th>Product</th>
+                                    <th>User</th>
+                                    <th width="120">Rating</th>
+                                    <th>Comment</th>
+                                    <th width="120" class="text-center">Status</th>
+                                    <th width="150" class="text-center">Created At</th>
+                                    <th width="100" class="text-center">Operations</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($reviews as $item)
+                                <tr>
+                                    <td class="text-center">
+                                        <input type="checkbox" class="form-check-input bulk-checkbox" value="{{ $item->id }}">
+                                    </td>
+                                    <td class="text-muted">{{ $item->id }}</td>
+                                    <td class="text-center">
+                                        <div class="avatar avatar-sm rounded p-1 bg-white border">
+                                            @if($item->product && $item->product->image)
+                                                <img src="{{ 'https://images.incomeowl.in/incomeowl/b2b/images/' . $item->product->image }}" 
+                                                     onerror="this.src='{{ asset('home/placeholder.png') }}'"
+                                                     alt="{{ $item->product->name }}" class="avatar-img">
+                                            @else
+                                                <img src="{{ asset('home/placeholder.png') }}" alt="Placeholder" class="avatar-img">
+                                            @endif
+                                        </div>
+                                    </td>
+                                    <td>
+                                        @if($item->product)
+                                            <a href="{{ route('admin.products.edit', $item->product->id) }}" class="fw-bold text-dark text-decoration-none">
+                                                {{ Str::limit($item->product->name, 40) }}
+                                            </a>
+                                        @else
+                                            <span class="text-muted small">Product Deleted</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if($item->customer)
+                                            <a href="{{ route('admin.customers.edit', $item->customer->id) }}" class="text-decoration-none text-info">
+                                                {{ $item->customer->name }}
+                                            </a>
+                                        @else
+                                            <span class="text-muted">Guest</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <div class="text-warning">
+                                            @for($i = 1; $i <= 5; $i++)
+                                                @if($i <= $item->star)
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-filled" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
+                                                @else
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
+                                                @endif
+                                            @endfor
+                                        </div>
+                                    </td>
+                                    <td class="text-muted small">
+                                        {{ Str::limit($item->comment, 60) }}
+                                    </td>
+                                    <td class="text-center">
+                                        @php
+                                            $statusClass = match(strtolower($item->status ?? '')) {
+                                                'published' => 'bg-success text-success-fg',
+                                                'pending'   => 'bg-warning text-warning-fg',
+                                                'draft'     => 'bg-secondary text-secondary-fg',
+                                                default     => 'bg-secondary text-secondary-fg'
+                                            };
+                                        @endphp
+                                        <span class="badge {{ $statusClass }}">{{ ucwords($item->status ?? 'N/A') }}</span>
+                                    </td>
+                                    <td class="text-center text-muted small">
+                                        {{ $item->created_at ? $item->created_at->format('M d, Y') : 'N/A' }}
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="btn-group">
+                                            <a href="{{ route('admin.reviews.show', $item->id) }}" class="btn btn-sm btn-outline-info" title="View">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <button type="button" class="btn btn-sm btn-outline-danger delete-confirm-btn"
+                                                data-url="{{ route('admin.reviews.destroy', $item->id) }}"
+                                                data-id="{{ $item->id }}" title="Delete">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="10" class="text-center py-4 text-muted">No reviews found.</td>
+                                </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {{-- Pagination --}}
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        <div class="text-muted small">
+                            Showing {{ $reviews->firstItem() ?? 0 }} to {{ $reviews->lastItem() ?? 0 }} of {{ $reviews->total() }} entries
+                        </div>
+                        <div>
+                            {{ $reviews->appends(request()->query())->links() }}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <main class="page-body page-content">
-            <div class="container-xl">
-                <div class="table-wrapper">
-                    <div class="card mb-3 table-configuration-wrap" style="display: none;">
-                        <div class="card-body">
-                            <button class="btn btn-icon  btn-sm btn-show-table-options rounded-pill" type="button">
-                                <svg class="icon icon-sm  icon-left svg-icon-ti-ti-x" xmlns="http://www.w3.org/2000/svg"
-                                    width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M18 6l-12 12" />
-                                    <path d="M6 6l12 12" />
-                                </svg>
-                            </button>
-
-                            <div class="wrapper-filter">
-                                <p>Filters</p>
-                                <input type="hidden" class="filter-data-url"
-                                    value="{{ route('admin.reviews.index') }}" />
-
-                                <div class="sample-filter-item-wrap hidden">
-                                    <div class="row filter-item form-filter">
-                                        <div class="col-auto w-50 w-sm-auto">
-                                            <div class="mb-3 position-relative">
-                                                <select class="form-select filter-column-key" name="filter_columns[]"
-                                                    id="filter_columns[]">
-                                                    <option value="product">Product</option>
-                                                    <option value="customer">User</option>
-                                                    <option value="star">Rating</option>
-                                                    <option value="status">Status</option>
-                                                    <option value="created_at">Created At</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-auto w-50 w-sm-auto">
-                                            <div class="mb-3 position-relative">
-                                                <select class="form-select filter-operator filter-column-operator"
-                                                    name="filter_operators[]" id="filter_operators[]">
-                                                    <option value="like">Contains</option>
-                                                    <option value="=">Is equal to</option>
-                                                    <option value="&gt;">Greater than</option>
-                                                    <option value="&lt;">Less than</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-auto w-100 w-sm-25">
-                                            <span class="filter-column-value-wrap">
-                                                <input class="form-control filter-column-value" type="text"
-                                                    placeholder="Value" name="filter_values[]">
-                                            </span>
-                                        </div>
-
-                                        <div class="col">
-                                            <button class="btn btn-icon   btn-remove-filter-item mb-3 text-danger"
-                                                type="button" data-bs-toggle="tooltip" data-bs-placement="top"
-                                                title="Delete">
-                                                <svg class="icon icon-left svg-icon-ti-ti-trash"
-                                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                    stroke-linecap="round" stroke-linejoin="round">
-                                                    <path d="M4 7l16 0" />
-                                                    <path d="M10 11l0 6" />
-                                                    <path d="M14 11l0 6" />
-                                                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
-                                                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
-                                                </svg>
-
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <form method="GET" action="{{ route('admin.reviews.index') }}"
-                                    accept-charset="UTF-8" class="filter-form">
-                                    <div class="filter_list inline-block filter-items-wrap">
-                                        <div class="row filter-item form-filter filter-item-default">
-                                            <div class="col-auto w-50 w-sm-auto">
-                                                <div class="mb-3 position-relative">
-                                                    <select class="form-select filter-column-key" name="filter_columns[]"
-                                                        id="filter_columns[]">
-                                                        <option value="" selected>Select field</option>
-                                                        <option value="product">Product</option>
-                                                        <option value="customer">User</option>
-                                                        <option value="star">Rating</option>
-                                                        <option value="status">Status</option>
-                                                        <option value="created_at">Created At</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-auto w-50 w-sm-auto">
-                                                <div class="mb-3 position-relative">
-                                                    <select class="form-select filter-operator filter-column-operator"
-                                                        name="filter_operators[]" id="filter_operators[]">
-                                                        <option value="like">Contains</option>
-                                                        <option value="=" selected>Is equal to</option>
-                                                        <option value="&gt;">Greater than</option>
-                                                        <option value="&lt;">Less than</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-auto w-100 w-sm-25">
-                                                <div class="filter-column-value-wrap mb-3">
-                                                    <input class="form-control filter-column-value" type="text"
-                                                        placeholder="Value" name="filter_values[]" value="">
-                                                </div>
-                                            </div>
-
-                                            <div class="col">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="btn-list">
-                                        <button class="btn   add-more-filter" type="button">
-
-                                            Add additional filter
-
-                                        </button>
-                                        <button class="btn btn-primary  btn-apply" type="submit">
-
-                                            Apply
-
-                                        </button>
-                                        <a class="btn btn-icon   w-6" style="display: none;" type="button"
-                                            href="{{ route('admin.reviews.index') }}"
-                                            data-bb-toggle="datatable-reset-filter">
-                                            <svg class="icon icon-left svg-icon-ti-ti-refresh"
-                                                xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                stroke-linecap="round" stroke-linejoin="round">
-                                                <path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" />
-                                                <path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" />
-                                            </svg>
-
-                                        </a>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card has-actions has-filter">
-                        <div class="card-header">
-                            <div class="w-100 justify-content-between d-flex flex-wrap align-items-center gap-1">
-                                <div class="d-flex flex-wrap flex-md-nowrap align-items-center gap-1">
-                                    <div class="dropdown d-inline-block">
-                                        <button class="btn   dropdown-toggle" type="button" data-bs-toggle="dropdown">
-
-                                            Bulk Actions
-
-                                        </button>
-
-                                        <div class="dropdown-menu">
-                                            <form action="{{ route('admin.reviews.bulk-delete') }}" method="POST" id="bulk-delete-form" style="display:none;">
-                                                @csrf
-                                                <input type="hidden" name="ids" id="bulk-delete-ids">
-                                            </form>
-                                            <a class="dropdown-item"
-                                                href="#"
-                                                id="bulk-delete"
-                                                data-confirmation-modal-title="Confirm to perform this action"
-                                                data-confirmation-modal-message="Are you sure you want to do this action? This cannot be undone."
-                                                data-confirmation-modal-button="Delete"
-                                                data-confirmation-modal-cancel-button="Cancel">
-
-                                                Delete
-
-                                            </a>
-                                        </div>
-                                    </div>
-
-                                    <button class="btn   btn-show-table-options" type="button">
-                                        Filters
-                                    </button>
-
-                                    <div class="table-search-input">
-                                        <label>
-                                            <input type="search" class="form-control input-sm" placeholder="Search..."
-                                                style="min-width: 120px">
-                                        </label>
-                                    </div>
-                                </div>
-                                <div
-                                    class="d-flex flex-column flex-sm-row align-items-stretch align-items-sm-center gap-1 table-action-buttons">
-                                    
-                                    <div class="dropdown d-inline-block">
-                                        <button
-                                            class="btn btn-primary dropdown-toggle d-flex align-items-center"
-                                            type="button"
-                                            data-bs-toggle="dropdown"
-                                            aria-expanded="false"
-                                        >
-                                            <svg class="me-1" xmlns="http://www.w3.org/2000/svg"
-                                                width="18" height="18" viewBox="0 0 24 24" fill="none"
-                                                stroke="currentColor" stroke-width="2"
-                                                stroke-linecap="round" stroke-linejoin="round">
-                                                <path d="M12 5v14" />
-                                                <path d="M5 12h14" />
-                                            </svg>
-                                            Create
-                                        </button>
-
-                                        <ul class="dropdown-menu dropdown-menu-end">
-                                            <li>
-                                                <a
-                                                    href="{{ route('admin.reviews.create') }}"
-                                                    class="dropdown-item d-flex align-items-center"
-                                                >
-                                                    <svg class="me-2" xmlns="http://www.w3.org/2000/svg"
-                                                        width="18" height="18" viewBox="0 0 24 24"
-                                                        fill="none" stroke="currentColor" stroke-width="2">
-                                                        <path d="M12 3l8 4.5v9l-8 4.5-8-4.5v-9z"/>
-                                                        <path d="M12 12l8-4.5"/>
-                                                        <path d="M12 12v9"/>
-                                                        <path d="M12 12l-8-4.5"/>
-                                                    </svg>
-                                                    Review
-                                                </a>
-                                            </li>
-
-                                        </ul>
-                                    </div>
-
-                                    <button class="btn" type="button" data-bb-toggle="dt-buttons"
-                                        data-bb-target=".buttons-reload" tabindex="0"
-                                        aria-controls="botble-ecommerce-tables-product-table">
-                                        <svg class="icon icon-left svg-icon-ti-ti-refresh"
-                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                            stroke-linejoin="round">
-                                            <path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" />
-                                            <path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" />
-                                        </svg>
-                                        Reload
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="card-table">
-                            <div class="table-responsive table-has-actions table-has-filter">
-                                <table class="table card-table table-vcenter table-hover datatable" id="myTable">
-                                    <thead>
-                                        <tr>
-                                            <th title="Checkbox"><input
-                                                    class="form-check-input m-0 align-middle table-check-all"
-                                                    data-set=".dataTable .checkboxes" name="" type="checkbox">
-                                            </th>
-                                            <th title="ID" width="20"
-                                                class="text-center no-column-visibility column-key-0">ID</th>
-                                            <th title="Image" width="50" class="column-key-1">Image</th>
-                                            <th title="Product" class="text-start column-key-2">Product</th>
-                                            <th title="User" class="text-start column-key-3">User</th>
-                                            <th title="Star" class="column-key-4">Star</th>
-                                            <th title="Comment" class="column-key-5">Comment</th>
-                                            <th title="Status" width="100" class="text-center column-key-6">Status</th>
-                                            <th title="Created At" width="100" class="column-key-7">Created At</th>
-                                            <th title="Operations">Operations</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($reviews as $item)
-                                    <tr>
-                                        <td class="text-center">
-                                            <input type="checkbox" class="form-check-input bulk-checkbox" value="{{ $item->id }}">
-                                        </td>
-                                        <td>{{ $item->id }}</td>
-                                        <td>
-                                            @if($item->product && $item->product->image)
-                                                <img src="{{ 'https://images.incomeowl.in/incomeowl/b2b/images/' . $item->product->image }}" alt="{{ $item->product->name }}" width="50" onerror="this.src='{{ asset('home/placeholder.png') }}'">
-                                            @else
-                                                <img src="{{ asset('home/placeholder.png') }}" alt="Placeholder" width="50">
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if($item->product)
-                                                <a href="{{ route('admin.products.edit', $item->product->id) }}" class="text-decoration-none">{{ Str::limit($item->product->name, 30) }}</a>
-                                            @else
-                                                <span class="text-muted">Product Deleted</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if($item->customer)
-                                                <a href="{{ route('admin.customers.edit', $item->customer->id) }}" class="text-decoration-none">{{ $item->customer->name }}</a>
-                                            @else
-                                                Guest
-                                            @endif
-                                        </td>
-                                        <td>
-                                            <div class="text-warning">
-                                                @for($i = 1; $i <= 5; $i++)
-                                                    @if($i <= $item->star)
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-filled" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
-                                                    @else
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
-                                                    @endif
-                                                @endfor
-                                            </div>
-                                        </td>
-                                        <td>{{ Str::limit($item->comment, 50) }}</td>
-                                        <td class="text-center">
-                                            @if($item->status == 'published')
-                                                <span class="badge bg-success text-success-fg">Published</span>
-                                            @elseif($item->status == 'pending')
-                                                <span class="badge bg-warning text-warning-fg">Pending</span>
-                                            @else
-                                                <span class="badge bg-secondary text-secondary-fg">{{ ucfirst($item->status) }}</span>
-                                            @endif
-                                        </td>
-                                        <td>{{ $item->created_at->format('Y-m-d') }}</td>
-                                    
-                                        <td class="text-end">
-                                            <div class="btn-group">
-                                                <a href="{{ route('admin.reviews.edit', $item->id) }}" class="btn btn-sm btn-outline-primary" title="Edit">
-                                                    <i class="fa fa-edit"></i>
-                                                </a>
-                                                <form action="{{ route('admin.reviews.destroy', $item->id) }}" method="POST" class="d-inline-block">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="button" class="btn btn-sm btn-outline-danger delete-btn" title="Delete">
-                                                        <i class="fa fa-trash"></i>
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                    </tbody>
-
-                                </table>
-                            </div>
-                        </div>
-                        <div class="card-footer d-flex align-items-center">
-                             {{ $reviews->links('pagination::bootstrap-5') }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </main>
+    </main>
+</div>
 @endsection
-    @push('scripts')
-        <script>
-            $(document).ready(function () {
-                // Check all functionality
-                $('.table-check-all').on('change', function () {
-                    $('.bulk-checkbox').prop('checked', $(this).is(':checked'));
-                });
 
-                $('#bulk-delete').on('click', function(e) {
-                    e.preventDefault();
-                    let ids = [];
-                    $('.bulk-checkbox:checked').each(function() {
-                        ids.push($(this).val());
-                    });
+@push('scripts')
+@include('admin-layouts.partials.table-scripts', [
+    'tableId'       => 'reviewsTable',
+    'bulkDeleteUrl' => route('admin.reviews.bulk-delete')
+])
+<script>
+    $(document).on('click', '.delete-confirm-btn', function(e) {
+        e.preventDefault();
+        let id  = $(this).data('id');
+        let url = $(this).data('url');
 
-                    if (ids.length === 0) {
-                        Swal.fire('Error', 'No items selected', 'error');
-                        return;
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "This action cannot be undone!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: url,
+                    type: 'DELETE',
+                    data: { _token: '{{ csrf_token() }}' },
+                    success: function(res) {
+                        if (res.status) {
+                            Swal.fire('Deleted!', res.message, 'success').then(() => location.reload());
+                        } else {
+                            Swal.fire('Error!', res.message, 'error');
+                        }
+                    },
+                    error: function() {
+                        Swal.fire('Error!', 'Something went wrong.', 'error');
                     }
-
-                    $('#bulk-delete-ids').val(ids.join(','));
-
-                     Swal.fire({
-                        title: 'Are you sure?',
-                        text: "You won't be able to revert this!",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes, delete it!'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                             $('#bulk-delete-form').submit();
-                        }
-                    });
                 });
-
-                // Individual Delete
-                $(document).on('click', '.delete-btn', function () {
-                    let btn = $(this);
-                    let form = btn.closest('form');
-
-                    Swal.fire({
-                        title: 'Are you sure?',
-                        text: "You won't be able to revert this!",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes, delete it!'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            form.submit();
-                        }
-                    });
-                });
-                
-                // Toggle filters
-                $('.btn-show-table-options').on('click', function() {
-                    $('.table-configuration-wrap').slideToggle();
-                });
-            });
-        </script>
-    @endpush
+            }
+        });
+    });
+</script>
+@endpush

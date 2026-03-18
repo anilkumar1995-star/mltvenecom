@@ -8,6 +8,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use App\Helpers\TableHelpers;
 
 class ProductCollectionController extends Controller
 {
@@ -15,16 +16,22 @@ class ProductCollectionController extends Controller
     {
         $query = ProductCollection::query();
 
-        if ($request->has('search') && $request->search != '') {
-            $query->where('name', 'like', '%' . $request->search . '%');
-        }
+        TableHelpers::applyTableLogic($query, $request,
+            ['id', 'name', 'slug'], // Searchable
+            ['id', 'name', 'status', 'is_featured', 'created_at'] // Filterable
+        );
 
-        if ($request->has('status') && $request->status != '') {
-            $query->where('status', $request->status);
-        }
+        $collections = $query->orderBy('id', 'desc')->paginate(TableHelpers::getPerPage($request));
 
-        $data['collections'] = $query->orderBy('id', 'desc')->get();
-        return view('admin-layouts.product.collections.index', $data);
+        $filterColumns = [
+            'id'          => 'ID',
+            'name'        => 'Name',
+            'status'      => 'Status',
+            'is_featured' => 'Is Featured',
+            'created_at'  => 'Created At',
+        ];
+
+        return view('admin-layouts.product.collections.index', compact('collections', 'filterColumns'));
     }
 
     public function create()
@@ -48,11 +55,11 @@ class ProductCollectionController extends Controller
             }
 
             ProductCollection::create([
-                'name' => $request->name,
-                'slug' => Str::slug($request->name),
+                'name'        => $request->name,
+                'slug'        => Str::slug($request->name),
                 'description' => $request->description,
-                'image' => $imagePath,
-                'status' => $request->status,
+                'image'       => $imagePath,
+                'status'      => $request->status,
                 'is_featured' => $request->has('is_featured') ? 1 : 0,
             ]);
 
@@ -73,8 +80,8 @@ class ProductCollectionController extends Controller
 
     public function edit($id)
     {
-        $data['collection'] = ProductCollection::findOrFail($id);
-        return view('admin-layouts.product.collections.edit', $data);
+        $collection = ProductCollection::findOrFail($id);
+        return view('admin-layouts.product.collections.edit', compact('collection'));
     }
 
     public function update(Request $request, $id)
@@ -95,11 +102,11 @@ class ProductCollectionController extends Controller
             }
 
             $collection->update([
-                'name' => $request->name,
-                'slug' => Str::slug($request->name),
+                'name'        => $request->name,
+                'slug'        => Str::slug($request->name),
                 'description' => $request->description,
-                'image' => $imagePath,
-                'status' => $request->status,
+                'image'       => $imagePath,
+                'status'      => $request->status,
                 'is_featured' => $request->has('is_featured') ? 1 : 0,
             ]);
 
@@ -118,53 +125,13 @@ class ProductCollectionController extends Controller
         }
     }
 
-    public function destroy(Request $request)
+    public function destroy($id)
     {
-        try {
-            DB::beginTransaction();
-            $collection = ProductCollection::findOrFail($request->id);
-            $collection->delete();
-            DB::commit();
-
-            return response()->json([
-                'status' => true,
-                'message' => 'Product collection deleted successfully.'
-            ]);
-        } catch (Exception $e) {
-            DB::rollBack();
-            return response()->json([
-                'status' => false,
-                'message' => 'Something went wrong: ' . $e->getMessage()
-            ], 500);
-        }
+        return TableHelpers::performDelete($id, ProductCollection::class, 'product collection');
     }
 
     public function bulkDelete(Request $request)
     {
-        try {
-            DB::beginTransaction();
-            $ids = $request->ids;
-
-            if (empty($ids)) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'No items selected.'
-                ], 400);
-            }
-
-            ProductCollection::whereIn('id', $ids)->delete();
-            DB::commit();
-
-            return response()->json([
-                'status' => true,
-                'message' => 'Selected collections deleted successfully.'
-            ]);
-        } catch (Exception $e) {
-            DB::rollBack();
-            return response()->json([
-                'status' => false,
-                'message' => 'Something went wrong: ' . $e->getMessage()
-            ], 500);
-        }
+        return TableHelpers::performBulkDelete($request, ProductCollection::class, 'product collections');
     }
 }

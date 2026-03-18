@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\EcProduct;
 use Illuminate\Http\Request;
+use App\Helpers\TableHelpers;
 
 class ProductInventoryController extends Controller
 {
@@ -12,23 +13,25 @@ class ProductInventoryController extends Controller
     {
         $query = EcProduct::query();
 
-        if ($request->has('keyword') && $request->keyword != '') {
-            $query->where('name', 'like', '%' . $request->keyword . '%')
-                  ->orWhere('sku', 'like', '%' . $request->keyword . '%');
-        }
-
-        if ($request->has('stock_status') && $request->stock_status != '') {
-            $query->where('stock_status', $request->stock_status);
-        }
-
-        $sort_by = $request->input('sort_by', 'id');
-        $sort_order = $request->input('sort_order', 'desc');
-        $query->orderBy($sort_by, $sort_order);
+        TableHelpers::applyTableLogic($query, $request, 
+            ['id', 'name', 'sku'],
+            ['id', 'stock_status', 'with_storehouse_management', 'created_at']
+        );
 
         $products = $query->select('id', 'name', 'sku', 'images', 'image', 'is_variation', 'stock_status', 'quantity', 'with_storehouse_management', 'price', 'sale_price')
-                    ->paginate(20);
+                    ->orderBy('id', 'desc')
+                    ->paginate(TableHelpers::getPerPage($request));
 
-        return view('admin-layouts.product-inventory.index', compact('products'));
+        $filterColumns = [
+            'id' => 'ID',
+            'name' => 'Name',
+            'sku' => 'SKU',
+            'stock_status' => 'Stock Status',
+            'with_storehouse_management' => 'Storehouse Management',
+            'created_at' => 'Created At',
+        ];
+
+        return view('admin-layouts.product-inventory.index', compact('products', 'filterColumns'));
     }
 
     public function update(Request $request)
@@ -52,5 +55,15 @@ class ProductInventoryController extends Controller
         $product->save();
 
         return response()->json(['success' => true]);
+    }
+
+    public function bulkDelete(Request $request)
+    {
+        return TableHelpers::performBulkDelete($request, EcProduct::class, 'products');
+    }
+
+    public function destroy($id)
+    {
+        return TableHelpers::performDelete($id, EcProduct::class, 'product');
     }
 }

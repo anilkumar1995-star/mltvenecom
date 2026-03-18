@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Exception;
+use App\Helpers\TableHelpers;
 
 class TagController extends Controller
 {
@@ -16,16 +17,21 @@ class TagController extends Controller
     {
         $query = Tag::query();
         
-        if ($request->has('search') && $request->search != '') {
-            $query->where('name', 'like', '%' . $request->search . '%');
-        }
+        TableHelpers::applyTableLogic($query, $request,
+            ['id', 'name'],
+            ['id', 'status', 'created_at']
+        );
         
-        if ($request->has('status') && $request->status != '') {
-            $query->where('status', $request->status);
-        }
+        $tags = $query->orderBy('created_at', 'desc')->paginate(TableHelpers::getPerPage($request));
         
-        $tags = $query->orderBy('created_at', 'desc')->paginate(10);
-        return view('admin-layouts.blog.tags.index', compact('tags'));
+        $filterColumns = [
+            'id' => 'ID',
+            'name' => 'Name',
+            'status' => 'Status',
+            'created_at' => 'Created At'
+        ];
+
+        return view('admin-layouts.blog.tags.index', compact('tags', 'filterColumns'));
     }
 
     public function create()
@@ -191,55 +197,11 @@ class TagController extends Controller
 
     public function destroy($id)
     {
-        try {
-            DB::beginTransaction();
-
-            $tag = Tag::findOrFail($id);
-            
-            // Delete associated slugs and meta
-            DB::table('slugs')->where('reference_id', $tag->id)->where('reference_type', 'Botble\Blog\Models\Tag')->delete();
-            DB::table('meta_boxes')->where('reference_id', $tag->id)->where('reference_type', 'Botble\Blog\Models\Tag')->delete();
-            
-            // Delete associations with posts
-            $tag->posts()->detach();
-            
-            $tag->delete();
-
-            DB::commit();
-            return response()->json(['status' => true, 'message' => 'Tag deleted successfully.']);
-
-        } catch (Exception $e) {
-            DB::rollBack();
-            return response()->json(['status' => false, 'message' => 'Something went wrong: ' . $e->getMessage()], 500);
-        }
+        return TableHelpers::performDelete($id, Tag::class, 'Tag');
     }
 
     public function bulkDelete(Request $request)
     {
-        $ids = $request->ids;
-        if (empty($ids)) {
-            return response()->json(['status' => false, 'message' => 'No tags selected.'], 400);
-        }
-
-        try {
-            DB::beginTransaction();
-
-            foreach ($ids as $id) {
-                $tag = Tag::find($id);
-                if ($tag) {
-                    DB::table('slugs')->where('reference_id', $tag->id)->where('reference_type', 'Botble\Blog\Models\Tag')->delete();
-                    DB::table('meta_boxes')->where('reference_id', $tag->id)->where('reference_type', 'Botble\Blog\Models\Tag')->delete();
-                    $tag->posts()->detach();
-                    $tag->delete();
-                }
-            }
-
-            DB::commit();
-            return response()->json(['status' => true, 'message' => 'Tags deleted successfully.']);
-
-        } catch (Exception $e) {
-            DB::rollBack();
-            return response()->json(['status' => false, 'message' => 'Something went wrong: ' . $e->getMessage()], 500);
-        }
+        return TableHelpers::performBulkDelete($request, Tag::class, 'Tags');
     }
 }

@@ -193,7 +193,8 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     ->name('getAttributeValues');
 
     Route::get('/product-tags/all', [ProductController::class, 'getAllTags'])->name('product-tags.all');
-    Route::post('/products/bulk-delete', [ProductController::class, 'bulkDelete'])->name('products.bulk_delete');
+    Route::post('/products/bulk-delete', [ProductController::class, 'bulkDelete'])->name('products.bulk-delete');
+    Route::get('/products/{product}/show', [ProductController::class, 'show'])->name('products.show');
     Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
     Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
     Route::put('/products/{product}/approve', [ProductController::class, 'approve'])->name('products.approve');
@@ -201,11 +202,15 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 
     // Product Prices
     Route::get('/product-prices', [ProductPriceController::class, 'index'])->name('product-prices.index');
+    Route::post('/product-prices/bulk-delete', [ProductPriceController::class, 'bulkDelete'])->name('product-prices.bulk-delete');
     Route::post('/product-prices/update', [ProductPriceController::class, 'update'])->name('product-prices.update');
+    Route::delete('/product-prices/{id}', [ProductPriceController::class, 'destroy'])->name('product-prices.destroy');
 
     // Product Inventory
     Route::get('/product-inventory', [ProductInventoryController::class, 'index'])->name('product-inventory.index');
+    Route::post('/product-inventory/bulk-delete', [ProductInventoryController::class, 'bulkDelete'])->name('product-inventory.bulk-delete');
     Route::post('/product-inventory/update', [ProductInventoryController::class, 'update'])->name('product-inventory.update');
+    Route::delete('/product-inventory/{id}', [ProductInventoryController::class, 'destroy'])->name('product-inventory.destroy');
 
     // Ecommerce Reports
     Route::get('/reports', [EcommerceReportController::class, 'index'])->name('reports.index');
@@ -218,24 +223,26 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/orders/{id}/edit', [OrderController::class, 'edit'])->name('orders.edit');
     Route::put('/orders/{id}', [OrderController::class, 'update'])->name('orders.update');
     Route::delete('/orders/{id}', [OrderController::class, 'destroy'])->name('orders.destroy');
-    Route::post('/orders/bulk-delete', [OrderController::class, 'bulkDelete'])->name('orders.bulk_delete');
+    Route::post('/orders/bulk-delete', [OrderController::class, 'bulkDelete'])->name('orders.bulk-delete');
     Route::get('/orders/search-customer', [OrderController::class, 'searchCustomer'])->name('orders.search-customer');
     Route::get('/orders/search-product', [OrderController::class, 'searchProduct'])->name('orders.search-product');
 
     // Incomplete Orders
     Route::get('/incomplete-orders', [IncompleteOrderController::class, 'index'])->name('incomplete-orders.index');
+    Route::get('/incomplete-orders/{id}/edit', [OrderController::class, 'edit'])->name('incomplete-orders.edit');
+    Route::post('/incomplete-orders/bulk-delete', [IncompleteOrderController::class, 'bulkDelete'])->name('incomplete-orders.bulk-delete');
     Route::delete('/incomplete-orders/{id}', [IncompleteOrderController::class, 'destroy'])->name('incomplete-orders.destroy');
 
     // Order Returns
     Route::get('/order-returns', [OrderReturnController::class, 'index'])->name('order-returns.index');
-    Route::post('/order-returns/bulk-delete', [OrderReturnController::class, 'bulkDelete'])->name('order-returns.bulk_delete');
+    Route::post('/order-returns/bulk-delete', [OrderReturnController::class, 'bulkDelete'])->name('order-returns.bulk-delete');
     Route::get('/order-returns/export', [OrderReturnController::class, 'export'])->name('order-returns.export');
     Route::delete('/order-returns/{id}', [OrderReturnController::class, 'destroy'])->name('order-returns.destroy');
 
     // Shipments
     Route::get('shipments', [ShipmentController::class, 'index'])->name('shipments.index');
     Route::delete('shipments/{id}', [ShipmentController::class, 'destroy'])->name('shipments.destroy');
-    Route::post('shipments/bulk-delete', [ShipmentController::class, 'bulkDelete'])->name('shipments.bulk_delete');
+    Route::post('shipments/bulk-delete', [ShipmentController::class, 'bulkDelete'])->name('shipments.bulk-delete');
     Route::get('shipments/export', [ShipmentController::class, 'export'])->name('shipments.export');
     Route::get('shipments/{id}/edit', [ShipmentController::class, 'edit'])->name('shipments.edit');
     Route::put('shipments/{id}', [ShipmentController::class, 'update'])->name('shipments.update');
@@ -243,6 +250,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     // Invoices
     Route::get('/invoices', [InvoiceController::class, 'index'])->name('invoices.index');
     Route::post('/invoices/generate-invoices', [InvoiceController::class, 'generate'])->name('invoices.generate');
+    Route::post('/invoices/bulk-delete', [InvoiceController::class, 'bulkDelete'])->name('invoices.bulk-delete');
     Route::get('/invoices/{id}', [InvoiceController::class, 'show'])->name('invoices.show');
     Route::delete('/invoices/{id}', [InvoiceController::class, 'destroy'])->name('invoices.destroy');
 
@@ -250,6 +258,8 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews.index');
     Route::get('/reviews/create', [ReviewController::class, 'create'])->name('reviews.create');
     Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+    Route::get('/reviews/{id}/show', [ReviewController::class, 'show'])->name('reviews.show');
+    Route::post('/reviews/{id}/reply', [ReviewController::class, 'reply'])->name('reviews.reply');
     Route::get('/reviews/{id}/edit', [ReviewController::class, 'edit'])->name('reviews.edit');
     Route::put('/reviews/{id}', [ReviewController::class, 'update'])->name('reviews.update');
     Route::delete('/reviews/{id}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
@@ -262,6 +272,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/flash-sales/{id}/edit', [FlashSaleController::class, 'edit'])->name('flash-sales.edit');
     Route::put('/flash-sales/{id}', [FlashSaleController::class, 'update'])->name('flash-sales.update');
     Route::delete('/flash-sales/{id}', [FlashSaleController::class, 'destroy'])->name('flash-sales.destroy');
+    Route::post('/flash-sales/bulk-delete', [FlashSaleController::class, 'bulkDelete'])->name('flash-sales.bulk-delete');
 
     // Discounts
     Route::get('/discounts', [DiscountController::class, 'index'])->name('discounts.index');
@@ -269,7 +280,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::post('/discounts', [DiscountController::class, 'store'])->name('discounts.store');
     Route::get('/discounts/{id}/edit', [DiscountController::class, 'edit'])->name('discounts.edit');
     Route::put('/discounts/{id}', [DiscountController::class, 'update'])->name('discounts.update');
-    Route::post('/discounts/bulk-delete', [DiscountController::class, 'bulkDelete'])->name('discounts.bulk_delete');
+    Route::post('/discounts/bulk-delete', [DiscountController::class, 'bulkDelete'])->name('discounts.bulk-delete');
     Route::delete('/discounts/{id}', [DiscountController::class, 'destroy'])->name('discounts.destroy');
 
 
@@ -281,8 +292,14 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
         Route::get('index', [CategoryController::class, 'index'])->name('category.Index');
         Route::get('create', [CategoryController::class, 'create'])->name('category.create');
         Route::post('store', [CategoryController::class, 'store'])->name('category.store');
-        Route::get('/category/{category}/edit', [CategoryController::class, 'Edit'])->name('category.edit');
-        Route::put('/category/{category}', [CategoryController::class, 'update'])->name('category.update');
+        Route::get('/bulk-delete', function () {
+            return redirect()->route('admin.category.Index');
+        });
+        Route::post('/bulk-delete', [CategoryController::class, 'bulkDelete'])->name('category.bulk-delete');
+        Route::get('/{category}/edit', [CategoryController::class, 'Edit'])->name('category.edit');
+        Route::put('/{category}', [CategoryController::class, 'update'])->name('category.update');
+        Route::delete('/{id}', [CategoryController::class, 'destroy'])->name('category.destroy');
+        // Legacy post delete
         Route::post('/delete', [CategoryController::class, 'destroy'])->name('category.Delete');
         // Route::delete('/delete/{category}',[CategoryController::class,'approved'])->name('category.Delete');
     });
@@ -328,14 +345,20 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
         Route::post('bulk-delete', [GroupController::class, 'productTablebulkDelete'])->name('producttable.bulk-delete');
     });
 
+    // Product Tags
     Route::group(['prefix' => 'product-tags'], function () {
         Route::get('index', [ProductTagConntroller::class, 'Index'])->name('producttags.Index');
+        Route::get('bulk-delete', function () {
+             return redirect()->route('admin.producttags.Index');
+        });
+        Route::post('bulk-delete', [ProductTagConntroller::class, 'bulkDelete'])->name('producttags.bulk-delete');
         Route::get('create', [ProductTagConntroller::class, 'create'])->name('producttags.create');
         Route::post('store', [ProductTagConntroller::class, 'store'])->name('producttags.store');
         Route::get('/{id}/edit', [ProductTagConntroller::class, 'Edit'])->name('producttags.edit');
         Route::put('/{id}', [ProductTagConntroller::class, 'update'])->name('producttags.update');
+        Route::delete('/{id}', [ProductTagConntroller::class, 'destroy'])->name('producttags.destroy'); // Standardized RESTful route
+        // Backward compatibility if needed
         Route::post('/delete', [ProductTagConntroller::class, 'destroy'])->name('producttags.Delete');
-        Route::post('bulk-delete', [ProductTagConntroller::class, 'bulkDelete'])->name('producttags.bulk-delete');
     });
 
     // Route::group(['prefix' => 'product-taxes'], function () {
@@ -387,7 +410,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
         Route::post('/store', [ProductCollectionController::class, 'store'])->name('collections.store');
         Route::get('/{id}/edit', [ProductCollectionController::class, 'edit'])->name('collections.edit');
         Route::put('/{id}', [ProductCollectionController::class, 'update'])->name('collections.update');
-        Route::post('/delete', [ProductCollectionController::class, 'destroy'])->name('collections.delete');
+        Route::delete('/{id}', [ProductCollectionController::class, 'destroy'])->name('collections.destroy');
         Route::post('/bulk-delete', [ProductCollectionController::class, 'bulkDelete'])->name('collections.bulk-delete');
     });
 
@@ -434,7 +457,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     });
 
     // Announcements Routes
-    Route::post('/announcements/bulk-delete', [AnnouncementController::class, 'bulkDelete'])->name('announcements.bulk_delete');
+    Route::post('/announcements/bulk-delete', [AnnouncementController::class, 'bulkDelete'])->name('announcements.bulk-delete');
     Route::resource('announcements', AnnouncementController::class);
 
 
@@ -447,6 +470,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
         Route::get('vendors/{id}/edit', [VendorController::class, 'edit'])->name('marketplace.vendors.edit');
         Route::put('vendors/{id}', [VendorController::class, 'update'])->name('marketplace.vendors.update');
         Route::delete('vendors/{id}', [VendorController::class, 'destroy'])->name('marketplace.vendors.destroy');
+        Route::post('vendors/bulk-delete', [VendorController::class, 'bulkDelete'])->name('marketplace.vendors.bulk-delete');
         Route::post('vendors/{id}/approve', [VendorController::class, 'approve'])->name('marketplace.vendors.approve');
         Route::post('vendors/{id}/check-kyc', [VendorController::class, 'checkKycStatus'])->name('marketplace.vendors.check-kyc');
         Route::get('unverified-vendors', [VendorController::class,'unverifiedVendors'])->name('marketplace.unverified-vendors');
@@ -458,8 +482,10 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
         Route::put('stores/{store}', [AdminStoreController::class, 'update'])->name('marketplace.store.update');
 
         Route::delete('stores/{store}', [AdminStoreController::class, 'destroy'])->name('marketplace.store.destroy');
+        Route::post('stores/bulk-delete', [AdminStoreController::class, 'bulkDelete'])->name('marketplace.store.bulk-delete');
         Route::post('stores/{store}/verify', [AdminStoreController::class, 'verify'])->name('marketplace.store.verify');
-        Route::delete('messages/{id}', [VendorController::class, 'destroyMessage'])->name('marketplace.vendors.destroy-message');
+        Route::delete('messages/{id}', [VendorController::class, 'destroyMessage'])->name('marketplace.messages.destroy');
+        Route::post('messages/bulk-delete', [VendorController::class, 'bulkDeleteMessages'])->name('marketplace.messages.bulk-delete');
     });
 
 
@@ -477,9 +503,14 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('blog/posts/{post}/edit', [PostController::class, 'edit'])->name('blog.posts.edit');
     Route::put('blog/posts/{post}', [PostController::class, 'update'])->name('blog.posts.update');
     Route::delete('blog/posts/{post}', [PostController::class, 'destroy'])->name('blog.posts.destroy');
+    Route::post('blog/posts/bulk-delete', [PostController::class, 'bulkDelete'])->name('blog.posts.bulk-delete');
 
     // Blog Categories
     Route::get('blog/categories', [BlogCategoryController::class, 'index'])->name('blog.categories.index');
+    Route::get('blog/categories/bulk-delete', function () {
+        return redirect()->route('admin.blog.categories.index');
+    });
+    Route::post('blog/categories/bulk-delete', [BlogCategoryController::class, 'bulkDelete'])->name('blog.categories.bulk-delete');
     Route::post('blog/categories', [BlogCategoryController::class, 'store'])->name('blog.categories.store');
     Route::get('blog/categories/{category}/edit', [BlogCategoryController::class, 'edit'])->name('blog.categories.edit');
     Route::put('blog/categories/{category}', [BlogCategoryController::class, 'update'])->name('blog.categories.update');
@@ -492,7 +523,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('blog/tags/{tag}/edit', [TagController::class, 'edit'])->name('blog.tags.edit');
     Route::put('blog/tags/{tag}', [TagController::class, 'update'])->name('blog.tags.update');
     Route::delete('blog/tags/{tag}', [TagController::class, 'destroy'])->name('blog.tags.destroy');
-    Route::post('blog/tags/bulk-delete', [TagController::class, 'bulkDelete'])->name('blog.tags.bulk_delete');
+    Route::post('blog/tags/bulk-delete', [TagController::class, 'bulkDelete'])->name('blog.tags.bulk-delete');
 
 
     // Route::resource('customers', AdminCustomerController::class);
@@ -504,7 +535,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::put('customers/{id}', [AdminCustomerController::class, 'update'])->name('customers.update');
     Route::get('customers/{id}', [AdminCustomerController::class, 'show'])->name('customers.show');
     Route::delete('customers/{id}', [AdminCustomerController::class, 'destroy'])->name('customers.destroy');
-    Route::post('customers/bulk-delete', [AdminCustomerController::class, 'bulkDestroy'])->name('customers.bulk_delete');
+    Route::post('customers/bulk-delete', [AdminCustomerController::class, 'bulkDelete'])->name('customers.bulk-delete');
 
     Route::post('customers/{id}/addresses', [AdminCustomerController::class, 'storeAddress'])->name('customers.addresses.store');
     Route::delete('customers/addresses/{address_id}', [AdminCustomerController::class, 'destroyAddress'])->name('customers.addresses.destroy');

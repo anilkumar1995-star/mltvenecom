@@ -1,8 +1,9 @@
 @extends('admin-layouts.app')
-@section('title','Product Tags')
-@section('content')
+@section('title', 'Product Tags')
 
+@section('content')
 <div class="page-wrapper">
+    {{-- Page Header --}}
     <div class="page-header d-print-none">
         <div class="container-xl">
             <div class="row g-2 align-items-center">
@@ -11,14 +12,13 @@
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item">
-                                    <a class="mb-0 d-inline-block fs-6 lh-1" href="{{ route('home') }}">Dashboard</a>
+                                    <a class="mb-0 d-inline-block fs-6 lh-1" href="{{ route('admin.dashboard') }}">Dashboard</a>
                                 </li>
                                 <li class="breadcrumb-item">
-                                    <h1 class="mb-0 d-inline-block fs-6 lh-1">Ecommerce</h1>
+                                    <a class="mb-0 d-inline-block fs-6 lh-1" href="#">Ecommerce</a>
                                 </li>
-                                <li class="breadcrumb-item active" href="{{ route('admin.producttags.Index') }}"
-                                    aria-current="page">
-                                    <h1 class="mb-0 d-inline-block fs-6 lh-1">Product tags</h1>
+                                <li class="breadcrumb-item active" aria-current="page">
+                                    <h1 class="mb-0 d-inline-block fs-6 lh-1">Product Tags</h1>
                                 </li>
                             </ol>
                         </nav>
@@ -30,252 +30,154 @@
 
     <main class="page-body page-content">
         <div class="container-xl">
-            <div id="filter-section" class="card mb-3" style="display: none;">
-                <div class="card-body">
-                    <form action="{{ route('admin.producttags.Index') }}" method="GET" class="row g-3">
-                        <div class="col-md-4">
-                            <label class="form-label">Search Name</label>
-                            <input type="text" name="search" class="form-control" placeholder="Search by name..." value="{{ request('search') }}">
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Status</label>
-                            <select name="status" class="form-select">
-                                <option value="">All Statuses</option>
-                                <option value="published" {{ request('status') == 'published' ? 'selected' : '' }}>Published</option>
-                                <option value="draft" {{ request('status') == 'draft' ? 'selected' : '' }}>Draft</option>
-                                <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
-                            </select>
-                        </div>
-                        <div class="col-md-4 d-flex align-items-end">
-                            <button type="submit" class="btn btn-primary me-2">Apply Filters</button>
-                            <a href="{{ route('admin.producttags.Index') }}" class="btn btn-light">Reset</a>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="table-wrapper">
-                <div class="card has-actions">
-                    <div class="card-header">
-                        <div class="w-100 justify-content-between d-flex flex-wrap align-items-center gap-1">
-                            <div class="d-flex flex-wrap flex-md-nowrap align-items-center gap-1">
-                                <div class="d-flex align-items-center gap-2">
-                                <div class="dropdown">
-                                    <button class="btn btn-light dropdown-toggle" type="button"
-                                        data-bs-toggle="dropdown" id="bulkActionsBtn">
-                                        Bulk Actions
-                                    </button>
-                                    <div class="dropdown-menu shadow-sm">
-                                        <div class="dropdown-submenu">
-                                            <a class="dropdown-item dropdown-toggle d-flex align-items-center justify-content-between"
-                                                href="javascript:void(0)">
-                                                Bulk changes
-                                                <i class="fas fa-chevron-right ms-2 small opa-5"></i>
-                                            </a>
-                                            <div class="dropdown-menu dropdown-menu-end shadow-sm submenu-nested">
-                                                <button class="dropdown-item bulk-change-item"
-                                                    data-key="name">Name</button>
-                                                <button class="dropdown-item bulk-change-item"
-                                                    data-key="status">Status</button>
-                                                <button class="dropdown-item bulk-change-item"
-                                                    data-key="created_at">Created At</button>
-                                            </div>
-                                        </div>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item text-danger d-flex align-items-center"
-                                            href="javascript:void(0)" id="bulkDeleteBtn">
-                                            <i class="fas fa-trash me-2"></i> Delete
+            {{-- Standard Filters --}}
+            @include('admin-layouts.partials.table-filters', [
+                'filterColumns' => $filterColumns
+            ])
+
+            <div class="card">
+                {{-- Create Button (must be BEFORE table-header include) --}}
+                @section('table_actions')
+                    <a href="{{ route('admin.producttags.create') }}" class="btn btn-primary d-flex align-items-center">
+                        <svg class="me-1" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 5v14" />
+                            <path d="M5 12h14" />
+                        </svg>
+                        Create
+                    </a>
+                @endsection
+
+                @include('admin-layouts.partials.table-header', [
+                    'bulkActions' => true,
+                    'tableId' => 'productTagsTable'
+                ])
+
+                <div class="card-table">
+                    <div class="table-responsive">
+                        <table class="table card-table table-vcenter table-hover datatable" id="productTagsTable">
+                            <thead>
+                                <tr>
+                                    <th width="40" class="text-center">
+                                        <input type="checkbox" class="form-check-input" id="check-all">
+                                    </th>
+                                    <th width="80">ID</th>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th width="120">Status</th>
+                                    <th width="150" class="text-center">Created At</th>
+                                    <th width="100" class="text-center">Operations</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($tags as $tag)
+                                <tr>
+                                    <td class="text-center">
+                                        <input type="checkbox" class="form-check-input bulk-checkbox" value="{{ $tag->id }}">
+                                    </td>
+                                    <td class="text-muted">{{ $tag->id }}</td>
+                                    <td>
+                                        <a href="{{ route('admin.producttags.edit', $tag->id) }}" class="fw-bold text-dark text-decoration-none">
+                                            {{ $tag->name }}
                                         </a>
-                                    </div>
-                                </div>
-
-                                <button class="btn btn-light" type="button" onclick="$('#filter-section').slideToggle()">
-                                    <i class="fas fa-filter me-1"></i> Filters
-                                </button>
-
-                                <div class="table-search-input">
-                                    <form action="{{ route('admin.producttags.Index') }}" method="GET">
-                                        <div class="input-group input-group-flat">
-                                            <input type="text" name="search" class="form-control ps-2"
-                                                placeholder="Search..." value="{{ request('search') }}">
-                                            <span class="input-group-text px-2">
-                                                <i class="fas fa-search text-muted"></i>
-                                            </span>
+                                    </td>
+                                    <td class="text-muted small">
+                                        {{ Str::limit($tag->description, 100) }}
+                                    </td>
+                                    <td>
+                                        @php
+                                            $statusClass = match(strtolower($tag->status)) {
+                                                'published' => 'bg-success text-success-fg',
+                                                'draft' => 'bg-warning text-warning-fg',
+                                                'pending' => 'bg-danger text-danger-fg',
+                                                default => 'bg-secondary text-secondary-fg'
+                                            };
+                                        @endphp
+                                        <span class="badge {{ $statusClass }}">
+                                            {{ ucwords($tag->status) }}
+                                        </span>
+                                    </td>
+                                    <td class="text-center text-muted small">
+                                        {{ is_string($tag->created_at) ? $tag->created_at : ($tag->created_at ? $tag->created_at->format('M d, Y') : 'N/A') }}
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="btn-group">
+                                            <a href="{{ route('admin.producttags.edit', $tag->id) }}" class="btn btn-sm btn-outline-info" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <button type="button" class="btn btn-sm btn-outline-danger delete-confirm-btn"
+                                                data-url="{{ route('admin.producttags.Delete') }}"
+                                                data-id="{{ $tag->id }}" title="Delete">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
                                         </div>
-                                    </form>
-                                </div>
-                            </div>
-
-                                <div class="table-search-input">
-                                    <form action="{{ route('admin.producttags.Index') }}" method="GET">
-                                        <input type="search" name="q" class="form-control input-sm"
-                                            placeholder="Search..." value="{{ request('q') }}" style="min-width: 120px">
-                                    </form>
-                                </div>
-                            </div>
-                            <div
-                                class="d-flex flex-column flex-sm-row align-items-stretch align-items-sm-center gap-1 table-action-buttons">
-                                <a href="{{ route('admin.producttags.create') }}" class="btn btn-primary">
-                                    <svg class="icon svg-icon-ti-ti-plus" xmlns="http://www.w3.org/2000/svg" width="24"
-                                        height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M12 5l0 14" />
-                                        <path d="M5 12l14 0" />
-                                    </svg>
-                                    <span class="ms-1">Create</span>
-                                </a>
-
-                                <button class="btn" type="button" onclick="location.reload()">
-                                    <svg class="icon icon-left svg-icon-ti-ti-refresh"
-                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round">
-                                        <path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" />
-                                        <path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" />
-                                    </svg>
-                                    Reload
-                                </button>
-                            </div>
-                        </div>
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="7" class="text-center py-4 text-muted">No product tags found.</td>
+                                </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
                     </div>
 
-                    <div class="card-table">
-                        <div class="table-responsive table-has-actions">
-                            <table class="table card-table table-vcenter table-hover datatable" id="myTable">
-                                <thead>
-                                    <tr>
-                                        <th width="40"><input class="form-check-input m-0 align-middle" id="checkAll"
-                                                type="checkbox"></th>
-                                        <th width="40" class="text-center">ID</th>
-                                        <th class="text-start">Name</th>
-                                        <th>Created At</th>
-                                        <th class="text-center">Status</th>
-                                        <th width="100" class="text-center">Operations</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse($tags as $row)
-                                    <tr>
-                                        <td><input type="checkbox" class="form-check-input row-checkbox"
-                                                value="{{ $row->id }}"></td>
-                                        <td class="text-center">{{ $loop->index + 1 }}</td>
-                                        <td class="text-start"><a
-                                                href="{{ route('admin.producttags.edit', $row->id) }}">{{ $row->name
-                                                }}</a></td>
-                                        <td>{{ $row->created_at }}</td>
-                                        <td class="text-center">
-                                            <span
-                                                class="badge {{ $row->status == 'published' ? 'bg-success text-success-fg' : 'bg-danger text-danger-fg' }} rounded-pill px-2">
-                                                {{ ucwords($row->status) }}
-                                            </span>
-                                        </td>
-                                        <td class="text-center">
-                                            <div class="btn-list flex-nowrap">
-                                                <a href="{{ route('admin.producttags.edit', $row->id) }}"
-                                                    class="btn btn-icon btn-primary btn-sm">
-                                                    <i class="fas fa-edit"></i>
-                                                </a>
-                                                <button onclick="deleteItem({{ $row->id }})"
-                                                    class="btn btn-icon btn-danger btn-sm">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    @empty
-                                    <tr>
-                                        <td colspan="6" class="text-center">No tags found.</td>
-                                    </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
+                    {{-- Pagination --}}
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        <div class="text-muted small">
+                            Showing {{ $tags->firstItem() ?? 0 }} to {{ $tags->lastItem() ?? 0 }} of {{ $tags->total() }} entries
+                        </div>
+                        <div>
+                            {{ $tags->appends(request()->query())->links() }}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </main>
+</div>
+@endsection
 
-    @endsection
+@push('scripts')
+@include('admin-layouts.partials.table-scripts', [
+    'tableId' => 'productTagsTable',
+    'bulkDeleteUrl' => route('admin.producttags.bulk-delete')
+])
+<script>
+    $(document).on('click', '.delete-confirm-btn', function(e) {
+        e.preventDefault();
+        let btn = $(this);
+        let id = btn.data('id');
+        let url = btn.data('url');
 
-    @push('scripts')
-    <script>
-    function deleteItem(id) {
         Swal.fire({
-            title: "Are you sure?",
-            text: "Do you really want to delete this product tag?",
-            icon: "warning",
+            title: 'Are you sure?',
+            text: "This action cannot be undone!",
+            icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: "Yes, delete it!",
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: '{{ route("admin.producttags.Delete") }}',
+                    url: url,
                     type: 'POST',
-                    data: { id: id, _token: '{{ csrf_token() }}' },
-                    success: function(res) {
-                        if (res.status) {
-                            Swal.fire('Deleted!', res.message, 'success').then(() => {
-                                location.reload();
+                    data: { _token: '{{ csrf_token() }}', id: id },
+                    success: function(response) {
+                        if (response.status || response.success) {
+                            Swal.fire('Deleted!', 'Product tag has been deleted.', 'success').then(() => {
+                                window.location.reload();
                             });
                         } else {
-                            Swal.fire('Error!', res.message, 'error');
+                            Swal.fire('Error!', response.message, 'error');
                         }
                     },
-                    error: function(xhr) {
-                        Swal.fire('Error!', 'Something went wrong on the server', 'error');
+                    error: function() {
+                        Swal.fire('Error!', 'Something went wrong.', 'error');
                     }
                 });
             }
         });
-    }
-
-    $(document).ready(function() {
-        // Bulk Delete Event
-        $(document).on('click', '#bulkDeleteBtn', function(e) {
-            e.preventDefault();
-            var ids = [];
-            $('.row-checkbox:checked').each(function() {
-                ids.push($(this).val());
-            });
-
-            if (ids.length === 0) {
-                Swal.fire('Error', 'Please select at least one item', 'error');
-                return;
-            }
-
-            Swal.fire({
-                title: "Are you sure?",
-                text: "You are about to delete " + ids.length + " items.",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Yes, delete them!",
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: '{{ route("admin.producttags.bulk-delete") }}',
-                        type: 'POST',
-                        data: { ids: ids, _token: '{{ csrf_token() }}' },
-                        success: function(res) {
-                            if (res.status) {
-                                Swal.fire('Deleted!', res.message, 'success').then(() => {
-                                    location.reload();
-                                });
-                            } else {
-                                Swal.fire('Error!', res.message, 'error');
-                            }
-                        },
-                        error: function(xhr) {
-                            Swal.fire('Error!', 'Something went wrong on the server', 'error');
-                        }
-                    });
-                }
-            });
-        });
-
-        // Check All functionality
-        $(document).on('change', '#checkAll', function() {
-            $('.row-checkbox').prop('checked', $(this).prop('checked'));
-        });
     });
-    </script>
-    @endpush
+</script>
+@endpush

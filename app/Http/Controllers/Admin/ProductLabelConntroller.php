@@ -21,8 +21,15 @@ class ProductLabelConntroller extends Controller
             $query->where('status', $request->status);
         }
 
-        $data['labels'] = $query->orderBy('id', 'desc')->get();
-        return view('admin-layouts.product.lables.index', $data);
+        $labels = $query->orderBy('id', 'desc')->paginate(15);
+
+        $filterColumns = [
+            'name'       => 'Name',
+            'status'     => 'Status',
+            'created_at' => 'Created At',
+        ];
+
+        return view('admin-layouts.product.lables.index', compact('labels', 'filterColumns'));
     }
 
     public function create()

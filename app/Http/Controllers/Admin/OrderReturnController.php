@@ -7,30 +7,41 @@ use App\Models\OrderReturn;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\OrderReturnsExport;
+use App\Helpers\TableHelpers;
 
 class OrderReturnController extends Controller
 {
-    public function index()
+
+    public function index(Request $request)
     {
-        $returns = OrderReturn::with(['order', 'user'])->orderBy('created_at', 'desc')->paginate(20);
-        return view('admin-layouts.order-returns.index', compact('returns'));
+        $query = OrderReturn::with(['order', 'user']);
+
+        TableHelpers::applyTableLogic($query, $request,
+            ['id', 'order_id', 'user.name', 'reason', 'return_status'],
+            ['id', 'order_id', 'return_status', 'created_at']
+        );
+
+        $returns = $query->orderBy('created_at', 'desc')->paginate(TableHelpers::getPerPage($request));
+        
+        $filterColumns = [
+            'id' => 'Return ID',
+            'order_id' => 'Order ID',
+            'reason' => 'Reason',
+            'return_status' => 'Return Status',
+            'created_at' => 'Created At'
+        ];
+
+        return view('admin-layouts.order-returns.index', compact('returns', 'filterColumns'));
     }
 
     public function destroy($id)
     {
-        $return = OrderReturn::findOrFail($id);
-        $return->delete();
-        return redirect()->back()->with('success', 'Order return request deleted successfully');
+        return TableHelpers::performDelete($id, OrderReturn::class, 'order return');
     }
 
     public function bulkDelete(Request $request)
     {
-        $ids = $request->ids;
-        if ($ids && is_array($ids)) {
-            OrderReturn::whereIn('id', $ids)->delete();
-            return response()->json(['success' => true, 'message' => 'Selected return requests deleted successfully']);
-        }
-        return response()->json(['success' => false, 'message' => 'No items selected'], 400);
+        return TableHelpers::performBulkDelete($request, OrderReturn::class, 'order returns');
     }
 
     public function export(Request $request)

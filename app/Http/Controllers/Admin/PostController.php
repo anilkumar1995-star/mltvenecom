@@ -8,22 +8,33 @@ use App\Models\Category;
 use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use App\Helpers\TableHelpers;
+use App\Helpers\ImageHelper;
+use Exception;
 
 class PostController extends Controller
 {
     public function index(Request $request)
     {
         $query = Post::with(['categories', 'author']);
-        
-        if ($request->has('search') && $request->search != '') {
-            $query->where('name', 'like', '%' . $request->search . '%');
-        }
-        
-        $posts = $query->orderBy('created_at', 'desc')->paginate(10);
-        return view('admin-layouts.blog.posts.index', compact('posts'));
+
+        TableHelpers::applyTableLogic($query, $request,
+            ['id', 'name', 'description'], // searchable
+            ['id', 'status', 'created_at']   // filterable
+        );
+
+        $posts = $query->orderBy('created_at', 'desc')->paginate(TableHelpers::getPerPage($request));
+
+        $filterColumns = [
+            'id' => 'ID',
+            'name' => 'Name',
+            'status' => 'Status',
+            'created_at' => 'Created At',
+        ];
+
+        return view('admin-layouts.blog.posts.index', compact('posts', 'filterColumns'));
     }
 
     public function create()
@@ -31,7 +42,7 @@ class PostController extends Controller
         $categories = Category::where('status', 'published')->orderBy('order', 'asc')->get();
         $tags = Tag::where('status', 'published')->orderBy('name', 'asc')->get();
         $authors = User::where('role', 'admin')->orderBy('name', 'asc')->get();
-        
+
         return view('admin-layouts.blog.posts.create', compact('categories', 'tags', 'authors'));
     }
 
@@ -46,96 +57,66 @@ class PostController extends Controller
             'image' => 'nullable|image|max:2048',
         ]);
 
-        $post = new Post($request->all());
-        $post->is_featured = $request->has('is_featured') ? 1 : 0;
-        
-        // Handle author
-        $post->author_type = 'Admin';
-        if ($request->filled('author_id')) {
-            $post->author_id = $request->author_id;
-        } elseif (auth()->check()) {
-            $post->author_id = auth()->id();
-        }
-        
-        // Handle image upload
-        if ($request->hasFile('image')) {
-            $upload = \App\Helpers\ImageHelper::imageUploadHelper('post_', $request->file('image'));
-            if ($upload['status']) {
-                $post->image = $upload['data']['target_file'];
+        try {
+            DB::beginTransaction();
+
+            $post = new Post($request->all());
+            $post->is_featured = $request->has('is_featured') ? 1 : 0;
+            $post->author_type = 'Admin';
+
+            if ($request->filled('author_id')) {
+                $post->author_id = $request->author_id;
+            } elseif (auth()->check()) {
+                $post->author_id = auth()->id();
             }
-        }
 
-        $post->save();
-
-        // Handle Slug
-        $slugKey = $request->input('slug') ?: Str::slug($post->name);
-        DB::table('slugs')->updateOrInsert(
-            ['reference_id' => $post->id, 'reference_type' => 'Botble\Blog\Models\Post'],
-            [
-                'key' => $slugKey,
-                'prefix' => 'blog',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]
-        );
-
-        // Handle SEO Meta
-        if ($request->has('seo_title') || $request->has('seo_description') || $request->hasFile('seo_image') || $request->has('seo_index')) {
-            $seoMeta = [
-                'seo_title' => $request->input('seo_title'),
-                'seo_description' => $request->input('seo_description'),
-                'seo_index' => $request->input('seo_index', 1),
-            ];
-
-            if ($request->hasFile('seo_image')) {
-                $upload = \App\Helpers\ImageHelper::imageUploadHelper('seo_', $request->file('seo_image'));
+            if ($request->hasFile('image')) {
+                $upload = ImageHelper::imageUploadHelper('post_', $request->file('image'));
                 if ($upload['status']) {
-                    $seoMeta['seo_image'] = $upload['data']['target_file'];
+                    $post->image = $upload['data']['target_file'];
                 }
             }
 
-            DB::table('meta_boxes')->updateOrInsert(
-                ['reference_id' => $post->id, 'reference_type' => 'Botble\Blog\Models\Post', 'meta_key' => 'seo_meta'],
-                ['meta_value' => json_encode($seoMeta), 'updated_at' => now()]
+            $post->save();
+
+            // Handle Slug
+            $slugKey = $request->input('slug') ?: Str::slug($post->name);
+            DB::table('slugs')->updateOrInsert(
+                ['reference_id' => $post->id, 'reference_type' => 'Botble\Blog\Models\Post'],
+                ['key' => $slugKey, 'prefix' => 'blog', 'created_at' => now(), 'updated_at' => now()]
             );
-        }
 
-        // Handle FAQ Schema
-        if ($request->has('faq_schema_config')) {
-            $faqConfig = array_values($request->input('faq_schema_config', []));
-            DB::table('meta_boxes')->updateOrInsert(
-                ['reference_id' => $post->id, 'reference_type' => 'Botble\Blog\Models\Post', 'meta_key' => 'faq_schema_config'],
-                ['meta_value' => json_encode($faqConfig), 'updated_at' => now()]
-            );
-        }
+            // Handle SEO & FAQ (Meta Boxes)
+            $this->saveMetaBoxes($post, $request);
 
-        // Sync Categories
-        if ($request->has('categories')) {
-            $post->categories()->sync($request->categories);
-        }
-
-        // Handle Tags
-        if ($request->filled('post_tags')) {
-            $tagNames = explode(',', $request->post_tags);
-            $tagIds = [];
-            foreach ($tagNames as $tagName) {
-                $tagName = trim($tagName);
-                if (empty($tagName)) continue;
-                
-                $tag = Tag::firstOrCreate(
-                    ['name' => $tagName],
-                    ['author_id' => $post->author_id, 'author_type' => 'Admin', 'status' => 'published']
-                );
-                $tagIds[] = $tag->id;
+            // Sync Categories
+            if ($request->has('categories')) {
+                $post->categories()->sync($request->categories);
             }
-            $post->tags()->sync($tagIds);
-        }
 
-        if ($request->has('save_and_exit')) {
-             return redirect()->route('admin.blog.posts.index')->with('success', 'Post created successfully.');
-        }
+            // Sync Tags
+            $this->syncTags($post, $request->post_tags);
 
-        return redirect()->route('admin.blog.posts.edit', $post->id)->with('success', 'Post created successfully.');
+            DB::commit();
+
+            if ($request->ajax()) {
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Post created successfully.',
+                    'redirect_url' => route('admin.blog.posts.index')
+                ]);
+            }
+
+            return redirect()->route($request->has('save_and_exit') ? 'admin.blog.posts.index' : 'admin.blog.posts.edit', $post->id)
+                             ->with('success', 'Post created successfully.');
+
+        } catch (Exception $e) {
+            DB::rollBack();
+            if ($request->ajax()) {
+                return response()->json(['status' => false, 'message' => $e->getMessage()], 500);
+            }
+            return back()->with('error', $e->getMessage())->withInput();
+        }
     }
 
     public function edit(Post $post)
@@ -143,35 +124,13 @@ class PostController extends Controller
         $categories = Category::where('status', 'published')->orderBy('order', 'asc')->get();
         $tags = Tag::where('status', 'published')->orderBy('name', 'asc')->get();
         $authors = User::where('role', 'admin')->orderBy('name', 'asc')->get();
-        
+
         $post->slug = DB::table('slugs')
             ->where('reference_id', $post->id)
             ->where('reference_type', 'Botble\Blog\Models\Post')
             ->value('key');
 
-        $seoMeta = DB::table('meta_boxes')
-            ->where('reference_id', $post->id)
-            ->where('reference_type', 'Botble\Blog\Models\Post')
-            ->where('meta_key', 'seo_meta')
-            ->value('meta_value');
-        
-        if ($seoMeta) {
-            $seoMeta = json_decode($seoMeta, true);
-            $post->seo_title = $seoMeta['seo_title'] ?? '';
-            $post->seo_description = $seoMeta['seo_description'] ?? '';
-            $post->seo_image = $seoMeta['seo_image'] ?? null;
-            $post->seo_index = $seoMeta['seo_index'] ?? 1;
-        }
-
-        $faqSchema = DB::table('meta_boxes')
-            ->where('reference_id', $post->id)
-            ->where('reference_type', 'Botble\Blog\Models\Post')
-            ->where('meta_key', 'faq_schema_config')
-            ->value('meta_value');
-        
-        if ($faqSchema) {
-            $post->faq_schema_config = json_decode($faqSchema, true);
-        }
+        $this->loadMetaBoxes($post);
 
         return view('admin-layouts.blog.posts.edit', compact('post', 'categories', 'tags', 'authors'));
     }
@@ -187,49 +146,109 @@ class PostController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $post->fill($request->all());
-        $post->is_featured = $request->has('is_featured') ? 1 : 0;
-        
-        if ($request->hasFile('image')) {
-            $upload = \App\Helpers\ImageHelper::imageUploadHelper('post_', $request->file('image'));
-            if ($upload['status']) {
-                $post->image = $upload['data']['target_file'];
+        try {
+            DB::beginTransaction();
+
+            $post->fill($request->all());
+            $post->is_featured = $request->has('is_featured') ? 1 : 0;
+
+            if ($request->hasFile('image')) {
+                $upload = ImageHelper::imageUploadHelper('post_', $request->file('image'));
+                if ($upload['status']) {
+                    $post->image = $upload['data']['target_file'];
+                }
             }
+
+            $post->save();
+
+            // Handle Slug
+            $slugKey = $request->input('slug') ?: Str::slug($post->name);
+            DB::table('slugs')->updateOrInsert(
+                ['reference_id' => $post->id, 'reference_type' => 'Botble\Blog\Models\Post'],
+                ['key' => $slugKey, 'prefix' => 'blog', 'updated_at' => now()]
+            );
+
+            // Meta Boxes
+            $this->saveMetaBoxes($post, $request);
+
+            // Sync Categories
+            $post->categories()->sync($request->categories ?? []);
+
+            // Sync Tags
+            $this->syncTags($post, $request->post_tags);
+
+            DB::commit();
+
+            if ($request->ajax()) {
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Post updated successfully.',
+                    'redirect_url' => route('admin.blog.posts.index')
+                ]);
+            }
+
+            return redirect()->route($request->has('save_and_exit') ? 'admin.blog.posts.index' : 'admin.blog.posts.edit', $post->id)
+                             ->with('success', 'Post updated successfully.');
+
+        } catch (Exception $e) {
+            DB::rollBack();
+            if ($request->ajax()) {
+                return response()->json(['status' => false, 'message' => $e->getMessage()], 500);
+            }
+            return back()->with('error', $e->getMessage())->withInput();
+        }
+    }
+
+    public function destroy($id)
+    {
+        return TableHelpers::performDelete($id, Post::class, 'Post');
+    }
+
+    public function bulkDelete(Request $request)
+    {
+        return TableHelpers::performBulkDelete($request, Post::class, 'Posts');
+    }
+
+    protected function syncTags($post, $tagString)
+    {
+        if (empty($tagString)) {
+            $post->tags()->detach();
+            return;
         }
 
-        $post->save();
+        $tagNames = explode(',', $tagString);
+        $tagIds = [];
+        foreach ($tagNames as $tagName) {
+            $tagName = trim($tagName);
+            if (empty($tagName)) continue;
 
-        // Handle Slug
-        $slugKey = $request->input('slug') ?: Str::slug($post->name);
-        DB::table('slugs')->updateOrInsert(
-            ['reference_id' => $post->id, 'reference_type' => 'Botble\Blog\Models\Post'],
-            [
-                'key' => $slugKey,
-                'prefix' => 'blog',
-                'updated_at' => now(),
-            ]
-        );
+            $tag = Tag::firstOrCreate(
+                ['name' => $tagName],
+                ['author_id' => $post->author_id, 'author_type' => 'Admin', 'status' => 'published']
+            );
+            $tagIds[] = $tag->id;
+        }
+        $post->tags()->sync($tagIds);
+    }
 
-        // Handle SEO Meta
-        if ($request->has('seo_title') || $request->has('seo_description') || $request->hasFile('seo_image') || $request->has('seo_index')) {
-            // Fetch existing meta to preserve SEO image if not updated
-            $existingMetaValue = DB::table('meta_boxes')
-                ->where('reference_id', $post->id)
-                ->where('reference_type', 'Botble\Blog\Models\Post')
-                ->where('meta_key', 'seo_meta')
+    protected function saveMetaBoxes($post, $request)
+    {
+        // SEO
+        if ($request->has(['seo_title', 'seo_description'])) {
+            $existingMeta = DB::table('meta_boxes')
+                ->where(['reference_id' => $post->id, 'reference_type' => 'Botble\Blog\Models\Post', 'meta_key' => 'seo_meta'])
                 ->value('meta_value');
-            
-            $existingMeta = $existingMetaValue ? json_decode($existingMetaValue, true) : [];
+            $existingData = $existingMeta ? json_decode($existingMeta, true) : [];
 
             $seoMeta = [
                 'seo_title' => $request->input('seo_title'),
                 'seo_description' => $request->input('seo_description'),
                 'seo_index' => $request->input('seo_index', 1),
-                'seo_image' => $existingMeta['seo_image'] ?? null,
+                'seo_image' => $existingData['seo_image'] ?? null,
             ];
 
             if ($request->hasFile('seo_image')) {
-                $upload = \App\Helpers\ImageHelper::imageUploadHelper('seo_', $request->file('seo_image'));
+                $upload = ImageHelper::imageUploadHelper('seo_', $request->file('seo_image'));
                 if ($upload['status']) {
                     $seoMeta['seo_image'] = $upload['data']['target_file'];
                 }
@@ -241,51 +260,32 @@ class PostController extends Controller
             );
         }
 
-        // Handle FAQ Schema
+        // FAQ
         if ($request->has('faq_schema_config')) {
-            $faqConfig = array_values($request->input('faq_schema_config', []));
             DB::table('meta_boxes')->updateOrInsert(
                 ['reference_id' => $post->id, 'reference_type' => 'Botble\Blog\Models\Post', 'meta_key' => 'faq_schema_config'],
-                ['meta_value' => json_encode($faqConfig), 'updated_at' => now()]
+                ['meta_value' => json_encode(array_values($request->input('faq_schema_config'))), 'updated_at' => now()]
             );
         }
-
-        // Sync Categories
-        if ($request->has('categories')) {
-            $post->categories()->sync($request->categories);
-        } else {
-            $post->categories()->detach();
-        }
-
-        // Handle Tags
-        if ($request->filled('post_tags')) {
-            $tagNames = explode(',', $request->post_tags);
-            $tagIds = [];
-            foreach ($tagNames as $tagName) {
-                $tagName = trim($tagName);
-                if (empty($tagName)) continue;
-                
-                $tag = Tag::firstOrCreate(
-                    ['name' => $tagName],
-                    ['author_id' => $post->author_id, 'author_type' => 'Admin', 'status' => 'published']
-                );
-                $tagIds[] = $tag->id;
-            }
-            $post->tags()->sync($tagIds);
-        } else {
-            $post->tags()->detach();
-        }
-
-        if ($request->has('save_and_exit')) {
-             return redirect()->route('admin.blog.posts.index')->with('success', 'Post updated successfully.');
-        }
-
-        return redirect()->route('admin.blog.posts.edit', $post->id)->with('success', 'Post updated successfully.');
     }
 
-    public function destroy(Post $post)
+    protected function loadMetaBoxes($post)
     {
-        $post->delete();
-        return response()->json(['success' => true, 'message' => 'Post deleted successfully.']);
+        $meta = DB::table('meta_boxes')
+            ->where('reference_id', $post->id)
+            ->where('reference_type', 'Botble\Blog\Models\Post')
+            ->pluck('meta_value', 'meta_key');
+
+        if (isset($meta['seo_meta'])) {
+            $seo = json_decode($meta['seo_meta'], true);
+            $post->seo_title = $seo['seo_title'] ?? '';
+            $post->seo_description = $seo['seo_description'] ?? '';
+            $post->seo_image = $seo['seo_image'] ?? null;
+            $post->seo_index = $seo['seo_index'] ?? 1;
+        }
+
+        if (isset($meta['faq_schema_config'])) {
+            $post->faq_schema_config = json_decode($meta['faq_schema_config'], true);
+        }
     }
 }

@@ -6,30 +6,41 @@ use App\Http\Controllers\Controller;
 use App\Models\EcProductTag;
 use App\Models\EcProductTagTranslation;
 
+use App\Helpers\TableHelpers;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ProductTagConntroller extends Controller
 {
+    public function destroy($id)
+    {
+        return TableHelpers::performDelete($id, EcProductTag::class);
+    }
+
+    public function bulkDelete(Request $request)
+    {
+        return TableHelpers::performBulkDelete($request, EcProductTag::class);
+    }
     public function Index(Request $request)
     {
         $query = EcProductTag::query();
 
-        if ($request->has('search') && $request->search != '') {
-            $query->where('name', 'like', '%' . $request->search . '%');
-        }
+        TableHelpers::applyTableLogic($query, $request,
+            ['id', 'name', 'description'],
+            ['id', 'status', 'created_at']
+        );
 
-        if ($request->has('q') && $request->q != '') {
-            $query->where('name', 'like', '%' . $request->q . '%');
-        }
+        $tags = $query->orderBy('id', 'desc')->paginate(TableHelpers::getPerPage($request));
 
-        if ($request->has('status') && $request->status != '') {
-            $query->where('status', $request->status);
-        }
+        $filterColumns = [
+            'id' => 'ID',
+            'name' => 'Name',
+            'status' => 'Status',
+            'created_at' => 'Created At',
+        ];
 
-        $data['tags'] = $query->orderBy('id', 'desc')->get();
-        return view('admin-layouts.product.product-tags.index', $data);
+        return view('admin-layouts.product.product-tags.index', compact('tags', 'filterColumns'));
     }
 
     public function create()
@@ -106,52 +117,4 @@ class ProductTagConntroller extends Controller
         }
     }
 
-    public function destroy(Request $request)
-    {
-        try {
-            DB::beginTransaction();
-
-            $id = $request->id;
-            DB::table('ec_product_tag_products')->where('tag_id', $id)->delete();
-            $tag = EcProductTag::findOrFail($id);
-            $tag->delete();
-
-            DB::commit();
-
-            return response()->json([
-                'status' => true,
-                'message' => 'Product tag deleted successfully.'
-            ]);
-        } catch (Exception $e) {
-            DB::rollBack();
-            return response()->json([
-                'status' => false,
-                'message' => 'Something went wrong: ' . $e->getMessage()
-            ], 500);
-        }
-    }
-
-    public function bulkDelete(Request $request)
-    {
-        try {
-            DB::beginTransaction();
-
-            $ids = $request->ids;
-            DB::table('ec_product_tag_products')->whereIn('tag_id', $ids)->delete();
-            EcProductTag::whereIn('id', $ids)->delete();
-
-            DB::commit();
-
-            return response()->json([
-                'status' => true,
-                'message' => 'Selected product tags deleted successfully.'
-            ]);
-        } catch (Exception $e) {
-            DB::rollBack();
-            return response()->json([
-                'status' => false,
-                'message' => 'Something went wrong: ' . $e->getMessage()
-            ], 500);
-        }
-    }
 }

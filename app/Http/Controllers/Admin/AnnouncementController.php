@@ -7,18 +7,29 @@ use App\Models\Announcement;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Helpers\TableHelpers;
 
 class AnnouncementController extends Controller
 {
     public function index(Request $request)
     {
-        $announcements = Announcement::orderBy('id', 'desc')->paginate(10);
-        
-        if ($request->ajax()) {
-            return view('admin-layouts.announcements.table', compact('announcements'))->render();
-        }
+        $query = Announcement::query();
 
-        return view('admin-layouts.announcements.index', compact('announcements'));
+        TableHelpers::applyTableLogic($query, $request,
+            ['id', 'name', 'content'], // Searchable
+            ['id', 'name', 'is_active', 'created_at'] // Filterable
+        );
+
+        $announcements = $query->orderBy('id', 'desc')->paginate(TableHelpers::getPerPage($request));
+
+        $filterColumns = [
+            'id'         => 'ID',
+            'name'       => 'Name',
+            'is_active'  => 'Is Active',
+            'created_at' => 'Created At',
+        ];
+
+        return view('admin-layouts.announcements.index', compact('announcements', 'filterColumns'));
     }
 
     public function create()
@@ -111,58 +122,13 @@ class AnnouncementController extends Controller
         }
     }
 
-    public function destroy(Request $request, $id = null)
+    public function destroy($id)
     {
-        try {
-            DB::beginTransaction();
-            $itemId = $request->id ?? $id;
-            $announcement = Announcement::findOrFail($itemId);
-            $announcement->delete();
-            DB::commit();
-
-            if ($request->ajax()) {
-                return response()->json([
-                    'status' => true,
-                    'message' => 'Announcement deleted successfully.'
-                ]);
-            }
-            return back()->with('success', 'Announcement deleted successfully.');
-        } catch (Exception $e) {
-            DB::rollBack();
-            if ($request->ajax()) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Something went wrong: ' . $e->getMessage()
-                ], 500);
-            }
-            return back()->with('error', 'Something went wrong: ' . $e->getMessage());
-        }
+        return TableHelpers::performDelete($id, Announcement::class, 'announcement');
     }
 
     public function bulkDelete(Request $request)
     {
-        try {
-            DB::beginTransaction();
-            if (!$request->ids || !is_array($request->ids)) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'No items selected.'
-                ], 400);
-            }
-
-            Announcement::whereIn('id', $request->ids)->delete();
-            DB::commit();
-
-            return response()->json([
-                'status' => true,
-                'message' => 'Selected announcements deleted successfully.'
-            ]);
-        } catch (Exception $e) {
-            DB::rollBack();
-            return response()->json([
-                'status' => false,
-                'message' => 'Something went wrong: ' . $e->getMessage()
-            ], 500);
-        }
+        return TableHelpers::performBulkDelete($request, Announcement::class, 'announcements');
     }
 }

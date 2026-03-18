@@ -1,84 +1,149 @@
 @extends('admin-layouts.app')
-@section('title','Product FAQs')
-@section('content')
+@section('title', 'Product FAQs')
 
+@section('content')
 <div class="page-wrapper">
     <div class="page-header d-print-none">
         <div class="container-xl">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('home') }}">Dashboard</a></li>
-                    <li class="breadcrumb-item">Ecommerce</li>
-                    <li class="breadcrumb-item active">FAQs</li>
-                </ol>
-            </nav>
+            <div class="row g-2 align-items-center text-uppercase">
+                <div class="col">
+                    <div class="page-pretitle">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a class="mb-0 d-inline-block fs-6 lh-1" href="{{ route('admin.dashboard') }}">Dashboard</a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <span class="mb-0 d-inline-block fs-6 lh-1 text-muted">Ecommerce</span>
+                                </li>
+                                <li class="breadcrumb-item active" aria-current="page">
+                                    <h1 class="mb-0 d-inline-block fs-6 lh-1 text-dark">FAQs</h1>
+                                </li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <main class="page-body page-content">
+    <main class="page-body page-content mt-0">
         <div class="container-xl">
-            <div class="card">
-                <div class="card-header">
-                    <div class="w-100 justify-content-between d-flex align-items-center">
-                        <h4 class="card-title mb-0">Product FAQs</h4>
-                        <a href="{{ route('admin.faqs.create') }}" class="btn btn-primary"><i class="fas fa-plus me-1"></i> Create</a>
-                    </div>
-                </div>
-                <div class="card-table">
+            {{-- Shared Filter Panel --}}
+            @include('admin-layouts.partials.table-filters', ['filterColumns' => $filterColumns])
+
+            <div class="card has-actions has-filter">
+                {{-- Create Button (must be BEFORE table-header include) --}}
+                @section('table_actions')
+                    <a href="{{ route('admin.faqs.create') }}" class="btn btn-primary d-flex align-items-center">
+                        <svg class="me-1" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 5v14" />
+                            <path d="M5 12h14" />
+                        </svg>
+                        Create
+                    </a>
+                @endsection
+
+                {{-- Shared Header --}}
+                @include('admin-layouts.partials.table-header', [
+                    'bulkActions' => true,
+                    'tableId'     => 'faqsTable'
+                ])
+
+                <div class="card-table mt-1">
                     <div class="table-responsive">
-                        <table class="table card-table table-vcenter table-hover">
-                            <thead>
+                        <table class="table card-table table-vcenter table-hover datatable" id="faqsTable">
+                            <thead class="bg-light text-uppercase">
                                 <tr>
-                                    <th width="40"><input class="form-check-input" id="checkAll" type="checkbox"></th>
-                                    <th width="40">ID</th>
-                                    <th>Question</th>
-                                    <th>Order</th>
-                                    <th class="text-center">Status</th>
-                                    <th width="100" class="text-center">Actions</th>
+                                    <th width="40" class="text-center">
+                                        <input type="checkbox" class="form-check-input" id="check-all">
+                                    </th>
+                                    <th width="50">ID</th>
+                                    <th>Question / Answer Preview</th>
+                                    <th width="80" class="text-center">Order</th>
+                                    <th width="120" class="text-center">Status</th>
+                                    <th width="150" class="text-center">Created At</th>
+                                    <th width="100" class="text-center">Operations</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse($faqs as $row)
                                 <tr>
-                                    <td><input type="checkbox" class="form-check-input row-checkbox" value="{{ $row->id }}"></td>
-                                    <td>{{ $loop->index + 1 }}</td>
-                                    <td><a href="{{ route('admin.faqs.edit', $row->id) }}">{{ Str::limit($row->question, 60) }}</a></td>
-                                    <td>{{ $row->order }}</td>
                                     <td class="text-center">
-                                                <span
-                                                    class="badge {{ $row->status == 'published' ? 'bg-success text-success-fg' : 'bg-secondary text-secondary-fg' }} rounded-pill px-2">
-                                                    {{ ucwords($row->status) }}
-                                                </span>
-                                            </td>
+                                        <input type="checkbox" class="form-check-input bulk-checkbox" value="{{ $row->id }}">
+                                    </td>
+                                    <td class="text-muted small">{{ $row->id }}</td>
+                                    <td>
+                                        <div class="d-flex flex-column">
+                                            <a href="{{ route('admin.faqs.edit', $row->id) }}" class="fw-bold text-dark text-decoration-none">
+                                                {{ Str::limit($row->question, 80) }}
+                                            </a>
+                                            <div class="small text-muted text-truncate" style="max-width: 400px;">
+                                                {{ strip_tags($row->answer) }}
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-center text-muted small">{{ $row->order }}</td>
                                     <td class="text-center">
-                                        <a href="{{ route('admin.faqs.edit', $row->id) }}" class="btn btn-icon btn-primary btn-sm"><i class="fas fa-edit"></i></a>
-                                        <button onclick="deleteItem({{ $row->id }})" class="btn btn-icon btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                                        @php
+                                            $statusClass = match(strtolower($row->status ?? '')) {
+                                                'published' => 'bg-success text-success-fg',
+                                                'draft'     => 'bg-secondary text-secondary-fg',
+                                                default     => 'bg-secondary text-secondary-fg'
+                                            };
+                                        @endphp
+                                        <span class="badge {{ $statusClass }} px-3 rounded-pill shadow-xs">
+                                            {{ ucwords($row->status ?? 'N/A') }}
+                                        </span>
+                                    </td>
+                                    <td class="text-center text-muted small">
+                                        {{ $row->created_at ? $row->created_at->format('M d, Y') : 'N/A' }}
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="btn-group">
+                                            <a href="{{ route('admin.faqs.edit', $row->id) }}" class="btn btn-sm btn-outline-info" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <button type="button" class="btn btn-sm btn-outline-danger delete-confirm-btn" 
+                                                data-url="{{ route('admin.faqs.delete') }}"
+                                                data-id="{{ $row->id }}"
+                                                title="Delete">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                                 @empty
-                                <tr><td colspan="6" class="text-center">No FAQs found.</td></tr>
+                                <tr>
+                                    <td colspan="7" class="text-center py-5 text-muted bg-white shadow-xs rounded-1">
+                                        No records found.
+                                    </td>
+                                </tr>
                                 @endforelse
                             </tbody>
                         </table>
+                    </div>
+
+                    {{-- Pagination --}}
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        <div class="text-muted small">
+                            Showing {{ $faqs->firstItem() ?? 0 }} to {{ $faqs->lastItem() ?? 0 }} of {{ $faqs->total() }} entries
+                        </div>
+                        <div>
+                            {{ $faqs->appends(request()->query())->links() }}
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </main>
-
+</div>
 @endsection
 
 @push('scripts')
-<script>
-function deleteItem(id) {
-    Swal.fire({title: "Are you sure?", icon: "warning", showCancelButton: true, confirmButtonText: "Yes, delete!"}).then((result) => {
-        if (result.isConfirmed) {
-            $.ajax({
-                url: '{{ route("admin.faqs.delete") }}', type: 'POST', data: { id: id, _token: '{{ csrf_token() }}' },
-                success: function(res) { if (res.status) Swal.fire('Deleted!', res.message, 'success').then(() => location.reload()); }
-            });
-        }
-    });
-}
-</script>
+    @include('admin-layouts.partials.table-scripts', [
+        'tableId'       => 'faqsTable',
+        'bulkDeleteUrl' => route('admin.faqs.bulk-delete')
+    ])
 @endpush

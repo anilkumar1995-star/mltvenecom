@@ -7,6 +7,7 @@ use App\Models\AppFaq;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Helpers\TableHelpers;
 
 class FaqController extends Controller
 {
@@ -14,16 +15,21 @@ class FaqController extends Controller
     {
         $query = AppFaq::query();
 
-        if ($request->has('search') && $request->search != '') {
-            $query->where('question', 'like', '%' . $request->search . '%');
-        }
+        TableHelpers::applyTableLogic($query, $request,
+            ['id', 'question', 'answer'],
+            ['id', 'status', 'created_at']
+        );
 
-        if ($request->has('status') && $request->status != '') {
-            $query->where('status', $request->status);
-        }
+        $faqs = $query->orderBy('id', 'desc')->paginate(TableHelpers::getPerPage($request));
+        
+        $filterColumns = [
+            'id' => 'ID',
+            'question' => 'Question',
+            'status' => 'Status',
+            'created_at' => 'Created At',
+        ];
 
-        $data['faqs'] = $query->orderBy('id', 'desc')->get();
-        return view('admin-layouts.product.faqs.index', $data);
+        return view('admin-layouts.product.faqs.index', compact('faqs', 'filterColumns'));
     }
 
     public function create()
@@ -51,23 +57,30 @@ class FaqController extends Controller
 
             DB::commit();
 
-            return response()->json([
-                'status' => true,
-                'message' => 'FAQ created successfully.'
-            ]);
+            if ($request->ajax()) {
+                return response()->json([
+                    'status' => true,
+                    'message' => 'FAQ created successfully.'
+                ]);
+            }
+
+            return redirect()->route('admin.faqs.index')->with('success', 'FAQ created successfully.');
         } catch (Exception $e) {
             DB::rollBack();
-            return response()->json([
-                'status' => false,
-                'message' => 'Something went wrong: ' . $e->getMessage()
-            ], 500);
+            if ($request->ajax()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Something went wrong: ' . $e->getMessage()
+                ], 500);
+            }
+            return back()->with('error', 'Something went wrong: ' . $e->getMessage())->withInput();
         }
     }
 
     public function edit($id)
     {
-        $data['faq'] = AppFaq::findOrFail($id);
-        return view('admin-layouts.product.faqs.edit', $data);
+        $faq = AppFaq::findOrFail($id);
+        return view('admin-layouts.product.faqs.edit', compact('faq'));
     }
 
     public function update(Request $request, $id)
@@ -91,58 +104,34 @@ class FaqController extends Controller
 
             DB::commit();
 
-            return response()->json([
-                'status' => true,
-                'message' => 'FAQ updated successfully.'
-            ]);
+            if ($request->ajax()) {
+                return response()->json([
+                    'status' => true,
+                    'message' => 'FAQ updated successfully.'
+                ]);
+            }
+
+            return redirect()->route('admin.faqs.index')->with('success', 'FAQ updated successfully.');
         } catch (Exception $e) {
             DB::rollBack();
-            return response()->json([
-                'status' => false,
-                'message' => 'Something went wrong: ' . $e->getMessage()
-            ], 500);
+            if ($request->ajax()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Something went wrong: ' . $e->getMessage()
+                ], 500);
+            }
+            return back()->with('error', 'Something went wrong: ' . $e->getMessage())->withInput();
         }
     }
 
-    public function destroy(Request $request)
+    public function destroy($id)
     {
-        try {
-            DB::beginTransaction();
-            $faq = AppFaq::findOrFail($request->id);
-            $faq->delete();
-            DB::commit();
-
-            return response()->json([
-                'status' => true,
-                'message' => 'FAQ deleted successfully.'
-            ]);
-        } catch (Exception $e) {
-            DB::rollBack();
-            return response()->json([
-                'status' => false,
-                'message' => 'Something went wrong: ' . $e->getMessage()
-            ], 500);
-        }
+        return TableHelpers::performDelete($id, AppFaq::class, 'FAQ');
     }
 
     public function bulkDelete(Request $request)
     {
-        try {
-            DB::beginTransaction();
-            AppFaq::whereIn('id', $request->ids)->delete();
-            DB::commit();
-
-            return response()->json([
-                'status' => true,
-                'message' => 'Selected FAQs deleted successfully.'
-            ]);
-        } catch (Exception $e) {
-            DB::rollBack();
-            return response()->json([
-                'status' => false,
-                'message' => 'Something went wrong: ' . $e->getMessage()
-            ], 500);
-        }
+        return TableHelpers::performBulkDelete($request, AppFaq::class, 'FAQs');
     }
 
     public function getAjaxFaqs(Request $request)

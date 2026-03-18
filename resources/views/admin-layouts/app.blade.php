@@ -71,6 +71,7 @@
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('vendor/core/packages/shortcode/css/shortcode.css?v=1.4.4') }}">
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('vendor/core/packages/seo-helper/css/seo-helper.css?v=1.4.4') }}">
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('vendor/core/plugins/faq/css/faq.css?v=1.4.4') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-notify@0.5.5/dist/simple-notify.min.css" />
 
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('js/vue.global.min.js') }}"></script>
@@ -118,7 +119,9 @@
         };
         window.Botble = {
             showNotice: function(type, message) {
-                if (typeof toastr !== 'undefined') {
+                if (typeof notify !== 'undefined') {
+                    notify(message, type);
+                } else if (typeof toastr !== 'undefined') {
                     toastr[type](message);
                 } else {
                     console.log(type + ': ' + message);

@@ -419,7 +419,34 @@
                             </div>
                             <div class="card meta-boxes"><div class="card-header"><h4 class="card-title"><label class="form-label" for="store_id">Store</label></h4></div><div class=" card-body"><select class="select-search-full form-select" data-placeholder="Select a store..." data-allow-clear="true" id="store_id-select" name="store_id">@foreach ($stores as $row)<option value="{{ $row->id }}" {{ $product->store_id == $row->id ? 'selected' : '' }}>{{ $row->name }}</option>@endforeach</select></div></div>
                             <div class="card meta-boxes"><div class="card-header"><h4 class="card-title"><label class="form-label" for="is_featured">Is featured?</label></h4></div><div class=" card-body"><label class="form-check form-switch d-inline-block "><input name="is_featured" type="hidden" value="0" /><input class="form-check-input" name="is_featured" type="checkbox" value="1" id="is_featured" {{ $product->is_featured ? 'checked' : '' }}/></label></div></div>
-                            <div class="card meta-boxes"><div class="card-header"><h4 class="card-title"><label class="form-label" for="is_new_until">New until</label></h4></div><div class=" card-body"><div class="input-group datepicker"><input class="form-control " placeholder="Y-m-d" readonly="readonly" name="is_new_until" type="text" id="is_new_until" value="{{ $product->is_new_until }}"><button class="btn btn-icon" type="button"><svg class="icon icon-left svg-icon-ti-ti-calendar" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12" /><path d="M16 3v4" /><path d="M8 3v4" /><path d="M4 11h16" /><path d="M11 15h1" /><path d="M12 15v3" /></svg></button></div></div></div>
+                            <div class="card meta-boxes">
+                                <div class="card-header">
+                                    <h4 class="card-title">
+                                        <label class="form-label" for="is_new_until">New until</label>
+                                    </h4>
+                                </div>
+                                <div class=" card-body">
+                                    <div class="input-group datepicker">
+                                        <input class="form-control" data-input placeholder="Y-m-d" readonly="readonly" name="is_new_until" type="text" id="is_new_until" value="{{ $product->is_new_until }}">
+                                        <button class="btn btn-icon" data-toggle type="button">
+                                            <svg class="icon icon-left svg-icon-ti-ti-calendar" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12" />
+                                                <path d="M16 3v4" />
+                                                <path d="M8 3v4" />
+                                                <path d="M4 11h16" />
+                                                <path d="M11 15h1" />
+                                                <path d="M12 15v3" />
+                                            </svg>
+                                        </button>
+                                        <button class="btn btn-icon text-danger" data-clear type="button">
+                                            <svg class="icon icon-left svg-icon-ti-ti-x" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M18 6l-12 12" />
+                                                <path d="M6 6l12 12" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
 
                             <div class="card meta-boxes"><div class="card-header"><h4 class="card-title"><label class="form-label">Categories</label></h4></div><div class="card-body"><div class="mb-3"><div class="input-icon"><input type="text" id="search-category-input" class="form-control" placeholder="Search..." onkeyup="filterCategories()" /><span class="input-icon-addon"><svg class="icon svg-icon-ti-ti-search" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" /></svg></span></div></div><div id="categories-tree"><ul class="list-unstyled">
                                 @foreach ($categories->where('parent_id', 0) as $parent)

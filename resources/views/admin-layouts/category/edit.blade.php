@@ -1,8 +1,6 @@
 @extends('admin-layouts.app')
 @section('title', 'Category Edit')
 @section('content')
-
-
     <div class="page-wrapper">
         <div class="page-header d-print-none">
             <div class="container-xl">
@@ -12,97 +10,130 @@
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item">
-                                        <a class="mb-0 d-inline-block fs-6 lh-1" href="{{ route('home') }}">Dashboard</a>
+                                        <a class="mb-0 d-inline-block fs-6 lh-1" href="{{ route('admin.dashboard') }}">Dashboard</a>
                                     </li>
                                     <li class="breadcrumb-item">
                                         <h1 class="mb-0 d-inline-block fs-6 lh-1">Ecommerce</h1>
                                     </li>
                                     <li class="breadcrumb-item active" aria-current="page">
-                                        <h1 class="mb-0 d-inline-block fs-6 lh-1">Create new product category
-                                        </h1>
+                                        <h1 class="mb-0 d-inline-block fs-6 lh-1">Edit product category</h1>
                                     </li>
                                 </ol>
                             </nav>
-
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
         <main class="page-body page-content">
             <div class="container-xl">
-                <form id="editcategoryForm" method="POST" action="{{ route('admin.category.update', $category) }}">
+                <form id="editcategoryForm" method="POST" action="{{ route('admin.category.update', $category) }}" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <div class="row">
-                        <div class="gap-3 col-md-9">
+                        <div class="col-md-9">
                             <div class="card mb-3">
                                 <div class="card-body">
                                     <div class="form-body">
-                                        <div class="mb-3 position-relative">
-                                            <label class="form-label" for="name">
-                                                Name
-                                            </label>
-                                            <input class="form-control" placeholder="Name" name="name" type="text"
-                                                id="editname" value="{{ old('name', $category->name) }}">
+                                        <div class="mb-3">
+                                            <label class="form-label required">Name</label>
+                                            <input type="text" name="name" id="name" value="{{ old('name', $category->name) }}"
+                                                class="form-control" placeholder="Name">
+                                            <div class="text-danger" id="name_errors"></div>
                                         </div>
-                                        <div class="mb-3 position-relative">
-                                            <label class="form-label" for="parent_id">
-                                                Parent
-                                            </label>
-                                            <select class="select-search-full form-select" data-allow-clear="false"
-                                                id="editparent_id" name="parent_id"
-                                                value="{{ old('parent_id', $category->parent_id) }}">
+
+                                        <div class="mb-3">
+                                            <label class="form-label">Parent</label>
+                                            <select name="parent_id" id="parent_id" class="form-select">
                                                 <option value="0">None</option>
+                                                @foreach ($categories as $row)
+                                                    <option value="{{ $row->id }}"
+                                                        {{ old('parent_id', $category->parent_id) == $row->id ? 'selected' : '' }}>
+                                                        {{ $row->name }}
+                                                    </option>
+                                                @endforeach
                                             </select>
+                                            <div class="text-danger" id="parent_id_errors"></div>
                                         </div>
+
                                         <div class="mb-3 position-relative">
-                                            <label class="form-label" for="description">
+                                            <label class="form-label required" for="description">
                                                 Description
                                             </label>
-                                            <div class="mb-2 btn-list"></div>
-                                            <textarea class="form-control form-control"rows="4"
-                                                placeholder="Write your content" with-short-code id="editdescription"
-                                                value="{{ old('description', $category->description) }}" name="description"></textarea>
+                                            <textarea class="form-control" rows="4"
+                                                placeholder="Write your content" id="description" name="description">{{ old('description', $category->description) }}</textarea>
+                                            <div class="text-danger" id="description_errors"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">Icons & Media</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Icon Class (e.g. ti ti-home)</label>
+                                            <input type="text" name="icon" class="form-control" placeholder="ti ti-box" value="{{ old('icon', $category->icon) }}">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Featured?</label>
+                                            <label class="form-check form-switch mt-2">
+                                                <input class="form-check-input" name="is_featured" type="checkbox" value="1" {{ old('is_featured', $category->is_featured) ? 'checked' : '' }}>
+                                                <span class="form-check-label">Is featured?</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Category Image</label>
+                                            @if($category->image)
+                                                <div class="mb-2">
+                                                    <img src="{{ $category->image ? (str_starts_with($category->image, 'http') ? $category->image : rtrim(\App\Helpers\ImageHelper::getImageUrl(), '/') . '/' . ltrim($category->image, '/')) : asset('home/placeholder.png') }}" alt="Category Image" style="height: 100px; object-fit: cover;" class="rounded border">
+                                                </div>
+                                            @endif
+                                            <input type="file" name="image" class="form-control" accept="image/*">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Icon Image</label>
+                                            @if($category->icon_image)
+                                                <div class="mb-2">
+                                                    <img src="{{ $category->icon_image ? (str_starts_with($category->icon_image, 'http') ? $category->icon_image : rtrim(\App\Helpers\ImageHelper::getImageUrl(), '/') . '/' . ltrim($category->icon_image, '/')) : asset('home/placeholder.png') }}" alt="Icon Image" style="height: 100px; object-fit: cover;" class="rounded border">
+                                                </div>
+                                            @endif
+                                            <input type="file" name="icon_image" class="form-control" accept="image/*">
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-md-3 gap-3 d-flex flex-column-reverse flex-md-column mb-md-0 mb-5">
-                            <div data-bb-waypoint data-bb-target="#form-actions"></div>
-                            <div class="card meta-boxes">
+                        <div class="col-md-3">
+                            <div class="card mb-3">
                                 <div class="card-header">
-                                    <h4 class="card-title">
-                                        <label class="form-label form-label required" for="status">
-                                            Status
-                                        </label>
-                                    </h4>
+                                    <h4 class="card-title">Status</h4>
                                 </div>
                                 <div class="card-body">
-                                    <select class="form-select" required="required" id="editstatus" name="status">
-                                        <option value="Pending"
-                                            {{ old('status', $category->status) == 'Pending' ? 'selected' : '' }}>Pending
-                                        </option>
-                                        <option value="Published"
-                                            {{ old('status', $category->status) == 'Published' ? 'selected' : '' }}>
-                                            Published</option>
+                                    <select class="form-select" name="status" id="status">
+                                        <option value="Published" {{ old('status', $category->status) == 'Published' ? 'selected' : '' }}>Published</option>
+                                        <option value="Pending" {{ old('status', $category->status) == 'Pending' ? 'selected' : '' }}>Pending</option>
                                     </select>
+                                    <div class="text-danger" id="status_errors"></div>
                                 </div>
                             </div>
+
                             <div class="card">
                                 <div class="card-header">
-                                    <h4 class="card-title">
-                                        Publish
-                                    </h4>
+                                    <h4 class="card-title">Publish</h4>
                                 </div>
-                                <div class="card-body">
-                                    <div class="btn-list">
-                                        <button class="btn btn-primary" type="submit">
-                                            Save
-                                        </button>
-                                    </div>
+                                <div class="card-body text-end">
+                                    <button class="btn btn-primary w-100" type="submit">
+                                        <i class="fa fa-save me-2"></i> Save Changes
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -110,85 +141,49 @@
                 </form>
             </div>
         </main>
-
+    </div>
 @endsection
+
 @push('scripts')
     <script>
         $(document).ready(function() {
-            $("#editcategoryForm").validate({
-                rules: {
-                    editname: {
-                        required: true,
-                    },
-                    editparent_id: {
-                        required: true,
-                    },
-                    editdescription : {
-                        required: true,
-                    },
-                    editstatus : {
-                        required: true,
-                    }
-                },
-                messages: {
-                    editname: {
-                        required: "Please Enter Name",
-                    },
-                    editparent_id: {
-                        required: "Please Select",
-                    },
-                    editdescription : {
-                        required: "Please Enter Description",
-                    },
-                    editstatus : {
-                        required: "Please Select Status",
-                    }
-                },
-                errorElement: "p",
-                errorPlacement: function(error, element) {
-                    if (element.prop("tagName").toLowerCase() === "select") {
-                        error.insertAfter(element.closest(".form-group").find(".select2"));
-                    } else {
-                        error.insertAfter(element);
-                    }
-                },
-               submitHandler: function(form) {
-                    form = $(form);
-                    form.ajaxSubmit({
-                        dataType: 'json',
-                        success: function(data) {
-                            $('.text-danger').html('');
-
-                            if (data.status === true) {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Success!',
-                                    text: data.message
-                                }).then(() => {
-                                    window.location.href = "{{ route('admin.category.Index') }}";
-                                });
-                            } else {
-                                $.each(data.errors, function(key, value) {
-                                    $('#' + key + '_errors').html(value[0]);
-                                });
-                            }
-                        },error: function(xhr) {
-                            $('.text-danger').html('');
-
-                            if (xhr.status === 422 && xhr.responseJSON.errors) {
-                                $.each(xhr.responseJSON.errors, function(key, value) {
-                                    $('#' + key + '_errors').html(value[0]);
-                                });
-                            } else {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Error',
-                                    text: 'Something went wrong!'
-                                });
-                            }
+            $("#editcategoryForm").on('submit', function(e) {
+                e.preventDefault();
+                let form = $(this);
+                let formData = new FormData(this);
+                
+                $.ajax({
+                    url: form.attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(data) {
+                        $('.text-danger').html('');
+                        if (data.status === true) {
+                            notify(data.message, 'success');
+                            setTimeout(() => {
+                                window.location.href = "{{ route('admin.category.Index') }}";
+                            }, 1000);
+                        } else {
+                            $.each(data.errors, function(key, value) {
+                                $('#' + key + '_errors').html(value[0]);
+                                notify(value[0], 'error');
+                            });
                         }
-                    });
-                }
+                    },
+                    error: function(xhr) {
+                        $('.text-danger').html('');
+                        if (xhr.status === 422 && xhr.responseJSON.errors) {
+                            $.each(xhr.responseJSON.errors, function(key, value) {
+                                $('#' + key + '_errors').html(value[0]);
+                            });
+                            notify('Validation Error', 'error');
+                        } else {
+                            notify('Something went wrong!', 'error');
+                        }
+                    }
+                });
             });
         });
     </script>
