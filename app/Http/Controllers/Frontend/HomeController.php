@@ -38,7 +38,6 @@ class HomeController extends Controller
             ->parent()
             ->featured()
             ->withCount('products')
-            ->take(8)
             ->get();
 
         $EcBrands = EcBrand::published()
@@ -65,7 +64,20 @@ class HomeController extends Controller
             ->with(['brand', 'categories'])
             ->orderBy('reviews_avg', 'desc')
             ->orderBy('reviews_count', 'desc')
-            ->take(8)
+            ->take(3)
+            ->get();
+
+        // Flash Sale
+        $flash_sale = \App\Models\FlashSale::where('status', 'published')
+            ->where('end_date', '>', now())
+            ->first();
+
+        // Testimonials (Recently High Rated Reviews)
+        $testimonials = \App\Models\Review::with('customer', 'product')
+            ->where('star', '>=', 4)
+            ->where('status', 'published')
+            ->latest()
+            ->take(5)
             ->get();
 
         return view('frontend.home', compact(
@@ -77,7 +89,9 @@ class HomeController extends Controller
             'EcBrands',
             'all_products',
             'trending_products',
-            'top_rated_products'
+            'top_rated_products',
+            'flash_sale',
+            'testimonials'
         ));
     }
 }

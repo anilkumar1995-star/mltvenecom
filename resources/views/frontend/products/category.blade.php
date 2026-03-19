@@ -235,16 +235,16 @@
                                                         <div class="">
                                                             <div class="tp-product-rating d-flex align-items-center mb-1">
                                                                 <div class="tp-product-rating-icon">
-                                                                    <div class="bb-product-rating"><span style="width: 100%;"></span></div>
+                                                                    <div class="bb-product-rating"><span style="width: {{ ($product->reviews_avg ?? 0) * 20 }}%;"></span></div>
                                                                 </div>
-                                                                <div class="tp-product-rating-text"><a href="{{ route('frontend.products.show', $product->slug ?: $product->id) }}#product-review">(10 reviews)</a></div>
+                                                                <div class="tp-product-rating-text"><a href="{{ route('frontend.products.show', $product->slug ?: $product->id) }}#review">({{ $product->reviews_count ?? 0 }} reviews)</a></div>
                                                             </div>
                                                             <div class="tp-product-price-wrapper-5">
                                                                 @if(method_exists($product, 'isOnSale') && $product->isOnSale())
-                                                                    <span class="tp-product-price-5 new-price">${{ number_format($product->sale_price, 2) }}</span>
-                                                                    <span class=""><small><del class="tp-product-price-5 old-price">${{ number_format($product->price, 2) }}</del></small></span>
+                                                                    <span class="tp-product-price-5 new-price">₹{{ number_format($product->sale_price, 2) }}</span>
+                                                                    <span class=""><small><del class="tp-product-price-5 old-price">₹{{ number_format($product->price, 2) }}</del></small></span>
                                                                 @else
-                                                                    <span class="tp-product-price-5 new-price">${{ number_format($product->price, 2) }}</span>
+                                                                    <span class="tp-product-price-5 new-price">₹{{ number_format($product->price, 2) }}</span>
                                                                 @endif
                                                             </div>
                                                         </div>

@@ -56,12 +56,11 @@
         <h3 class="tp-product-title-2">
             <a href="{{ route('frontend.products.show', $product->slug ?: $product->id) }}">{{ $product->name }}</a>
         </h3>
-        <div class="tp-product-rating-icon tp-product-rating-icon-2">
-            <span><i class="fas fa-star"></i></span>
-            <span><i class="fas fa-star"></i></span>
-            <span><i class="fas fa-star"></i></span>
-            <span><i class="fas fa-star"></i></span>
-            <span><i class="fas fa-star"></i></span>
+        <div class="tp-product-rating-icon tp-product-rating-icon-2 mb-5">
+            @for($i = 1; $i <= 5; $i++)
+                <span><i class="fas fa-star" style="color: {{ $i <= round($product->reviews_avg ?? 0) ? '#ffb21d' : '#d5d5d5' }}; font-size: 11px;"></i></span>
+            @endfor
+            <span class="ms-1 text-muted" style="font-size: 11px;">({{ $product->reviews_count ?? 0 }})</span>
         </div>
         <div class="tp-product-price-wrapper-2">
             <span class="tp-product-price-2 new-price">₹{{ number_format($product->price, 2) }}</span>
