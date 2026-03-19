@@ -46,6 +46,13 @@
             <a href="{{ route('frontend.products.show', $product->slug ?: $product->id) }}" title="{{ $product->name }}">{{ $product->name }}</a>
         </h3>
 
+        <div class="tp-product-rating-icon-2 mb-5">
+            @for($i = 1; $i <= 5; $i++)
+                <span><i class="fas fa-star" style="color: {{ $i <= round($product->reviews_avg ?? 0) ? '#ffb21d' : '#d5d5d5' }}; font-size: 11px;"></i></span>
+            @endfor
+            <span class="ms-1 text-muted" style="font-size: 11px;">({{ $product->reviews_count ?? 0 }})</span>
+        </div>
+
         <div class="tp-product-price-wrapper-5">
             <span class="tp-product-price-5 new-price">₹{{ number_format($product->price, 2) }}</span>
             @if($product->original_price > $product->price)

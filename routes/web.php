@@ -130,6 +130,10 @@ Route::name('frontend.')->group(function () {
     Route::post('/wishlist/toggle', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
 
+    // Reviews
+    Route::post('/reviews', [\App\Http\Controllers\Frontend\ReviewController::class, 'store'])->name('reviews.store');
+    Route::get('/reviews/ajax/{productId}', [\App\Http\Controllers\Frontend\ReviewController::class, 'ajaxReviews'])->name('reviews.ajax');
+
     // Checkout
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
     Route::post('/checkout/process', [CheckoutController::class, 'process'])->name('checkout.process');

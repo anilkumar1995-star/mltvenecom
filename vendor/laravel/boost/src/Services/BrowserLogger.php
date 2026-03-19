@@ -31,7 +31,7 @@ class BrowserLogger
     const logQueue = [];
     let flushTimeout = null;
 
-    console.log('🔍 Browser logger active (MCP server detected). Posting to: ' + ENDPOINT);
+    // console.log('🔍 Browser logger active (MCP server detected). Posting to: ' + ENDPOINT);
 
     // Store original console methods
     const originalConsole = {

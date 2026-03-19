@@ -15,15 +15,21 @@
             </div>
             <div class="p-3">
                 <h6 class="mb-2">{{ $product->name }}</h6>
+                <div class="tp-product-rating-icon-2 mb-2">
+                    @for($i = 1; $i <= 5; $i++)
+                        <span><i class="fas fa-star" style="color: {{ $i <= round($product->reviews_avg ?? 0) ? '#ffb21d' : '#d5d5d5' }}; font-size: 10px;"></i></span>
+                    @endfor
+                    <span class="ms-1 text-muted" style="font-size: 10px;">({{ $product->reviews_count ?? 0 }})</span>
+                </div>
                 @if($product->brand)
                     <small class="text-muted">{{ $product->brand->name }}</small>
                 @endif
                 <div class="mb-2">
                     @if($product->isOnSale())
-                        <span class="text-danger fw-bold">${{ number_format($product->sale_price, 2) }}</span>
-                        <span class="text-muted text-decoration-line-through ms-2">${{ number_format($product->price, 2) }}</span>
+                        <span class="text-danger fw-bold">₹{{ number_format($product->sale_price, 2) }}</span>
+                        <span class="text-muted text-decoration-line-through ms-2">₹{{ number_format($product->price, 2) }}</span>
                     @else
-                        <span class="fw-bold">${{ number_format($product->price, 2) }}</span>
+                        <span class="fw-bold">₹{{ number_format($product->price, 2) }}</span>
                     @endif
                 </div>
                 <div class="d-grid gap-2">

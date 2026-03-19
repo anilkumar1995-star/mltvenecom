@@ -19,8 +19,8 @@ class StoreController extends Controller
         $query = Store::query()->with('customer');
 
         TableHelpers::applyTableLogic($query, $request,
-            ['id', 'name', 'email', 'phone'],
-            ['id', 'status', 'is_verified', 'created_at']
+        ['id', 'name', 'email', 'phone'],
+        ['id', 'status', 'is_verified', 'created_at']
         );
 
         $stores = $query->orderBy('id', 'desc')->paginate(TableHelpers::getPerPage($request));
@@ -49,14 +49,15 @@ class StoreController extends Controller
 
     public function store(Request $request)
     {
+        // dd($request->all());
         $request->validate([
-            'name'        => 'required|max:191',
-            'slug'        => 'required|max:191|unique:mp_stores,slug',
-            'email'       => 'required|email|max:255',
-            'phone'       => 'required|max:20',
-            'status'      => 'required|in:published,draft,pending',
+            'name' => 'required|max:191',
+            'slug' => 'required|max:191|unique:mp_stores,slug',
+            'email' => 'required|email|max:255',
+            'phone' => 'required|max:20',
+            'status' => 'required|in:published,draft,pending',
             'customer_id' => 'required|exists:ec_customers,id',
-            'logo'        => 'nullable|image|max:2048',
+            'logo' => 'nullable|image|max:2048',
             'logo_square' => 'nullable|image|max:2048',
             'cover_image' => 'nullable|image|max:2048',
         ]);
@@ -69,7 +70,7 @@ class StoreController extends Controller
                 'company', 'tax_id', 'description', 'content', 'status', 'customer_id',
                 'social_links', 'zip_code'
             ]);
-            
+
             $data['seo_title'] = $request->input('seo_meta.seo_title');
             $data['seo_description'] = $request->input('seo_meta.seo_description');
             $data['seo_index'] = $request->input('seo_meta.index', 'index');
@@ -101,14 +102,15 @@ class StoreController extends Controller
 
             if ($request->ajax()) {
                 return response()->json([
-                    'status'  => true,
+                    'status' => true,
                     'message' => 'Store created successfully',
                     'redirect_url' => route('admin.marketplace.store.index')
                 ]);
             }
 
             return redirect()->route('admin.marketplace.store.index')->with('success', 'Store created successfully.');
-        } catch (Exception $e) {
+        }
+        catch (Exception $e) {
             DB::rollBack();
             if ($request->ajax()) {
                 return response()->json([
@@ -135,13 +137,13 @@ class StoreController extends Controller
         $store = Store::findOrFail($id);
 
         $request->validate([
-            'name'        => 'required|string|max:255',
-            'slug'        => 'required|max:191|unique:mp_stores,slug,' . $id,
-            'email'       => 'required|email',
-            'phone'       => 'required|string|max:20',
+            'name' => 'required|string|max:255',
+            'slug' => 'required|max:191|unique:mp_stores,slug,' . $id,
+            'email' => 'required|email',
+            'phone' => 'required|string|max:20',
             'customer_id' => 'required|exists:ec_customers,id',
-            'status'      => 'required',
-            'logo'        => 'nullable|image|max:2048',
+            'status' => 'required',
+            'logo' => 'nullable|image|max:2048',
             'logo_square' => 'nullable|image|max:2048',
             'cover_image' => 'nullable|image|max:2048',
         ]);
@@ -154,7 +156,7 @@ class StoreController extends Controller
                 'state', 'city', 'address', 'company', 'tax_id', 'status', 'customer_id',
                 'social_links', 'zip_code'
             ]);
-            
+
             $data['seo_title'] = $request->input('seo_meta.seo_title');
             $data['seo_description'] = $request->input('seo_meta.seo_description');
             $data['seo_index'] = $request->input('seo_meta.index', 'index');
@@ -193,7 +195,8 @@ class StoreController extends Controller
             }
 
             return redirect()->route('admin.marketplace.store.index')->with('success', 'Store updated successfully.');
-        } catch (Exception $e) {
+        }
+        catch (Exception $e) {
             DB::rollBack();
             if ($request->ajax()) {
                 return response()->json([
@@ -210,7 +213,7 @@ class StoreController extends Controller
         $store = Store::findOrFail($id);
         $store->load('customer');
         $store->loadCount('products');
-        
+
         $statements = \App\Models\Withdrawal::where('customer_id', $store->customer_id)
             ->orderBy('created_at', 'desc')
             ->paginate(10);
@@ -220,12 +223,12 @@ class StoreController extends Controller
 
     public function destroy($id)
     {
-        return TableHelpers::performDelete($id, Store::class, 'Store');
+        return TableHelpers::performDelete($id, Store::class , 'Store');
     }
 
     public function bulkDelete(Request $request)
     {
-        return TableHelpers::performBulkDelete($request, Store::class, 'Stores');
+        return TableHelpers::performBulkDelete($request, Store::class , 'Stores');
     }
 
     public function verify($id)
@@ -245,7 +248,8 @@ class StoreController extends Controller
                 'message' => 'Store verified successfully',
                 'reload' => true
             ]);
-        } catch (Exception $e) {
+        }
+        catch (Exception $e) {
             DB::rollBack();
             return response()->json([
                 'status' => false,

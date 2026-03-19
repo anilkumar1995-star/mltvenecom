@@ -97,10 +97,10 @@
                             @endif
                             <div class="mb-2">
                                 @if($product->isOnSale())
-                                    <span class="text-danger fw-bold">${{ number_format($product->sale_price, 2) }}</span>
-                                    <span class="text-muted text-decoration-line-through ms-2">${{ number_format($product->price, 2) }}</span>
+                                    <span class="text-danger fw-bold">₹{{ number_format($product->sale_price, 2) }}</span>
+                                    <span class="text-muted text-decoration-line-through ms-2">₹{{ number_format($product->price, 2) }}</span>
                                 @else
-                                    <span class="fw-bold">${{ number_format($product->price, 2) }}</span>
+                                    <span class="fw-bold">₹{{ number_format($product->price, 2) }}</span>
                                 @endif
                             </div>
                             <div class="d-grid gap-2">

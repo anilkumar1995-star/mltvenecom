@@ -36,10 +36,10 @@
 
         <div class="tp-product-sm-price-wrapper-5">
             @if($product->sale_price > 0 && $product->sale_price < $product->price)
-                <span class="tp-product-sm-price-5">${{ number_format($product->sale_price, 2) }}</span>
-                <span class="tp-product-sm-price-5 old-price">${{ number_format($product->price, 2) }}</span>
+                <span class="tp-product-sm-price-5">₹{{ number_format($product->sale_price, 2) }}</span>
+                <span class="tp-product-sm-price-5 old-price">₹{{ number_format($product->price, 2) }}</span>
             @else
-                <span class="tp-product-sm-price-5">${{ number_format($product->price, 2) }}</span>
+                <span class="tp-product-sm-price-5">₹{{ number_format($product->price, 2) }}</span>
             @endif
         </div>
     </div>

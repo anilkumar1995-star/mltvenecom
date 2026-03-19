@@ -144,6 +144,13 @@
         }
         .sticky-add-cart-bar.visible { bottom: 0; }
         .sticky-thumb { width: 60px; height: 60px; object-fit: cover; border-radius: 4px; border: 1px solid #e5e6e8; }
+
+        /* Review Form Stars */
+        .tp-product-details-review-form-rating-icon { display: flex; gap: 5px; color: #d5d5d5; cursor: pointer; font-size: 20px; }
+        .tp-product-details-review-form-rating-icon .star-item.active,
+        .tp-product-details-review-form-rating-icon .star-item:hover,
+        .tp-product-details-review-form-rating-icon .star-item.hover { color: #ffb21d; }
+        .tp-product-details-review-input-item textarea { width: 100%; height: 120px; border: 1px solid #e5e6e8; border-radius: 6px; padding: 15px; margin-bottom: 20px; }
     </style>
     @endpush
 
@@ -202,10 +209,10 @@
                         <div class="product__details-rating d-flex align-items-center mb-3">
                             <div class="rating-star me-2">
                                 @for($i = 1; $i <= 5; $i++)
-                                    <i class="{{ $i <= $product->reviews_avg ? 'fas' : 'far' }} fa-star text-warning"></i>
+                                    <i class="{{ $i <= round($product->reviews()->avg('star') ?? 0) ? 'fas' : 'far' }} fa-star text-warning"></i>
                                 @endfor
                             </div>
-                            <span class="text-muted">({{ $product->reviews_count }} Reviews)</span>
+                            <span class="text-muted">({{ $product->reviews()->count() }} Reviews)</span>
                         </div>
 
                         <div class="product__details-price">
@@ -400,7 +407,7 @@
                                 </div>
                                 <div class="tp-frequently-content">
                                     <h6 class="tp-frequently-title text-truncate" style="max-width: 150px;" title="{{ $product->name }}">{{ $product->name }}</h6>
-                                    <span class="tp-frequently-price">${{ number_format($product->price, 2) }}</span>
+                                    <span class="tp-frequently-price">₹{{ number_format($product->price, 2) }}</span>
                                 </div>
                             </div>
 
@@ -417,7 +424,7 @@
                                     </div>
                                     <div class="tp-frequently-content">
                                         <h6 class="tp-frequently-title text-truncate" style="max-width: 150px;" title="{{ $crossProduct->name }}">{{ $crossProduct->name }}</h6>
-                                        <span class="tp-frequently-price">${{ number_format($crossProduct->price, 2) }}</span>
+                                        <span class="tp-frequently-price">₹{{ number_format($crossProduct->price, 2) }}</span>
                                     </div>
                                 </div>
                                 
@@ -519,7 +526,7 @@
                                 <button class="nav-link" id="spec-tab" data-bs-toggle="tab" data-bs-target="#spec" type="button" role="tab" aria-controls="spec" aria-selected="false">Product Specification</button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="review-tab" data-bs-toggle="tab" data-bs-target="#review" type="button" role="tab" aria-controls="review" aria-selected="false">Reviews ({{ $product->reviews_count }})</button>
+                                <button class="nav-link" id="review-tab" data-bs-toggle="tab" data-bs-target="#review" type="button" role="tab" aria-controls="review" aria-selected="false">Reviews ({{ $product->reviews()->count() }})</button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="vendor-tab" data-bs-toggle="tab" data-bs-target="#vendor" type="button" role="tab" aria-controls="vendor" aria-selected="false">Vendor</button>
@@ -549,23 +556,63 @@
                                 </table>
                             </div>
                             <div class="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
-                                @foreach($product->reviews as $review)
-                                    <div class="mb-3 pb-3 border-bottom">
-                                        <div class="d-flex justify-content-between">
-                                            <strong>{{ $review->customer->name ?? 'Anonymous' }}</strong>
-                                            <small class="text-muted">{{ $review->created_at->format('M d, Y') }}</small>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="tp-product-details-review-statics mb-40">
+                                            <h4 class="tp-product-details-review-title mb-20">Customer Reviews</h4>
+                                            @foreach($product->reviews as $review)
+                                                <div class="mb-3 pb-3 border-bottom">
+                                                    <div class="d-flex justify-content-between">
+                                                        <strong>{{ $review->customer->name ?? 'Anonymous' }}</strong>
+                                                        <small class="text-muted">{{ $review->created_at->format('M d, Y') }}</small>
+                                                    </div>
+                                                    <div class="mb-2">
+                                                        @for($i = 1; $i <= 5; $i++)
+                                                            <i class="{{ $i <= $review->star ? 'fas' : 'far' }} fa-star text-warning"></i>
+                                                        @endfor
+                                                    </div>
+                                                    <p class="mb-0">{{ $review->comment }}</p>
+                                                </div>
+                                            @endforeach
+                                            @if($product->reviews->isEmpty())
+                                                <p class="text-muted">No reviews yet.</p>
+                                            @endif
                                         </div>
-                                        <div class="mb-2">
-                                            @for($i = 1; $i <= 5; $i++)
-                                                <i class="{{ $i <= $review->star ? 'fas' : 'far' }} fa-star text-warning"></i>
-                                            @endfor
-                                        </div>
-                                        <p class="mb-0">{{ $review->comment }}</p>
                                     </div>
-                                @endforeach
-                                @if($product->reviews->isEmpty())
-                                    <p class="text-muted">No reviews yet.</p>
-                                @endif
+                                    <div class="col-lg-6">
+                                        <div class="tp-product-details-review-form">
+                                            <h4 class="tp-product-details-review-title mb-20">Write a review</h4>
+                                            @auth('customer')
+                                                <form action="{{ route('frontend.reviews.store') }}" method="POST" id="review-form">
+                                                    @csrf
+                                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                                    <div class="tp-product-details-review-form-rating mb-20">
+                                                        <p class="mb-1">Your Rating <span class="text-danger">*</span></p>
+                                                        <div class="tp-product-details-review-form-rating-icon" id="star-rating-container">
+                                                            <input type="hidden" name="star" id="star-rating-input" value="5">
+                                                            @for($i = 1; $i <= 5; $i++)
+                                                                <span class="star-item active" data-value="{{ $i }}"><i class="fas fa-star"></i></span>
+                                                            @endfor
+                                                        </div>
+                                                    </div>
+                                                    <div class="tp-product-details-review-input-wrapper">
+                                                        <div class="tp-product-details-review-input-item">
+                                                            <p class="mb-1">Your Review <span class="text-danger">*</span></p>
+                                                            <textarea name="comment" id="review-comment" placeholder="Write your review here..." required></textarea>
+                                                        </div>
+                                                        <div class="tp-product-details-review-btn-wrapper">
+                                                            <button type="submit" class="tp-btn" id="submit-review-btn">Submit Review</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            @else
+                                                <div class="alert alert-info">
+                                                    Please <a href="{{ route('login') }}" class="fw-bold">Login</a> or <a href="{{ route('register') }}" class="fw-bold">Register</a> to write a review.
+                                                </div>
+                                            @endauth
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="tab-pane fade" id="vendor" role="tabpanel" aria-labelledby="vendor-tab">
                                 <p class="text-muted">Vendor information not available.</p>
@@ -714,6 +761,81 @@
                     }
                 }
             });
+
+            // Review Star Rating
+            const starItems = document.querySelectorAll('#star-rating-container .star-item');
+            const starInput = document.getElementById('star-rating-input');
+
+            starItems.forEach(item => {
+                item.addEventListener('mouseenter', function() {
+                    const value = parseInt(this.getAttribute('data-value'));
+                    starItems.forEach(star => {
+                        const starValue = parseInt(star.getAttribute('data-value'));
+                        if (starValue <= value) {
+                            star.classList.add('hover');
+                        } else {
+                            star.classList.remove('hover');
+                        }
+                    });
+                });
+
+                item.addEventListener('mouseleave', function() {
+                    starItems.forEach(star => star.classList.remove('hover'));
+                });
+
+                item.addEventListener('click', function() {
+                    const value = parseInt(this.getAttribute('data-value'));
+                    starInput.value = value;
+                    starItems.forEach(star => {
+                        const starValue = parseInt(star.getAttribute('data-value'));
+                        if (starValue <= value) {
+                            star.classList.add('active');
+                        } else {
+                            star.classList.remove('active');
+                        }
+                    });
+                });
+            });
+
+            // AJAX Review Submission
+            const reviewForm = document.getElementById('review-form');
+            if (reviewForm) {
+                reviewForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const submitBtn = document.getElementById('submit-review-btn');
+                    const originalText = submitBtn.innerText;
+                    submitBtn.innerText = 'Submitting...';
+                    submitBtn.disabled = true;
+
+                    const formData = new FormData(this);
+
+                    fetch(this.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status) {
+                            alert(data.message);
+                            location.reload();
+                        } else {
+                            alert(data.message || 'Something went wrong');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('An error occurred. Please try again.');
+                    })
+                    .finally(() => {
+                        submitBtn.innerText = originalText;
+                        submitBtn.disabled = false;
+                    });
+                });
+            }
         });
     </script>
     @endpush
