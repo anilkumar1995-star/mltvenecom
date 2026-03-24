@@ -30,168 +30,102 @@
 
     <main class="page-body page-content">
         <div class="container-xl">
-            <div class="table-wrapper">
-                <div class="card has-actions">
-                    <div class="card-header">
-                        <div class="w-100 justify-content-between d-flex flex-wrap align-items-center gap-1">
-                            <div class="d-flex flex-wrap flex-md-nowrap align-items-center gap-1">
-                                <div class="dropdown d-inline-block">
-                                    <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                                        Bulk Actions
-                                    </button>
-                                    <div class="dropdown-menu">
-                                        <button class="dropdown-item text-danger" onclick="bulkDelete()">
-                                            Delete
-                                        </button>
-                                    </div>
-                                </div>
+            @include('admin-layouts.partials.table-filters', ['filterColumns' => $filterColumns])
 
-                                <div class="table-search-input">
-                                    <form action="{{ route('admin.producttable.Index') }}" method="GET">
-                                        <input type="search" name="q" class="form-control input-sm" placeholder="Search..." value="{{ request('q') }}" style="min-width: 120px">
-                                    </form>
-                                </div>
-                            </div>
-                            <div class="d-flex flex-column flex-sm-row align-items-stretch align-items-sm-center gap-1 table-action-buttons">
-                                <a href="{{ route('admin.producttable.create') }}" class="btn btn-primary">
-                                    <svg class="icon svg-icon-ti-ti-plus" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M12 5l0 14" />
-                                        <path d="M5 12l14 0" />
-                                    </svg>
-                                    <span class="ms-1">Create</span>
-                                </a>
+            <div class="card has-actions has-filter">
+                @section('table_actions')
+                    <a href="{{ route('admin.producttable.create') }}" class="btn btn-primary d-flex align-items-center">
+                        <svg class="me-1" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 5v14" />
+                            <path d="M5 12h14" />
+                        </svg>
+                        Create
+                    </a>
+                @endsection
 
-                                <button class="btn" type="button" onclick="location.reload()">
-                                    <svg class="icon icon-left svg-icon-ti-ti-refresh" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" />
-                                        <path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" />
-                                    </svg>
-                                    Reload
-                                </button>
-                            </div>
-                        </div>
+                @include('admin-layouts.partials.table-header', [
+                    'bulkActions' => true,
+                    'tableId'     => 'specTables'
+                ])
+
+                <div class="card-table mt-1">
+                    <div class="table-responsive table-has-actions table-has-filter">
+                        <table class="table card-table table-vcenter table-hover datatable" id="specTables">
+                            <thead class="bg-light text-uppercase">
+                                <tr>
+                                    <th width="40" class="text-center">
+                                        <input type="checkbox" class="form-check-input" id="check-all">
+                                    </th>
+                                    <th width="50">ID</th>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th>Assigned Groups</th>
+                                    <th width="150" class="text-center">Created At</th>
+                                    <th width="100" class="text-end">Operations</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($tables as $table)
+                                <tr>
+                                    <td class="text-center">
+                                        <input type="checkbox" class="form-check-input bulk-checkbox" value="{{ $table->id }}">
+                                    </td>
+                                    <td class="text-muted small">{{ $table->id }}</td>
+                                    <td>
+                                        <a href="{{ route('admin.producttable.edit', $table->id) }}" class="fw-bold text-dark text-decoration-none">
+                                            {{ $table->name }}
+                                        </a>
+                                    </td>
+                                    <td>{{ $table->description }}</td>
+                                    <td>
+                                        @foreach($table->groups as $group)
+                                            <span class="badge bg-blue-lt">{{ $group->name }}</span>
+                                        @endforeach
+                                    </td>
+                                    <td class="text-center small">{{ $table->created_at }}</td>
+                                    <td class="text-end">
+                                        <div class="btn-group">
+                                            <a href="{{ route('admin.producttable.edit', $table->id) }}" class="btn btn-sm btn-outline-info" title="Edit">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                            <button type="button" class="btn btn-sm btn-outline-danger delete-confirm-btn" 
+                                                data-url="{{ route('admin.producttable.Delete', ['id' => $table->id]) }}"
+                                                title="Delete">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="7" class="text-center py-5 text-muted bg-white shadow-xs rounded-1">
+                                        No tables found.
+                                    </td>
+                                </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
                     </div>
 
-                    <div class="card-table">
-                        <div class="table-responsive table-has-actions">
-                            <table class="table card-table table-vcenter table-striped table-hover">
-                                <thead>
-                                    <tr>
-                                        <th width="40"><input class="form-check-input m-0 align-middle" id="checkAll" type="checkbox"></th>
-                                        <th width="40" class="text-center">ID</th>
-                                        <th class="text-start">Name</th>
-                                        <th>Description</th>
-                                        <th>Assigned Groups</th>
-                                        <th width="100">Created At</th>
-                                        <th width="100" class="text-center">Operations</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse($tables as $table)
-                                    <tr>
-                                        <td><input type="checkbox" class="form-check-input row-checkbox" value="{{ $table->id }}"></td>
-                                        <td class="text-center">{{ $loop->index + 1 }}</td>
-                                        <td class="text-start"><a href="{{ route('admin.producttable.edit', $table->id) }}">{{ $table->name }}</a></td>
-                                        <td>{{ $table->description }}</td>
-                                        <td>
-                                            @foreach($table->groups as $group)
-                                                <span class="badge bg-blue-lt">{{ $group->id }}</span>
-                                            @endforeach
-                                        </td>
-                                        <td>{{ $table->created_at }}</td>
-                                        <td class="text-center">
-                                            <div class="btn-list flex-nowrap">
-                                                <a href="{{ route('admin.producttable.edit', $table->id) }}" class="btn btn-icon btn-primary btn-sm">
-                                                    <i class="fas fa-edit"></i>
-                                                </a>
-                                                <button onclick="deleteItem({{ $table->id }})" class="btn btn-icon btn-danger btn-sm">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    @empty
-                                    <tr>
-                                        <td colspan="7" class="text-center">No tables found.</td>
-                                    </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        <div class="text-muted small">
+                            Showing {{ $tables->firstItem() ?? 0 }} to {{ $tables->lastItem() ?? 0 }} of {{ $tables->total() }} entries
+                        </div>
+                        <div>
+                            {{ $tables->appends(request()->query())->links() }}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </main>
-
+</div>
 @endsection
 
 @push('scripts')
-<script>
-    function deleteItem(id) {
-        Swal.fire({
-            title: "Are you sure?",
-            text: "Do you really want to delete this table?",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonText: "Yes, delete it!",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: '{{ route("admin.producttable.Delete") }}',
-                    type: 'POST',
-                    data: { id: id, _token: '{{ csrf_token() }}' },
-                    success: function(res) {
-                        if (res.status) {
-                            Swal.fire('Deleted!', res.message, 'success').then(() => {
-                                location.reload();
-                            });
-                        }
-                    }
-                });
-            }
-        });
-    }
-
-    function bulkDelete() {
-        var ids = [];
-        $('.row-checkbox:checked').each(function() {
-            ids.push($(this).val());
-        });
-
-        if (ids.length === 0) {
-            Swal.fire('Error', 'Please select at least one item', 'error');
-            return;
-        }
-
-        Swal.fire({
-            title: "Are you sure?",
-            text: "You are about to delete " + ids.length + " items.",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonText: "Yes, delete them!",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: '{{ route("admin.producttable.bulk-delete") }}',
-                    type: 'POST',
-                    data: { ids: ids, _token: '{{ csrf_token() }}' },
-                    success: function(res) {
-                        if (res.status) {
-                            Swal.fire('Deleted!', res.message, 'success').then(() => {
-                                location.reload();
-                            });
-                        }
-                    }
-                });
-            }
-        });
-    }
-
-    $(document).ready(function() {
-        $(document).on('change', '#checkAll', function() {
-            $('.row-checkbox').prop('checked', $(this).prop('checked'));
-        });
-    });
-</script>
+    @include('admin-layouts.partials.table-scripts', [
+        'tableId'       => 'specTables',
+        'bulkDeleteUrl' => route('admin.producttable.bulk-delete')
+    ])
 @endpush

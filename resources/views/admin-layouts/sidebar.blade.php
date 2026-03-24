@@ -54,8 +54,8 @@
                                     <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"></path>
                                 </svg></span><span class="nav-link-title text-truncate"> Dashboard </span></a></li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle nav-priority-0" href="{{ url('admin#cms-plugins-ecommerce') }}" id="cms-plugins-ecommerce" data-bs-toggle="dropdown"
-                            data-bs-auto-close="false" role="button" aria-expanded="false" title="Ecommerce"><span
+                        <a class="nav-link dropdown-toggle nav-priority-0" href="javascript:void(0)" id="cms-plugins-ecommerce" data-bs-toggle="dropdown"
+                             role="button" aria-expanded="false" title="Ecommerce"><span
                                 class="nav-link-icon d-md-none d-lg-inline-block" title="Ecommerce"><svg
                                     class="icon svg-icon-ti-ti-shopping-bag" xmlns="http://www.w3.org/2000/svg"
                                     width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -349,53 +349,7 @@
                                         <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                                         <path d="M21 21v-2a4 4 0 0 0 -3 -3.85"></path>
                                     </svg></span><span class="nav-link-title text-truncate"> Customers </span>
-                                </a>
-
-                           
-
-                           
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                                </a>    
 
                             {{-- <a class="dropdown-item nav-priority-0" href="{{ url("/") }}/admin/ecommerce/reports"
                                 id="cms-plugins-ecommerce-report" title="Report"><span
@@ -517,41 +471,6 @@
                                         <path d="M15 19l2 2l4 -4"></path>
                                     </svg></span><span class="nav-link-title text-truncate"> Product Inventory
                                 </span></a> --}}
-
-                            
-
-                            
-                            
-
-                            
-
-                            
-
-
-                           
-
-
-                            
-
-
-                            
-
-                            
-
-                           
-
-                           
-
-                            
-
-                           
-
-                            
-
-                            
-
-
-
                             {{-- <a class="dropdown-item nav-priority-100" href="{{ url("/")
                                 }}/admin/ecommerce/product-tags" id="cms-plugins-product-tag" title="Product tags"><span
                                     class="nav-link-icon d-md-none d-lg-inline-block" title="Product tags"><svg
@@ -651,7 +570,7 @@
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle nav-priority-0" href="/"
-                            data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false"
+                            data-bs-toggle="dropdown"  role="button" aria-expanded="false"
                             title="Product Specification">
                             <span class="nav-link-icon d-md-none d-lg-inline-block"
                                 title="Product Specification">
@@ -727,7 +646,7 @@
                         </div>
                     </li>
                     <li class="nav-item dropdown"><a class="nav-link dropdown-toggle nav-priority-0" href="{{ url('admin#cms-plugins-marketplace') }}" id="cms-plugins-marketplace" data-bs-toggle="dropdown"
-                            data-bs-auto-close="false" role="button" aria-expanded="false" title="Marketplace"><span
+                             role="button" aria-expanded="false" title="Marketplace"><span
                                 class="nav-link-icon d-md-none d-lg-inline-block" title="Marketplace"><svg
                                     class="icon svg-icon-ti-ti-building-store" xmlns="http://www.w3.org/2000/svg"
                                     width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -853,8 +772,8 @@
 
 
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle nav-priority-420" href="{{ url("/") }}/admin#cms-plugins-faq" id="cms-plugins-faq" data-bs-toggle="dropdown"
-                            data-bs-auto-close="false" role="button" aria-expanded="false" title="FAQs">
+                        <a class="nav-link dropdown-toggle nav-priority-420" href="javascript:void(0);" id="cms-plugins-faq" data-bs-toggle="dropdown"
+                             role="button" aria-expanded="false" title="FAQs">
                             <span class="nav-link-icon d-md-none d-lg-inline-block" title="FAQs">
                                 <svg
                                     class="icon svg-icon-ti-ti-help-octagon" xmlns="http://www.w3.org/2000/svg"
@@ -905,7 +824,7 @@
 
                     <li class="nav-item dropdown"><a class="nav-link dropdown-toggle nav-priority-3" href="{{ url("/")
                             }}/admin#cms-plugins-blog" id="cms-plugins-blog" data-bs-toggle="dropdown"
-                            data-bs-auto-close="false" role="button" aria-expanded="false" title="Blog"><span
+                             role="button" aria-expanded="false" title="Blog"><span
                                 class="nav-link-icon d-md-none d-lg-inline-block" title="Blog"><svg
                                     class="icon svg-icon-ti-ti-article" xmlns="http://www.w3.org/2000/svg" width="24"
                                     height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -1008,10 +927,10 @@
                     </li>
                     
 
-                  {{--  
+                   
                     <li class="nav-item dropdown"><a class="nav-link dropdown-toggle nav-priority-3" href="{{ url("/")
                             }}/admin#cms-plugins-payments" id="cms-plugins-payments" data-bs-toggle="dropdown"
-                            data-bs-auto-close="false" role="button" aria-expanded="false" title="Payments"><span
+                             role="button" aria-expanded="false" title="Payments"><span
                                 class="nav-link-icon d-md-none d-lg-inline-block" title="Payments"><svg
                                     class="icon svg-icon-ti-ti-credit-card" xmlns="http://www.w3.org/2000/svg"
                                     width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -1095,9 +1014,9 @@
                                     </path>
                                 </svg></span><span class="nav-link-title text-truncate"> Testimonials </span></a>
                     </li>
-                    <li class="nav-item dropdown"><a class="nav-link dropdown-toggle nav-priority-8" href="{{ url("/")
+                 {{--    <li class="nav-item dropdown"><a class="nav-link dropdown-toggle nav-priority-8" href="{{ url("/")
                             }}/admin#cms-plugins-ads" id="cms-plugins-ads" data-bs-toggle="dropdown"
-                            data-bs-auto-close="false" role="button" aria-expanded="false" title="Ads"><span
+                             role="button" aria-expanded="false" title="Ads"><span
                                 class="nav-link-icon d-md-none d-lg-inline-block" title="Ads"><svg
                                     class="icon svg-icon-ti-ti-ad-circle" xmlns="http://www.w3.org/2000/svg" width="24"
                                     height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -1136,7 +1055,7 @@
                     </li>
                     
                     <li class="nav-item dropdown"><a class="nav-link dropdown-toggle nav-priority-120" href="{{ url("/") }}/admin#cms-plugins-contact" id="cms-plugins-contact" data-bs-toggle="dropdown"
-                            data-bs-auto-close="false" role="button" aria-expanded="false" title="Contact"><span
+                             role="button" aria-expanded="false" title="Contact"><span
                                 class="nav-link-icon d-md-none d-lg-inline-block" title="Contact"><svg
                                     class="icon svg-icon-ti-ti-mail" xmlns="http://www.w3.org/2000/svg" width="24"
                                     height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -1195,7 +1114,7 @@
                                 </svg></span><span class="nav-link-title text-truncate"> Newsletters </span></a>
                     </li>
                     <li class="nav-item dropdown"><a class="nav-link dropdown-toggle nav-priority-900" href="{{ url("/") }}/admin#cms-plugins-location" id="cms-plugins-location" data-bs-toggle="dropdown"
-                            data-bs-auto-close="false" role="button" aria-expanded="false" title="Locations"><span
+                             role="button" aria-expanded="false" title="Locations"><span
                                 class="nav-link-icon d-md-none d-lg-inline-block" title="Locations"><svg
                                     class="icon svg-icon-ti-ti-world" xmlns="http://www.w3.org/2000/svg" width="24"
                                     height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -1279,7 +1198,7 @@
                                     </path>
                                 </svg></span><span class="nav-link-title text-truncate"> Media </span></a></li>
                     <li class="nav-item dropdown"><a class="nav-link dropdown-toggle nav-priority-2000" href="{{ url("/") }}/admin#cms-core-appearance" id="cms-core-appearance" data-bs-toggle="dropdown"
-                            data-bs-auto-close="false" role="button" aria-expanded="false" title="Appearance"><span
+                             role="button" aria-expanded="false" title="Appearance"><span
                                 class="nav-link-icon d-md-none d-lg-inline-block" title="Appearance"><svg
                                     class="icon svg-icon-ti-ti-brush" xmlns="http://www.w3.org/2000/svg" width="24"
                                     height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -1413,7 +1332,7 @@
                         </div>
                     </li>
                     <li class="nav-item dropdown"><a class="nav-link dropdown-toggle nav-priority-3000" href="{{ url("/") }}/admin#cms-core-plugins" id="cms-core-plugins" data-bs-toggle="dropdown"
-                            data-bs-auto-close="false" role="button" aria-expanded="false" title="Plugins"><span
+                             role="button" aria-expanded="false" title="Plugins"><span
                                 class="nav-link-icon d-md-none d-lg-inline-block" title="Plugins"><svg
                                     class="icon svg-icon-ti-ti-plug" xmlns="http://www.w3.org/2000/svg" width="24"
                                     height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -1452,7 +1371,7 @@
                                 </span></a></div>
                     </li>
                     <li class="nav-item dropdown"><a class="nav-link dropdown-toggle nav-priority-9000" href="{{ url("/") }}/admin#cms-core-tools" id="cms-core-tools" data-bs-toggle="dropdown"
-                            data-bs-auto-close="false" role="button" aria-expanded="false" title="Tools"><span
+                             role="button" aria-expanded="false" title="Tools"><span
                                 class="nav-link-icon d-md-none d-lg-inline-block" title="Tools"><svg
                                     class="icon svg-icon-ti-ti-tool" xmlns="http://www.w3.org/2000/svg" width="24"
                                     height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"

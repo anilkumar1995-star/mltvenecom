@@ -48,6 +48,11 @@ class CheckoutController extends Controller
 
     public function index()
     {
+        if (!auth('customer')->check() && !auth('web')->check()) {
+            session(['url.intended' => route('frontend.checkout.index')]);
+            return redirect()->route('login')->with('error', 'Please login to proceed to checkout.');
+        }
+
         $cart = Session::get('cart', []);
 
         if (empty($cart)) {
@@ -69,6 +74,11 @@ class CheckoutController extends Controller
 
     public function process(Request $request)
     {
+        if (!auth('customer')->check() && !auth('web')->check()) {
+            session(['url.intended' => route('frontend.checkout.index')]);
+            return redirect()->route('login')->with('error', 'Please login to proceed to checkout.');
+        }
+
         $validated = $request->validate([
             'address.name' => 'required|string|max:255',
             'address.email' => 'required|email',

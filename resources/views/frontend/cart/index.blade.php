@@ -7,14 +7,21 @@
     <h2 class="mb-4">Shopping Cart</h2>
 
     @if(empty($cart) || count($cart) == 0)
-        <div class="text-center py-5">
+        <div id="empty-cart-message" class="text-center py-5">
             <i class="fas fa-shopping-cart fa-4x text-muted mb-3"></i>
             <h4>Your cart is empty</h4>
             <p class="text-muted">Add some products to get started!</p>
             <a href="{{ route('frontend.products.index') }}" class="btn btn-primary">Continue Shopping</a>
         </div>
+        <div id="cart-content" class="row d-none">
     @else
-        <div class="row">
+        <div id="empty-cart-message" class="text-center py-5 d-none">
+            <i class="fas fa-shopping-cart fa-4x text-muted mb-3"></i>
+            <h4>Your cart is empty</h4>
+            <p class="text-muted">Add some products to get started!</p>
+            <a href="{{ route('frontend.products.index') }}" class="btn btn-primary">Continue Shopping</a>
+        </div>
+        <div id="cart-content" class="row">
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-body">
@@ -30,7 +37,7 @@
                             </thead>
                             <tbody>
                                 @foreach($cart as $id => $item)
-                                <tr>
+                                <tr class="cart-item-row" data-product-id="{{ $id }}" data-price="{{ $item['price'] }}">
                                     <td>
                                         <div class="d-flex align-items-center">
                                             @if($item['image'])
@@ -47,29 +54,28 @@
                                     </td>
                                     <td>₹{{ number_format($item['price'], 2) }}</td>
                                     <td>
-                                        <div class="tp-product-quantity d-inline-flex align-items-center" style="background: #f3f5f6; padding: 5px 10px; border-radius: 4px;">
-                                            <form action="{{ route('frontend.cart.update') }}" method="POST" class="d-flex align-items-center">
-                                                @csrf
-                                                <input type="hidden" name="product_id" value="{{ $id }}">
-                                                <button type="button" class="btn btn-link text-dark p-0" onclick="this.nextElementSibling.value--; this.form.submit()">
-                                                    <i class="fas fa-minus"></i>
-                                                </button>
-                                                <input type="number" name="quantity" value="{{ $item['quantity'] }}" min="1" class="form-control form-control-sm text-center border-0 bg-transparent" style="width: 50px;" onchange="this.form.submit()">
-                                                <button type="button" class="btn btn-link text-dark p-0" onclick="this.previousElementSibling.value++; this.form.submit()">
-                                                    <i class="fas fa-plus"></i>
-                                                </button>
-                                            </form>
+                                        <div class="tp-product-quantity d-inline-flex align-items-center justify-content-between" style="background-color: #F3F5F6; height: 38px; border-radius: 4px; width: 110px; padding: 0 10px;">
+                                            <span class="d-flex align-items-center justify-content-center page-cart-qty-btn text-decoration-none" data-action="minus" style="cursor:pointer; width:30px; height:100%; color: #010F1C;">
+                                                <svg width="10" height="2" viewBox="0 0 10 2" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M1 1H9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                </svg>
+                                            </span>
+                                            
+                                            <input type="text" value="{{ $item['quantity'] }}" class="page-cart-qty-input text-center m-0 bg-transparent border-0 fw-medium text-dark" style="width: 40px; height: 100%; outline: none; font-size: 15px; padding: 0;" readonly>
+                                            
+                                            <span class="d-flex align-items-center justify-content-center page-cart-qty-btn text-decoration-none" data-action="plus" style="cursor:pointer; width:30px; height:100%; color: #010F1C;">
+                                                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M5 1V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <path d="M1 5H9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                </svg>
+                                            </span>
                                         </div>
                                     </td>
-                                    <td><strong>₹{{ number_format($item['price'] * $item['quantity'], 2) }}</strong></td>
+                                    <td class="item-subtotal"><strong>₹{{ number_format($item['price'] * $item['quantity'], 2) }}</strong></td>
                                     <td>
-                                        <form action="{{ route('frontend.cart.remove', $id) }}" method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </form>
+                                        <button type="button" class="btn btn-sm btn-danger page-cart-remove-btn">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -87,20 +93,20 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-2">
                             <span>Subtotal:</span>
-                            <strong>₹{{ number_format($total, 2) }}</strong>
+                            <strong id="summary-subtotal">₹{{ number_format($total ?? 0, 2) }}</strong>
                         </div>
                         <div class="d-flex justify-content-between mb-2">
                             <span>Tax (15%):</span>
-                            <strong>₹{{ number_format($total * 0.15, 2) }}</strong>
+                            <strong id="summary-tax">₹{{ number_format(($total ?? 0) * 0.15, 2) }}</strong>
                         </div>
                         <div class="d-flex justify-content-between mb-2">
                             <span>Shipping:</span>
-                            <strong>₹20.00</strong>
+                            <strong id="summary-shipping">₹20.00</strong>
                         </div>
                         <hr>
                         <div class="d-flex justify-content-between mb-3">
                             <strong>Total:</strong>
-                            <strong class="text-primary">₹{{ number_format($total + ($total * 0.15) + 20, 2) }}</strong>
+                            <strong class="text-primary" id="summary-total">₹{{ number_format(($total ?? 0) + (($total ?? 0) * 0.15) + 20, 2) }}</strong>
                         </div>
                         <div class="d-flex gap-2">
                             <a href="{{ route('frontend.checkout.index') }}" class="btn btn-primary flex-grow-1">
@@ -115,5 +121,116 @@
             </div>
         </div>
     @endif
-</div>
 @endsection
+
+@push('scripts')
+<script>
+$(document).ready(function() {
+    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+    function formatCurrency(amount) {
+        return '₹' + amount.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    }
+
+    function updateSummary(subtotal) {
+        if (subtotal <= 0) {
+            $('#cart-content').addClass('d-none');
+            $('#empty-cart-message').removeClass('d-none');
+            return;
+        }
+
+        var tax = subtotal * 0.15;
+        var shipping = 20.00;
+        var total = subtotal + tax + shipping;
+
+        $('#summary-subtotal').text(formatCurrency(subtotal));
+        $('#summary-tax').text(formatCurrency(tax));
+        $('#summary-total').text(formatCurrency(total));
+    }
+
+    function removeRow(productId) {
+        var $row = $('.cart-item-row[data-product-id="' + productId + '"]');
+        $row.remove();
+        
+        var anyRows = $('.cart-item-row').length > 0;
+        if (!anyRows) {
+            $('#cart-content').addClass('d-none');
+            $('#empty-cart-message').removeClass('d-none');
+        }
+    }
+
+    $('.page-cart-qty-btn').on('click', function(e) {
+        e.preventDefault();
+        var $btn = $(this);
+        var action = $btn.data('action');
+        var $row = $btn.closest('.cart-item-row');
+        var productId = $row.data('product-id');
+        var price = parseFloat($row.data('price'));
+        var $input = $row.find('.page-cart-qty-input');
+        
+        var currentQty = parseInt($input.val()) || 1;
+        var newQty = action === 'plus' ? currentQty + 1 : currentQty - 1;
+
+        if (newQty <= 0) {
+            // Remove item
+            $.ajax({
+                url: '/cart/remove/' + productId,
+                method: 'POST',
+                data: { _token: csrfToken, _method: 'DELETE' },
+                success: function(res) {
+                    if (res.success) {
+                        $('.tp-cart-count, [data-bb-value="cart-count"]').text(res.count);
+                        if(typeof refreshMiniCart === 'function') refreshMiniCart(res.html);
+                        if(typeof notify === 'function') notify('Product removed from cart!', 'success');
+                        
+                        removeRow(productId);
+                        updateSummary(parseFloat(res.subtotal || 0));
+                    }
+                }
+            });
+        } else {
+            // Update quantity
+            $.ajax({
+                url: '{{ route("frontend.cart.update") }}',
+                method: 'POST',
+                data: { _token: csrfToken, product_id: productId, quantity: newQty },
+                success: function(res) {
+                    if (res.success) {
+                        $('.tp-cart-count, [data-bb-value="cart-count"]').text(res.count);
+                        if(typeof refreshMiniCart === 'function') refreshMiniCart(res.html);
+                        
+                        $input.val(newQty);
+                        $row.find('.item-subtotal strong').text(formatCurrency(price * newQty));
+                        updateSummary(parseFloat(res.subtotal || 0));
+                    }
+                }
+            });
+        }
+    });
+
+    $('.page-cart-remove-btn').on('click', function(e) {
+        e.preventDefault();
+        var $btn = $(this);
+        var $row = $btn.closest('.cart-item-row');
+        var productId = $row.data('product-id');
+
+        $.ajax({
+            url: '/cart/remove/' + productId,
+            method: 'POST',
+            data: { _token: csrfToken, _method: 'DELETE' },
+            success: function(res) {
+                if (res.success) {
+                    $('.tp-cart-count, [data-bb-value="cart-count"]').text(res.count);
+                    if(typeof refreshMiniCart === 'function') refreshMiniCart(res.html);
+                    if(typeof notify === 'function') notify('Product removed from cart!', 'success');
+                    
+                    removeRow(productId);
+                    updateSummary(parseFloat(res.subtotal || 0));
+                }
+            }
+        });
+    });
+});
+</script>
+@endpush
+
