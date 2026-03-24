@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\EcSpecificationAttribute;
 use App\Models\EcSpecificationGroup;
 use App\Models\EcSpecificationTable;
+use App\Helpers\TableHelpers;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,11 +24,22 @@ class GroupController extends Controller
     public function index(Request $request)
     {
         $query = EcSpecificationGroup::query();
-        if ($request->filled('q')) {
-            $query->where('name', 'like', '%' . $request->q . '%');
-        }
-        $groups = $query->orderBy('id', 'desc')->paginate(10);
-        return view('admin-layouts.product-specification.group.index', compact('groups'));
+
+        TableHelpers::applyTableLogic($query, $request,
+        ['id', 'name', 'description'],
+        ['id', 'created_at']
+        );
+
+        $groups = $query->orderBy('id', 'desc')->paginate(TableHelpers::getPerPage($request));
+
+        $filterColumns = [
+            'id' => 'ID',
+            'name' => 'Name',
+            'description' => 'Description',
+            'created_at' => 'Created At',
+        ];
+
+        return view('admin-layouts.product-specification.group.index', compact('groups', 'filterColumns'));
     }
 
     public function create()
@@ -91,39 +103,36 @@ class GroupController extends Controller
 
     public function destroy(Request $request)
     {
-        $group = EcSpecificationGroup::findOrFail($request->id);
-        $group->delete();
-
-        if ($request->ajax()) {
-            return response()->json([
-                'status' => true,
-                'message' => 'Specification Group deleted successfully'
-            ]);
-        }
-
-        return redirect()->back()->with('success', 'Specification Group deleted successfully');
+        return TableHelpers::performDelete($request->id, EcSpecificationGroup::class , 'Specification Group');
     }
 
     public function bulkDelete(Request $request)
     {
-        $ids = $request->ids;
-        if ($ids) {
-            EcSpecificationGroup::whereIn('id', $ids)->delete();
-            return response()->json(['status' => true, 'message' => 'Selected items deleted successfully']);
-        }
-        return response()->json(['status' => false, 'message' => 'No items selected']);
+        return TableHelpers::performBulkDelete($request, EcSpecificationGroup::class , 'Specification Groups');
     }
 
     // --- Specification Attributes ---
 
     public function productIndex(Request $request)
     {
-        $query = EcSpecificationAttribute::query();
-        if ($request->filled('q')) {
-            $query->where('name', 'like', '%' . $request->q . '%');
-        }
-        $attributes = $query->orderBy('id', 'desc')->paginate(10);
-        return view('admin-layouts.product-specification.attributes.index', compact('attributes'));
+        $query = EcSpecificationAttribute::query()->with('group');
+
+        TableHelpers::applyTableLogic($query, $request,
+        ['id', 'name', 'type'],
+        ['id', 'group_id', 'type', 'created_at']
+        );
+
+        $specAttributes = $query->orderBy('id', 'desc')->paginate(TableHelpers::getPerPage($request));
+
+        $filterColumns = [
+            'id' => 'ID',
+            'name' => 'Name',
+            'type' => 'Type',
+            'group_id' => 'Group ID',
+            'created_at' => 'Created At',
+        ];
+
+        return view('admin-layouts.product-specification.attributes.index', compact('specAttributes', 'filterColumns'));
     }
 
     public function productAttributeCreate()
@@ -198,35 +207,34 @@ class GroupController extends Controller
 
     public function productAttributedestroy(Request $request)
     {
-        $attribute = EcSpecificationAttribute::findOrFail($request->id);
-        $attribute->delete();
-
-        if ($request->ajax()) {
-            return response()->json([
-                'status' => true,
-                'message' => 'Specification Attribute deleted successfully'
-            ]);
-        }
-
-        return redirect()->back()->with('success', 'Specification Attribute deleted successfully');
+        return TableHelpers::performDelete($request->id, EcSpecificationAttribute::class , 'Specification Attribute');
     }
 
     public function productAttributebulkDelete(Request $request)
     {
-        $ids = $request->ids;
-        if ($ids) {
-            EcSpecificationAttribute::whereIn('id', $ids)->delete();
-            return response()->json(['status' => true, 'message' => 'Selected items deleted successfully']);
-        }
-        return response()->json(['status' => false, 'message' => 'No items selected']);
+        return TableHelpers::performBulkDelete($request, EcSpecificationAttribute::class , 'Specification Attributes');
     }
 
-    // --- Specification Tables ---
 
-    public function productTable()
+    public function productTable(Request $request)
     {
-        $data['tables'] = EcSpecificationTable::with('groups')->orderBy('id', 'desc')->get();
-        return view('admin-layouts.product-specification.tables.index', $data);
+        $query = EcSpecificationTable::with('groups');
+
+        TableHelpers::applyTableLogic($query, $request,
+        ['id', 'name', 'description'],
+        ['id', 'created_at']
+        );
+
+        $tables = $query->orderBy('id', 'desc')->paginate(TableHelpers::getPerPage($request));
+
+        $filterColumns = [
+            'id' => 'ID',
+            'name' => 'Name',
+            'description' => 'Description',
+            'created_at' => 'Created At',
+        ];
+
+        return view('admin-layouts.product-specification.tables.index', compact('tables', 'filterColumns'));
     }
 
     public function productTablecreate()
@@ -267,7 +275,8 @@ class GroupController extends Controller
             }
 
             return redirect()->route('admin.producttable.Index')->with('success', 'Specification Table created successfully');
-        } catch (Exception $e) {
+        }
+        catch (Exception $e) {
             DB::rollBack();
             if ($request->ajax()) {
                 return response()->json(['status' => false, 'message' => 'Something went wrong: ' . $e->getMessage()], 500);
@@ -313,7 +322,8 @@ class GroupController extends Controller
             }
 
             return redirect()->route('admin.producttable.Index')->with('success', 'Specification Table updated successfully');
-        } catch (Exception $e) {
+        }
+        catch (Exception $e) {
             DB::rollBack();
             if ($request->ajax()) {
                 return response()->json(['status' => false, 'message' => 'Something went wrong: ' . $e->getMessage()], 500);
@@ -324,48 +334,11 @@ class GroupController extends Controller
 
     public function productTabledestroy(Request $request)
     {
-        DB::beginTransaction();
-        try {
-            $table = EcSpecificationTable::findOrFail($request->id);
-            $table->groups()->detach();
-            $table->delete();
-            DB::commit();
-
-            if ($request->ajax()) {
-                return response()->json([
-                    'status' => true,
-                    'message' => 'Specification Table deleted successfully'
-                ]);
-            }
-
-            return redirect()->back()->with('success', 'Specification Table deleted successfully');
-        } catch (Exception $e) {
-            DB::rollBack();
-            if ($request->ajax()) {
-                return response()->json(['status' => false, 'message' => 'Something went wrong: ' . $e->getMessage()], 500);
-            }
-            return redirect()->back()->with('error', 'Something went wrong: ' . $e->getMessage());
-        }
+        return TableHelpers::performDelete($request->id, EcSpecificationTable::class , 'Specification Table');
     }
 
     public function productTablebulkDelete(Request $request)
     {
-        $ids = $request->ids;
-        if ($ids) {
-            DB::beginTransaction();
-            try {
-                $tables = EcSpecificationTable::whereIn('id', $ids)->get();
-                foreach ($tables as $table) {
-                    $table->groups()->detach();
-                    $table->delete();
-                }
-                DB::commit();
-                return response()->json(['status' => true, 'message' => 'Selected items deleted successfully']);
-            } catch (Exception $e) {
-                DB::rollBack();
-                return response()->json(['status' => false, 'message' => 'Something went wrong: ' . $e->getMessage()], 500);
-            }
-        }
-        return response()->json(['status' => false, 'message' => 'No items selected']);
+        return TableHelpers::performBulkDelete($request, EcSpecificationTable::class , 'Specification Tables');
     }
 }

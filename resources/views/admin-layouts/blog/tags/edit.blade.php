@@ -42,7 +42,11 @@
     </div>
 
     <main class="page-body page-content">
-        <div class="container-xl">
+        <div class="container-fluid">
+            <form action="{{ route('admin.blog.tags.update', $tag->id) }}" method="POST" id="tag-form" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
+                <div class="row">
                     {{-- Main Content --}}
                     <div class="col-md-9">
                         <div class="alert alert-info border-0 rounded-0 mb-4 py-3 px-4" style="background-color: #e8f2fc; color: #1a73e8; border-left: 4px solid #206bc4 !important;">

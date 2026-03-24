@@ -1,6 +1,10 @@
 <?php
 
 use App\Http\Controllers\Admin\AnnouncementController;
+use App\Http\Controllers\Admin\GalleryController;
+use App\Http\Controllers\Admin\PaymentTransactionController;
+use App\Http\Controllers\Admin\PaymentLogController;
+use App\Http\Controllers\Admin\PaymentMethodController;
 use App\Http\Controllers\Admin\BlogCategoryController;
 use App\Http\Controllers\Admin\CustomerController as AdminCustomerController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
@@ -34,6 +38,7 @@ use App\Http\Controllers\Admin\SimpleSliderItemController;
 use App\Http\Controllers\Admin\StoreController as AdminStoreController;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\TaxController;
+use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\VendorController;
 use App\Http\Controllers\Admin\WithdrawlsController;
 use App\Http\Controllers\Auth\LoginController;
@@ -178,6 +183,7 @@ Route::get('/page/{id}', [AdminPageController::class, 'show'])->name('pages.show
 // Admin profile routes
 // Route::middleware(['auth', 'role_id:1'])->prefix('admin')->name('admin.')->group(function () {
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', function () { return redirect()->route('admin.dashboard'); });
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -325,17 +331,18 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
         Route::post('store', [GroupController::class, 'store'])->name('group.store');
         Route::get('/{id}/edit', [GroupController::class, 'Edit'])->name('group.edit');
         Route::put('/{id}', [GroupController::class, 'update'])->name('group.update');
-        Route::post('/delete', [GroupController::class, 'destroy'])->name('group.Delete');
+        Route::delete('/delete', [GroupController::class, 'destroy'])->name('group.Delete');
         Route::post('bulk-delete', [GroupController::class, 'bulkDelete'])->name('group.bulk-delete');
     });
 
     Route::group(['prefix' => 'product-attributes'], function () {
+        // attributes -> specAttributes renamed in view/controller
         Route::get('index', [GroupController::class, 'productIndex'])->name('productattributes.Index');
         Route::get('create', [GroupController::class, 'productAttributeCreate'])->name('productAttribute.create');
         Route::post('store', [GroupController::class, 'productAttributeStore'])->name('productAttribute.store');
         Route::get('/{id}/edit', [GroupController::class, 'productAttributeEdit'])->name('productAttribute.edit');
         Route::put('/{id}', [GroupController::class, 'productAttributeupdate'])->name('productAttribute.update');
-        Route::post('/delete', [GroupController::class, 'productAttributedestroy'])->name('productAttribute.Delete');
+        Route::delete('/delete', [GroupController::class, 'productAttributedestroy'])->name('productAttribute.Delete');
         Route::post('bulk-delete', [GroupController::class, 'productAttributebulkDelete'])->name('productAttribute.bulk-delete');
     });
 
@@ -345,7 +352,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
         Route::post('store', [GroupController::class, 'productTablestore'])->name('producttable.store');
         Route::get('/{id}/edit', [GroupController::class, 'productTableEdit'])->name('producttable.edit');
         Route::put('/{id}', [GroupController::class, 'productTableupdate'])->name('producttable.update');
-        Route::post('/delete', [GroupController::class, 'productTabledestroy'])->name('producttable.Delete');
+        Route::delete('/delete', [GroupController::class, 'productTabledestroy'])->name('producttable.Delete');
         Route::post('bulk-delete', [GroupController::class, 'productTablebulkDelete'])->name('producttable.bulk-delete');
     });
 
@@ -496,9 +503,12 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('pages', [AdminPageController::class, 'index'])->name('pages.index');
     Route::get('pages/create', [AdminPageController::class, 'create'])->name('pages.create');
     Route::post('pages', [AdminPageController::class, 'store'])->name('pages.store');
+    Route::get('pages/{id}', [AdminPageController::class, 'show'])->name('pages.show');
     Route::get('pages/{id}/edit', [AdminPageController::class, 'edit'])->name('pages.edit');
     Route::put('pages/{id}', [AdminPageController::class, 'update'])->name('pages.update');
     Route::delete('pages/{id}', [AdminPageController::class, 'destroy'])->name('pages.destroy');
+    // Bulk delete for pages
+    Route::post('pages/bulk-delete', [AdminPageController::class, 'bulkDelete'])->name('pages.bulk-delete');
 
     // Blog Posts
     Route::get('blog/posts', [PostController::class, 'index'])->name('blog.posts.index');
@@ -543,6 +553,39 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 
     Route::post('customers/{id}/addresses', [AdminCustomerController::class, 'storeAddress'])->name('customers.addresses.store');
     Route::delete('customers/addresses/{address_id}', [AdminCustomerController::class, 'destroyAddress'])->name('customers.addresses.destroy');
+
+    // Galleries Routes
+    Route::get('galleries', [GalleryController::class, 'index'])->name('galleries.index');
+    Route::get('galleries/create', [GalleryController::class, 'create'])->name('galleries.create');
+    Route::post('galleries', [GalleryController::class, 'store'])->name('galleries.store');
+    Route::get('galleries/{id}/edit', [GalleryController::class, 'edit'])->name('galleries.edit');
+    Route::put('galleries/{id}', [GalleryController::class, 'update'])->name('galleries.update');
+    Route::delete('galleries/{id}', [GalleryController::class, 'destroy'])->name('galleries.destroy');
+    Route::post('galleries/bulk-delete', [GalleryController::class, 'bulkDelete'])->name('galleries.bulk-delete');
+
+    // Testimonials Routes
+    Route::get('testimonials', [TestimonialController::class, 'index'])->name('testimonials.index');
+    Route::get('testimonials/create', [TestimonialController::class, 'create'])->name('testimonials.create');
+    Route::post('testimonials', [TestimonialController::class, 'store'])->name('testimonials.store');
+    Route::get('testimonials/{id}/edit', [TestimonialController::class, 'edit'])->name('testimonials.edit');
+    Route::put('testimonials/{id}', [TestimonialController::class, 'update'])->name('testimonials.update');
+    Route::delete('testimonials/{id}', [TestimonialController::class, 'destroy'])->name('testimonials.destroy');
+    Route::post('testimonials/bulk-delete', [TestimonialController::class, 'bulkDelete'])->name('testimonials.bulk-delete');
+
+    // Payments Transactions Routes
+    Route::group(['prefix' => 'payments'], function() {
+        Route::get('transactions', [PaymentTransactionController::class, 'index'])->name('payments.transactions.index');
+        Route::delete('transactions/{id}', [PaymentTransactionController::class, 'destroy'])->name('payments.transactions.destroy');
+        Route::post('transactions/bulk-delete', [PaymentTransactionController::class, 'bulkDelete'])->name('payments.transactions.bulk-delete');
+
+        Route::get('logs', [PaymentLogController::class, 'index'])->name('payments.logs.index');
+        Route::delete('logs/{id}', [PaymentLogController::class, 'destroy'])->name('payments.logs.destroy');
+        Route::post('logs/bulk-delete', [PaymentLogController::class, 'bulkDelete'])->name('payments.logs.bulk-delete');
+
+        Route::get('methods', [PaymentMethodController::class, 'index'])->name('payments.methods.index');
+        Route::delete('methods/{id}', [PaymentMethodController::class, 'destroy'])->name('payments.methods.destroy');
+        Route::post('methods/bulk-delete', [PaymentMethodController::class, 'bulkDelete'])->name('payments.methods.bulk-delete');
+    });
 
     Route::get('/menu-items-count', [MenuCountController::class, 'getCounts'])->name('menu-items-count');
 
