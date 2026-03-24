@@ -71,7 +71,7 @@
                                     <tr>
                                         <td>{{ $item->product_name }}</td>
                                         <td>{{ $item->qty }}</td>
-                                        <td>${{ number_format($item->price * $item->qty, 2) }}</td>
+                                        <td>₹{{ number_format($item->price * $item->qty, 2) }}</td>
                                     </tr>
                                     @endforeach
                                 </tbody>
@@ -89,7 +89,7 @@
                                 </address>
                             </div>
                             <div class="col-md-6 text-md-end">
-                                <h5>Total: ${{ number_format($order->amount, 2) }}</h5>
+                                <h5>Total: ₹{{ number_format($order->amount, 2) }}</h5>
                             </div>
                         </div>
                     </div>

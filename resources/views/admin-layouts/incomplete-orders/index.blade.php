@@ -1,88 +1,151 @@
 @extends('admin-layouts.app')
 @section('title', 'Incomplete Orders')
+
 @section('content')
 <div class="page-wrapper">
-    <div class="page-header d-print-none">
+    <div class="page-header d-print-none text-uppercase">
         <div class="container-xl">
             <div class="row g-2 align-items-center">
                 <div class="col">
-                    <h2 class="page-title">
-                        Incomplete Orders
-                    </h2>
+                    <div class="page-pretitle">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a class="mb-0 d-inline-block fs-6 lh-1" href="{{ route('admin.dashboard') }}">Dashboard</a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <span class="mb-0 d-inline-block fs-6 lh-1 text-muted">Ecommerce</span>
+                                </li>
+                                <li class="breadcrumb-item active" aria-current="page">
+                                    <h1 class="mb-0 d-inline-block fs-6 lh-1 text-dark">Incomplete Orders</h1>
+                                </li>
+                            </ol>
+                        </nav>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="page-body">
+
+    <main class="page-body page-content mt-0">
         <div class="container-xl">
-            <div class="card">
-                <div class="table-responsive">
-                    <table class="table table-vcenter card-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Customer</th>
-                                <th>Amount</th>
-                                <th>Status</th>
-                                <th>Payment method</th>
-                                <th>Payment status</th>
-                                <th>Created at</th>
-                                <th class="w-1"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($orders as $order)
-                            <tr>
-                                <td>{{ $order->id }}</td>
-                                <td>
-                                    @if($order->user)
-                                    <a href="{{ route('admin.customers.edit', $order->user->id) }}">{{ $order->user->name }}</a>
-                                    @else
-                                    Guest
-                                    @endif
-                                </td>
-                                <td>{{ number_format($order->amount, 2) }}</td>
-                                <td>
-                                    <span class="badge bg-secondary text-secondary-fg">Incomplete</span>
-                                </td>
-                                <td>{{ ucfirst($order->payment_method) }}</td>
-                                <td>
-                                    <span class="badge bg-secondary text-secondary-fg">{{ ucfirst($order->payment_status) }}</span>
-                                </td>
-                                <td>{{ $order->created_at->format('Y-m-d H:i:s') }}</td>
-                                <td>
-                                    <div class="btn-list flex-nowrap">
-                                        <form action="{{ route('admin.incomplete-orders.destroy', $order->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this order?');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-icon btn-outline-danger btn-sm" title="Delete">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                    <line x1="4" y1="7" x2="20" y2="7" />
-                                                    <line x1="10" y1="11" x2="10" y2="17" />
-                                                    <line x1="14" y1="11" x2="14" y2="17" />
-                                                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
-                                                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
-                                                </svg>
+            {{-- Shared Filter Panel --}}
+            @include('admin-layouts.partials.table-filters', ['filterColumns' => $filterColumns])
+
+            <div class="card has-actions has-filter">
+                {{-- Shared Header --}}
+                @include('admin-layouts.partials.table-header', [
+                    'bulkActions' => true,
+                    'tableId'     => 'incompleteOrdersTable'
+                ])
+
+                <div class="card-table mt-1">
+                    <div class="table-responsive">
+                        <table class="table card-table table-vcenter table-hover datatable" id="incompleteOrdersTable">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th width="40" class="text-center">
+                                        <input type="checkbox" class="form-check-input" id="check-all">
+                                    </th>
+                                    <th width="70" class="text-start">ID</th>
+                                    <th>Customer Info</th>
+                                    <th width="120" class="text-center">Amount</th>
+                                    <th width="150" class="text-center">Payment Method</th>
+                                    <th width="150" class="text-center">Payment Status</th>
+                                    <th width="120" class="text-center">Order Status</th>
+                                    <th width="150" class="text-center">Created At</th>
+                                    <th width="100" class="text-center">Operations</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($orders as $order)
+                                <tr>
+                                    <td class="text-center">
+                                        <input type="checkbox" class="form-check-input bulk-checkbox" value="{{ $order->id }}">
+                                    </td>
+                                    <td class="text-muted small">{{ $order->id }}</td>
+                                    <td>
+                                        <div class="d-flex flex-column">
+                                            @if($order->user)
+                                                <a href="{{ route('admin.customers.edit', $order->user->id) }}" class="fw-bold text-dark text-decoration-none">
+                                                    {{ $order->user->name }}
+                                                </a>
+                                                <small class="text-muted">{{ $order->user->email }}</small>
+                                            @else
+                                                <span class="text-muted italic">Guest / No Customer</span>
+                                            @endif
+                                        </div>
+                                    </td>
+                                    <td class="text-center font-weight-bold">
+                                        ₹{{ number_format($order->amount, 2) }}
+                                    </td>
+                                    <td class="text-center small text-uppercase">
+                                        {{ $order->payment_channel ?: 'N/A' }}
+                                    </td>
+                                    <td class="text-center">
+                                        @php
+                                            $payStatus = strtolower($order->payment_status ?? 'pending');
+                                            $payStatusClass = match($payStatus) {
+                                                'completed' => 'bg-success text-success-fg',
+                                                'pending' => 'bg-warning text-warning-fg',
+                                                'processing' => 'bg-info text-info-fg',
+                                                'failed' => 'bg-danger text-danger-fg',
+                                                default => 'bg-secondary text-secondary-fg'
+                                            };
+                                        @endphp
+                                        <span class="badge {{ $payStatusClass }} px-2 rounded-pill shadow-xs">
+                                            {{ ucfirst($order->payment_status ?? 'Pending') }}
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="badge bg-purple-lt px-2 rounded-pill">Incomplete</span>
+                                    </td>
+                                    <td class="text-center text-muted small">
+                                        {{ $order->created_at ? $order->created_at->format('M d, Y') : 'N/A' }}
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="btn-group">
+                                            <a href="{{ route('admin.customers.edit', $order->user->id) }}" class="btn btn-sm btn-outline-primary" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <button type="button" class="btn btn-sm btn-outline-danger delete-confirm-btn" 
+                                                data-url="{{ route('admin.incomplete-orders.destroy', $order->id) }}"
+                                                title="Delete">
+                                                <i class="fas fa-trash"></i>
                                             </button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                            @endforeach
-                            @if($orders->isEmpty())
-                            <tr>
-                                <td colspan="8" class="text-center">No incomplete orders found</td>
-                            </tr>
-                            @endif
-                        </tbody>
-                    </table>
-                </div>
-                <div class="card-footer d-flex align-items-center">
-                    {{ $orders->links('pagination::bootstrap-5') }}
+                                        </div>
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="9" class="text-center py-5 text-muted bg-white shadow-xs rounded-1">
+                                        No incomplete orders found.
+                                    </td>
+                                </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {{-- Pagination --}}
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        <div class="text-muted small">
+                            Showing {{ $orders->firstItem() ?? 0 }} to {{ $orders->lastItem() ?? 0 }} of {{ $orders->total() }} entries
+                        </div>
+                        <div>
+                            {{ $orders->appends(request()->query())->links() }}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </main>
 </div>
 @endsection
+
+@push('scripts')
+    @include('admin-layouts.partials.table-scripts', [
+        'tableId'       => 'incompleteOrdersTable',
+        'bulkDeleteUrl' => route('admin.incomplete-orders.bulk-delete')
+    ])
+@endpush

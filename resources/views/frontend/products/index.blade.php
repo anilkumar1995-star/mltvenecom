@@ -97,49 +97,45 @@
                             @endif
                             <div class="mb-2">
                                 @if($product->isOnSale())
-                                    <span class="text-danger fw-bold">${{ number_format($product->sale_price, 2) }}</span>
-                                    <span class="text-muted text-decoration-line-through ms-2">${{ number_format($product->price, 2) }}</span>
+                                    <span class="text-danger fw-bold">₹{{ number_format($product->sale_price, 2) }}</span>
+                                    <span class="text-muted text-decoration-line-through ms-2">₹{{ number_format($product->price, 2) }}</span>
                                 @else
-                                    <span class="fw-bold">${{ number_format($product->price, 2) }}</span>
+                                    <span class="fw-bold">₹{{ number_format($product->price, 2) }}</span>
                                 @endif
                             </div>
                             <div class="d-grid gap-2">
                                 <a href="{{ route('frontend.products.show', $product->slug ?: $product->id) }}" class="btn btn-sm btn-outline-primary">View Details</a>
-                                @if(isset(session('cart', [])[$product->id]))
-                                    <div class="tp-product-quantity d-flex align-items-center justify-content-between w-100 px-3" style="background-color: #F3F5F6; height: 38px; border-radius: 4px;">
-                                        <form action="{{ route('frontend.cart.update') }}" method="POST" class="d-flex align-items-center w-100 m-0 p-0">
-                                            @csrf
-                                            <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                            
-                                            <span class="tp-cart-minus d-flex align-items-center justify-content-center" style="cursor:pointer; width:30px; height:100%; color: #010F1C;" onclick="var input = this.nextElementSibling; if(parseInt(input.value) <= 1) { document.getElementById('remove-product-{{ $product->id }}').submit(); } else { input.value--; this.closest('form').submit(); }">
+                                <div class="product-action-wrapper" data-product-id="{{ $product->id }}">
+                                    @php
+                                        $inCart = isset(session('cart', [])[$product->id]);
+                                        $qty = $inCart ? session('cart', [])[$product->id]['quantity'] : 1;
+                                    @endphp
+                                    
+                                    <div class="qty-wrapper {{ $inCart ? '' : 'd-none' }}">
+                                        <div class="tp-product-quantity d-flex align-items-center justify-content-between w-100 px-3" style="background-color: #F3F5F6; height: 38px; border-radius: 4px;">
+                                            <span class="d-flex align-items-center justify-content-center page-ajax-qty-btn" data-action="minus" style="cursor:pointer; width:30px; height:100%; color: #010F1C;">
                                                 <svg width="10" height="2" viewBox="0 0 10 2" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <path d="M1 1H9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                                 </svg>
                                             </span>
                                             
-                                            <input type="text" name="quantity" value="{{ session('cart', [])[$product->id]['quantity'] }}" class="tp-cart-input text-center w-100 m-0 bg-transparent border-0 fw-medium text-dark" style="height: 100%; outline: none; font-size: 15px;" readonly>
+                                            <input type="text" value="{{ $qty }}" class="page-qty-input text-center w-100 m-0 bg-transparent border-0 fw-medium text-dark" style="height: 100%; outline: none; font-size: 15px;" readonly>
                                             
-                                            <span class="tp-cart-plus d-flex align-items-center justify-content-center" style="cursor:pointer; width:30px; height:100%; color: #010F1C;" onclick="var input = this.previousElementSibling; input.value++; this.closest('form').submit();">
+                                            <span class="d-flex align-items-center justify-content-center page-ajax-qty-btn" data-action="plus" style="cursor:pointer; width:30px; height:100%; color: #010F1C;">
                                                 <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <path d="M5 1V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                                     <path d="M1 5H9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                                 </svg>
                                             </span>
-                                        </form>
-                                        <form id="remove-product-{{ $product->id }}" action="{{ route('frontend.cart.remove', $product->id) }}" method="POST" style="display:none;">
-                                            @csrf
-                                            @method('DELETE')
-                                        </form>
+                                        </div>
                                     </div>
-                                @else
-                                    <form action="{{ route('frontend.cart.add') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                        <button type="submit" class="btn btn-sm btn-primary w-100">
+
+                                    <div class="add-wrapper {{ $inCart ? 'd-none' : '' }}">
+                                        <button type="button" class="btn btn-sm btn-primary w-100 page-ajax-add-btn">
                                             <i class="fas fa-cart-plus"></i> Add to Cart
                                         </button>
-                                    </form>
-                                @endif
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -165,3 +161,85 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+$(document).ready(function() {
+    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+    $('.page-ajax-add-btn').on('click', function(e) {
+        e.preventDefault();
+        var $btn = $(this);
+        var $wrapper = $btn.closest('.product-action-wrapper');
+        var productId = $wrapper.data('product-id');
+        
+        $btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Adding...');
+
+        $.ajax({
+            url: '{{ route("frontend.cart.add") }}',
+            method: 'POST',
+            data: { _token: csrfToken, product_id: productId, quantity: 1 },
+            success: function(res) {
+                if(res.success) {
+                    $('.tp-cart-count, [data-bb-value="cart-count"]').text(res.count);
+                    if(typeof refreshMiniCart === 'function') refreshMiniCart(res.html);
+                    if(typeof notify === 'function') notify(res.message, 'success');
+                    
+                    $wrapper.find('.add-wrapper').addClass('d-none');
+                    $wrapper.find('.qty-wrapper').removeClass('d-none');
+                    $wrapper.find('.page-qty-input').val(1);
+                }
+            },
+            complete: function() {
+                $btn.prop('disabled', false).html('<i class="fas fa-cart-plus"></i> Add to Cart');
+            }
+        });
+    });
+
+    $('.page-ajax-qty-btn').on('click', function(e) {
+        e.preventDefault();
+        var $btn = $(this);
+        var action = $btn.data('action');
+        var $wrapper = $btn.closest('.product-action-wrapper');
+        var productId = $wrapper.data('product-id');
+        var $input = $wrapper.find('.page-qty-input');
+        var currentQty = parseInt($input.val()) || 1;
+        var newQty = action === 'plus' ? currentQty + 1 : currentQty - 1;
+
+        if (newQty <= 0) {
+            // Remove
+            $.ajax({
+                url: '/cart/remove/' + productId,
+                method: 'POST',
+                data: { _token: csrfToken, _method: 'DELETE' },
+                success: function(res) {
+                    if(res.success) {
+                        $('.tp-cart-count, [data-bb-value="cart-count"]').text(res.count);
+                        if(typeof refreshMiniCart === 'function') refreshMiniCart(res.html);
+                        if(typeof notify === 'function') notify('Product removed from cart!', 'success');
+                        
+                        $wrapper.find('.qty-wrapper').addClass('d-none');
+                        $wrapper.find('.add-wrapper').removeClass('d-none');
+                    }
+                }
+            });
+        } else {
+            // Update
+            $.ajax({
+                url: '{{ route("frontend.cart.update") }}',
+                method: 'POST',
+                data: { _token: csrfToken, product_id: productId, quantity: newQty },
+                success: function(res) {
+                    if(res.success) {
+                        $('.tp-cart-count, [data-bb-value="cart-count"]').text(res.count);
+                        if(typeof refreshMiniCart === 'function') refreshMiniCart(res.html);
+                        
+                        $input.val(newQty);
+                    }
+                }
+            });
+        }
+    });
+});
+</script>
+@endpush

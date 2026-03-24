@@ -6,19 +6,36 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Page;
 use Illuminate\Http\Request;
+use App\Helpers\TableHelpers;
 
 class PageController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $pages = Page::orderBy('created_at', 'desc')->paginate(10);
-        return view('admin-layouts.pages.index', compact('pages'));
+        $query = Page::query();
+
+        TableHelpers::applyTableLogic($query, $request, 
+            ['id', 'name', 'status', 'template', 'description'], // searchable
+            ['id', 'name', 'status', 'template'] // filterable
+        );
+
+        $pages = $query->orderBy('created_at', 'desc')->paginate(TableHelpers::getPerPage($request));
+
+        $filterColumns = [
+            'id' => 'ID',
+            'name' => 'Name',
+            'status' => 'Status',
+            'template' => 'Template'
+        ];
+
+        return view('admin-layouts.pages.index', compact('pages', 'filterColumns'));
     }
 
     public function show($id)
     {
-        $page = \App\Models\Page::findOrFail($id);
-        return view('pages.show', compact('page'));
+        // Admin detail view: strictly use admin-layouts and ensure it stays in admin
+        $page = Page::findOrFail($id);
+        return view('admin-layouts.pages.show', compact('page'));
     }
 
     public function create()
@@ -49,9 +66,9 @@ class PageController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Page created successfully.',
-                'redirect' => $request->input('submitter') === 'apply' 
-                    ? route('admin.pages.edit', $page->id) 
-                    : route('admin.pages.index')
+                'redirect' => $request->input('submitter') === 'apply'
+                ? route('admin.pages.edit', $page->id)
+                : route('admin.pages.index')
             ]);
         }
 
@@ -93,9 +110,9 @@ class PageController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Page updated successfully.',
-                'redirect' => $request->input('submitter') === 'apply' 
-                    ? null 
-                    : route('admin.pages.index')
+                'redirect' => $request->input('submitter') === 'apply'
+                ? null
+                : route('admin.pages.index')
             ]);
         }
 
@@ -108,9 +125,11 @@ class PageController extends Controller
 
     public function destroy($id)
     {
-        $page = \App\Models\Page::findOrFail($id);
-        $page->delete();
+        return TableHelpers::performDelete($id, Page::class, 'page');
+    }
 
-        return redirect()->route('admin.pages.index')->with('success', 'Page deleted successfully.');
+    public function bulkDelete(Request $request)
+    {
+        return TableHelpers::performBulkDelete($request, Page::class, 'pages');
     }
 }

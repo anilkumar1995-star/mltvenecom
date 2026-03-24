@@ -7,6 +7,7 @@ use App\Models\Tax;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Helpers\TableHelpers;
 
 class TaxController extends Controller
 {
@@ -14,16 +15,22 @@ class TaxController extends Controller
     {
         $query = Tax::query();
 
-        if ($request->has('search') && $request->search != '') {
-            $query->where('title', 'like', '%' . $request->search . '%');
-        }
+        TableHelpers::applyTableLogic($query, $request,
+            ['id', 'title', 'percentage'], // Searchable
+            ['id', 'title', 'status', 'created_at'] // Filterable
+        );
 
-        if ($request->has('status') && $request->status != '') {
-            $query->where('status', $request->status);
-        }
+        $taxes = $query->orderBy('priority', 'asc')->orderBy('id', 'desc')->paginate(TableHelpers::getPerPage($request));
 
-        $data['taxes'] = $query->orderBy('priority')->orderBy('id', 'desc')->get();
-        return view('admin-layouts.product.taxes.index', $data);
+        $filterColumns = [
+            'id'         => 'ID',
+            'title'      => 'Title',
+            'percentage' => 'Percentage',
+            'status'     => 'Status',
+            'created_at' => 'Created At',
+        ];
+
+        return view('admin-layouts.product.taxes.index', compact('taxes', 'filterColumns'));
     }
 
     public function create()
@@ -66,8 +73,8 @@ class TaxController extends Controller
 
     public function edit($id)
     {
-        $data['tax'] = Tax::findOrFail($id);
-        return view('admin-layouts.product.taxes.edit', $data);
+        $tax = Tax::findOrFail($id);
+        return view('admin-layouts.product.taxes.edit', compact('tax'));
     }
 
     public function update(Request $request, $id)
@@ -104,44 +111,13 @@ class TaxController extends Controller
         }
     }
 
-    public function destroy(Request $request)
+    public function destroy($id)
     {
-        try {
-            DB::beginTransaction();
-            $tax = Tax::findOrFail($request->id);
-            $tax->delete();
-            DB::commit();
-
-            return response()->json([
-                'status' => true,
-                'message' => 'Tax deleted successfully.'
-            ]);
-        } catch (Exception $e) {
-            DB::rollBack();
-            return response()->json([
-                'status' => false,
-                'message' => 'Something went wrong: ' . $e->getMessage()
-            ], 500);
-        }
+        return TableHelpers::performDelete($id, Tax::class, 'tax');
     }
 
     public function bulkDelete(Request $request)
     {
-        try {
-            DB::beginTransaction();
-            Tax::whereIn('id', $request->ids)->delete();
-            DB::commit();
-
-            return response()->json([
-                'status' => true,
-                'message' => 'Selected taxes deleted successfully.'
-            ]);
-        } catch (Exception $e) {
-            DB::rollBack();
-            return response()->json([
-                'status' => false,
-                'message' => 'Something went wrong: ' . $e->getMessage()
-            ], 500);
-        }
+        return TableHelpers::performBulkDelete($request, Tax::class, 'taxes');
     }
 }

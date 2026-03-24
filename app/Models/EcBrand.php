@@ -28,7 +28,7 @@ class EcBrand extends Model
     public function categories()
     {
         return $this->belongsToMany(
-            EcProductCategory::class,
+            EcProductCategory::class ,
             'ec_brand_categories',
             'brand_id',
             'category_id'

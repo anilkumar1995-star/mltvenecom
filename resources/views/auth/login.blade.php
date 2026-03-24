@@ -74,10 +74,10 @@
                                         </div>
 
                                         <div class="row g-0 mb-3 align-items-center">
-                                            <div class="col-6">
+                                            <div class="col-6 d-none">
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="checkbox" name="remember"
-                                                        id="remember" {{ old('remember') ? 'checked' : '' }}>
+                                                        id="remember">
                                                     <label class="form-check-label" for="remember">Remember me</label>
                                                 </div>
                                             </div>

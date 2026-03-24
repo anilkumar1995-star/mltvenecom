@@ -7,13 +7,33 @@ use App\Models\Discount;
 use App\Models\EcProduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use App\Helpers\TableHelpers;
 
 class DiscountController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $discounts = Discount::orderBy('id', 'desc')->paginate(10);
-        return view('admin-layouts.discounts.index', compact('discounts'));
+        $query = Discount::query();
+
+        TableHelpers::applyTableLogic($query, $request,
+            ['id', 'title', 'code'], // Searchable
+            ['id', 'title', 'code', 'type', 'type_option', 'start_date', 'end_date', 'created_at'] // Filterable
+        );
+
+        $discounts = $query->orderBy('id', 'desc')->paginate(TableHelpers::getPerPage($request));
+
+        $filterColumns = [
+            'id'          => 'ID',
+            'title'       => 'Title',
+            'code'        => 'Coupon Code',
+            'type'        => 'Type',
+            'type_option' => 'Discount Type',
+            'start_date'  => 'Start Date',
+            'end_date'    => 'End Date',
+            'created_at'  => 'Created At',
+        ];
+
+        return view('admin-layouts.discounts.index', compact('discounts', 'filterColumns'));
     }
 
     public function create()
@@ -59,7 +79,6 @@ class DiscountController extends Controller
             'description' => $request->description,
         ]);
 
-        // Handle relationships based on target if needed (simplified for now)
         if ($request->target == 'specific-product' && $request->has('products')) {
             $discount->products()->attach($request->products);
         }
@@ -92,9 +111,8 @@ class DiscountController extends Controller
 
         $title = $request->code;
         if (!$title) {
-            $title = $discount->title; // Keep existing title if code is empty/promotion
+            $title = $discount->title;
             if (!$title || $request->type == 'coupon') {
-                 // Update title if type changed to coupon
                   $title = $request->code ?? 'Promotion ' . now()->format('Y-m-d H:i:s');
             }
         }
@@ -123,26 +141,16 @@ class DiscountController extends Controller
              $discount->products()->detach();
         }
 
-        return redirect()->route('discounts.index')->with('success', 'Discount updated successfully.');
+        return redirect()->route('admin.discounts.index')->with('success', 'Discount updated successfully.');
     }
 
     public function destroy($id)
     {
-        $discount = Discount::findOrFail($id);
-        $discount->delete();
-
-        if (request()->ajax()) {
-            return response()->json(['success' => true, 'message' => 'Discount deleted successfully']);
-        }
-
-        return redirect()->back()->with('success', 'Discount deleted successfully.');
+        return TableHelpers::performDelete($id, Discount::class, 'discount');
     }
 
     public function bulkDelete(Request $request)
     {
-        $ids = $request->ids;
-        Discount::whereIn('id', $ids)->delete();
-
-        return response()->json(['success' => true, 'message' => 'Selected discounts deleted successfully']);
+        return TableHelpers::performBulkDelete($request, Discount::class, 'discounts');
     }
 }

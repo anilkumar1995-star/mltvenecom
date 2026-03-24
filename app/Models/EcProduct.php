@@ -246,15 +246,22 @@ class EcProduct extends Model
 
     public function getImageUrlAttribute()
     {
-        if (empty($this->image)) {
+        $img = $this->image;
+        
+        // Fallback to first image from gallery if primary image is empty
+        if (empty($img) && !empty($this->images) && is_array($this->images)) {
+            $img = $this->images[0] ?? null;
+        }
+
+        if (empty($img)) {
             return asset('home/placeholder.png');
         }
 
-        if (str_starts_with($this->image, 'http')) {
-            return $this->image;
+        if (str_starts_with($img, 'http')) {
+            return $img;
         }
 
-        return rtrim(ImageHelper::getImageUrl(), '/') . '/' . ltrim($this->image, '/');
+        return rtrim(ImageHelper::getImageUrl(), '/') . '/' . ltrim($img, '/');
     }
 
     public function getGalleryImageUrlsAttribute()

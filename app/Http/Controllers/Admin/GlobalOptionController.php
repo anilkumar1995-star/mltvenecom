@@ -23,8 +23,15 @@ class GlobalOptionController extends Controller
             $query->where('status', $request->status);
         }
 
-        $data['options'] = $query->orderBy('id', 'desc')->get();
-        return view('admin-layouts.product.global-options.index', $data);
+        $options = $query->orderBy('id', 'desc')->paginate(15);
+
+        $filterColumns = [
+            'name'       => 'Name',
+            'status'     => 'Status',
+            'created_at' => 'Created At',
+        ];
+
+        return view('admin-layouts.product.global-options.index', compact('options', 'filterColumns'));
     }
 
     public function create()

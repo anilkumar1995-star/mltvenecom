@@ -47,8 +47,9 @@ class EcommerceReportController extends Controller
             )
             ->first();
 
-        $expenses = (float) ($productStats->total_cost ?? 0);
-        $profit = (float) (($productStats->total_sales ?? 0) - $expenses);
+        $productStatsObj = (object) ($productStats ?: ['total_sales' => 0, 'total_cost' => 0]);
+        $expenses = (float) ($productStatsObj->total_cost ?? 0);
+        $profit = (float) ($productStatsObj->total_sales ?? 0) - $expenses;
 
         $customersCount = Customer::whereBetween('created_at', [$startDate, $endDate])->count();
         $productsCount = EcProduct::count();
@@ -57,8 +58,10 @@ class EcommerceReportController extends Controller
             ->whereBetween('created_at', [$startDate, $endDate])
             ->select(DB::raw('COUNT(*) as count'), DB::raw('AVG(star) as avg'))
             ->first();
-        $reviewsCount = (int) $reviewsData->count;
-        $reviewsAvg = (float) $reviewsData->avg;
+        
+        $reviewsDataObj = (object) ($reviewsData ?: ['count' => 0, 'avg' => 0]);
+        $reviewsCount = (int) ($reviewsDataObj->count ?? 0);
+        $reviewsAvg = (float) ($reviewsDataObj->avg ?? 0);
 
         $conversionRate = $customersCount > 0 ? ($ordersCount / $customersCount) * 100 : 0;
         if($conversionRate > 100) $conversionRate = 100;
@@ -73,8 +76,8 @@ class EcommerceReportController extends Controller
         $topProducts = EcProduct::join('ec_order_product', 'ec_products.id', '=', 'ec_order_product.product_id')
             ->join('ec_orders', 'ec_order_product.order_id', '=', 'ec_orders.id')
             ->whereBetween('ec_orders.created_at', [$startDate, $endDate])
-            ->select('ec_products.id as product_id', 'ec_products.name', DB::raw('SUM(ec_order_product.qty) as total_qty'))
-            ->groupBy('ec_products.id', 'ec_products.name')
+            ->select('ec_products.id as product_id', 'ec_products.name', 'ec_products.image', DB::raw('SUM(ec_order_product.qty) as total_qty'))
+            ->groupBy('ec_products.id', 'ec_products.name', 'ec_products.image')
             ->orderBy('total_qty', 'desc')
             ->take(10)
             ->get();
@@ -173,7 +176,84 @@ class EcommerceReportController extends Controller
             $customersData[] = $row['customers'];
         }
 
-        // 1. Category Sales
+        // --- 10 Widgets Data (RE-CALCULATED FOR AJAX) ---
+        $ordersQuery = Order::whereBetween('created_at', [$startDate, $endDate]);
+        $revenue = (float) $ordersQuery->sum('amount');
+        $taxAmount = (float) $ordersQuery->sum('tax_amount');
+        $ordersCount = $ordersQuery->count();
+        $averageOrderValue = $ordersCount > 0 ? $revenue / $ordersCount : 0;
+
+        $productStats = DB::table('ec_order_product')
+            ->join('ec_orders', 'ec_order_product.order_id', '=', 'ec_orders.id')
+            ->join('ec_products', 'ec_order_product.product_id', '=', 'ec_products.id')
+            ->whereBetween('ec_orders.created_at', [$startDate, $endDate])
+            ->select(
+                DB::raw('SUM(ec_order_product.qty * ec_order_product.price) as total_sales'),
+                DB::raw('SUM(ec_order_product.qty * COALESCE(ec_products.cost_per_item, 0)) as total_cost')
+            )
+            ->first();
+
+        $productStatsObj = (object) ($productStats ?: ['total_sales' => 0, 'total_cost' => 0]);
+        $expenses = (float) ($productStatsObj->total_cost ?? 0);
+        $profit = (float) ($productStatsObj->total_sales ?? 0) - $expenses;
+        $customersCount = Customer::whereBetween('created_at', [$startDate, $endDate])->count();
+        $productsCount = EcProduct::count();
+
+        $reviewsData = DB::table('ec_reviews')
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->select(DB::raw('COUNT(*) as count'), DB::raw('AVG(star) as avg'))
+            ->first();
+        
+        $reviewsDataObj = (object) ($reviewsData ?: ['count' => 0, 'avg' => 0]);
+        $reviewsCount = (int) ($reviewsDataObj->count ?? 0);
+        $reviewsAvg = (float) ($reviewsDataObj->avg ?? 0);
+
+        $conversionRate = $customersCount > 0 ? ($ordersCount / $customersCount) * 100 : 0;
+        if($conversionRate > 100) $conversionRate = 100;
+
+        $widgets = [
+            'revenue' => number_format($revenue, 2),
+            'profit' => number_format($profit, 2),
+            'expenses' => number_format($expenses, 2),
+            'averageOrderValue' => number_format($averageOrderValue, 2),
+            'ordersCount' => $ordersCount,
+            'customersCount' => $customersCount,
+            'productsCount' => $productsCount,
+            'conversionRate' => number_format($conversionRate, 2),
+            'taxAmount' => number_format($taxAmount, 2),
+            'reviewsAvg' => number_format($reviewsAvg, 1),
+            'reviewsCount' => $reviewsCount,
+        ];
+
+        // --- Tables Data (RE-CALCULATED FOR AJAX) ---
+        $recentOrdersRaw = Order::with(['user', 'payment'])
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->orderBy('created_at', 'desc')
+            ->take(10)
+            ->get();
+        
+        $recentOrders = $recentOrdersRaw->map(function($order) {
+            return [
+                'id' => $order->id,
+                'customer' => ($order->user->name ?? 'Guest'),
+                'amount' => number_format($order->amount, 2),
+                'payment_method' => strtoupper($order->payment?->payment_channel ?? 'N/A'),
+                'payment_status' => ($order->payment?->status ?? 'pending')
+            ];
+        });
+
+        $topProducts = EcProduct::join('ec_order_product', 'ec_products.id', '=', 'ec_order_product.product_id')
+            ->join('ec_orders', 'ec_order_product.order_id', '=', 'ec_orders.id')
+            ->whereBetween('ec_orders.created_at', [$startDate, $endDate])
+            ->select('ec_products.id as product_id', 'ec_products.name', 'ec_products.image', DB::raw('SUM(ec_order_product.qty) as total_qty'))
+            ->groupBy('ec_products.id', 'ec_products.name', 'ec_products.image')
+            ->orderBy('total_qty', 'desc')
+            ->take(10)
+            ->get();
+
+        $trendingProducts = EcProduct::orderBy('views', 'desc')->take(10)->get();
+
+        // --- Chart Data (RE-CALCULATED FOR AJAX) ---
         $categorySales = DB::table('ec_product_categories')
             ->join('ec_product_category_product', 'ec_product_categories.id', '=', 'ec_product_category_product.category_id')
             ->join('ec_order_product', 'ec_product_category_product.product_id', '=', 'ec_order_product.product_id')
@@ -183,13 +263,11 @@ class EcommerceReportController extends Controller
             ->groupBy('ec_product_categories.id', 'ec_product_categories.name')
             ->get();
 
-        // 2. Order Statuses
         $orderStatuses = Order::whereBetween('created_at', [$startDate, $endDate])
             ->select('status', DB::raw('count(*) as total'))
             ->groupBy('status')
             ->get();
 
-        // 3. Payment Methods
         $paymentMethods = DB::table('ec_orders')
             ->join('payments', 'ec_orders.payment_id', '=', 'payments.id')
             ->whereBetween('ec_orders.created_at', [$startDate, $endDate])
@@ -197,11 +275,13 @@ class EcommerceReportController extends Controller
             ->groupBy('payments.payment_channel')
             ->get();
 
-        // 4. Shipping Methods
         $shippingMethods = Order::whereBetween('created_at', [$startDate, $endDate])
             ->select('shipping_method', DB::raw('count(*) as total'))
             ->groupBy('shipping_method')
             ->get();
+
+        // Simple Retention logic for AJAX
+        $retentionData = array_fill(0, count($dates), 0); // Placeholder for now
 
         return response()->json([
             'dates' => $dates,
@@ -210,10 +290,15 @@ class EcommerceReportController extends Controller
             'expenses' => $expensesData,
             'orders' => $ordersData,
             'customers' => $customersData,
+            'retention' => $retentionData,
             'categorySales' => $categorySales,
             'orderStatuses' => $orderStatuses,
             'paymentMethods' => $paymentMethods,
-            'shippingMethods' => $shippingMethods
+            'shippingMethods' => $shippingMethods,
+            'widgets' => $widgets,
+            'recentOrders' => $recentOrders,
+            'topProducts' => $topProducts,
+            'trendingProducts' => $trendingProducts
         ]);
     }
 }

@@ -71,6 +71,7 @@
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('vendor/core/packages/shortcode/css/shortcode.css?v=1.4.4') }}">
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('vendor/core/packages/seo-helper/css/seo-helper.css?v=1.4.4') }}">
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('vendor/core/plugins/faq/css/faq.css?v=1.4.4') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-notify@0.5.5/dist/simple-notify.min.css" />
 
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('js/vue.global.min.js') }}"></script>
@@ -118,7 +119,9 @@
         };
         window.Botble = {
             showNotice: function(type, message) {
-                if (typeof toastr !== 'undefined') {
+                if (typeof notify !== 'undefined') {
+                    notify(message, type);
+                } else if (typeof toastr !== 'undefined') {
                     toastr[type](message);
                 } else {
                     console.log(type + ': ' + message);
@@ -793,6 +796,63 @@
     </script>
     <script src="{{ asset('js/admin-ajax.js') }}"></script>
     @stack('scripts')
+@auth
+    <script>
+        (function() {
+            let inactivityTime = function() {
+                let time;
+                // Get session lifetime from PHP and convert to milliseconds
+                const waitTime = {{ config('session.lifetime') * 60 * 1000 }};
+                
+                window.onload = resetTimer;
+                document.onmousemove = resetTimer;
+                document.onkeypress = resetTimer;
+                document.ontouchstart = resetTimer;
+                document.onmousedown = resetTimer;
+                document.onscroll = resetTimer;
+
+                function logout() {
+                    // Show a sleek alert before logout if SweetAlert2 is available
+                    if (typeof Swal !== 'undefined') {
+                        Swal.fire({
+                            title: 'Session Expiring',
+                            text: 'You have been inactive for a while. Logging out for security...',
+                            icon: 'warning',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            willClose: () => {
+                                performLogout();
+                            }
+                        });
+                    } else {
+                        performLogout();
+                    }
+                }
+
+                function performLogout() {
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = '{{ route('admin.logout') }}';
+                    const csrf = document.createElement('input');
+                    csrf.type = 'hidden';
+                    csrf.name = '_token';
+                    csrf.value = '{{ csrf_token() }}';
+                    form.appendChild(csrf);
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+
+                function resetTimer() {
+                    clearTimeout(time);
+                    time = setTimeout(logout, waitTime);
+                }
+            };
+            inactivityTime();
+        })();
+    </script>
+    @endauth
 </body>
 
 </html>
+

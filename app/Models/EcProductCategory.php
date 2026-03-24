@@ -29,18 +29,18 @@ class EcProductCategory extends Model
 
     public function parent()
     {
-        return $this->belongsTo(self::class, 'parent_id');
+        return $this->belongsTo(self::class , 'parent_id');
     }
 
     public function children()
     {
-        return $this->hasMany(self::class, 'parent_id');
+        return $this->hasMany(self::class , 'parent_id');
     }
 
     public function brands()
     {
         return $this->belongsToMany(
-            EcBrand::class,
+            EcBrand::class ,
             'ec_brand_categories',
             'category_id',
             'brand_id'
@@ -50,7 +50,7 @@ class EcProductCategory extends Model
     public function products()
     {
         return $this->belongsToMany(
-            EcProduct::class,
+            EcProduct::class ,
             'ec_product_category_product',
             'category_id',
             'product_id'
@@ -67,7 +67,7 @@ class EcProductCategory extends Model
     {
         return $query->where(function ($q) {
             $q->whereNull('parent_id')
-              ->orWhere('parent_id', 0);
+                ->orWhere('parent_id', 0);
         });
     }
 

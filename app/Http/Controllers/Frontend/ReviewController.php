@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
-use App\Models\Product;
+use App\Models\EcProduct as Product;
 use App\Models\Review;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,8 +19,8 @@ class ReviewController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'product_id' => 'required|exists:products,id',
-            'rating'     => 'required|integer|min:1|max:5',
+            'product_id' => 'required|exists:ec_products,id',
+            'star'       => 'required|integer|min:1|max:5',
             'comment'    => 'required|string',
             'images.*'   => 'image|max:2048'
         ]);
@@ -34,14 +34,22 @@ class ReviewController extends Controller
             }
         }
 
-        Review::create([
-            'product_id' => $request->product_id,
-            'user_id'    => Auth::id(),
-            'rating'     => $request->rating,
-            'comment'    => $request->comment,
-            'images'     => $imagePaths,
-            'status'     => 'published', // or pending
+        \App\Models\Review::create([
+            'product_id'  => $request->product_id,
+            'customer_id' => Auth::guard('customer')->id() ?? Auth::id(),
+            'star'        => $request->star,
+            'comment'     => $request->comment,
+            'images'      => $imagePaths,
+            'status'      => 'published',
         ]);
+
+        // Update product reviews columns
+        $product = Product::find($request->product_id);
+        if ($product) {
+            $product->reviews_count = $product->reviews()->count();
+            $product->reviews_avg = $product->reviews()->avg('star');
+            $product->save();
+        }
 
         return response()->json([
             'status' => true,
@@ -95,7 +103,7 @@ class ReviewController extends Controller
             ->where('status', 'published');
 
         if ($request->filled('star')) {
-            $query->where('rating', $request->star);
+            $query->where('star', $request->star);
         }
 
         if ($request->filled('search')) {

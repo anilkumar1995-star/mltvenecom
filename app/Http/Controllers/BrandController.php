@@ -7,7 +7,9 @@ use App\Models\EcProductCategory;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
+use App\Helpers\TableHelpers;
+use App\Helpers\ImageHelper;
+use Illuminate\Support\Str;
 
 class BrandController extends Controller
 {
@@ -15,28 +17,22 @@ class BrandController extends Controller
     {
         $query = EcBrand::query();
 
-        if ($request->has('search') && !empty($request->search)) {
-            $query->where('name', 'like', '%' . $request->search . '%');
-        }
+        TableHelpers::applyTableLogic($query, $request,
+            ['id', 'name', 'slug', 'description'], // searchable
+            ['id', 'status', 'is_featured', 'created_at'] // filterable
+        );
 
-        if ($request->has('filter_columns')) {
-            foreach ($request->filter_columns as $key => $column) {
-                if (!empty($column) && isset($request->filter_values[$key]) && $request->filter_values[$key] !== '') {
-                    $operator = $request->filter_operators[$key] ?? '=';
-                    $value = $request->filter_values[$key];
+        $brands = $query->orderBy('id', 'desc')->paginate(TableHelpers::getPerPage($request));
 
-                    if ($operator == 'like') {
-                        $value = '%' . $value . '%';
-                    }
+        $filterColumns = [
+            'id' => 'ID',
+            'name' => 'Name',
+            'status' => 'Status',
+            'is_featured' => 'Is Featured',
+            'created_at' => 'Created At',
+        ];
 
-                    $query->where($column, $operator, $value);
-                }
-            }
-        }
-
-        $data['categories'] = EcProductCategory::where('status', '!=', 'Pending')->orderBy('id', 'desc')->get();
-        $data['brands'] = $query->orderBy('id', 'desc')->get();
-        return view('admin-layouts.brand.index', $data);
+        return view('admin-layouts.brand.index', compact('brands', 'filterColumns'));
     }
 
     public function create()
@@ -45,9 +41,9 @@ class BrandController extends Controller
         return view('admin-layouts.brand.create', $data);
     }
 
-    public function store(Request $post)
+    public function store(Request $request)
     {
-        $post->validate([
+        $request->validate([
             'name' => 'required|string|max:191',
             'description' => 'nullable|string',
             'website' => 'nullable|url|max:191',
@@ -57,10 +53,10 @@ class BrandController extends Controller
             'is_featured' => 'required|boolean',
         ]);
 
-        DB::beginTransaction();
-        try{
-            $data = $post->all();
-            $data['slug'] = \Illuminate\Support\Str::slug($post->name);
+        try {
+            DB::beginTransaction();
+            $data = $request->except(['logo', '_token', '_method']);
+            $data['slug'] = Str::slug($request->name);
 
             $originalSlug = $data['slug'];
             $count = 1;
@@ -68,8 +64,8 @@ class BrandController extends Controller
                 $data['slug'] = $originalSlug . '-' . $count++;
             }
 
-            if ($post->hasFile('logo')) {
-                $upload = \App\Helpers\ImageHelper::imageUploadHelper('brand_', $post->file('logo'));
+            if ($request->hasFile('logo')) {
+                $upload = ImageHelper::imageUploadHelper('brand_', $request->file('logo'));
                 if ($upload['status']) {
                     $data['logo'] = $upload['data']['target_file'];
                 }
@@ -77,15 +73,25 @@ class BrandController extends Controller
 
             $brand = EcBrand::create($data);
 
-            if ($post->has('categories')) {
-                $brand->categories()->sync($post->categories);
-            }
-            DB::commit();
-            return response()->json(['status' => true, 'message' => 'Brand created successfully.']);
 
-        }catch(Exception $e){
+            DB::commit();
+
+            if ($request->ajax()) {
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Brand created successfully.',
+                    'redirect_url' => route('admin.brand.Index')
+                ]);
+            }
+
+            return redirect()->route('admin.brand.Index')->with('success', 'Brand created successfully.');
+
+        } catch (Exception $e) {
             DB::rollback();
-            return response()->json(['status' => false,'message' => $e->getMessage(),'line' => $e->getLine()]);
+            if ($request->ajax()) {
+                return response()->json(['status' => false, 'message' => $e->getMessage()], 500);
+            }
+            return back()->with('error', $e->getMessage())->withInput();
         }
     }
 
@@ -95,9 +101,9 @@ class BrandController extends Controller
         return view('admin-layouts.brand.edit', compact('brand', 'categories'));
     }
 
-    public function update(Request $post, EcBrand $brand)
+    public function update(Request $request, EcBrand $brand)
     {
-        $post->validate([
+        $request->validate([
             'name' => 'required|string|max:191',
             'description' => 'nullable|string',
             'website' => 'nullable|url|max:191',
@@ -107,12 +113,12 @@ class BrandController extends Controller
             'is_featured' => 'required|boolean',
         ]);
 
-        DB::beginTransaction();
-            try{
-            $data = $post->all();
+        try {
+            DB::beginTransaction();
+            $data = $request->except(['logo', '_token', '_method']);
 
-            if ($post->name != $brand->name) {
-                $data['slug'] = \Illuminate\Support\Str::slug($post->name);
+            if ($request->name != $brand->name) {
+                $data['slug'] = Str::slug($request->name);
                 $originalSlug = $data['slug'];
                 $count = 1;
                 while (EcBrand::where('slug', $data['slug'])->where('id', '!=', $brand->id)->exists()) {
@@ -120,8 +126,8 @@ class BrandController extends Controller
                 }
             }
 
-            if ($post->hasFile('logo')) {
-                $upload = \App\Helpers\ImageHelper::imageUploadHelper('brand_', $post->file('logo'));
+            if ($request->hasFile('logo')) {
+                $upload = ImageHelper::imageUploadHelper('brand_', $request->file('logo'));
                 if ($upload['status']) {
                     $data['logo'] = $upload['data']['target_file'];
                 }
@@ -129,72 +135,37 @@ class BrandController extends Controller
 
             $brand->update($data);
 
-            if ($post->has('categories')) {
-                $brand->categories()->sync($post->categories);
-            } else {
-                $brand->categories()->detach();
-            }
+
 
             DB::commit();
-            return response()->json(['status' => true, 'message' => 'Brand updated successfully.']);
 
-        }catch(Exception $e){
-            DB::rollback();
-            return response()->json(['status' => false,'message' => $e->getMessage(),'line' => $e->getLine()]);
-        }
-    }
-
-
-    public function destroy(Request $post){
-        $rules = array([
-            "id" => "required|exists:ec_brands,id",
-        ]);
-
-        $validator = Validator::make($post->all(),$rules);
-        if($validator->fails()) return response()->json(['status' => false,'errors' => $validator->errors()]);
-        $brand = EcBrand::where('id',$post->id)->first();
-        if(!$brand) return response()->json(['status' => false,'message' => "Record Not Found"]);
-
-        DB::beginTransaction();
-        try {
-            if ($brand->logo && file_exists(public_path($brand->logo))) {
-                unlink(public_path($brand->logo));
+            if ($request->ajax()) {
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Brand updated successfully.',
+                    'redirect_url' => route('admin.brand.Index')
+                ]);
             }
 
-            $brand->categories()->detach();
-            $brand->delete();
+            return redirect()->route('admin.brand.Index')->with('success', 'Brand updated successfully.');
 
-            DB::commit();
-            return response()->json(['status' => true, 'message' => 'Brand deleted successfully.']);
         } catch (Exception $e) {
             DB::rollback();
-            return response()->json(['status' => false, 'message' => $e->getMessage(), 'line' => $e->getLine()]);
+            if ($request->ajax()) {
+                return response()->json(['status' => false, 'message' => $e->getMessage()], 500);
+            }
+            return back()->with('error', $e->getMessage())->withInput();
         }
     }
 
+    public function destroy($id)
+    {
+        return TableHelpers::performDelete($id, EcBrand::class, 'Brand');
+    }
 
     public function bulkDelete(Request $request)
     {
-        $ids = $request->ids;
-        if (!empty($ids)) {
-            DB::beginTransaction();
-            try {
-                $brands = EcBrand::whereIn('id', $ids)->get();
-                foreach ($brands as $brand) {
-                    if ($brand->logo && file_exists(public_path($brand->logo))) {
-                        unlink(public_path($brand->logo));
-                    }
-                    $brand->categories()->detach();
-                    $brand->delete();
-                }
-                DB::commit();
-                return response()->json(['status' => true, 'message' => 'Selected brands deleted successfully.']);
-            } catch (Exception $e) {
-                DB::rollback();
-                return response()->json(['status' => false, 'message' => $e->getMessage()]);
-            }
-        }
-        return response()->json(['status' => false, 'message' => 'No brands selected.']);
+        return TableHelpers::performBulkDelete($request, EcBrand::class, 'Brands');
     }
 
     public function bulkChange(Request $request)
@@ -208,16 +179,16 @@ class BrandController extends Controller
                 return response()->json(['status' => false, 'message' => 'Invalid column for bulk change.']);
             }
 
-            DB::beginTransaction();
             try {
+                DB::beginTransaction();
                 EcBrand::whereIn('id', $ids)->update([$column => $value]);
                 DB::commit();
                 return response()->json(['status' => true, 'message' => 'Selected brands updated successfully.']);
             } catch (Exception $e) {
                 DB::rollback();
-                return response()->json(['status' => false, 'message' => $e->getMessage()]);
+                return response()->json(['status' => false, 'message' => $e->getMessage()], 500);
             }
         }
-        return response()->json(['status' => false, 'message' => 'Invalid data.']);
+        return response()->json(['status' => false, 'message' => 'Invalid data.'], 400);
     }
 }

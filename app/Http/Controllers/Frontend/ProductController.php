@@ -55,7 +55,11 @@ class ProductController extends Controller
             ->take(4)
             ->get();
 
-        return view('frontend.products.show', compact('product', 'related_products'));
+        // Cart quantity check
+        $cart = session()->get('cart', []);
+        $inCartQty = isset($cart[$product->id]) ? $cart[$product->id]['quantity'] : 0;
+
+        return view('frontend.products.show', compact('product', 'related_products', 'inCartQty'));
     }
 
     public function category(Request $request, $slug)

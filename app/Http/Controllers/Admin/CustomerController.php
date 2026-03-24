@@ -4,7 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
+use App\Models\Address;
 use Illuminate\Http\Request;
+use App\Helpers\TableHelpers;
+use App\Helpers\ImageHelper;
+use Illuminate\Support\Facades\DB;
+use Exception;
 
 class CustomerController extends Controller
 {
@@ -12,27 +17,22 @@ class CustomerController extends Controller
     {
         $query = Customer::query();
 
-        if ($request->has('filter_columns')) {
-            $columns = $request->get('filter_columns');
-            $operators = $request->get('filter_operators');
-            $values = $request->get('filter_values');
+        TableHelpers::applyTableLogic($query, $request,
+            ['id', 'name', 'email', 'phone'], // searchable
+            ['id', 'status', 'created_at']   // filterable
+        );
 
-            foreach ($columns as $key => $column) {
-                if ($column && isset($values[$key]) && $values[$key] !== null) {
-                    $operator = $operators[$key] ?? '=';
-                    $value = $values[$key];
+        $customers = $query->orderBy('created_at', 'desc')->paginate(TableHelpers::getPerPage($request));
+        
+        $filterColumns = [
+            'id' => 'ID',
+            'name' => 'Name',
+            'email' => 'Email',
+            'status' => 'Status',
+            'created_at' => 'Created At',
+        ];
 
-                    if ($operator === 'like') {
-                        $query->where($column, 'like', '%' . $value . '%');
-                    } else {
-                        $query->where($column, $operator, $value);
-                    }
-                }
-            }
-        }
-
-        $customers = $query->orderBy('created_at', 'desc')->paginate(10);
-        return view('admin-layouts.customers.index', compact('customers'));
+        return view('admin-layouts.customers.index', compact('customers', 'filterColumns'));
     }
 
     public function create()
@@ -49,54 +49,46 @@ class CustomerController extends Controller
             'status' => 'required'
         ]);
 
-        $data = [
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-            'status' => $request->status,
-            'phone' => $request->phone,
-            'dob' => $request->dob,
-        ];
+        try {
+            DB::beginTransaction();
+            $data = [
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
+                'status' => $request->status,
+                'phone' => $request->phone,
+                'dob' => $request->dob,
+            ];
 
-        if ($request->hasFile('avatar')) {
-            $upload = \App\Helpers\ImageHelper::imageUploadHelper('avatar_', $request->file('avatar'));
-            if ($upload['status']) {
-                $data['avatar'] = $upload['data']['target_file'];
+            if ($request->hasFile('avatar')) {
+                $upload = ImageHelper::imageUploadHelper('avatar_', $request->file('avatar'));
+                if ($upload['status']) {
+                    $data['avatar'] = $upload['data']['target_file'];
+                }
             }
+
+            Customer::create($data);
+            DB::commit();
+
+            if ($request->ajax()) {
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Customer created successfully',
+                    'redirect_url' => route('admin.customers.index')
+                ]);
+            }
+
+            return redirect()->route('admin.customers.index')->with('success', 'Customer created successfully');
+        } catch (Exception $e) {
+            DB::rollBack();
+            if ($request->ajax()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Something went wrong: ' . $e->getMessage()
+                ], 500);
+            }
+            return back()->with('error', 'Something went wrong: ' . $e->getMessage())->withInput();
         }
-
-        // Handle is_vendor logic if needed.
-        // For now, we just create the customer.
-        // If we need to create a vendor user, we would do it here.
-        // Given earlier logic, 'is_vendor' is checked via User table.
-        // So if is_vendor is checked, we might want to ensure a User exists with role 'vendor'?
-        // The prompt asked for "same to same" design, functionality is implied.
-        // I will stick to creating the customer record first to ensure the form works.
-
-        Customer::create($data);
-
-        if ($request->filled('is_vendor') && $request->is_vendor == 1) {
-             // Optional: Logic to promote to vendor or create vendor user could go here.
-        }
-
-        $redirectUrl = route('admin.customers.index');
-        if ($request->submitter == 'save') {
-             // If save, stay or redirect? Usually stay or edit.
-             // But for now, let's just use the index for simplicity or maybe refresh?
-             // Or redirect to edit?
-             // Let's redirect to index for both as per previous logic, but allowing for JSON response.
-             $redirectUrl = route('admin.customers.index');
-        }
-
-        if ($request->ajax()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Customer created successfully',
-                'redirect' => $redirectUrl
-            ]);
-        }
-
-        return redirect()->route('admin.customers.index')->with('success', 'Customer created successfully');
     }
 
     public function edit($id)
@@ -109,7 +101,6 @@ class CustomerController extends Controller
     {
         $customer = Customer::with(['addresses', 'orders.items', 'wishlist.product', 'reviews.product'])->findOrFail($id);
 
-        // Calculate basic stats for the view
         $totalOrders = $customer->orders->count();
         $completedOrders = $customer->orders->where('status', 'completed')->count();
         $totalSpent = $customer->orders->sum('amount');
@@ -129,58 +120,54 @@ class CustomerController extends Controller
             'status' => 'required'
         ]);
 
-        $data = $request->except(['password', 'avatar', 'password_confirmation']);
+        try {
+            DB::beginTransaction();
+            $data = $request->except(['password', 'avatar', 'password_confirmation', '_token', '_method']);
 
-        if ($request->filled('password')) {
-            $request->validate([
-                'password' => 'min:6|confirmed'
-            ]);
-            $data['password'] = bcrypt($request->password);
-        }
-
-        if ($request->hasFile('avatar')) {
-            $upload = \App\Helpers\ImageHelper::imageUploadHelper('avatar_', $request->file('avatar'));
-            if ($upload['status']) {
-                $data['avatar'] = $upload['data']['target_file'];
+            if ($request->filled('password')) {
+                $request->validate(['password' => 'min:6|confirmed']);
+                $data['password'] = bcrypt($request->password);
             }
+
+            if ($request->hasFile('avatar')) {
+                $upload = ImageHelper::imageUploadHelper('avatar_', $request->file('avatar'));
+                if ($upload['status']) {
+                    $data['avatar'] = $upload['data']['target_file'];
+                }
+            }
+
+            $customer->update($data);
+            DB::commit();
+
+            if ($request->ajax()) {
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Customer updated successfully',
+                    'redirect_url' => route('admin.customers.index')
+                ]);
+            }
+
+            return redirect()->route('admin.customers.index')->with('success', 'Customer updated successfully');
+        } catch (Exception $e) {
+            DB::rollBack();
+            if ($request->ajax()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Something went wrong: ' . $e->getMessage()
+                ], 500);
+            }
+            return back()->with('error', 'Something went wrong: ' . $e->getMessage())->withInput();
         }
-
-        $customer->update($data);
-
-        if ($request->ajax()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Customer updated successfully',
-                'redirect' => route('admin.customers.index')
-            ]);
-        }
-
-        return redirect()->route('admin.customers.index')->with('success', 'Customer updated successfully');
     }
 
     public function destroy($id)
     {
-        $customer = Customer::findOrFail($id);
-        $customer->delete();
-
-        if (request()->ajax()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Customer deleted successfully'
-            ]);
-        }
-
-        return redirect()->route('admin.customers.index')->with('success', 'Customer deleted successfully');
+        return TableHelpers::performDelete($id, Customer::class, 'Customer');
     }
 
-    public function bulkDestroy(Request $request)
+    public function bulkDelete(Request $request)
     {
-        $ids = $request->input('ids');
-        if (is_array($ids) && count($ids) > 0) {
-            Customer::whereIn('id', $ids)->delete();
-            return response()->json(['success' => true, 'message' => 'Customers deleted successfully']);
-        }
-        return response()->json(['success' => false, 'message' => 'No customers selected']);
+        return TableHelpers::performBulkDelete($request, Customer::class, 'Customers');
     }
 
     public function storeAddress(Request $request, $id)
@@ -196,39 +183,54 @@ class CustomerController extends Controller
             'zip_code' => 'required',
         ]);
 
-        $data = $request->all();
-        $data['customer_id'] = $id;
+        try {
+            DB::beginTransaction();
+            $data = $request->all();
+            $data['customer_id'] = $id;
 
-        if ($request->has('is_default') && $request->is_default == 1) {
-            // Unset other defaults
-            Address::where('customer_id', $id)->update(['is_default' => 0]);
+            if ($request->has('is_default') && $request->is_default == 1) {
+                Address::where('customer_id', $id)->update(['is_default' => 0]);
+            }
+
+            Address::create($data);
+            DB::commit();
+
+            if ($request->ajax()) {
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Address added successfully',
+                    'reload' => true
+                ]);
+            }
+
+            return redirect()->back()->with('success', 'Address added successfully');
+        } catch (Exception $e) {
+            DB::rollBack();
+            if ($request->ajax()) {
+                return response()->json(['status' => false, 'message' => $e->getMessage()], 500);
+            }
+            return back()->with('error', $e->getMessage());
         }
-
-        Address::create($data);
-
-        if ($request->ajax()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Address added successfully',
-                'redirect' => route('admin.customers.edit', $id)
-            ]);
-        }
-
-        return redirect()->back()->with('success', 'Address added successfully');
     }
 
     public function destroyAddress($address_id)
     {
-        $address = Address::findOrFail($address_id);
-        $address->delete();
+        try {
+            DB::beginTransaction();
+            $address = Address::findOrFail($address_id);
+            $address->delete();
+            DB::commit();
 
-        if (request()->ajax()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Address deleted successfully'
-            ]);
+            if (request()->ajax()) {
+                return response()->json(['status' => true, 'message' => 'Address deleted successfully']);
+            }
+            return redirect()->back()->with('success', 'Address deleted successfully');
+        } catch (Exception $e) {
+            DB::rollBack();
+            if (request()->ajax()) {
+                return response()->json(['status' => false, 'message' => $e->getMessage()], 500);
+            }
+            return back()->with('error', $e->getMessage());
         }
-
-        return redirect()->back()->with('success', 'Address deleted successfully');
     }
 }

@@ -43,7 +43,7 @@
                                     @endif
                                 </td>
                                 <td>{{ $product->name }}</td>
-                                <td>{{ number_format($product->price, 2) }}</td>
+                                <td>₹{{ number_format($product->price, 2) }}</td>
                                 <td>
                                     @if($product->status == 'published')
                                         <span class="badge bg-success">Published</span>

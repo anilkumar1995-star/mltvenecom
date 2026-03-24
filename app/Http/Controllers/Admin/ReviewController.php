@@ -7,6 +7,7 @@ use App\Models\EcProduct;
 use App\Models\Customer;
 use App\Models\Review;
 use Illuminate\Http\Request;
+use App\Helpers\TableHelpers;
 
 class ReviewController extends Controller
 {
@@ -14,43 +15,25 @@ class ReviewController extends Controller
     {
         $query = Review::with(['product', 'customer']);
 
-        if ($request->has('filter_columns') && $request->has('filter_values') && $request->has('filter_operators')) {
-            $columns = $request->filter_columns;
-            $values = $request->filter_values;
-            $operators = $request->filter_operators;
+        // Standardized Table Logic (Handles Search, Filters, Sorting)
+        // Note: product.name and customer.name are now supported by TableHelpers
+        TableHelpers::applyTableLogic($query, $request,
+            ['id', 'product.name', 'customer.name', 'comment'], // Searchable
+            ['id', 'product.name', 'customer.name', 'star', 'status', 'created_at'] // Filterable
+        );
 
-            foreach ($columns as $key => $column) {
-                if (!empty($column) && isset($values[$key]) && isset($operators[$key])) {
-                    $operator = $operators[$key];
-                    $value = $values[$key];
+        $reviews = $query->orderBy('id', 'desc')->paginate(TableHelpers::getPerPage($request));
 
-                    if ($operator === 'like') {
-                        $value = '%' . $value . '%';
-                    }
+        $filterColumns = [
+            'id'            => 'ID',
+            'product.name'  => 'Product Name',
+            'customer.name' => 'User Name',
+            'star'          => 'Rating',
+            'status'        => 'Status',
+            'created_at'    => 'Created At'
+        ];
 
-                    if ($column === 'product') {
-                         $query->whereHas('product', function($q) use ($operator, $value) {
-                             $q->where('name', $operator, $value);
-                         });
-                    } elseif ($column === 'customer') {
-                         $query->whereHas('customer', function($q) use ($operator, $value) {
-                             $q->where('name', $operator, $value);
-                         });
-                    } else {
-                         $query->where($column, $operator, $value);
-                    }
-                }
-            }
-        }
-
-        if ($request->has('sort_by') && $request->has('sort_order')) {
-            $query->orderBy($request->sort_by, $request->sort_order);
-        } else {
-            $query->orderBy('created_at', 'desc');
-        }
-
-        $reviews = $query->paginate(20);
-        return view('admin-layouts.reviews.index', compact('reviews'));
+        return view('admin-layouts.reviews.index', compact('reviews', 'filterColumns'));
     }
 
     public function create()
@@ -90,10 +73,16 @@ class ReviewController extends Controller
         $review->save();
 
         if ($request->input('submitter') === 'save-exit') {
-             return redirect()->route('admin.reviews.index')->with('success', 'Review created successfully');
+            return redirect()->route('admin.reviews.index')->with('success', 'Review created successfully');
         }
 
         return redirect()->route('admin.reviews.edit', $review->id)->with('success', 'Review created successfully');
+    }
+
+    public function show($id)
+    {
+        $review = Review::with(['product', 'customer'])->findOrFail($id);
+        return view('admin-layouts.reviews.show', compact('review'));
     }
 
     public function edit($id)
@@ -140,23 +129,35 @@ class ReviewController extends Controller
         return redirect()->back()->with('success', 'Review updated successfully');
     }
 
+    public function reply(Request $request, $id)
+    {
+        $request->validate([
+            'message' => 'required|string',
+        ]);
+
+        $reply = new \App\Models\ReviewReply();
+        $reply->review_id = $id;
+        $reply->user_id = auth()->id();
+        $reply->message = $request->message;
+        $reply->save();
+
+        if ($request->ajax()) {
+            return response()->json([
+                'status' => true,
+                'message' => 'Your reply has been saved successfully.'
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Reply saved successfully');
+    }
+
     public function destroy($id)
     {
-        $review = Review::findOrFail($id);
-        $review->delete();
-        return redirect()->back()->with('success', 'Review deleted successfully');
+        return TableHelpers::performDelete($id, Review::class, 'review');
     }
 
     public function bulkDelete(Request $request)
     {
-        $ids = $request->input('ids');
-        if (empty($ids)) {
-            return redirect()->back()->with('error', 'No reviews selected');
-        }
-
-        $ids = explode(',', $ids);
-        Review::whereIn('id', $ids)->delete();
-
-        return redirect()->back()->with('success', 'Selected reviews deleted successfully');
+        return TableHelpers::performBulkDelete($request, Review::class, 'reviews');
     }
 }

@@ -85,7 +85,7 @@
                     <span class="nav-text">Account Settings</span>
                 </a>
             </li>
-            @if (auth('customer')->user() && auth('customer')->user()->is_vendor)
+            @if (auth('customer')->user() && (auth('customer')->user()->is_vendor || (auth('customer')->user()->store && auth('customer')->user()->store->id)))
             <li class="nav-item">
                 <a href="#" class="nav-link d-flex align-items-center gap-3 rounded-2 py-2 px-3 {{ isset($active) && $active == 'vendor.dashboard' ? 'active' : '' }}" title="Vendor Dashboard">
                     <svg class="icon icon-sm nav-icon flex-shrink-0 svg-icon-ti-ti-building-store" xmlns="http://www.w3.org/2000/svg" width=24 height=24 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

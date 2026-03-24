@@ -7,6 +7,7 @@ use App\Models\SimpleSlider;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Helpers\TableHelpers;
 
 class SimpleSliderController extends Controller
 {
@@ -14,17 +15,22 @@ class SimpleSliderController extends Controller
     {
         $query = SimpleSlider::query();
 
-        if ($request->has('search') && $request->search != '') {
-            $query->where('name', 'like', '%' . $request->search . '%')
-                  ->orWhere('key', 'like', '%' . $request->search . '%');
-        }
+        TableHelpers::applyTableLogic($query, $request,
+            ['id', 'name', 'key', 'description'],
+            ['id', 'status', 'created_at']
+        );
 
-        if ($request->has('status') && $request->status != '') {
-            $query->where('status', $request->status);
-        }
+        $sliders = $query->orderBy('id', 'desc')->paginate(TableHelpers::getPerPage($request));
+        
+        $filterColumns = [
+            'id' => 'ID',
+            'name' => 'Name',
+            'key' => 'Key',
+            'status' => 'Status',
+            'created_at' => 'Created At',
+        ];
 
-        $data['sliders'] = $query->orderBy('id', 'desc')->paginate(10);
-        return view('admin-layouts.sliders.index', $data);
+        return view('admin-layouts.sliders.index', compact('sliders', 'filterColumns'));
     }
 
     public function create()
@@ -62,8 +68,8 @@ class SimpleSliderController extends Controller
 
     public function edit($id)
     {
-        $data['slider'] = SimpleSlider::with('sliderItems')->findOrFail($id);
-        return view('admin-layouts.sliders.edit', $data);
+        $slider = SimpleSlider::with('sliderItems')->findOrFail($id);
+        return view('admin-layouts.sliders.edit', compact('slider'));
     }
 
     public function update(Request $request, $id)
@@ -95,56 +101,13 @@ class SimpleSliderController extends Controller
         }
     }
 
-    public function destroy(Request $request, $id = null)
+    public function destroy($id)
     {
-        try {
-            DB::beginTransaction();
-            $sliderId = $request->id ?? $id;
-            $slider = SimpleSlider::findOrFail($sliderId);
-            $slider->delete();
-            DB::commit();
-
-            if($request->ajax()){
-                 return response()->json([
-                    'status' => true,
-                    'message' => 'Slider deleted successfully.'
-                ]);
-            }
-            return back()->with('success','Slider deleted successfully.');
-        } catch (Exception $e) {
-            DB::rollBack();
-            if($request->ajax()){
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Something went wrong: ' . $e->getMessage()
-                ], 500);
-            }
-             return back()->with('error','Something went wrong: ' . $e->getMessage());
-        }
+        return TableHelpers::performDelete($id, SimpleSlider::class, 'Slider');
     }
 
     public function bulkDelete(Request $request)
     {
-        $request->validate([
-             'ids' => 'required|array',
-             'ids.*' => 'exists:simple_sliders,id'
-        ]);
-
-        try {
-            DB::beginTransaction();
-            SimpleSlider::whereIn('id', $request->ids)->delete();
-            DB::commit();
-
-            return response()->json([
-                'status' => true,
-                'message' => 'Selected sliders deleted successfully.'
-            ]);
-        } catch (Exception $e) {
-            DB::rollBack();
-            return response()->json([
-                'status' => false,
-                'message' => 'Something went wrong: ' . $e->getMessage()
-            ], 500);
-        }
+        return TableHelpers::performBulkDelete($request, SimpleSlider::class, 'Sliders');
     }
 }

@@ -374,7 +374,7 @@
                     <li class="{{ $category->children->count() > 0 ? 'has-dropdown' : '' }}">
                         <a href="{{ route('frontend.categories.show', $category->slug) }}" class="text-decoration-none {{ $category->children->count() > 0 ? 'has-mega-menu' : '' }}">
                             @if($category->icon_image)
-                                <img src="{{ asset('storage/' . $category->icon_image) }}" alt="{{ $category->name }}" width="20" class="me-2">
+                                <img src="{{ str_starts_with($category->icon_image, 'http') ? $category->icon_image : rtrim(\App\Helpers\ImageHelper::getImageUrl(), '/') . '/' . ltrim($category->icon_image, '/') }}" alt="{{ $category->name }}" width="20" class="me-2">
                             @elseif($category->icon)
                                 <i class="{{ $category->icon }} me-2"></i>
                             @endif

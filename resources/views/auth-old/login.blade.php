@@ -531,7 +531,7 @@
                                 class="navbar-brand-image">
                         </a>
                     </div>
-                    <form method="POST" action="{{ route('login') }}">
+                    <form method="POST" action="{{ route('admin.login.post') }}">
                         @csrf
                         <div class="form-body">
                             <h2 class="h3 text-center mb-3">Sign In Below</h2>
@@ -676,9 +676,9 @@
                                     }
                                 })();
                             </script>
-                            <label class="form-check">
+                            <label class="form-check d-none">
                                 <input type="checkbox" id="remember" name="remember" class="form-check-input"
-                                    tabindex="3" value="1" checked>
+                                    tabindex="3" value="1">
                                 <span class="form-check-label">
                                     Remember me?
                                 </span>
