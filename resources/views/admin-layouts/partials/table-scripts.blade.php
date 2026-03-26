@@ -138,5 +138,37 @@
                 }
             });
         });
+
+        // Individual Approve (Generic Class)
+        $(document).on('click', '.approve-confirm-btn', function (e) {
+            e.preventDefault();
+            let url = $(this).data('url');
+            
+            Swal.fire({
+                title: 'Confirm Approval?',
+                text: "Are you sure you want to approve this product?",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#28a745',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, approve it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: url,
+                        type: 'PUT',
+                        data: { _token: '{{ csrf_token() }}' },
+                        success: function (response) {
+                            Swal.fire('Approved!', response.message || 'Product has been approved.', 'success').then(() => {
+                                window.location.reload();
+                            });
+                        },
+                        error: function() {
+                            Swal.fire('Error!', 'Something went wrong.', 'error');
+                        }
+                    });
+                }
+            });
+        });
     });
 </script>

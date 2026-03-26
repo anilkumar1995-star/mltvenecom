@@ -19,7 +19,7 @@
                             <div class="p-4 p-lg-5">
                                 <div class="mb-4">
                                     <h3 class="fs-4 mb-1">Create an Account</h3>
-                                    <p class="text-muted small">Already have an account? <a href="{{ route('login') }}">Log in</a></p>
+                                    <p class="text-muted small">Already have an account? <a href="{{ route('login') }}" class="fw-bold" style="font-size: 16px;">Log in</a></p>
                                 </div>
 
                                 @if(session('error'))
@@ -93,27 +93,31 @@
                                         <div class="mb-3">
                                             <label class="form-label">Shop Name</label>
                                             <input id="shop_name" type="text" class="form-control {{ $errors->has('shop_name') ? 'is-invalid' : '' }}" 
-                                                name="shop_name" value="{{ old('shop_name') }}">
+                                                name="shop_name" value="{{ old('shop_name') }}" placeholder="e.g. My Online Store">
                                         </div>
                                         <div class="mb-3">
-                                            <label class="form-label">Shop URL</label>
-                                            <input id="website" type="text" class="form-control" name="website"
-                                                value="{{ old('website') }}">
+                                            <label class="form-label required" for="shop_url">Shop URL</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">{{ url('/stores') }}/</span>
+                                                <input id="shop_url" type="text" class="form-control {{ $errors->has('shop_url') ? 'is-invalid' : '' }}" 
+                                                    name="shop_url" value="{{ old('shop_url') }}" placeholder="my-awesome-store">
+                                            </div>
+                                            <small class="form-hint">This will be your store's unique URL. Only letters, numbers, and hyphens are allowed.</small>
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Mobile Number</label>
                                             <input id="mobile" type="text" class="form-control {{ $errors->has('mobile') ? 'is-invalid' : '' }}" 
-                                                name="mobile" value="{{ old('mobile') }}">
+                                                name="mobile" value="{{ old('mobile') }}" placeholder="e.g. 9876543210">
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">PAN Card Number</label>
                                             <input id="pan_number" type="text" class="form-control {{ $errors->has('pan_number') ? 'is-invalid' : '' }}" 
-                                                name="pan_number" value="{{ old('pan_number') }}">
+                                                name="pan_number" value="{{ old('pan_number') }}" placeholder="e.g. ABCDE1234F">
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Aadhar Card Number</label>
                                             <input id="aadhar_number" type="text" class="form-control {{ $errors->has('aadhar_number') ? 'is-invalid' : '' }}" 
-                                                name="aadhar_number" value="{{ old('aadhar_number') }}">
+                                                name="aadhar_number" value="{{ old('aadhar_number') }}" placeholder="e.g. 1234 5678 9012">
                                         </div>
                                     </div>
 
@@ -136,6 +140,7 @@
 @endsection
 
 @push('scripts')
+<script src="{{ asset('vendor/core/plugins/marketplace/js/customer-register.js') }}"></script>
 <script>
 $(document).ready(function() {
 

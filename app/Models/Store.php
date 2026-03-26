@@ -34,6 +34,7 @@ class Store extends Model
         'is_verified',
         'verified_at',
         'verified_by',
+        'verification_note',
     ];
 
     protected $casts = [

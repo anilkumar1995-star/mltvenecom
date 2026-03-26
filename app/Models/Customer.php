@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Notifications\Notifiable;
 
 class Customer extends Authenticatable
@@ -20,6 +21,13 @@ class Customer extends Authenticatable
         'avatar',
         'status',
         'confirmed_at',
+        'is_vendor',
+        'vendor_verified_at',
+        'pan_number',
+        'aadhar_number',
+        'kyc_kid',
+        'kyc_url',
+        'kyc_status',
     ];
 
     protected $hidden = [
@@ -30,6 +38,7 @@ class Customer extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'dob' => 'date',
+        'is_vendor' => 'boolean',
     ];
 
     // Relationships
@@ -53,14 +62,32 @@ class Customer extends Authenticatable
         return $this->hasMany(Wishlist::class, 'customer_id');
     }
 
+    public function store(): HasOne
+    {
+        return $this->hasOne(Store::class, 'customer_id');
+    }
+
+    public function vendorInfo(): HasOne
+    {
+        return $this->hasOne(Vendor::class, 'customer_id');
+    }
+
     // Scopes
     public function scopeActive($query)
     {
         return $query->where('status', 'activated');
     }
-    
-    public function store()
+
+    public function scopeVendors($query)
     {
-        return $this->hasOne(Store::class, 'customer_id');
+        return $query->where('is_vendor', 1);
+    }
+
+    public function getAvatarUrlAttribute()
+    {
+        if ($this->avatar) {
+             return str_starts_with($this->avatar, 'http') ? $this->avatar : asset('uploads/' . $this->avatar);
+        }
+        return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&color=7F9CF5&background=EBF4FF';
     }
 }

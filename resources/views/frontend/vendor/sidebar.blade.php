@@ -3,10 +3,10 @@
         Vendor Menu
     </div>
     <div class="list-group list-group-flush">
-        <a href="{{ route('vendor.dashboard') }}" class="list-group-item list-group-item-action {{ request()->routeIs('vendor.dashboard') ? 'active' : '' }}">
+        <a href="{{ route('frontend.vendor.dashboard') }}" class="list-group-item list-group-item-action {{ request()->routeIs('frontend.vendor.dashboard') ? 'active' : '' }}">
             Dashboard
         </a>
-        <a href="{{ route('vendor.products.index') }}" class="list-group-item list-group-item-action {{ request()->routeIs('vendor.products.*') ? 'active' : '' }}">
+        <a href="{{ route('frontend.vendor.products.index') }}" class="list-group-item list-group-item-action {{ request()->routeIs('frontend.vendor.products.*') ? 'active' : '' }}">
             My Products
         </a>
         <a href="{{ route('logout') }}" class="list-group-item list-group-item-action text-danger"

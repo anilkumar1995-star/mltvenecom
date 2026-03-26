@@ -52,11 +52,25 @@ use App\Http\Controllers\Frontend\CustomerController;
 use App\Http\Controllers\Frontend\HomeController as FrontendHomeController;
 use App\Http\Controllers\Frontend\ProductController as FrontendProductController;
 use App\Http\Controllers\Frontend\VendorProductController;
+use App\Http\Controllers\Frontend\VendorOrderController;
+use App\Http\Controllers\Frontend\VendorOrderReturnController;
+use App\Http\Controllers\Frontend\VendorDiscountController;
+use App\Http\Controllers\Frontend\VendorWithdrawalController;
+use App\Http\Controllers\Frontend\VendorReviewController;
+use App\Http\Controllers\Frontend\VendorRevenueController;
+use App\Http\Controllers\Frontend\VendorMessageController;
+use App\Http\Controllers\Frontend\VendorSpecificationController;
+use App\Http\Controllers\Frontend\VendorKycController;
+use App\Http\Controllers\Frontend\VendorSettingsController;
 use App\Http\Controllers\Frontend\WishlistController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\StoreController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Models\Order;
+use App\Models\Review;
+use App\Models\Store;
+
 
 // Route::get('/', [LoginController::class, 'home'])->name('home');
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -69,14 +83,14 @@ Route::get('/password/reset', function () {return 'Password reset is currently d
 
 // Vendor KYC Pending Page
 Route::get('/vendor/kyc-pending', function (\Illuminate\Http\Request $request) {
-    $user = \App\Models\User::find($request->query('user_id'));
-    if (!$user || $user->role !== 'vendor') {
+    $customer = \App\Models\Customer::find($request->query('user_id'));
+    if (!$customer || !$customer->is_vendor) {
         return redirect()->route('login')->with('error', 'Invalid request.');
     }
     return view('auth.vendor-kyc-pending', [
-        'kyc_url'    => $user->kyc_url,
-        'kyc_status' => $user->kyc_status ?? 'pending',
-        'user'       => $user,
+        'kyc_url'    => $customer->kyc_url,
+        'kyc_status' => $customer->kyc_status ?? 'pending',
+        'user'       => $customer,
     ]);
 })->name('vendor.kyc-pending');
 
@@ -102,16 +116,75 @@ Route::middleware('auth:customer,web')->prefix('customer')->name('customer.')->g
 
 Route::name('frontend.')->group(function () {
 
-    // Vendor Dashboard
-    Route::middleware(['auth', 'role:vendor'])->prefix('vendor')->name('vendor.')->group(function () {
-        Route::get('/dashboard', function () {
-            return view('frontend.vendor.dashboard');
-        })->name('dashboard');
+    Route::middleware(['auth:customer', 'role:vendor'])->prefix('vendor')->name('vendor.')->group(function () {
+        Route::get('/dashboard', [VendorProductController::class, 'dashboard'])->name('dashboard');
+
 
         // Vendor Products
         Route::get('/products', [VendorProductController::class, 'index'])->name('products.index');
         Route::get('/products/create', [VendorProductController::class, 'create'])->name('products.create');
         Route::post('/products', [VendorProductController::class, 'store'])->name('products.store');
+        Route::get('/products/{product}/edit', [VendorProductController::class, 'edit'])->name('products.edit');
+        Route::put('/products/{product}', [VendorProductController::class, 'update'])->name('products.update');
+        Route::delete('/products/{product}', [VendorProductController::class, 'destroy'])->name('products.destroy');
+        Route::post('/products/bulk-delete', [VendorProductController::class, 'bulkDelete'])->name('products.bulk-delete');
+
+        // Helper routes for product creation (mirrored from admin)
+        Route::get('/products/get-relations', [VendorProductController::class, 'getRelationProducts'])->name('products.get-relations');
+        Route::post('/getatablesData', [VendorProductController::class, 'getSpecificationtablesData'])->name('getatablesData');
+        Route::post('/get-attribute-values', [VendorProductController::class, 'getAttributeValues'])->name('getAttributeValues');
+        Route::get('/product-tags/all', [VendorProductController::class, 'getAllTags'])->name('product-tags.all');
+
+        // Vendor Orders
+        Route::get('/orders', [VendorOrderController::class, 'index'])->name('orders.index');
+        Route::get('/orders/{order}', [VendorOrderController::class, 'show'])->name('orders.show');
+        Route::put('/orders/{order}', [VendorOrderController::class, 'update'])->name('orders.update');
+        Route::post('/orders/bulk-delete', [VendorOrderController::class, 'bulkDelete'])->name('orders.bulk-delete');
+
+        // Vendor Returns
+        Route::get('/order-returns', [VendorOrderReturnController::class, 'index'])->name('order-returns.index');
+        Route::get('/order-returns/{orderReturn}', [VendorOrderReturnController::class, 'show'])->name('order-returns.show');
+        Route::put('/order-returns/{orderReturn}', [VendorOrderReturnController::class, 'update'])->name('order-returns.update');
+
+        // Vendor Discounts
+        Route::get('/discounts', [VendorDiscountController::class, 'index'])->name('discounts.index');
+        Route::get('/discounts/create', [VendorDiscountController::class, 'create'])->name('discounts.create');
+        Route::post('/discounts', [VendorDiscountController::class, 'store'])->name('discounts.store');
+        Route::get('/discounts/{discount}/edit', [VendorDiscountController::class, 'edit'])->name('discounts.edit');
+        Route::put('/discounts/{discount}', [VendorDiscountController::class, 'update'])->name('discounts.update');
+        Route::delete('/discounts/{discount}', [VendorDiscountController::class, 'destroy'])->name('discounts.destroy');
+        Route::post('/discounts/bulk-delete', [VendorDiscountController::class, 'bulkDelete'])->name('discounts.bulk-delete');
+
+        // Vendor Withdrawals
+        Route::get('/withdrawals', [VendorWithdrawalController::class, 'index'])->name('withdrawals.index');
+        Route::get('/withdrawals/create', [VendorWithdrawalController::class, 'create'])->name('withdrawals.create');
+        Route::post('/withdrawals', [VendorWithdrawalController::class, 'store'])->name('withdrawals.store');
+
+        // Vendor Reviews
+        Route::get('/reviews', [VendorReviewController::class, 'index'])->name('reviews.index');
+        Route::get('/reviews/{review}', [VendorReviewController::class, 'show'])->name('reviews.show');
+        Route::post('/reviews/bulk-delete', [VendorReviewController::class, 'bulkDelete'])->name('reviews.bulk-delete');
+
+        // Vendor Revenues
+        Route::get('/revenues', [VendorRevenueController::class, 'index'])->name('revenues.index');
+
+        // Vendor Messages
+        Route::get('/messages', [VendorMessageController::class, 'index'])->name('messages.index');
+        Route::get('/messages/{message}', [VendorMessageController::class, 'show'])->name('messages.show');
+        Route::delete('/messages/{message}', [VendorMessageController::class, 'destroy'])->name('messages.destroy');
+        Route::post('/messages/bulk-delete', [VendorMessageController::class, 'bulkDelete'])->name('messages.bulk-delete');
+
+        // Vendor Specifications
+        Route::get('/specifications/groups', [VendorSpecificationController::class, 'groupsIndex'])->name('specifications.groups.index');
+        Route::get('/specifications/tables', [VendorSpecificationController::class, 'tablesIndex'])->name('specifications.tables.index');
+
+        // Vendor Settings
+        Route::get('/settings', [VendorSettingsController::class, 'index'])->name('settings.index');
+        Route::put('/settings', [VendorSettingsController::class, 'update'])->name('settings.update');
+
+        // Vendor KYC Verification
+        Route::get('/kyc', [VendorKycController::class, 'index'])->name('kyc.index');
+        Route::post('/kyc', [VendorKycController::class, 'store'])->name('kyc.store');
     });
 
     // Home
@@ -485,6 +558,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
         Route::post('vendors/{id}/approve', [VendorController::class, 'approve'])->name('marketplace.vendors.approve');
         Route::post('vendors/{id}/check-kyc', [VendorController::class, 'checkKycStatus'])->name('marketplace.vendors.check-kyc');
         Route::get('unverified-vendors', [VendorController::class,'unverifiedVendors'])->name('marketplace.unverified-vendors');
+        Route::get('unverified-vendors/{id}/verify', [VendorController::class , 'verify'])->name('marketplace.unverified-vendors.verify');
         Route::get('messages', [VendorController::class,'messages'])->name('marketplace.messages');
         Route::get('stores/create', [AdminStoreController::class,'create'])->name('marketplace.store.create');
         Route::post('stores', [AdminStoreController::class, 'store'])->name('marketplace.store.store');

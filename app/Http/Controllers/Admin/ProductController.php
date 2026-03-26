@@ -464,7 +464,15 @@ class ProductController extends Controller
     {
         $product = EcProduct::findOrFail($id);
         $product->status = 'published';
+        $product->approved_by = auth()->id();
         $product->save();
+
+        if (request()->ajax()) {
+            return response()->json([
+                'status' => true,
+                'message' => 'Product approved successfully.'
+            ]);
+        }
 
         return redirect()->back()->with('success', 'Product approved successfully.');
     }

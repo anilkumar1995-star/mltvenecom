@@ -27,7 +27,6 @@ class GlobalOptionController extends Controller
 
         $filterColumns = [
             'name'       => 'Name',
-            'status'     => 'Status',
             'created_at' => 'Created At',
         ];
 

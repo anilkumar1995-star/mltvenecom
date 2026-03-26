@@ -55,7 +55,7 @@ class LoginController extends Controller
         $isAdminLogin = $request->is('admin/*') || $request->routeIs('admin.login');
 
         if ($isAdminLogin) {
-            // ADMIN LOGIN ATTEMPT
+            // ADMIN LOGIN ATTEMPT (users table)
             if (Auth::guard('web')->attempt($this->credentials($request), $request->filled('remember'))) {
                 $user = Auth::guard('web')->user();
                 
@@ -75,17 +75,32 @@ class LoginController extends Controller
                 }
             }
         } else {
-            // FRONTEND LOGIN ATTEMPT (Customer/Vendor)
-            // 1. Try Customer Guard
+            // FRONTEND LOGIN ATTEMPT (Customer + Vendor both from ec_customers)
             if (Auth::guard('customer')->attempt($this->credentials($request), $request->filled('remember'))) {
-                $request->session()->regenerate();
-                if ($request->wantsJson()) {
-                    return response()->json(['success' => true, 'redirect' => route('frontend.customer.dashboard')]);
+                $customer = Auth::guard('customer')->user();
+
+                // Check if account is activated
+                if ($customer->status !== 'activated') {
+                    Auth::guard('customer')->logout();
+                    $msg = 'Your account is pending approval.';
+                    if ($request->wantsJson()) {
+                        return response()->json(['error' => true, 'message' => $msg], 403);
+                    }
+                    return back()->withInput($request->only('email', 'remember'))->withErrors(['email' => $msg]);
                 }
-                return redirect()->intended(route('frontend.customer.dashboard'));
+
+                $request->session()->regenerate();
+
+                // Redirect both vendor and customer to ONLY customer dashboard for now
+                $redirect = route('frontend.customer.dashboard');
+
+                if ($request->wantsJson()) {
+                    return response()->json(['success' => true, 'redirect' => $redirect]);
+                }
+                return redirect()->intended($redirect);
             }
 
-            // 2. Try Web Guard (for Vendors)
+            // Fallback: Try Web Guard for legacy vendor accounts still in users table
             if (Auth::guard('web')->attempt($this->credentials($request), $request->filled('remember'))) {
                 $user = Auth::guard('web')->user();
 
@@ -130,17 +145,16 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user)
     {
-        // 1. Customer Guard
+        // 1. Customer Guard (customers + vendors from ec_customers)
         if (auth()->guard('customer')->check()) {
             return redirect()->route('frontend.customer.dashboard');
         }
 
-        // 2. Web Guard
+        // 2. Web Guard (admin only)
         if (auth()->guard('web')->check()) {
             if ($user->role === 'admin') {
                 return redirect()->route('admin.dashboard');
             }
-            // Vendor/Others -> Customer Dashboard
             return redirect()->route('frontend.customer.dashboard');
         }
 
@@ -171,12 +185,12 @@ class LoginController extends Controller
      */
     public function logout(Request $request)
     {
-        // Logout from web guard (admin/vendor)
+        // Logout from web guard (admin)
         if (Auth::guard('web')->check()) {
             Auth::guard('web')->logout();
         }
 
-        // Logout from customer guard
+        // Logout from customer guard (customer + vendor)
         if (Auth::guard('customer')->check()) {
             Auth::guard('customer')->logout();
         }
@@ -184,7 +198,6 @@ class LoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        // Redirect to login page
         // Redirect to home page
         return redirect('/');
     }

@@ -13,18 +13,23 @@
             </div>
             @endif
 
-            <button class="btn btn-show-table-options" type="button">Filters</button>
+            <button class="btn btn-outline-secondary btn-show-table-options" type="button">
+                <svg class="icon icon-left" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 4h16v2.172a2 2 0 0 1 -.586 1.414l-4.414 4.414v7l-6 2v-8.5l-4.414 -4.414a2 2 0 0 1 -.586 -1.414v-2.172z" />
+                </svg>
+                Filters
+            </button>
 
             <div class="table-search-input">
                 <label>
-                    <input type="search" class="form-control input-sm" id="table-search" placeholder="Search..." style="min-width: 120px" value="{{ request('search') }}">
+                    <input type="search" class="form-control" id="table-search" placeholder="Search..." style="min-width: 150px" value="{{ request('search') }}">
                 </label>
             </div>
 
             <div class="table-limit-selector ms-2">
                 <label class="d-flex align-items-center">
-                    <span class="me-1">Show</span>
-                    <select name="per_page" class="form-select form-select-sm" id="table-per-page">
+                    <span class="me-2 text-muted">Show</span>
+                    <select name="per_page" class="form-select" id="table-per-page" style="width: 80px">
                         @foreach([10, 20, 50, 100, 500, 1000] as $limit)
                             <option value="{{ $limit }}" {{ request('per_page', 10) == $limit ? 'selected' : '' }}>{{ $limit }}</option>
                         @endforeach
@@ -32,9 +37,9 @@
                 </label>
             </div>
         </div>
-        <div class="d-flex flex-column flex-sm-row align-items-stretch align-items-sm-center gap-1 table-action-buttons">
+        <div class="d-flex flex-row align-items-center gap-2 table-action-buttons">
             @yield('table_actions')
-            <button class="btn" type="button" onclick="window.location.reload()">
+            <button class="btn btn-outline-secondary" type="button" onclick="window.location.reload()">
                 <svg class="icon icon-left" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" />
                     <path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" />
