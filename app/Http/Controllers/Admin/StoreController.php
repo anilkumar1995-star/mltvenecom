@@ -30,10 +30,8 @@ class StoreController extends Controller
             'name' => 'Name',
             'email' => 'Email',
             'status' => 'Status',
-            'is_verified' => 'Is Verified',
             'created_at' => 'Created At',
         ];
-
         return view('admin-layouts.marketplace.store.index', compact('stores', 'filterColumns'));
     }
 
@@ -231,30 +229,71 @@ class StoreController extends Controller
         return TableHelpers::performBulkDelete($request, Store::class , 'Stores');
     }
 
-    public function verify($id)
+    public function verify(Request $request, $id)
     {
         try {
             DB::beginTransaction();
             $store = Store::findOrFail($id);
-            $store->update([
-                'is_verified' => 1,
-                'verified_at' => now(),
-                'verified_by' => auth()->id(),
-            ]);
+
+            // Toggle verify/unverify logic
+            if ($store->is_verified) {
+                // UNVERIFY
+                $store->update([
+                    'status' => 'pending',
+                    'is_verified' => 0,
+                    'verified_at' => null,
+                    'verified_by' => null,
+                    'verification_note' => null,
+                ]);
+
+                if ($store->customer) {
+                    $store->customer->update([
+                        'status' => 'locked',
+                        'vendor_verified_at' => null
+                    ]);
+                }
+                $message = 'Store unverified successfully';
+            }
+            else {
+                // VERIFY
+                $store->update([
+                    'status' => 'published',
+                    'is_verified' => 1,
+                    'verified_at' => now(),
+                    'verified_by' => auth()->id(),
+                    'verification_note' => $request->input('verification_note', ''),
+                ]);
+
+                // If possible, mark the vendor customer as fully verified too
+                if ($store->customer) {
+                    $store->customer->update([
+                        'status' => 'activated',
+                        'vendor_verified_at' => now()
+                    ]);
+                }
+                $message = 'Store verified successfully';
+            }
+
             DB::commit();
 
-            return response()->json([
-                'status' => true,
-                'message' => 'Store verified successfully',
-                'reload' => true
-            ]);
+            if ($request->ajax()) {
+                return response()->json([
+                    'status' => true,
+                    'message' => $message,
+                    'reload' => true
+                ]);
+            }
+            return redirect()->back()->with('success', $message);
         }
         catch (Exception $e) {
             DB::rollBack();
-            return response()->json([
-                'status' => false,
-                'message' => 'Something went wrong: ' . $e->getMessage()
-            ], 500);
+            if ($request->ajax()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Something went wrong: ' . $e->getMessage()
+                ], 500);
+            }
+            return redirect()->back()->with('error', 'Something went wrong: ' . $e->getMessage());
         }
     }
 }

@@ -137,7 +137,15 @@
                                         <td>{{ $product->order  }}</td>
                                         <td>{{ $product->created_at ? $product->created_at->format('M d, Y') : '' }}</td>
                                         <td>
-                                            <span class="badge {{ $product->status == 'published' ? 'badge bg-success text-success-fg' : ($product->status == 'draft' ? 'badge bg-danger text-danger-fg' : 'bg-warning') }}">
+                                            @php
+                                                $badgeClass = match($product->status) {
+                                                    'published' => 'bg-success text-white',
+                                                    'draft' => 'bg-danger text-white',
+                                                    'pending' => 'bg-warning text-white',
+                                                    default => 'bg-secondary text-white'
+                                                };
+                                            @endphp
+                                            <span class="badge {{ $badgeClass }}">
                                                 {{ ucfirst($product->status) }}
                                             </span>
                                         </td>
@@ -145,13 +153,9 @@
                                         <td class="text-end">
                                             <div class="btn-group">
                                                 @if($product->status == 'pending')
-                                                    <form action="{{ route('admin.products.approve', $product->id) }}" method="POST" class="d-inline-block">
-                                                        @csrf
-                                                        @method('PUT')
-                                                        <button type="submit" class="btn btn-sm btn-outline-success" title="Approve">
-                                                            <i class="fa fa-check"></i>
-                                                        </button>
-                                                    </form>
+                                                    <button type="button" class="btn btn-sm btn-success approve-confirm-btn" data-url="{{ route('admin.products.approve', $product->id) }}" title="Approve">
+                                                        <i class="fa fa-check"></i>
+                                                    </button>
                                                 @endif
                                                  <a href="{{ route('admin.products.show', $product->id) }}" class="btn btn-sm btn-outline-success" title="View">
                                                      <i class="fa fa-eye"></i>

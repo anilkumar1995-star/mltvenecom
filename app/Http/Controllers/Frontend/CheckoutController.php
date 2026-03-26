@@ -119,6 +119,11 @@ class CheckoutController extends Controller
             // Generate unique token
             $token = \Illuminate\Support\Str::random(32);
 
+            // Get store_id from the first product in the cart
+            $firstCartItem = reset($cart);
+            $productModel = \App\Models\EcProduct::find($firstCartItem['id']);
+            $storeId = $productModel ? $productModel->store_id : null;
+
             // Create order
             $order = Order::create([
                 'user_id' => $this->getUserId(),
@@ -134,9 +139,10 @@ class CheckoutController extends Controller
                 'shipping_method' => $request->input('payment_method', 'cod'),
                 'is_confirmed' => 0,
                 'is_finished' => 0,
+                'store_id' => $storeId,
             ]);
 
-            // Create order items
+            // Create order items and update inventory
             foreach ($cart as $item) {
                 OrderProduct::create([
                     'order_id' => $order->id,
@@ -147,6 +153,19 @@ class CheckoutController extends Controller
                     'price' => $item['price'],
                     'tax_amount' => 0,
                 ]);
+
+                // Update Product Inventory
+                $product = \App\Models\EcProduct::find($item['id']);
+                if ($product && $product->with_storehouse_management) {
+                    $newQty = max(0, $product->quantity - $item['quantity']);
+                    $product->quantity = $newQty;
+                    
+                    if ($newQty <= 0 && !$product->allow_checkout_when_out_of_stock) {
+                        $product->stock_status = 'out_of_stock';
+                    }
+                    
+                    $product->save();
+                }
             }
 
             // Create shipping address

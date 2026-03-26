@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Customer;
 use App\Models\Message;
+use App\Models\Store;
+use App\Models\Vendor;
 use Illuminate\Http\Request;
 use App\Helpers\TableHelpers;
 use Illuminate\Support\Facades\DB;
@@ -14,24 +16,22 @@ class VendorController extends Controller
 {
     public function vendors(Request $request)
     {
-        $query = User::where('role', 'vendor');
+        $query = Customer::where('is_vendor', 1)->with(['store', 'vendorInfo']);
 
         TableHelpers::applyTableLogic($query, $request,
-            ['id', 'name', 'email', 'shop_name', 'mobile'], // searchable
-            ['id', 'status', 'is_approved', 'created_at']   // filterable
+        ['id', 'name', 'email', 'phone'], // searchable
+        ['id', 'status', 'created_at'] // filterable
         );
 
         $vendors = $query->latest()->paginate(TableHelpers::getPerPage($request));
-        
+
         $filterColumns = [
             'id' => 'ID',
             'name' => 'Name',
             'email' => 'Email',
             'status' => 'Status',
-            'is_approved' => 'Approved',
             'created_at' => 'Created At',
         ];
-
         return view('admin-layouts.marketplace.vendors.index', compact('vendors', 'filterColumns'));
     }
 
@@ -39,10 +39,18 @@ class VendorController extends Controller
     {
         try {
             DB::beginTransaction();
-            $vendor = User::findOrFail($id);
-            $vendor->status = 'active';
-            $vendor->is_approved = true;
+            $vendor = Customer::findOrFail($id);
+            $vendor->status = 'activated';
+            $vendor->vendor_verified_at = now();
             $vendor->save();
+
+            // also verify store
+            if ($vendor->store) {
+                $vendor->store->is_verified = 1;
+                $vendor->store->verified_at = now();
+                $vendor->store->save();
+            }
+
             DB::commit();
 
             return response()->json([
@@ -50,7 +58,8 @@ class VendorController extends Controller
                 'message' => 'Vendor approved successfully.',
                 'reload' => true
             ]);
-        } catch (Exception $e) {
+        }
+        catch (Exception $e) {
             DB::rollBack();
             return response()->json([
                 'status' => false,
@@ -61,12 +70,12 @@ class VendorController extends Controller
 
     public function destroy($id)
     {
-        return TableHelpers::performDelete($id, User::class, 'Vendor');
+        return TableHelpers::performDelete($id, Customer::class , 'Vendor');
     }
 
     public function bulkDelete(Request $request)
     {
-        return TableHelpers::performBulkDelete($request, User::class, 'Vendors');
+        return TableHelpers::performBulkDelete($request, Customer::class , 'Vendors');
     }
 
     // Messages Logic
@@ -75,8 +84,8 @@ class VendorController extends Controller
         $query = Message::with(['store', 'customer']);
 
         TableHelpers::applyTableLogic($query, $request,
-            ['id', 'name', 'email', 'content'], // searchable
-            ['id', 'store_id', 'customer_id', 'created_at'] // filterable
+        ['id', 'name', 'email', 'content'], // searchable
+        ['id', 'store_id', 'customer_id', 'created_at'] // filterable
         );
 
         $messages = $query->latest()->paginate(TableHelpers::getPerPage($request));
@@ -93,29 +102,136 @@ class VendorController extends Controller
 
     public function destroyMessage($id)
     {
-        return TableHelpers::performDelete($id, Message::class, 'Message');
+        return TableHelpers::performDelete($id, Message::class , 'Message');
     }
 
     public function bulkDeleteMessages(Request $request)
     {
-        return TableHelpers::performBulkDelete($request, Message::class, 'Messages');
+        return TableHelpers::performBulkDelete($request, Message::class , 'Messages');
     }
 
     // Maintain old route signature methods to avoid errors if linked
-    public function unverifiedVendors(Request $request) {
-         $request->merge(['status' => 'pending']);
-         return $this->vendors($request);
+    public function unverifiedVendors(Request $request)
+    {
+        $query = Customer::where('is_vendor', 1)
+                 ->whereHas('store', function ($q) {
+                     $q->where('is_verified', 0);
+                 })->with(['store', 'vendorInfo']);
+
+        TableHelpers::applyTableLogic($query, $request,
+        ['id', 'name', 'email', 'phone'], // searchable
+        ['id', 'status', 'created_at'] // filterable
+        );
+
+        $vendors = $query->orderBy('id', 'desc')->paginate(TableHelpers::getPerPage($request));
+
+        $filterColumns = [
+            'id' => 'ID',
+            'name' => 'Name',
+            'email' => 'Email',
+            'status' => 'Status',
+            'created_at' => 'Created At',
+        ];
+
+        return view('admin-layouts.marketplace.unverified.index', compact('vendors', 'filterColumns'));
     }
 
-    public function show($id) {
-         return redirect()->route('admin.marketplace.vendors');
+    public function show($id)
+    {
+        $vendor = Customer::with(['store', 'vendorInfo'])->findOrFail($id);
+        return view('admin-layouts.marketplace.vendors.show', compact('vendor'));
     }
 
-    public function edit($id) {
-         return redirect()->route('admin.marketplace.vendors');
+    public function edit($id)
+    {
+        $vendor = Customer::with(['store', 'vendorInfo'])->findOrFail($id);
+        return view('admin-layouts.marketplace.vendors.edit', compact('vendor'));
     }
 
-    public function update(Request $request, $id) {
-        return back();
+    public function verify($id)
+    {
+        $vendor = Customer::with(['store', 'vendorInfo'])->findOrFail($id);
+        // Load partial view for verifying vendors
+        return view('admin-layouts.marketplace.unverified.show', compact('vendor'));
+    }
+
+    public function checkKycStatus($id)
+    {
+        $vendor = Customer::findOrFail($id);
+        return response()->json([
+            'status' => true,
+            'kyc_status' => $vendor->kyc_status ?? 'N/A',
+            'message' => 'Current KYC Status: ' . ucfirst($vendor->kyc_status ?? 'N/A')
+        ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $user = Customer::findOrFail($id);
+        
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:ec_customers,email,' . $id,
+            'shop_name' => 'required|string|max:255',
+            'mobile' => 'nullable|string',
+            'status' => 'required|string',
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            $data = $request->only(['name', 'email', 'status', 'pan_number', 'aadhar_number']);
+            
+            // Handle 'phone' vs 'mobile' from the form
+            if ($request->has('mobile')) {
+                $data['phone'] = $request->mobile;
+            } elseif ($request->has('phone')) {
+                $data['phone'] = $request->phone;
+            }
+
+            if ($request->filled('password')) {
+                $request->validate(['password' => 'string|min:8|confirmed']);
+                $data['password'] = bcrypt($request->password);
+            }
+
+            if ($request->hasFile('avatar_file')) {
+                $upload = \App\Helpers\ImageHelper::imageUploadHelper('vendor_avatar_', $request->file('avatar_file'));
+                if ($upload['status']) {
+                    $data['avatar'] = $upload['data']['target_file'];
+                }
+            }
+
+            $user->update($data);
+
+            // Update associated Store
+            if ($user->store) {
+                $user->store->update([
+                    'name' => $request->shop_name,
+                    'email' => $user->email,
+                    'phone' => $data['phone'] ?? $user->phone,
+                ]);
+            }
+
+            DB::commit();
+
+            if ($request->ajax()) {
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Vendor updated successfully',
+                    'redirect_url' => route('admin.marketplace.vendors')
+                ]);
+            }
+
+            return redirect()->route('admin.marketplace.vendors')->with('success', 'Vendor updated successfully');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            if ($request->ajax()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Something went wrong: ' . $e->getMessage()
+                ], 500);
+            }
+            return back()->with('error', 'Something went wrong: ' . $e->getMessage())->withInput();
+        }
     }
 }

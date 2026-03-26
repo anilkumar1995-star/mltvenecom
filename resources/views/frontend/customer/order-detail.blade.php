@@ -11,7 +11,7 @@
                         <div class="d-flex align-items-center justify-content-between">
                             <div class="d-flex align-items-center gap-3">
                                 <div class="wrapper-image page_speed_3267104">
-                                    <img class="rounded-circle img-fluid" style="width:40px;height:40px;" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxIDEiPjwvc3ZnPg==" alt="{{ $customer->name ?? 'User' }}">
+                                    <img class="rounded-circle img-fluid" style="width:40px;height:40px;" src="{{ $customer->avatar_url ?? '' }}" alt="{{ $customer->name ?? 'User' }}">
                                 </div>
                                 <div>
                                     <div class="fw-semibold small">{{ $customer->name ?? 'User' }}</div>
@@ -37,7 +37,7 @@
                                         <div class="d-flex align-items-center gap-3 p-4">
                                             <div class="position-relative">
                                                 <div class="wrapper-image">
-                                                    <img class="rounded-circle border border-2 border-white shadow-sm" style="width:48px;height:48px;" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxIDEiPjwvc3ZnPg==" alt="{{ $customer->name ?? 'User' }}">
+                                                    <img class="rounded-circle border border-2 border-white shadow-sm" style="width:48px;height:48px;" src="{{ $customer->avatar_url ?? '' }}" alt="{{ $customer->name ?? 'User' }}">
                                                 </div>
                                                 <div class="position-absolute bottom-0 end-0 bg-success rounded-circle border border-2 border-white" style="width:12px;height:12px;"></div>
                                             </div>
@@ -98,7 +98,7 @@
                                                             <td class="ps-4 py-3">
                                                                 <div class="d-flex align-items-center gap-3">
                                                                     @if($item->product && $item->product->image)
-                                                                        <img src="{{ asset('storage/' . $item->product->image) }}" alt="{{ $item->product->name }}" class="rounded shadow-sm" width="50" height="50" style="object-fit:cover;">
+                                                                        <img src="{{ $item->product->image_url }}" alt="{{ $item->product->name }}" class="rounded shadow-sm" width="50" height="50" style="object-fit:cover;">
                                                                     @else
                                                                         <div class="bg-light rounded d-flex align-items-center justify-content-center" style="width:50px; height:50px;">
                                                                             <svg class="icon text-muted" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -149,7 +149,7 @@
                                 <div class="d-flex align-items-center gap-3 p-4">
                                     <div class="position-relative">
                                         <div class="wrapper-image">
-                                            <img class="rounded-circle border border-2 border-white shadow-sm" style="width:48px;height:48px;" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxIDEiPjwvc3ZnPg==" alt="{{ $customer->name ?? 'User' }}">
+                                            <img class="rounded-circle border border-2 border-white shadow-sm" style="width:48px;height:48px;" src="{{ $customer->avatar_url ?? '' }}" alt="{{ $customer->name ?? 'User' }}">
                                         </div>
                                         <div class="position-absolute bottom-0 end-0 bg-success rounded-circle border border-2 border-white" style="width:12px;height:12px;"></div>
                                     </div>

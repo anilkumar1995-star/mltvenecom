@@ -119,6 +119,11 @@ class OrderController extends Controller
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
+
+            // Reduction if completed
+            if ($order->status === 'completed') {
+                \App\Models\EcProduct::where('id', $productData['id'])->decrement('quantity', $productData['quantity']);
+            }
         }
 
         // Save Shipping Address
@@ -208,6 +213,7 @@ class OrderController extends Controller
         $totalAmount = $subTotal + (float) ($order->tax_amount ?? 0) + $shippingAmount - $discountAmount;
 
         // Update Order
+        $oldStatus = $order->status;
         $order->amount = $totalAmount;
         $order->sub_total = $subTotal;
         $order->shipping_amount = $shippingAmount;
@@ -217,6 +223,15 @@ class OrderController extends Controller
         $order->description = $request->description;
         $order->store_id = $request->store_id ?? $order->store_id;
         $order->save();
+
+        // Inventory Reduction Logic
+        if ($oldStatus !== 'completed' && $order->status === 'completed') {
+            foreach ($order->items as $item) {
+                if ($item->product) {
+                    $item->product->decrement('quantity', $item->qty);
+                }
+            }
+        }
 
         // Update Payment
         if ($order->payment_id) {
