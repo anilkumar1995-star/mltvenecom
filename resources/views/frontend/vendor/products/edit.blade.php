@@ -300,7 +300,20 @@
                     processData: false,
                     contentType: false,
                     success: function(res) {
-                        if (res.status) { Swal.fire('Updated', res.message, 'success').then(() => { window.location.href = "{{ route('frontend.vendor.products.index') }}"; }); }
+                        if (res.status) { 
+                            Swal.fire('Updated', res.message, 'success').then(() => { window.location.href = "{{ route('frontend.vendor.products.index') }}"; }); 
+                        } else {
+                            Swal.fire('Error', res.message, 'error');
+                        }
+                    },
+                    error: function(xhr) {
+                        let msg = 'Server error';
+                        if (xhr.status === 422 && xhr.responseJSON && xhr.responseJSON.errors) {
+                            msg = Object.values(xhr.responseJSON.errors).map(e => e[0]).join('<br>');
+                        } else if (xhr.responseJSON && xhr.responseJSON.message) {
+                            msg = xhr.responseJSON.message;
+                        }
+                        Swal.fire('Error', msg, 'error');
                     }
                 });
             }
