@@ -34,7 +34,8 @@ class VendorProductController extends Controller
 {
     public function index(Request $request)
     {
-        $query = EcProduct::where('created_by_id', auth()->id())
+        $userId = auth('customer')->id();
+        $query = EcProduct::where('created_by_id', $userId)
             ->where('created_by_type', Customer::class);
 
         TableHelpers::applyTableLogic($query, $request,
@@ -62,7 +63,7 @@ class VendorProductController extends Controller
     public function dashboard()
     {
         $user = auth('customer')->user();
-        
+
         // Get the vendor's store early so we can show it even if not approved
         $store = Store::where('customer_id', $user->id)->first();
 
@@ -75,19 +76,19 @@ class VendorProductController extends Controller
         $store = Store::where('customer_id', $user->id)->first();
 
         $productsCount = $store
-            ? EcProduct::where('store_id', $store->id)->count()
+            ?EcProduct::where('store_id', $store->id)->count()
             : EcProduct::where('created_by_id', $user->id)->where('created_by_type', Customer::class)->count();
 
         $ordersCount = $store
-            ? Order::where('store_id', $store->id)->count()
+            ?Order::where('store_id', $store->id)->count()
             : 0;
 
         $revenueCount = $store
-            ? Order::where('store_id', $store->id)->where('status', 'completed')->sum('amount')
+            ?Order::where('store_id', $store->id)->where('status', 'completed')->sum('amount')
             : 0;
 
         $pendingOrdersCount = $store
-            ? Order::where('store_id', $store->id)->where('status', 'pending')->count()
+            ?Order::where('store_id', $store->id)->where('status', 'pending')->count()
             : 0;
 
         $reviewsCount = Review::where('customer_id', $user->id)->count();
@@ -107,9 +108,9 @@ class VendorProductController extends Controller
     public function create(Request $request)
     {
         $user = auth('customer')->user();
-        
+
         // Check KYC status first
-        if ($user->kyc_status !== 'approved' && $user->kyc_status !== 'verified') {
+        if (!$user || ($user->kyc_status !== 'approved' && $user->kyc_status !== 'verified')) {
             return redirect()->route('frontend.vendor.dashboard')
                 ->with('error', 'Your KYC is ' . ($user->kyc_status ?? 'pending') . '. Please complete your KYC to add products.');
         }
@@ -148,6 +149,9 @@ class VendorProductController extends Controller
     public function store(Request $request)
     {
         $user = auth('customer')->user();
+        if (!$user) {
+            return response()->json(['status' => false, 'message' => 'Unauthorized.'], 401);
+        }
 
         // Check KYC status first
         if ($user->kyc_status !== 'approved' && $user->kyc_status !== 'verified') {
@@ -158,7 +162,7 @@ class VendorProductController extends Controller
         }
 
         // Check Administrative approval
-        if (!$user->vendor_verified_at) {
+        if (!$user || !$user->vendor_verified_at) {
             return response()->json([
                 'status' => false,
                 'message' => 'Please wait for administrative approval before adding products.'
@@ -183,11 +187,11 @@ class VendorProductController extends Controller
 
             $data['slug'] = Str::slug($request->name) . '-' . time();
             $data['status'] = 'pending';
-            $data['created_by_id'] = auth()->id();
+            $data['created_by_id'] = $user->id;
             $data['created_by_type'] = Customer::class;
 
             // Set Vendor's Store
-            $store = auth()->user()->store;
+            $store = $user->store;
             if ($store) {
                 $data['store_id'] = $store->id;
             }
@@ -264,19 +268,20 @@ class VendorProductController extends Controller
             ]);
 
         }
-        catch (\Exception $e) {
+        catch (\Throwable $e) {
             DB::rollBack();
             return response()->json([
                 'status' => false,
-                'message' => 'Error: ' . $e->getMessage()
+                'message' => 'Error: ' . $e->getMessage() . ' in ' . $e->getFile() . ' on line ' . $e->getLine()
             ], 500);
         }
     }
 
     public function edit(EcProduct $product)
     {
+        $userId = auth('customer')->id();
         // Ensure the product belongs to the vendor
-        if ($product->created_by_id != auth()->id() || $product->created_by_type != Customer::class) {
+        if ($product->created_by_id != $userId || $product->created_by_type != Customer::class) {
             abort(403);
         }
 
@@ -301,8 +306,9 @@ class VendorProductController extends Controller
 
     public function update(Request $request, EcProduct $product)
     {
+        $userId = auth('customer')->id();
         // Ensure the product belongs to the vendor
-        if ($product->created_by_id != auth()->id() || $product->created_by_type != Customer::class) {
+        if ($product->created_by_id != $userId || $product->created_by_type != Customer::class) {
             abort(403);
         }
 
@@ -402,11 +408,11 @@ class VendorProductController extends Controller
             ]);
 
         }
-        catch (\Exception $e) {
+        catch (\Throwable $e) {
             DB::rollBack();
             return response()->json([
                 'status' => false,
-                'message' => 'Error: ' . $e->getMessage()
+                'message' => 'Error: ' . $e->getMessage() . ' in ' . $e->getFile() . ' on line ' . $e->getLine()
             ], 500);
         }
     }
@@ -469,7 +475,8 @@ class VendorProductController extends Controller
 
     public function destroy(EcProduct $product)
     {
-        if ($product->created_by_id != auth()->id() || $product->created_by_type != Customer::class) {
+        $userId = auth('customer')->id();
+        if ($product->created_by_id != $userId || $product->created_by_type != Customer::class) {
             abort(403);
         }
         $product->delete();
