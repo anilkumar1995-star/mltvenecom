@@ -53,7 +53,16 @@
 
             #sidebar-menu-main.navbar-minimal .nav-link-icon {
                 margin: 0 !important;
-                font-size: 1.25rem;
+                font-size: 1.75rem !important;
+                display: flex !important;
+                justify-content: center !important;
+                align-items: center !important;
+                width: 100% !important;
+            }
+
+            #sidebar-menu-main.navbar-minimal .nav-link-icon .icon {
+                width: 32px !important;
+                height: 32px !important;
             }
 
             /* Expanded State */
@@ -70,11 +79,6 @@
                 display: inline-block !important;
                 margin-left: 10px;
                 opacity: 1;
-            }
-
-            #sidebar-menu-main:not(.navbar-minimal) .nav-link-icon {
-                margin-right: 0 !important;
-                min-width: 24px;
             }
 
             /* Floating tooltips (Only in minimal state) */
@@ -987,7 +991,7 @@
                 showIcon: true,
                 showCloseButton: true,
                 autoclose: true,
-                autotimeout: 2000,
+                autotimeout: 4000,
                 gap: 20,
                 distance: 15,
                 type: 1,
