@@ -158,7 +158,7 @@ class VendorProductController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'Your KYC is ' . ($user->kyc_status ?? 'pending') . '. Please complete your KYC to add products.'
-            ], 403);
+            ], 200); 
         }
 
         // Check Administrative approval
@@ -166,7 +166,7 @@ class VendorProductController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'Please wait for administrative approval before adding products.'
-            ], 403);
+            ], 200);
         }
 
         $request->validate([
