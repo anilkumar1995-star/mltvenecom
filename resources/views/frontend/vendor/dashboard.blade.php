@@ -67,7 +67,7 @@
 <div class="page-body">
     <div class="container-xl">
         {{-- Welcome Header --}}
-        <div class="card welcome-card mb-4 shadow-lg overflow-hidden position-relative">
+        <div class="card mb-4 shadow-lg overflow-hidden position-relative">
             <div class="card-body p-4 p-md-5">
                 <div class="row align-items-center">
                     <div class="col-md-8">
@@ -78,17 +78,17 @@
                                     <i class="fa fa-store me-2"></i> {{ $store->name }}
                                 </span>
                                 @if($store->phone)
-                                    <span class="text-white-50 ms-2">
-                                        <i class="fa fa-phone me-1"></i> <a href="tel:{{ $store->phone }}" class="text-white-50">{{ $store->phone }}</a>
+                                    <span class="text-dark-50 ms-2">
+                                        <i class="fa fa-phone me-1"></i> <a href="tel:{{ $store->phone }}" class="text-dark-50">{{ $store->phone }}</a>
                                     </span>
                                 @endif
                             </div>
                         @endif
-                        <p class="fs-4 text-white-50 mb-0">Manage your store products, orders, and customer insights all in one place.</p>
+                        <p class="fs-4 text-dark-50 mb-0">Manage your store products, orders, and customer insights all in one place.</p>
                     </div>
-                    <div class="col-md-4 text-end d-none d-md-block">
+                    <!-- <div class="col-md-4 text-end d-none d-md-block">
                         <img src="{{ asset('vendor/core/core/base/images/welcome-dashboard.svg') }}" alt="Dashboard" style="max-width: 200px; opacity: 0.8;">
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
