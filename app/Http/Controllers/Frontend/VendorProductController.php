@@ -149,8 +149,9 @@ class VendorProductController extends Controller
     public function store(Request $request)
     {
         $user = auth('customer')->user();
+        dd($user);
         if (!$user) {
-            return response()->json(['status' => false, 'message' => 'Unauthorized.'], 401);
+            return response()->json(['status' => false, 'message' => 'Unauthorized.'], 422);
         }
 
         // Check KYC status first
@@ -158,7 +159,7 @@ class VendorProductController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => 'Your KYC is ' . ($user->kyc_status ?? 'pending') . '. Please complete your KYC to add products.'
-            ], 200); 
+            ], 200);
         }
 
         // Check Administrative approval
