@@ -528,7 +528,12 @@
                         }
                     },
                     error: function(xhr) {
-                        let msg = xhr.responseJSON ? xhr.responseJSON.message : 'Server error';
+                        let msg = 'Server error';
+                        if (xhr.status === 422 && xhr.responseJSON && xhr.responseJSON.errors) {
+                            msg = Object.values(xhr.responseJSON.errors).map(e => e[0]).join('<br>');
+                        } else if (xhr.responseJSON && xhr.responseJSON.message) {
+                            msg = xhr.responseJSON.message;
+                        }
                         Swal.fire('Error', msg, 'error');
                     }
                 });
