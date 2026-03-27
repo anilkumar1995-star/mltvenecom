@@ -40,6 +40,16 @@ class VendorController extends Controller
         try {
             DB::beginTransaction();
             $vendor = Customer::findOrFail($id);
+
+            // Check if KYC is complete before approval
+            if ($vendor->kyc_status !== 'approved' && $vendor->kyc_status !== 'verified') {
+                DB::rollBack();
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Cannot approve vendor. KYC is ' . ($vendor->kyc_status ?? 'pending') . '. Please wait for KYC verification.'
+                ]);
+            }
+
             $vendor->status = 'activated';
             $vendor->vendor_verified_at = now();
             $vendor->save();
@@ -48,6 +58,7 @@ class VendorController extends Controller
             if ($vendor->store) {
                 $vendor->store->is_verified = 1;
                 $vendor->store->verified_at = now();
+                $vendor->store->status = 'published';
                 $vendor->store->save();
             }
 

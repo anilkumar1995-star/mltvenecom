@@ -169,13 +169,59 @@
         /* Responsive Mobile Drawer Styling */
         @media (max-width: 991px) {
             #sidebar-menu-main {
+                position: fixed;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                width: 260px;
+                z-index: 1060;
+                transform: translateX(-100%);
+                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
                 background: #1a2234 !important;
+                visibility: hidden;
             }
+
+            #sidebar-menu-main.show {
+                transform: translateX(0);
+                visibility: visible;
+                box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+            }
+
+            .sidebar-backdrop {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 1055;
+                backdrop-filter: blur(2px);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+            }
+
+            .sidebar-backdrop.show {
+                opacity: 1;
+                visibility: visible;
+            }
+
+            #sidebar-menu-main.show .navbar-collapse {
+                display: block !important;
+            }
+
             .navbar-brand img {
                 max-height: 28px !important;
             }
-            .page-header {
-                padding: 1.5rem 0 !important;
+
+            /* Hide desktop minimize button helper */
+            .d-lg-block {
+                display: none !important;
+            }
+            @media (min-width: 992px) {
+                .d-lg-block {
+                    display: block !important;
+                }
             }
         }
     </style>
@@ -1041,6 +1087,37 @@
                     const currentState = sidebar.hasClass('navbar-minimal');
                     localStorage.setItem('vendor_sidebar_minimal', currentState);
                 }, 50);
+            });
+
+            // Mobile Sidebar Toggle
+            const mobileToggle = $('#mobile-sidebar-toggle');
+            
+            // Create Backdrop if it doesn't exist
+            if ($('.sidebar-backdrop').length === 0) {
+                $('body').append('<div class="sidebar-backdrop"></div>');
+            }
+            const backdrop = $('.sidebar-backdrop');
+
+            mobileToggle.on('click', function(e) {
+                e.preventDefault();
+                sidebar.toggleClass('show');
+                backdrop.toggleClass('show');
+                $('body').toggleClass('overflow-hidden');
+            });
+
+            backdrop.on('click', function() {
+                sidebar.removeClass('show');
+                backdrop.removeClass('show');
+                $('body').removeClass('overflow-hidden');
+            });
+
+            // Close sidebar when clicking on a link (on mobile)
+            sidebar.find('.nav-link:not(.dropdown-toggle)').on('click', function() {
+                if ($(window).width() < 992) {
+                    sidebar.removeClass('show');
+                    backdrop.removeClass('show');
+                    $('body').removeClass('overflow-hidden');
+                }
             });
         });
     </script>
