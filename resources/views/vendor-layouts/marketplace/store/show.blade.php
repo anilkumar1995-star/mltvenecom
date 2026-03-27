@@ -115,12 +115,12 @@
                                             </div>
 
                                             @if($store->verification_note)
-                                            <div class="mt-4 alert" style="background-color: #eff6ff; border: 1px solid #dbeafe; border-radius: 8px;">
-                                                <div class="d-flex mb-2 align-items-center">
+                                            <div class="mt-4 alert d-block" style="background-color: #eff6ff; border: 1px solid #dbeafe; border-radius: 8px;">
+                                                <div class="d-flex mb-2 align-items-center w-100">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="#2563eb" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2"></path><rect x="9" y="3" width="6" height="4" rx="2"></rect><line x1="9" y1="12" x2="15" y2="12"></line><line x1="9" y1="16" x2="15" y2="16"></line></svg>
                                                     <h4 class="alert-title m-0" style="font-size: 16px; color: #2563eb;">Verification Note</h4>
                                                 </div>
-                                                <div style="color: #6b7280; font-size: 15px;">{{ $store->verification_note }}</div>
+                                                <div class="w-100" style="color: #616e85; font-size: 15px; word-wrap: break-word; overflow-wrap: break-word; white-space: pre-wrap;">{{ $store->verification_note }}</div>
                                             </div>
                                             @endif
 

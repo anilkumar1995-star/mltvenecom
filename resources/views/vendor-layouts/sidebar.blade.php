@@ -9,7 +9,8 @@
             })();
         </script>
         <div class="container-xl">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            {{-- Hide individual toggler as we have a main toggle in header --}}
+            <button class="navbar-toggler d-none" type="button" data-bs-toggle="collapse"
                 data-bs-target="#sidebar-menu" aria-controls="sidebar-menu" aria-expanded="false"
                 aria-label="Toggle navigation">
                 <svg class="icon svg-icon-ti-ti-menu-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -18,11 +19,8 @@
                     <path d="M4 18l16 0"></path>
                 </svg>
             </button>
-            <h2 class="d-block d-lg-none navbar-brand navbar-brand-autodark">
-                <a href="{{ route('frontend.vendor.dashboard') }}">
-                    <img src="{{ asset('/') }}js/logo-white.png" alt="Vendor Panel" class="navbar-brand-image" style="max-height: 32px; height: auto;">
-                </a>
-            </h2>
+            {{-- Brand logo removed as it is in the header --}}
+
 
             <div class="collapse navbar-collapse" id="sidebar-menu">
                 <ul class="navbar-nav pt-lg-3">

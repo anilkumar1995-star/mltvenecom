@@ -1,6 +1,8 @@
 <div id="app" data-v-app="">
-    <header class="navbar navbar-expand-md d-none d-lg-flex d-print-none" data-bs-theme="dark">
-        <div class="container-fluid"><button class="navbar-toggler d-none d-lg-block me-2 ms-n1" type="button"
+    <header class="navbar navbar-expand-md d-flex d-print-none" data-bs-theme="dark">
+        <div class="container-fluid">
+            {{-- Desktop Minimize Button --}}
+            <button class="navbar-toggler d-none d-lg-block me-2 ms-n1" type="button"
                 data-bb-toggle="navbar-minimal" data-bb-target="#sidebar-menu-main" aria-controls="navbar-menu"
                 aria-expanded="false" aria-label="Toggle navigation"
                 data-url="{{ url("/") }}/admin/system/users/profile/1/preferences" data-method="PATCH">
@@ -10,13 +12,26 @@
                     <path d="M4 6l16 0"></path>
                     <path d="M4 12l16 0"></path>
                     <path d="M4 18l16 0"></path>
-                </svg></button>
+                </svg>
+            </button>
+
+            {{-- Mobile Sidebar Toggle Button --}}
+            <button class="navbar-toggler d-lg-none me-2 ms-n1" type="button" 
+                id="mobile-sidebar-toggle" aria-label="Toggle navigation">
+                <svg class="icon svg-icon-ti-ti-menu-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path d="M4 6l16 0"></path>
+                    <path d="M4 12l16 0"></path>
+                    <path d="M4 18l16 0"></path>
+                </svg>
+            </button>
             <h1 class="navbar-brand navbar-brand-autodark me-4">
                 <a href="{{ route('frontend.vendor.dashboard') }}"><img src="{{ asset('/') }}js/logo-white.png" alt="Your App"
                         class="navbar-brand-image" style="max-height: 32px; height: auto;"></a>
             </h1>
             <div class="flex-row navbar-nav order-md-last">
-                <div class="d-flex align-items-center me-3">
+                <div class="d-none d-md-flex align-items-center me-3">
                     <div class="">
                         <label class="form-label sr-only" for="global-search-input"> Search </label>
                         <div class="input-group input-group-flat">
@@ -26,7 +41,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="d-flex align-items-center me-3"><a class="btn" type="button"
+                <div class="d-none d-md-flex align-items-center me-3"><a class="btn" type="button"
                         href="{{ url("/") }}/" target="_blank">
                         <svg class="icon icon-left svg-icon-ti-ti-world" xmlns="http://www.w3.org/2000/svg"
                             width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"

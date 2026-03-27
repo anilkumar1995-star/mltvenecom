@@ -18,6 +18,11 @@ use App\Models\ProductCollection;
 use App\Models\ProductLabel;
 use App\Models\Tax;
 use App\Models\EcProductTag;
+use App\Models\Store;
+use App\Models\Order;
+use App\Models\Review;
+use App\Models\Customer;
+use App\Models\EcProductFile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -30,7 +35,7 @@ class VendorProductController extends Controller
     public function index(Request $request)
     {
         $query = EcProduct::where('created_by_id', auth()->id())
-            ->where('created_by_type', 'App\Models\Customer');
+            ->where('created_by_type', Customer::class);
 
         TableHelpers::applyTableLogic($query, $request,
         ['id', 'name', 'sku'], // searchable
@@ -59,7 +64,7 @@ class VendorProductController extends Controller
         $user = auth('customer')->user();
         
         // Get the vendor's store early so we can show it even if not approved
-        $store = \App\Models\Store::where('customer_id', $user->id)->first();
+        $store = Store::where('customer_id', $user->id)->first();
 
         // Check if vendor is NOT yet verified by admin
         if (!$user->vendor_verified_at) {
@@ -67,28 +72,28 @@ class VendorProductController extends Controller
         }
 
         // Get the vendor's store
-        $store = \App\Models\Store::where('customer_id', $user->id)->first();
+        $store = Store::where('customer_id', $user->id)->first();
 
         $productsCount = $store
-            ?\App\Models\EcProduct::where('store_id', $store->id)->count()
-            : \App\Models\EcProduct::where('created_by_id', $user->id)->where('created_by_type', 'App\Models\Customer')->count();
+            ? EcProduct::where('store_id', $store->id)->count()
+            : EcProduct::where('created_by_id', $user->id)->where('created_by_type', Customer::class)->count();
 
         $ordersCount = $store
-            ?\App\Models\Order::where('store_id', $store->id)->count()
+            ? Order::where('store_id', $store->id)->count()
             : 0;
 
         $revenueCount = $store
-            ?\App\Models\Order::where('store_id', $store->id)->where('status', 'completed')->sum('amount')
+            ? Order::where('store_id', $store->id)->where('status', 'completed')->sum('amount')
             : 0;
 
         $pendingOrdersCount = $store
-            ?\App\Models\Order::where('store_id', $store->id)->where('status', 'pending')->count()
+            ? Order::where('store_id', $store->id)->where('status', 'pending')->count()
             : 0;
 
-        $reviewsCount = \App\Models\Review::where('customer_id', $user->id)->count();
+        $reviewsCount = Review::where('customer_id', $user->id)->count();
 
-        $recentProducts = \App\Models\EcProduct::where('created_by_id', $user->id)
-            ->where('created_by_type', 'App\Models\Customer')
+        $recentProducts = EcProduct::where('created_by_id', $user->id)
+            ->where('created_by_type', Customer::class)
             ->latest()
             ->take(5)
             ->get();
@@ -102,9 +107,17 @@ class VendorProductController extends Controller
     public function create(Request $request)
     {
         $user = auth('customer')->user();
+        
+        // Check KYC status first
         if ($user->kyc_status !== 'approved' && $user->kyc_status !== 'verified') {
             return redirect()->route('frontend.vendor.dashboard')
-                ->with('error', 'Your KYC is ' . ($user->kyc_status ?? 'pending') . '. Please wait for admin approval before adding products.');
+                ->with('error', 'Your KYC is ' . ($user->kyc_status ?? 'pending') . '. Please complete your KYC to add products.');
+        }
+
+        // Check Administrative approval
+        if (!$user->vendor_verified_at) {
+            return redirect()->route('frontend.vendor.dashboard')
+                ->with('error', 'Please wait for administrative approval before adding products.');
         }
 
         $type = $request->input('type', 'physical');
@@ -135,10 +148,20 @@ class VendorProductController extends Controller
     public function store(Request $request)
     {
         $user = auth('customer')->user();
+
+        // Check KYC status first
         if ($user->kyc_status !== 'approved' && $user->kyc_status !== 'verified') {
             return response()->json([
                 'status' => false,
-                'message' => 'Your KYC is ' . ($user->kyc_status ?? 'pending') . '. You cannot add products yet.'
+                'message' => 'Your KYC is ' . ($user->kyc_status ?? 'pending') . '. Please complete your KYC to add products.'
+            ], 403);
+        }
+
+        // Check Administrative approval
+        if (!$user->vendor_verified_at) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Please wait for administrative approval before adding products.'
             ], 403);
         }
 
@@ -161,7 +184,7 @@ class VendorProductController extends Controller
             $data['slug'] = Str::slug($request->name) . '-' . time();
             $data['status'] = 'pending';
             $data['created_by_id'] = auth()->id();
-            $data['created_by_type'] = 'App\Models\Customer';
+            $data['created_by_type'] = Customer::class;
 
             // Set Vendor's Store
             $store = auth()->user()->store;
@@ -212,7 +235,7 @@ class VendorProductController extends Controller
                 foreach ($request->file('digital_files') as $file) {
                     $FileUpload = ImageHelper::imageUploadHelper('digital', $file);
                     if ($FileUpload['status']) {
-                        \App\Models\EcProductFile::create([
+                        EcProductFile::create([
                             'product_id' => $product->id,
                             'url' => $FileUpload['data']['target_file'],
                             'extras' => json_encode(['size' => $file->getSize(), 'name' => $file->getClientOriginalName()]),
@@ -253,7 +276,7 @@ class VendorProductController extends Controller
     public function edit(EcProduct $product)
     {
         // Ensure the product belongs to the vendor
-        if ($product->created_by_id != auth()->id() || $product->created_by_type != 'App\Models\Customer') {
+        if ($product->created_by_id != auth()->id() || $product->created_by_type != Customer::class) {
             abort(403);
         }
 
@@ -279,7 +302,7 @@ class VendorProductController extends Controller
     public function update(Request $request, EcProduct $product)
     {
         // Ensure the product belongs to the vendor
-        if ($product->created_by_id != auth()->id() || $product->created_by_type != 'App\Models\Customer') {
+        if ($product->created_by_id != auth()->id() || $product->created_by_type != Customer::class) {
             abort(403);
         }
 
@@ -446,7 +469,7 @@ class VendorProductController extends Controller
 
     public function destroy(EcProduct $product)
     {
-        if ($product->created_by_id != auth()->id() || $product->created_by_type != 'App\Models\Customer') {
+        if ($product->created_by_id != auth()->id() || $product->created_by_type != Customer::class) {
             abort(403);
         }
         $product->delete();
@@ -457,9 +480,9 @@ class VendorProductController extends Controller
     {
         $ids = $request->input('ids', []);
         $user = auth('customer')->user();
-        $store = \App\Models\Store::where('customer_id', $user->id)->first();
+        $store = Store::where('customer_id', $user->id)->first();
 
-        \App\Models\EcProduct::whereIn('id', $ids)
+        EcProduct::whereIn('id', $ids)
             ->where('store_id', $store->id)
             ->delete();
 
