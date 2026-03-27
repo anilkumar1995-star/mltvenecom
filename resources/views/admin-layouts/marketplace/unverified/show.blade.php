@@ -153,6 +153,8 @@
                 Swal.fire('Approved!', 'Vendor has been approved.', 'success').then(() => {
                     location.reload();
                 });
+            } else if (result.value) {
+                Swal.fire('Error!', result.value.message || 'Action failed.', 'error');
             }
         });
     });
