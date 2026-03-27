@@ -19,16 +19,17 @@ class RoleMiddleware
 
         if (!$user) {
             if ($request->expectsJson()) {
-                return response()->json(['error' => 'Unauthorized.'], 403);
+                return response()->json(['error' => 'Unauthorized.'], 200);
             }
             return redirect('/login')->with('error', 'Please login first.');
         }
 
         // Special case: 'vendor' role is stored as is_vendor = 1 on ec_customers table
         if ($role === 'vendor') {
-            if (!$user->is_vendor) {
+            $user = $user ?: auth('customer')->user();
+            if (!$user || !$user->is_vendor) {
                 if ($request->expectsJson()) {
-                    return response()->json(['error' => 'Unauthorized.'], 403);
+                    return response()->json(['error' => 'Unauthorized.'], 200);
                 }
                 return redirect('/')->with('error', 'You do not have permission to access this page.');
             }
@@ -38,7 +39,7 @@ class RoleMiddleware
         // Generic role check (for users table with a 'role' column e.g. admin)
         if (!isset($user->role) || $user->role !== $role) {
             if ($request->expectsJson()) {
-                return response()->json(['error' => 'Unauthorized.'], 403);
+                return response()->json(['error' => 'Unauthorized.'], 200);
             }
             return redirect('/')->with('error', 'You do not have permission to access this page.');
         }
