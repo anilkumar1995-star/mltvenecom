@@ -114,7 +114,8 @@ Route::middleware('auth:customer,web')->prefix('customer')->name('customer.')->g
     Route::get('/dashboard', [CustomerController::class, 'dashboard'])->name('dashboard');
 });
 
-Route::name('frontend.')->group(function () {
+    Route::get('vendor/product-tags/all', [VendorProductController::class, 'getAllTags'])->name('frontend.vendor.product-tags.all');
+    Route::name('frontend.')->group(function () {
 
     Route::middleware(['auth:customer', 'role:vendor'])->prefix('vendor')->name('vendor.')->group(function () {
         Route::get('/dashboard', [VendorProductController::class, 'dashboard'])->name('dashboard');
@@ -133,8 +134,7 @@ Route::name('frontend.')->group(function () {
         Route::get('/products/get-relations', [VendorProductController::class, 'getRelationProducts'])->name('products.get-relations');
         Route::post('/getatablesData', [VendorProductController::class, 'getSpecificationtablesData'])->name('getatablesData');
         Route::post('/get-attribute-values', [VendorProductController::class, 'getAttributeValues'])->name('getAttributeValues');
-        Route::get('/product-tags/all', [VendorProductController::class, 'getAllTags'])->name('product-tags.all');
-
+        
         // Vendor Orders
         Route::get('/orders', [VendorOrderController::class, 'index'])->name('orders.index');
         Route::get('/orders/{order}', [VendorOrderController::class, 'show'])->name('orders.show');
