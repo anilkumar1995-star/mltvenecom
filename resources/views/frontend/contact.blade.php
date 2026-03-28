@@ -26,7 +26,7 @@
                             <h3 class="tp-contact-title mb-30 fs-2 fw-bold text-dark">Sent A Message</h3>
                             
                             <div class="tp-contact-form">
-                                <form id="contact-form-ajax" class="contact-form">
+                                <form id="contact-form-ajax" action="{{ route('frontend.contact.send') }}" method="POST" class="contact-form-custom">
                                     @csrf
                                     <div class="row">
                                         <div class="col-md-6 mb-20">

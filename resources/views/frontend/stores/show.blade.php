@@ -13,13 +13,13 @@
             @if($cover)
                 <div class="bb-shop-banner-img position-absolute w-100 h-100" style="background: url('{{ $cover }}') center/cover no-repeat; opacity: 0.3;"></div>
             @endif
-            <div class="bb-shop-banner-overlay position-absolute w-100 h-100" style="background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.4));"></div>
+            <div class="bb-shop-banner-overlay position-absolute w-100 h-100" style="background: linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.8));"></div>
             
             <div class="container bb-shop-banner-content position-relative z-index-1 py-5 d-flex flex-column flex-md-row align-items-center gap-4">
                 <img src="{{ $logo }}" class="bb-shop-banner-logo rounded shadow-sm bg-white p-2" style="width: 140px; height: 140px; object-fit: contain;" alt="{{ $store->name }}">
                 
-                <div class="bb-shop-banner-info text-white">
-                    <h2 class="bb-shop-banner-name mb-2 d-flex align-items-center gap-2"> 
+                <div class="bb-shop-banner-info text-white" style="text-shadow: 0 2px 4px rgba(0,0,0,0.5);">
+                    <h2 class="bb-shop-banner-name mb-2 d-flex align-items-center gap-2 text-white fw-bold"> 
                         {{ $store->name }} 
                         @if($store->is_verified)
                             <span data-bs-toggle="tooltip" data-bs-placement="top" title="Verified" class="store-verified-badge badge-sm">
@@ -36,23 +36,24 @@
                                 <span class="fas fa-star" style="color: #ffb21d;"></span>
                             @endfor
                         </div>
-                        <small>({{ $products->total() }} Products)</small>
+                        <small class="text-white-50">({{ $products->total() }} Products)</small>
                     </div>
                     
                     <div class="bb-shop-banner-contact d-flex flex-wrap gap-4 small mb-3">
+                        @php $contactStyle = "background: rgba(0,0,0,0.4); padding: 5px 12px; border-radius: 20px;"; @endphp
                         @if($store->address)
-                            <div class="bb-shop-banner-address d-flex align-items-center gap-1">
+                            <div class="bb-shop-banner-address d-flex align-items-center gap-1" style="{{ $contactStyle }}">
                                 <i class="fas fa-map-marker-alt"></i> {{ $store->address }} 
                             </div>
                         @endif
                         @if($store->phone)
-                            <div class="bb-shop-banner-phone d-flex align-items-center gap-1">
+                            <div class="bb-shop-banner-phone d-flex align-items-center gap-1" style="{{ $contactStyle }}">
                                 <i class="fas fa-phone"></i>
                                 <a href="tel:{{ $store->phone }}" class="text-white">{{ $store->phone }}</a>
                             </div>
                         @endif
                         @if($store->email)
-                            <div class="bb-shop-banner-email d-flex align-items-center gap-1">
+                            <div class="bb-shop-banner-email d-flex align-items-center gap-1" style="{{ $contactStyle }}">
                                 <i class="fas fa-envelope"></i>
                                 <a href="mailto:{{ $store->email }}" class="text-white">{{ $store->email }}</a>
                             </div>
@@ -60,7 +61,7 @@
                     </div>
                     
                     @if($store->description)
-                        <div class="bb-shop-banner-description ck-content small opacity-75 line-clamp-2" style="max-width: 800px;">
+                        <div class="bb-shop-banner-description ck-content small line-clamp-2 text-white" style="max-width: 800px; text-shadow: 0 1px 2px rgba(0,0,0,0.6);">
                             {!! $store->description !!}
                         </div>
                     @endif

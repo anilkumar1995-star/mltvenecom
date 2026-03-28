@@ -37,9 +37,10 @@
                                     <div class="card-body p-0">
                                         <div class="text-center p-3">
                                             <div class="mb-2">
-                                                <img src="{{ $store->logo ? asset('/' . $store->logo) : asset('vendor/core/core/base/images/placeholder.png') }}"
+                                                <img src="{{ $store->logo_url }}"
                                                      alt="{{ $store->name }}"
-                                                     class="avatar avatar-rounded avatar-xl" />
+                                                     class="avatar avatar-rounded avatar-xl" 
+                                                     onerror="this.src='{{ asset('img/noimg.png') }}'" />
                                             </div>
                                             <h3 class="mb-0">{{ $store->name }}</h3>
                                         </div>

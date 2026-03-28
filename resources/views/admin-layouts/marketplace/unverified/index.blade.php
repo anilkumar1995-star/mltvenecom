@@ -73,7 +73,7 @@
                                             <td><input class="form-check-input m-0 align-middle bulk-checkbox" type="checkbox" name="id[]" value="{{ $vendor->id }}"></td>
                                             <td class="text-center text-muted">{{ $vendor->id }}</td>
                                             <td>
-                                                <span class="avatar avatar-sm rounded" style="background-image: url({{ $vendor->avatar ? asset('storage/' . $vendor->avatar) : asset('vendor/core/core/base/images/placeholder.png') }})"></span>
+                                                <span class="avatar avatar-sm rounded" style="background-image: url({{ $vendor->avatar_url }})"></span>
                                             </td>
                                             <td>
                                                 <a href="{{ route('admin.marketplace.unverified-vendors.verify', $vendor->id) }}" class="fw-bold text-dark">{{ $vendor->name }}</a>

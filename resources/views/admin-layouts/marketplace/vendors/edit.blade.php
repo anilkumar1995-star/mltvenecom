@@ -621,9 +621,9 @@
                                                             data-action="select-image"
                                                             data-allow-thumb="1"
                                                             href="#">
-                                                            <img class="preview-image" data-default="{{ asset('vendor/core/core/base/images/placeholder.png') }}"
-                                                                src="{{ $vendor->avatar ? asset('storage/' . $vendor->avatar) : asset('vendor/core/core/base/images/placeholder.png') }}"
-                                                                alt="Preview image" />
+                                                            <img class="preview-image" data-default="{{ asset('home/placeholder.png') }}"
+                                                                src="{{ $vendor->avatar_url }}"
+                                                                alt="Preview image" onerror="this.src='{{ asset('home/placeholder.png') }}'" />
                                                             <span class="image-picker-backdrop"></span>
                                                         </a>
                                                         <button

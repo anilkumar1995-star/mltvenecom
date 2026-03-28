@@ -11,7 +11,7 @@
                         <div class="d-flex align-items-center justify-content-between">
                             <div class="d-flex align-items-center gap-3">
                                 <div class="wrapper-image page_speed_3267104">
-                                    <img class="rounded-circle img-fluid" style="width:40px;height:40px;" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxIDEiPjwvc3ZnPg==" alt="{{ $customer->name ?? 'User' }}">
+                                    <img class="rounded-circle img-fluid shadow-sm" style="width:40px;height:40px;object-fit:cover;" src="{{ $customer->avatar_url }}" alt="{{ $customer->name ?? 'User' }}">
                                 </div>
                                 <div>
                                     <div class="fw-semibold small">{{ $customer->name ?? 'User' }}</div>
@@ -37,7 +37,7 @@
                                         <div class="d-flex align-items-center gap-3 p-4">
                                             <div class="position-relative">
                                                 <div class="wrapper-image">
-                                                    <img class="rounded-circle border border-2 border-white shadow-sm" style="width:48px;height:48px;" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxIDEiPjwvc3ZnPg==" alt="{{ $customer->name ?? 'User' }}">
+                                                    <img class="rounded-circle border border-2 border-white shadow-sm" style="width:48px;height:48px;object-fit:cover;" src="{{ $customer->avatar_url }}" alt="{{ $customer->name ?? 'User' }}">
                                                 </div>
                                                 <div class="position-absolute bottom-0 end-0 bg-success rounded-circle border border-2 border-white" style="width:12px;height:12px;"></div>
                                             </div>
@@ -63,11 +63,15 @@
                                     <div class="bb-customer-profile mb-4">
                                         <div class="row align-items-center">
                                             <div class="col-auto">
-                                                <div class="bb-customer-profile-avatar" style="width:80px;height:80px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                                        <path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10z"/>
-                                                        <path d="M20 21a8 8 0 0 0-16 0"/>
-                                                    </svg>
+                                                <div class="bb-customer-profile-avatar overflow-hidden shadow-sm" style="width:80px;height:80px;border-radius:50%;background:#f8f9fa;display:flex;align-items:center;justify-content:center;border:2px solid #fff;">
+                                                    @if($customer->avatar)
+                                                        <img src="{{ $customer->avatar_url }}" alt="{{ $customer->name }}" style="width:100%;height:100%;object-fit:cover;">
+                                                    @else
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                                            <path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10z"/>
+                                                            <path d="M20 21a8 8 0 0 0-16 0"/>
+                                                        </svg>
+                                                    @endif
                                                 </div>
                                             </div>
                                             <div class="col">
@@ -314,7 +318,7 @@
                                 <div class="d-flex align-items-center gap-3 p-4">
                                     <div class="position-relative">
                                         <div class="wrapper-image">
-                                            <img class="rounded-circle border border-2 border-white shadow-sm" style="width:48px;height:48px;" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxIDEiPjwvc3ZnPg==" alt="{{ $customer->name ?? 'User' }}">
+                                            <img class="rounded-circle border border-2 border-white shadow-sm" style="width:48px;height:48px;object-fit:cover;" src="{{ $customer->avatar_url }}" alt="{{ $customer->name ?? 'User' }}">
                                         </div>
                                         <div class="position-absolute bottom-0 end-0 bg-success rounded-circle border border-2 border-white" style="width:12px;height:12px;"></div>
                                     </div>

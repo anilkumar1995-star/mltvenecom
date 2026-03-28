@@ -6,8 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use App\Models\Order;
 use App\Models\Address;
+use App\Models\Store;
+use App\Models\Vendor;
+use App\Helpers\ImageHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class CustomerController extends Controller
 {
@@ -111,20 +116,45 @@ class CustomerController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:' . $table . ',email,' . $customer->id,
             'phone' => 'nullable|string|max:20',
-            'password' => 'nullable|min:6|confirmed',
+            'dob' => 'nullable|date',
+            'avatar' => 'nullable|image|max:2048',
         ]);
 
         $customer->name = $validated['name'];
         $customer->email = $validated['email'];
-        $customer->phone = $validated['phone'] ?? $customer->phone;
+        $customer->phone = $request->input('phone') ?? $customer->phone;
+        $customer->dob = $validated['dob'] ?? $customer->dob;
 
-        if (!empty($validated['password'])) {
-            $customer->password = Hash::make($validated['password']);
+        if ($request->hasFile('avatar')) {
+            $file = $request->file('avatar');
+            $upload = ImageHelper::imageUploadHelper('avatar_', $file);
+            if ($upload['status']) {
+                $customer->avatar = $upload['data']['target_file'];
+            }
         }
 
         $customer->save();
 
         return back()->with('success', 'Profile updated successfully!');
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $customer = auth('customer')->user() ?? auth('web')->user();
+
+        $request->validate([
+            'old_password' => 'required|string',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        if (!Hash::check($request->old_password, $customer->password)) {
+            return back()->withErrors(['old_password' => 'The current password does not match.']);
+        }
+
+        $customer->password = Hash::make($request->password);
+        $customer->save();
+
+        return back()->with('success', 'Password updated successfully!');
     }
 
     public function addresses()
@@ -226,5 +256,78 @@ class CustomerController extends Controller
     {
         $customer = $this->getCustomer();
         return view('frontend.customer.returns', compact('customer'));
+    }
+
+    public function becomeVendor()
+    {
+        $customer = $this->getCustomer();
+        if ($customer->is_vendor) {
+            return redirect()->route('frontend.vendor.dashboard');
+        }
+        return view('frontend.customer.become-vendor', compact('customer'));
+    }
+
+    public function processBecomeVendor(Request $request)
+    {
+        $customer = $this->getCustomer();
+        if ($customer->is_vendor) {
+            return redirect()->route('frontend.vendor.dashboard');
+        }
+
+        $request->validate([
+            'shop_name' => 'required|string|max:255|unique:mp_stores,name',
+            'shop_url' => 'required|string|max:255|unique:mp_stores,slug',
+            'phone' => 'required|string|max:20',
+            'pan_number' => 'required|string|max:20',
+            'aadhar_number' => 'required|string|max:20',
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            // 1. Update customer
+            $customer->is_vendor = 1;
+            $customer->phone = $request->phone;
+            $customer->pan_number = $request->pan_number;
+            $customer->aadhar_number = $request->aadhar_number;
+            $customer->save();
+
+            // 2. Create store
+            $store = Store::create([
+                'name' => $request->shop_name,
+                'slug' => Str::slug($request->shop_url),
+                'email' => $customer->email,
+                'phone' => $request->phone,
+                'customer_id' => $customer->id,
+                'status' => 'pending',
+                'is_verified' => 0,
+            ]);
+
+            // 3. Create vendor info
+            Vendor::create([
+                'customer_id' => $customer->id,
+                'balance' => 0,
+                'total_fee' => 0,
+                'total_revenue' => 0,
+                'payout_payment_method' => 'bank_transfer',
+            ]);
+
+            // 4. Create slug
+            DB::table('slugs')->insert([
+                'key' => Str::slug($request->shop_url),
+                'reference_id' => $store->id,
+                'reference_type' => 'Botble\\Marketplace\\Models\\Store',
+                'prefix' => '',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            DB::commit();
+
+            return redirect()->route('frontend.customer.dashboard')->with('success', 'Your vendor application has been submitted successfully!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Something went wrong: ' . $e->getMessage());
+        }
     }
 }

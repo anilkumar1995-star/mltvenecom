@@ -59,7 +59,7 @@
                                                 <div class="d-flex align-items-center">
                                                     @if($item->product_image)
                                                         @php 
-                                                            $imageUrl = str_starts_with($item->product_image, 'http') ? $item->product_image : asset('storage/' . $item->product_image);
+                                                            $imageUrl = $item->product_image ? (str_starts_with($item->product_image, 'http') ? $item->product_image : rtrim(\App\Helpers\ImageHelper::getImageUrl(), '/') . '/' . ltrim($item->product_image, '/')) : asset('home/placeholder.png');
                                                         @endphp
                                                         <span class="avatar avatar-sm me-2" style="background-image: url({{ $imageUrl }})"></span>
                                                     @endif

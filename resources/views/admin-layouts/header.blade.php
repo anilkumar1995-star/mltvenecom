@@ -56,7 +56,7 @@
                                     d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6">
                                 </path>
                                 <path d="M9 17v1a3 3 0 0 0 6 0v-1"></path>
-                            </svg> <span class="badge bg-blue text-blue-fg badge-pill notification-count">0</span>
+                            </svg> <span class="badge bg-blue text-blue-fg badge-pill marketplace-notifications-count menu-item-count" data-url="{{ route('admin.menu-items-count') }}">0</span>
                         </a></div>
                     <div class="nav-item dropdown d-none d-md-flex me-2"><button class="nav-link px-0"
                             data-bs-toggle="dropdown" type="button" aria-label="Show contacts" tabindex="-1">
@@ -67,12 +67,12 @@
                                     d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z">
                                 </path>
                                 <path d="M3 7l9 6l9 -6"></path>
-                            </svg> <span class="badge bg-red text-red-fg badge-pill">5</span>
+                            </svg> <span class="badge bg-red text-red-fg badge-pill unread-contacts">0</span>
                         </button>
                         <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-end dropdown-menu-card">
                             <div class="card">
                                 <div class="card-header">
-                                    <h4 class="card-title"> You have <span class="bold">5</span> New Messages </h4>
+                                    <h4 class="card-title"> You have <span class="bold unread-contacts">0</span> New Messages </h4>
                                     <div class="card-actions">
                                         <a href="{{ url("/") }}/admin/contacts">View all</a>
                                     </div>

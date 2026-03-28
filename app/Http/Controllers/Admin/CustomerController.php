@@ -99,16 +99,19 @@ class CustomerController extends Controller
 
     public function show($id)
     {
-        $customer = Customer::with(['addresses', 'orders.items', 'wishlist.product', 'reviews.product'])->findOrFail($id);
+        $customer = Customer::with(['addresses', 'orders.items', 'wishlist.product', 'reviews.product', 'store', 'vendorInfo'])
+                    ->withCount(['products as listed_products_count', 'vendorOrders as received_orders_count'])
+                    ->withSum('vendorOrders as total_revenue_sum', 'amount')
+                    ->findOrFail($id);
 
         $totalOrders = $customer->orders->count();
         $completedOrders = $customer->orders->where('status', 'completed')->count();
         $totalSpent = $customer->orders->sum('amount');
-        $totalProducts = $customer->orders->sum(function($order) {
+        $totalProductsPurchased = $customer->orders->sum(function($order) {
             return $order->items->sum('qty');
         });
 
-        return view('admin-layouts.customers.show', compact('customer', 'totalOrders', 'completedOrders', 'totalSpent', 'totalProducts'));
+        return view('admin-layouts.customers.show', compact('customer', 'totalOrders', 'completedOrders', 'totalSpent', 'totalProductsPurchased'));
     }
 
     public function update(Request $request, $id)

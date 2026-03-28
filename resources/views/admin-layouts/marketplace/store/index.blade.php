@@ -78,10 +78,7 @@
                                     <td class="text-muted small">{{ $store->id }}</td>
                                     <td>
                                         <div class="avatar avatar-sm rounded bg-white border">
-                                            @php
-                                                $logoUrl = $store->logo ? (str_contains($store->logo, 'http') ? $store->logo : asset('storage/' . $store->logo)) : asset('img/noimg.png');
-                                            @endphp
-                                            <img src="{{ $logoUrl }}" alt="{{ $store->name }}" class="avatar-img" onerror="this.src='{{ asset('img/noimg.png') }}'">
+                                            <img src="{{ $store->logo_url }}" alt="{{ $store->name }}" class="avatar-img" onerror="this.src='{{ asset('img/noimg.png') }}'">
                                         </div>
                                     </td>
                                     <td>

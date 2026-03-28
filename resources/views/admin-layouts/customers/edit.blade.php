@@ -338,10 +338,7 @@
                                         </button>
                                     </div>
                                     <div class="avatar-preview">
-                                        @php
-                                            $avatarUrl = $customer->avatar ? asset('storage/' . $customer->avatar) : asset('home/placeholder.png');
-                                        @endphp
-                                        <img id="avatar-preview" src="{{ $avatarUrl }}" alt="Avatar" class="rounded-circle shadow-md border border-4 border-white" style="width: 150px; height: 150px; object-fit: cover;">
+                                        <img id="avatar-preview" src="{{ $customer->avatar_url }}" alt="Avatar" class="rounded-circle shadow-md border border-4 border-white" style="width: 150px; height: 150px; object-fit: cover;" onerror="this.src='{{ asset('home/placeholder.png') }}'">
                                     </div>
                                     <input type="file" id="avatar" name="avatar" class="d-none" accept="image/*" onchange="previewAvatar(this)">
                                 </div>

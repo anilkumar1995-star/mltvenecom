@@ -16,7 +16,7 @@ class StoreController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Store::query()->with('customer');
+        $query = Store::query()->with('customer')->withCount('products')->withSum('orders as earnings', 'amount');
 
         TableHelpers::applyTableLogic($query, $request,
         ['id', 'name', 'email', 'phone'],

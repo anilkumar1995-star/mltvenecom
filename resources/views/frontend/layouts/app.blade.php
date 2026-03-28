@@ -999,6 +999,16 @@
     <form id="global-logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
         @csrf
     </form>
+    <script>
+        window.Theme = window.Theme || {};
+        $(document).ready(function() {
+            if (typeof Botble !== 'undefined') {
+                window.Theme.handleError = Botble.handleError;
+                window.Theme.showError = Botble.showError;
+                window.Theme.showSuccess = Botble.showSuccess;
+            }
+        });
+    </script>
 @auth
     <script>
         (function() {

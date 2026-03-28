@@ -79,10 +79,7 @@
                                     <td class="text-muted small">{{ $post->id }}</td>
                                     <td class="text-start">
                                         <div class="avatar avatar-sm rounded bg-white border">
-                                            @php
-                                                $imageUrl = $post->image ? (str_contains($post->image, 'http') ? $post->image : asset('storage/' . $post->image)) : asset('img/noimg.png');
-                                            @endphp
-                                            <img src="{{ $imageUrl }}" alt="{{ $post->name }}" class="avatar-img" onerror="this.src='{{ asset('img/noimg.png') }}'">
+                                            <img src="{{ $post->image_url }}" alt="{{ $post->name }}" class="avatar-img" onerror="this.src='{{ asset('img/noimg.png') }}'">
                                         </div>
                                     </td>
                                     <td>

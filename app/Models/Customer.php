@@ -72,6 +72,21 @@ class Customer extends Authenticatable
         return $this->hasOne(Vendor::class, 'customer_id');
     }
 
+    public function products(): \Illuminate\Database\Eloquent\Relations\HasManyThrough
+    {
+        return $this->hasManyThrough(EcProduct::class, Store::class, 'customer_id', 'store_id');
+    }
+
+    public function vendorOrders(): \Illuminate\Database\Eloquent\Relations\HasManyThrough
+    {
+        return $this->hasManyThrough(Order::class, Store::class, 'customer_id', 'store_id');
+    }
+
+    public function withdrawals(): HasMany
+    {
+        return $this->hasMany(Withdrawal::class, 'customer_id');
+    }
+
     // Scopes
     public function scopeActive($query)
     {
@@ -86,8 +101,8 @@ class Customer extends Authenticatable
     public function getAvatarUrlAttribute()
     {
         if ($this->avatar) {
-             return str_starts_with($this->avatar, 'http') ? $this->avatar : asset('uploads/' . $this->avatar);
+             return str_starts_with($this->avatar, 'http') ? $this->avatar : rtrim(\App\Helpers\ImageHelper::getImageUrl(), '/') . '/' . ltrim($this->avatar, '/');
         }
-        return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&color=7F9CF5&background=EBF4FF';
+        return asset('home/placeholder.png');
     }
 }

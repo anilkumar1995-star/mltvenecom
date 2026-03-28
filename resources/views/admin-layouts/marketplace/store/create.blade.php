@@ -998,6 +998,7 @@
         $(document).ready(function() {
             $('#store').on('submit', function(e) {
                 e.preventDefault();
+                e.stopImmediatePropagation();
                 var form = this;
 
                 // Ensure CKEditor content is synced
@@ -1023,11 +1024,17 @@
                     formData.append('seo_meta_image', $('#seo-meta-image-input')[0].files[0]);
                 }
 
+                var clickedBtn = $(document.activeElement);
                 var submitBtn = $(form).find('button[type="submit"]');
 
                 // Clear previous errors
                 $('.invalid-feedback').remove();
                 $('.is-invalid').removeClass('is-invalid');
+
+                // Add the clicked button's name and value to the formData
+                if (clickedBtn.attr('name')) {
+                    formData.append(clickedBtn.attr('name'), clickedBtn.attr('value'));
+                }
 
                 $.ajax({
                     url: $(form).attr('action'),
@@ -1060,10 +1067,15 @@
                         }
                     },
                     error: function(xhr) {
-                        if (xhr.status === 422) {
+                        if (xhr.status === 422 && xhr.responseJSON && xhr.responseJSON.errors) {
                             var errors = xhr.responseJSON.errors;
                             $.each(errors, function(key, value) {
+                                // Find input by name, handling dots for nested names
                                 var input = $('[name="' + key + '"]');
+                                if (input.length === 0) {
+                                    // Fallback for nested attributes like seo_meta[seo_title]
+                                    input = $('[name*="' + key.split('.').pop() + '"]');
+                                }
                                 input.addClass('is-invalid');
                                 input.after('<div class="invalid-feedback">' + value[0] + '</div>');
                             });
@@ -1084,7 +1096,10 @@
                         }
                     },
                     complete: function() {
-                        submitBtn.prop('disabled', false).removeClass('btn-loading');
+                        // Slight delay to ensure it runs after any other conflicting scripts
+                        setTimeout(function() {
+                            $('button[type="submit"]').prop('disabled', false).removeClass('btn-loading');
+                        }, 1000);
                     }
                 });
             });

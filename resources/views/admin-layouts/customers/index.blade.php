@@ -72,14 +72,7 @@
                                     <td class="text-muted small">{{ $customer->id }}</td>
                                     <td>
                                         <div class="avatar avatar-sm rounded-circle bg-white border">
-                                            @php
-                                                $avatarUrl = $customer->avatar ? (str_contains($customer->avatar, 'http') ? $customer->avatar : (str_starts_with($customer->avatar, 'avatar_') ? asset('storage/' . $customer->avatar) : 'https://images.incomeowl.in/incomeowl/b2b/images/' . $customer->avatar)) : null;
-                                            @endphp
-                                            @if($avatarUrl)
-                                                <img src="{{ $avatarUrl }}" alt="{{ $customer->name }}" class="avatar-img rounded-circle" onerror="this.src='https://via.placeholder.com/40'">
-                                            @else
-                                                <span class="avatar-img rounded-circle bg-primary-lt text-primary fw-bold">{{ substr($customer->name, 0, 1) }}</span>
-                                            @endif
+                                            <img src="{{ $customer->avatar_url }}" alt="{{ $customer->name }}" class="avatar-img rounded-circle" onerror="this.src='{{ asset('home/placeholder.png') }}'">
                                         </div>
                                     </td>
                                     <td>

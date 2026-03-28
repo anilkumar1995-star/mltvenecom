@@ -79,7 +79,7 @@
                                             <td><input class="form-check-input m-0 align-middle bulk-checkbox" type="checkbox" name="id[]" value="{{ $vendor->id }}"></td>
                                             <td class="text-center text-muted">{{ $vendor->id }}</td>
                                             <td>
-                                                <span class="avatar avatar-sm rounded" style="background-image: url({{ $vendor->avatar ? asset('storage/' . $vendor->avatar) : asset('vendor/core/core/base/images/placeholder.png') }})"></span>
+                                                <span class="avatar avatar-sm rounded" style="background-image: url({{ $vendor->avatar_url }})"></span>
                                             </td>
                                             <td>
                                                 <a href="{{ route('admin.marketplace.vendors.show', $vendor->id) }}" class="fw-bold text-dark">{{ $vendor->name }}</a>
@@ -87,9 +87,9 @@
                                             <td class="text-muted">{{ $vendor->email }}</td>
                                             <td>{{ $vendor->store->name ?? '—' }}</td>
                                             <td>{{ $vendor->store->phone ?? $vendor->phone ?? '—' }}</td>
-                                            <td><span class="badge bg-blue text-blue-fg">0</span></td>
-                                            <td>₹{{ number_format($vendor->vendorInfo->total_revenue ?? 0, 2) }}</td>
-                                            <td><span class="badge bg-cyan text-cyan-fg">₹{{ number_format($vendor->vendorInfo->balance ?? 0, 2) }}</span></td>
+                                            <td><span class="badge bg-blue text-blue-fg">{{ $vendor->products_count }}</span></td>
+                                            <td>₹{{ number_format($vendor->total_revenue_sum ?? 0, 2) }}</td>
+                                            <td><span class="badge bg-cyan text-cyan-fg">₹{{ number_format(($vendor->total_revenue_sum ?? 0) - ($vendor->total_withdrawn ?? 0), 2) }}</span></td>
                                             <td class="text-center">
                                                 <div class="btn-group">
                                                     <a href="{{ route('admin.marketplace.vendors.show', $vendor->id) }}" class="btn btn-sm btn-outline-info" title="View Detail">
