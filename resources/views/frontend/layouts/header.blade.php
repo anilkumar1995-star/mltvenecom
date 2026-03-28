@@ -241,54 +241,43 @@
                     <div class="col-xxl-4 col-xl-4 col-6">
                         <div class="tp-header-right-5 d-flex align-items-center justify-content-end">
                             <div class="tp-header-login-5 d-none d-lg-block">
+                                @php
+                                    $isLogged = auth('web')->check() || auth('customer')->check();
+                                    $currentUser = auth('web')->user() ?? auth('customer')->user();
+                                    $dashboardRoute = (auth('web')->check() && $currentUser->role === 'admin') ? route('admin.dashboard') : route('frontend.customer.dashboard');
+                                @endphp
+
                                 <div class="d-flex align-items-center">
-                                    <div class="tp-header-login-icon-5">
-                                        <span>
-                                            <svg width="16" height="18" viewBox="0 0 16 18"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M8.00029 9C10.2506 9 12.0748 7.20914 12.0748 5C12.0748 2.79086 10.2506 1 8.00029 1C5.75 1 3.92578 2.79086 3.92578 5C3.92578 7.20914 5.75 9 8.00029 9Z"
-                                                    stroke="currentColor" stroke-width="1.5"
-                                                    stroke-linecap="round" stroke-linejoin="round"></path>
-                                                <path
-                                                    d="M15 17C15 13.904 11.8626 11.4 8 11.4C4.13737 11.4 1 13.904 1 17"
-                                                    stroke="currentColor" stroke-width="1.5"
-                                                    stroke-linecap="round" stroke-linejoin="round"></path>
-                                            </svg>
-                                        </span>
-                                    </div>
-                                    <div class="tp-header-login-5 d-none d-lg-block ms-2">
-                                        @php
-                                            $isLogged = auth('web')->check() || auth('customer')->check();
-                                            $currentUser = auth('web')->user() ?? auth('customer')->user();
-                                        @endphp
-
-                                        @if($isLogged)
-                                            <div class="d-flex align-items-center">
-                                                <a href="{{ (auth('web')->check() && $currentUser->role === 'admin') ? route('admin.dashboard') : route('frontend.customer.dashboard') }}" class="text-decoration-none text-start">
-                                                    <div style="line-height: 1.2;">
-                                                        <span style="font-size: 13px; color: rgba(255, 255, 255, 0.7); display: block; margin-bottom: 2px;">{{ $currentUser->email }}</span>
-                                                        <span style="font-size: 15px; font-weight: 500; color: #fff; display: block;">Hello, {{ $currentUser->name }}</span>
-                                                    </div>
-                                                </a>
-                                            </div>
+                                    <div class="tp-header-login-icon-5" style="border-radius: 50%; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: rgba(255,255,255,0.1);">
+                                        @if($isLogged && $currentUser->avatar)
+                                            <a href="{{ $dashboardRoute }}">
+                                                <img src="{{ $currentUser->avatar_url }}" alt="{{ $currentUser->name }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                            </a>
                                         @else
-                                            <div class="d-flex">
-                                                <a href="{{ route('login') }}" class="d-flex align-items-center me-3 text-decoration-none">
-                                                    <div class="text-white">
-                                                        Login
-                                                    </div>
-                                                </a>
-
-                                                <a href="{{ route('register') }}" class="d-flex align-items-center text-decoration-none">
-                                                    <div class="text-white">
-                                                        Register
-                                                    </div>
-                                                </a>
-                                            </div>
+                                            <a href="{{ route('login') }}" class="text-white">
+                                                <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M8.00029 9C10.2506 9 12.0748 7.20914 12.0748 5C12.0748 2.79086 10.2506 1 8.00029 1C5.75 1 3.92578 2.79086 3.92578 5C3.92578 7.20914 5.75 9 8.00029 9Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                    <path d="M15 17C15 13.904 11.8626 11.4 8 11.4C4.13737 11.4 1 13.904 1 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                </svg>
+                                            </a>
                                         @endif
                                     </div>
 
+                                    <div class="tp-header-login-5 d-none d-lg-block ms-3">
+                                        @if($isLogged)
+                                            <a href="{{ $dashboardRoute }}" class="text-decoration-none text-start">
+                                                <div style="line-height: 1.2;">
+                                                    <span style="font-size: 13px; color: rgba(255, 255, 255, 0.7); display: block; margin-bottom: 2px;">{{ $currentUser->email }}</span>
+                                                    <span style="font-size: 15px; font-weight: 500; color: #fff; display: block;">Hello, {{ $currentUser->name }}</span>
+                                                </div>
+                                            </a>
+                                        @else
+                                            <div class="d-flex">
+                                                <a href="{{ route('login') }}" class="text-white me-3 text-decoration-none">Login</a>
+                                                <a href="{{ route('register') }}" class="text-white text-decoration-none">Register</a>
+                                            </div>
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
 

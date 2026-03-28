@@ -78,7 +78,7 @@ Route::post('/login', [LoginController::class, 'login'])->name('login.post');
 
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register']);
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::match(['get', 'post'], '/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/password/reset', function () {return 'Password reset is currently disabled.';})->name('password.request');
 
 // Vendor KYC Pending Page
@@ -112,6 +112,8 @@ Route::post('/admin/logout', [LoginController::class, 'logout'])->name('admin.lo
 
 Route::middleware('auth:customer,web')->prefix('customer')->name('customer.')->group(function () {
     Route::get('/dashboard', [CustomerController::class, 'dashboard'])->name('dashboard');
+    Route::get('/become-vendor', [CustomerController::class, 'becomeVendor'])->name('become-vendor');
+    Route::post('/become-vendor', [CustomerController::class, 'processBecomeVendor'])->name('become-vendor.post');
 });
 
     Route::name('frontend.')->group(function () {
@@ -251,6 +253,7 @@ Route::middleware('auth:customer,web')->prefix('customer')->name('customer.')->g
         Route::get('/orders/{id}', [CustomerController::class, 'orderDetail'])->name('orders.detail');
         Route::get('/profile', [CustomerController::class, 'profile'])->name('profile');
         Route::post('/profile/update', [CustomerController::class, 'updateProfile'])->name('profile.update');
+        Route::post('/profile/change-password', [CustomerController::class, 'updatePassword'])->name('profile.change-password');
         Route::get('/addresses', [CustomerController::class, 'addresses'])->name('addresses');
         Route::post('/addresses/store', [CustomerController::class, 'storeAddress'])->name('addresses.store');
         Route::put('/addresses/{id}/update', [CustomerController::class, 'updateAddress'])->name('addresses.update');
@@ -263,6 +266,10 @@ Route::middleware('auth:customer,web')->prefix('customer')->name('customer.')->g
 
         // Account Deletion Request
         Route::post('/account/delete', [AccountDeletionController::class, 'store'])->name('account.deletion.request');
+
+        // Become Vendor
+        Route::get('/become-vendor', [CustomerController::class, 'becomeVendor'])->name('become-vendor');
+        Route::post('/become-vendor', [CustomerController::class, 'processBecomeVendor'])->name('become-vendor.post');
     });
 });
 
@@ -656,8 +663,8 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('galleries', [GalleryController::class, 'index'])->name('galleries.index');
     Route::get('galleries/create', [GalleryController::class, 'create'])->name('galleries.create');
     Route::post('galleries', [GalleryController::class, 'store'])->name('galleries.store');
-    Route::get('galleries/{id}/edit', [GalleryController::class, 'edit'])->name('galleries.edit');
-    Route::put('galleries/{id}', [GalleryController::class, 'update'])->name('galleries.update');
+    Route::get('galleries/{gallery}/edit', [GalleryController::class, 'edit'])->name('galleries.edit');
+    Route::put('galleries/{gallery}', [GalleryController::class, 'update'])->name('galleries.update');
     Route::delete('galleries/{id}', [GalleryController::class, 'destroy'])->name('galleries.destroy');
     Route::post('galleries/bulk-delete', [GalleryController::class, 'bulkDelete'])->name('galleries.bulk-delete');
 

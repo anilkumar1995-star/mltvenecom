@@ -396,7 +396,7 @@
                                                 <a href="javascript:void(0)" onclick="$('#logo-input').trigger('click')" class="image-box-actions">
                                                     <img class="preview-logo preview-image default-image"
                                                         data-default="{{ asset('images/placeholder.png') }}"
-                                                        src="{{ $store->logo ? asset($store->logo) : asset('images/placeholder.png') }}"
+                                                        src="{{ $store->logo ? (str_contains($store->logo, 'http') ? $store->logo : rtrim(\App\Helpers\ImageHelper::getImageUrl(), '/') . '/' . ltrim($store->logo, '/')) : asset('images/placeholder.png') }}"
                                                         alt="Preview image" style="width: 8rem; height: 8rem; object-fit: cover;" />
                                                     <span class="image-picker-backdrop"></span>
                                                 </a>
@@ -440,7 +440,7 @@
                                                 <a href="javascript:void(0)" onclick="$('#logo-square-input').trigger('click')" class="image-box-actions">
                                                     <img class="preview-logo-square preview-image default-image"
                                                         data-default="{{ asset('images/placeholder.png') }}"
-                                                        src="{{ $store->logo_square ? asset($store->logo_square) : asset('images/placeholder.png') }}"
+                                                        src="{{ $store->logo_square ? (str_contains($store->logo_square, 'http') ? $store->logo_square : rtrim(\App\Helpers\ImageHelper::getImageUrl(), '/') . '/' . ltrim($store->logo_square, '/')) : asset('images/placeholder.png') }}"
                                                         alt="Preview image" style="width: 8rem; height: 8rem; object-fit: cover;" />
                                                     <span class="image-picker-backdrop"></span>
                                                 </a>
@@ -487,7 +487,7 @@
                                                 <a href="javascript:void(0)" onclick="$('#cover-image-input').trigger('click')" class="image-box-actions">
                                                     <img class="preview-cover-image preview-image default-image"
                                                         data-default="{{ asset('images/placeholder.png') }}"
-                                                        src="{{ $store->cover_image ? asset($store->cover_image) : asset('images/placeholder.png') }}"
+                                                        src="{{ $store->cover_image ? (str_contains($store->cover_image, 'http') ? $store->cover_image : rtrim(\App\Helpers\ImageHelper::getImageUrl(), '/') . '/' . ltrim($store->cover_image, '/')) : asset('images/placeholder.png') }}"
                                                         alt="Preview image" style="width: 8rem; height: 8rem; object-fit: cover;" />
                                                     <span class="image-picker-backdrop"></span>
                                                 </a>
@@ -1111,6 +1111,7 @@
     $(document).ready(function() {
         $('#store-form').on('submit', function(e) {
             e.preventDefault();
+            e.stopImmediatePropagation();
             var form = this;
             var formData = new FormData(form);
 
@@ -1128,15 +1129,21 @@
                 formData.append('seo_meta_image', $('#seo-meta-image-input')[0].files[0]);
             }
 
+            var clickedBtn = $(document.activeElement);
             var submitBtn = $(form).find('button[type="submit"]');
 
             // Clear previous errors
             $('.invalid-feedback').remove();
             $('.is-invalid').removeClass('is-invalid');
 
+            // Add the clicked button's name and value to the formData
+            if (clickedBtn.attr('name')) {
+                formData.append(clickedBtn.attr('name'), clickedBtn.attr('value'));
+            }
+
             $.ajax({
                 url: $(form).attr('action'),
-                method: 'POST', // Laravel treats PUT/PATCH as POST with _method field
+                method: 'POST',
                 data: formData,
                 processData: false,
                 contentType: false,
@@ -1152,7 +1159,7 @@
                             timer: 1500,
                             showConfirmButton: false
                         }).then(function() {
-                            if (response.redirect_url) {
+                            if (response.redirect_url && clickedBtn.attr('value') !== 'apply') {
                                 window.location.href = response.redirect_url;
                             }
                         });
@@ -1165,10 +1172,15 @@
                     }
                 },
                 error: function(xhr) {
-                    if (xhr.status === 422) {
+                    if (xhr.status === 422 && xhr.responseJSON && xhr.responseJSON.errors) {
                         var errors = xhr.responseJSON.errors;
                         $.each(errors, function(key, value) {
+                            // Find input by name, handling dots for nested names
                             var input = $('[name="' + key + '"]');
+                            if (input.length === 0) {
+                                // Fallback for nested attributes like seo_meta[seo_title]
+                                input = $('[name*="' + key.split('.').pop() + '"]');
+                            }
                             input.addClass('is-invalid');
                             input.after('<div class="invalid-feedback">' + value[0] + '</div>');
                         });
@@ -1186,7 +1198,10 @@
                     }
                 },
                 complete: function() {
-                    submitBtn.prop('disabled', false).removeClass('btn-loading');
+                    // Slight delay to ensure it runs after any other conflicting scripts
+                    setTimeout(function() {
+                        $('button[type="submit"]').prop('disabled', false).removeClass('btn-loading');
+                    }, 1000);
                 }
             });
         });

@@ -194,7 +194,7 @@
                 </div>
                 <div class="dropdown nav-item">
                     <a href="#" class="p-0 nav-link d-flex lh-1 text-reset" data-bs-toggle="dropdown" aria-label="Open user menu">
-                        <span class="avatar avatar-sm" style="background-image: url('{{ Auth::user()->avatar ? \App\Helpers\ImageHelper::getImageUrl() . Auth::user()->avatar : asset('avatars/no_user.webp') }}');"></span>
+                        <span class="avatar avatar-sm" style="background-image: url('{{ Auth::user()->avatar_url }}');"></span>
                         <div class="d-none d-xl-block ps-2">
                             <div>{{ Auth::user()->name }}</div>
                             <div class="mt-1 small text-muted">{{ Auth::user()->email }}</div>

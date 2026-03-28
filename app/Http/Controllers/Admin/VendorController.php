@@ -16,7 +16,7 @@ class VendorController extends Controller
 {
     public function vendors(Request $request)
     {
-        $query = Customer::where('is_vendor', 1)->with(['store', 'vendorInfo']);
+        $query = Customer::where('is_vendor', 1)->with(['store', 'vendorInfo'])->withCount('products')->withSum('vendorOrders as total_revenue_sum', 'amount')->withSum(['withdrawals as total_withdrawn' => function($q) { $q->whereIn('status', ['completed', 'pending', 'processing']); }], 'amount');
 
         TableHelpers::applyTableLogic($query, $request,
         ['id', 'name', 'email', 'phone'], // searchable
@@ -127,7 +127,7 @@ class VendorController extends Controller
         $query = Customer::where('is_vendor', 1)
                  ->whereHas('store', function ($q) {
                      $q->where('is_verified', 0);
-                 })->with(['store', 'vendorInfo']);
+                 })->with(['store', 'vendorInfo'])->withCount('products')->withSum('vendorOrders as total_revenue_sum', 'amount')->withSum(['withdrawals as total_withdrawn' => function($q) { $q->whereIn('status', ['completed', 'pending', 'processing']); }], 'amount');
 
         TableHelpers::applyTableLogic($query, $request,
         ['id', 'name', 'email', 'phone'], // searchable
@@ -149,7 +149,11 @@ class VendorController extends Controller
 
     public function show($id)
     {
-        $vendor = Customer::with(['store', 'vendorInfo'])->findOrFail($id);
+        $vendor = Customer::with(['store', 'vendorInfo'])
+                  ->withCount(['products', 'vendorOrders as orders_count'])
+                  ->withSum('vendorOrders as total_revenue_sum', 'amount')
+                  ->withSum(['withdrawals as total_withdrawn' => function($q) { $q->whereIn('status', ['completed', 'pending', 'processing']); }], 'amount')
+                  ->findOrFail($id);
         return view('admin-layouts.marketplace.vendors.show', compact('vendor'));
     }
 

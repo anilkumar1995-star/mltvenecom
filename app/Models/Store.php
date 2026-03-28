@@ -65,4 +65,28 @@ class Store extends Model
     {
         return $this->hasMany(Order::class, 'store_id');
     }
+
+    public function getLogoUrlAttribute()
+    {
+        if ($this->logo) {
+            return str_starts_with($this->logo, 'http') ? $this->logo : rtrim(\App\Helpers\ImageHelper::getImageUrl(), '/') . '/' . ltrim($this->logo, '/');
+        }
+        return asset('img/noimg.png');
+    }
+
+    public function getLogoSquareUrlAttribute()
+    {
+        if ($this->logo_square) {
+            return str_starts_with($this->logo_square, 'http') ? $this->logo_square : rtrim(\App\Helpers\ImageHelper::getImageUrl(), '/') . '/' . ltrim($this->logo_square, '/');
+        }
+        return asset('img/noimg.png');
+    }
+
+    public function getCoverImageUrlAttribute()
+    {
+        if ($this->cover_image) {
+            return str_starts_with($this->cover_image, 'http') ? $this->cover_image : rtrim(\App\Helpers\ImageHelper::getImageUrl(), '/') . '/' . ltrim($this->cover_image, '/');
+        }
+        return asset('img/noimg.png');
+    }
 }

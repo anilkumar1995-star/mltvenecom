@@ -329,8 +329,8 @@ class OrderController extends Controller
         // Map images
         $products->transform(function($product) {
             $displayImage = $product->image ?: (is_array($product->images) && !empty($product->images) ? $product->images[0] : null);
-             $product->image_url = $displayImage ? asset('uploads/' . $displayImage) : asset('home/placeholder.png');
-             return $product;
+            $product->image_url = $displayImage ? (str_starts_with($displayImage, 'http') ? $displayImage : rtrim(\App\Helpers\ImageHelper::getImageUrl(), '/') . '/' . ltrim($displayImage, '/')) : asset('home/placeholder.png');
+            return $product;
         });
 
         return response()->json($products);

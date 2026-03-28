@@ -11,6 +11,14 @@ class Post extends Model
         'author_type', 'is_featured', 'image', 'views', 'format_type'
     ];
 
+    public function getImageUrlAttribute()
+    {
+        if ($this->image) {
+            return str_starts_with($this->image, 'http') ? $this->image : rtrim(\App\Helpers\ImageHelper::getImageUrl(), '/') . '/' . ltrim($this->image, '/');
+        }
+        return asset('img/noimg.png');
+    }
+
     public function categories()
     {
         return $this->belongsToMany(Category::class, 'post_categories');

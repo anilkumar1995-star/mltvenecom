@@ -75,7 +75,7 @@
                                                         @foreach($products as $product)
                                                         @php 
                                                             $displayImage = $product->image ?: (is_array($product->images) && !empty($product->images) ? $product->images[0] : null);
-                                                            $imageUrl = $displayImage ? asset('uploads/' . $displayImage) : asset('home/placeholder.png');
+                                                            $imageUrl = $displayImage ? (str_starts_with($displayImage, 'http') ? $displayImage : rtrim(\App\Helpers\ImageHelper::getImageUrl(), '/') . '/' . ltrim($displayImage, '/')) : asset('home/placeholder.png');
                                                         @endphp
                                                         <tr id="product-row-{{ $product->id }}">
                                                             <td>

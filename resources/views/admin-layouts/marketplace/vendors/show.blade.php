@@ -37,7 +37,7 @@
                         <div class="card-body p-0">
                             <div class="text-center p-3">
                                 <div class="mb-2 text-center">
-                                    <img src="{{ $vendor->avatar ? asset('storage/' . $vendor->avatar) : asset('vendor/core/core/base/images/placeholder.png') }}" alt="{{ $vendor->name }}" class="avatar avatar-rounded avatar-xl shadow-xs">
+                                    <img src="{{ $vendor->avatar_url }}" alt="{{ $vendor->name }}" class="avatar avatar-rounded avatar-xl shadow-xs" onerror="this.src='{{ asset('home/placeholder.png') }}'">
                                 </div>
                                 <h3 class="m-0 fw-bold">{{ $vendor->name }}</h3>
                                 <p class="text-muted small mb-1">{{ $vendor->email }}</p>
@@ -79,7 +79,7 @@
                                 </dl>
                                 <dl class="row mb-2">
                                     <dt class="col small text-muted">Total orders</dt>
-                                    <dd class="col-auto small">0</dd>
+                                    <dd class="col-auto small">{{ $vendor->orders_count }}</dd>
                                 </dl>
                                 <dl class="row mb-0">
                                     <dt class="col small text-muted">Total spent</dt>
@@ -105,7 +105,7 @@
                         <div class="card-body p-0 text-center">
                             <div class="p-3">
                                 <div class="mb-2 text-center">
-                                    <img src="{{ asset('vendor/core/core/base/images/placeholder.png') }}" class="avatar avatar-rounded avatar-xl shadow-xs">
+                                    <img src="{{ optional($vendor->store)->logo_url ?? asset('img/noimg.png') }}" class="avatar avatar-rounded avatar-xl shadow-xs" onerror="this.src='{{ asset('img/noimg.png') }}'">
                                 </div>
                                 <h3 class="m-0 fw-bold">
                                     <a href="#" target="_blank" class="text-dark">
@@ -127,13 +127,13 @@
                     <!-- Vendor Statistics -->
                     <div class="row row-cards mb-3">
                         @foreach([
-                            ['label' => 'Store Products', 'value' => '0'],
-                            ['label' => 'Store Orders', 'value' => '0'],
-                            ['label' => 'Total Revenue', 'value' => '₹' . number_format($vendor->vendorInfo->total_revenue ?? 0, 2)],
-                            ['label' => 'Total Earnings', 'value' => '₹' . number_format($vendor->vendorInfo->total_revenue ?? 0, 2)],
-                            ['label' => 'Withdrawals', 'value' => '₹0.00'],
+                            ['label' => 'Store Products', 'value' => $vendor->products_count],
+                            ['label' => 'Store Orders', 'value' => $vendor->orders_count],
+                            ['label' => 'Total Revenue', 'value' => '₹' . number_format($vendor->total_revenue_sum ?? 0, 2)],
+                            ['label' => 'Total Earnings', 'value' => '₹' . number_format($vendor->total_revenue_sum ?? 0, 2)],
+                            ['label' => 'Withdrawals', 'value' => '₹' . number_format($vendor->total_withdrawn ?? 0, 2)],
                             ['label' => 'Pending Withdrawals', 'value' => '₹0.00'],
-                            ['label' => 'Balance', 'value' => '₹' . number_format($vendor->vendorInfo->balance ?? 0, 2)],
+                            ['label' => 'Balance', 'value' => '₹' . number_format(($vendor->total_revenue_sum ?? 0) - ($vendor->total_withdrawn ?? 0), 2)],
                             ['label' => 'Completed orders', 'value' => '0'],
                         ] as $stat)
                             <div class="col-md-3 col-sm-6">

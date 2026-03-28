@@ -48,7 +48,7 @@
                 </div>
             @endif
 
-            <form method="POST" action="{{ route('admin.galleries.update', $gallery->id) }}" accept-charset="UTF-8" id="botble-gallery-forms-gallery-form" class="js-base-form dirty-check" novalidate="novalidate" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('admin.galleries.update', $gallery) }}" accept-charset="UTF-8" id="botble-gallery-forms-gallery-form" class="js-base-form dirty-check" novalidate="novalidate" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 
@@ -93,28 +93,18 @@
                     </div>
 
                     <div class="col-md-3 gap-3 d-flex flex-column-reverse flex-md-column mb-md-0 mb-5">
-                        <div class="card">
-                            <div class="card-header">
+                        <div class="card text-center">
+                            <div class="card-header justify-content-center">
                                 <h4 class="card-title">Publish</h4>
                             </div>
                             <div class="card-body">
-                                <div class="btn-list">
-                                    <button class="btn btn-primary" type="submit" value="apply" name="submitter">
-                                        <svg class="icon icon-left svg-icon-ti-ti-device-floppy" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                          <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2"></path>
-                                          <path d="M10 14a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
-                                          <path d="M14 4l0 4l-6 0l0 -4"></path>
-                                        </svg>
-                                        Save
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-primary fw-bold" type="submit" value="apply" name="submitter">
+                                        <i class="fas fa-save me-2"></i> Save Changes
                                     </button>
 
-                                    <button class="btn" type="submit" name="save_and_exit" value="1">
-                                        <svg class="icon icon-left svg-icon-ti-ti-transfer-in" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                          <path d="M4 18v3h16v-14l-8 -4l-8 4v3"></path>
-                                          <path d="M4 14h9"></path>
-                                          <path d="M10 11l3 3l-3 3"></path>
-                                        </svg>
-                                        Save & Exit
+                                    <button class="btn btn-outline-secondary" type="submit" name="save_and_exit" value="1">
+                                        <i class="fas fa-sign-out-alt me-2"></i> Save & Exit
                                     </button>
                                 </div>
                             </div>
@@ -123,11 +113,11 @@
                         <div class="card meta-boxes mb-3">
                             <div class="card-header">
                                 <h4 class="card-title">
-                                    <label class="form-label required" for="status">Status</label>
+                                    <label class="form-label required mb-0" for="status">Status</label>
                                 </h4>
                             </div>
                             <div class="card-body">
-                                <select class="form-select text-capitalize" required="required" id="status" name="status">
+                                <select class="form-select text-capitalize border-2" required="required" id="status" name="status">
                                     <option value="published" {{ old('status', $gallery->status) == 'published' ? 'selected' : '' }}>Published</option>
                                     <option value="draft" {{ old('status', $gallery->status) == 'draft' ? 'selected' : '' }}>Draft</option>
                                     <option value="pending" {{ old('status', $gallery->status) == 'pending' ? 'selected' : '' }}>Pending</option>
@@ -138,17 +128,25 @@
                         <div class="card meta-boxes mb-3">
                             <div class="card-header">
                                 <h4 class="card-title">
-                                    <label class="form-label" for="image">Image</label>
+                                    <label class="form-label mb-0" for="image">Featured Image</label>
                                 </h4>
                             </div>
                             <div class="card-body">
-                                <div class="image-box image-box-image">
+                                <div class="image-box image-box-image text-center">
                                     <input type="file" name="image" id="gallery-image-input" style="display: none;" accept="image/*">
                                     
-                                    <div style="width: 8rem" class="preview-image-wrapper mb-1">
+                                    <div class="preview-image-wrapper mb-3">
                                         <div class="preview-image-inner position-relative d-inline-block">
                                             <a class="image-box-actions custom-image-trigger" href="javascript:void(0)">
-                                                <img id="gallery-image-preview" class="preview-image default-image img-fluid rounded border" data-default="{{ asset('vendor/core/core/base/images/placeholder.png') }}" src="{{ $gallery->image ? \App\Helpers\ImageHelper::getImageUrl() . $gallery->image : asset('vendor/core/core/base/images/placeholder.png') }}" onerror="this.src='{{ asset('vendor/core/core/base/images/placeholder.png') }}'" alt="Preview image" style="max-height: 150px; width: auto; object-fit: cover;">
+                                                @php
+                                                    $galleryImageUrl = $gallery->image ? (str_starts_with($gallery->image, 'http') ? $gallery->image : rtrim(\App\Helpers\ImageHelper::getImageUrl(), '/') . '/' . ltrim($gallery->image, '/')) : asset('vendor/core/core/base/images/placeholder.png');
+                                                @endphp
+                                                <img id="gallery-image-preview" class="preview-image default-image img-fluid rounded shadow-sm border" 
+                                                     data-default="{{ asset('vendor/core/core/base/images/placeholder.png') }}" 
+                                                     src="{{ $galleryImageUrl }}" 
+                                                     onerror="this.src='{{ asset('vendor/core/core/base/images/placeholder.png') }}'" 
+                                                     alt="Preview image" 
+                                                     style="max-height: 200px; width: 100%; object-fit: cover;">
                                                 <span class="image-picker-backdrop"></span>
                                             </a>
                                             <button class="btn btn-pill btn-icon btn-sm image-picker-remove-button p-0 position-absolute top-0 end-0 bg-white" id="gallery-remove-image-btn" style="{{ $gallery->image ? 'display: flex;' : 'display: none;' }} transform: translate(30%, -30%); z-index: 10;" type="button" title="Remove image">
