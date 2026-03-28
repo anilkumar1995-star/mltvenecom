@@ -16,6 +16,9 @@ class RoleMiddleware
     public function handle(Request $request, Closure $next, string $role): Response
     {
         $user = $request->user();
+        if (!$user) {
+            $user = auth('customer')->user();
+        }
 
         if (!$user) {
             if ($request->expectsJson()) {
@@ -23,8 +26,6 @@ class RoleMiddleware
             }
             return redirect('/login')->with('error', 'Please login first.');
         }
-
-        // Special case: 'vendor' role is stored as is_vendor = 1 on ec_customers table
         if ($role === 'vendor') {
             $user = $user ?: auth('customer')->user();
             if (!$user || !$user->is_vendor) {
@@ -36,7 +37,6 @@ class RoleMiddleware
             return $next($request);
         }
 
-        // Generic role check (for users table with a 'role' column e.g. admin)
         if (!isset($user->role) || $user->role !== $role) {
             if ($request->expectsJson()) {
                 return response()->json(['error' => 'Unauthorized.'], 200);

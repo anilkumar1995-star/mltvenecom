@@ -22,7 +22,7 @@
                                 </button>
                             </div>
                             <div class="logo">
-                                <a href="{{ asset('/') }}">
+                                <a href="{{ url('/') }}">
                                     <img src="{{ asset('/') }}home/logo-white.png" data-bb-lazy="false"
                                         style="max-height: 35px !important;" loading="eager"
                                         alt="Multive - Multipurpose eCommerce Laravel Script">
@@ -35,7 +35,7 @@
                             <nav class="tp-main-menu-content">
                                 <ul>
                                     <li class="has-dropdown">
-                                        <a href="{{ asset('/') }}" title="Home">
+                                        <a href="{{ url('/') }}" title="Home">
                                             Home
                                             <!-- <svg class="icon svg-icon-ti-ti-chevron-down"
                                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -75,7 +75,7 @@
                                         </ul>  -->
                                     </li>
                                     <li class="has-dropdown">
-                                        <a href="{{ asset('/') }}" title="Shop">
+                                        <a href="{{ url('/') }}" title="Shop">
                                             Shop
                                             <svg class="icon svg-icon-ti-ti-chevron-down"
                                                 xmlns="http://www.w3.org/2000/svg" width="24"
@@ -86,56 +86,56 @@
                                             </svg> </a>
                                         <ul class="tp-submenu">
                                             <li class="">
-                                                <a href="{{ asset('/') }}categories"
+                                                <a href="#"
                                                     title="Shop Categories">
                                                     Shop Categories
                                                 </a>
                                             </li>
                                             <li class="">
-                                                <a href="{{ asset('/') }}brands" title="Shop Brands">
+                                                <a href="#" title="Shop Brands">
                                                     Shop Brands
                                                 </a>
                                             </li>
                                             <li class="">
-                                                <a href="{{ asset('/') }}products?layout=list"
+                                                <a href="#"
                                                     title="Shop List">
                                                     Shop List
                                                 </a>
                                             </li>
                                             <li class="">
-                                                <a href="{{ asset('/') }}products?layout=grid"
+                                                <a href="#"
                                                     title="Shop Grid">
                                                     Shop Grid
                                                 </a>
                                             </li>
                                             <li class="">
-                                                <a href="{{ asset('/') }}products"
+                                                <a href="#"
                                                     title="Product Detail">
                                                     Product Detail
                                                 </a>
                                             </li>
                                             <li class="">
-                                                <a href="{{ asset('/') }}coupons" title="Grab Coupons">
+                                                <a href="#" title="Grab Coupons">
                                                     Grab Coupons
                                                 </a>
                                             </li>
                                             <li class="">
-                                                <a href="{{ asset('/') }}cart" title="Cart">
+                                                <a href="#" title="Cart">
                                                     Cart
                                                 </a>
                                             </li>
                                             <li class="">
-                                                <a href="{{ asset('/') }}compare" title="Compare">
+                                                <a href="#" title="Compare">
                                                     Compare
                                                 </a>
                                             </li>
                                             <li class="">
-                                                <a href="{{ asset('/') }}wishlist" title="Wishlist">
+                                                <a href="#" title="Wishlist">
                                                     Wishlist
                                                 </a>
                                             </li>
                                             <li class="">
-                                                <a href="{{ asset('/') }}orders/tracking"
+                                                <a href="#"
                                                     title="Track Your Order">
                                                     Track Your Order
                                                 </a>
@@ -143,12 +143,12 @@
                                         </ul>
                                     </li>
                                     <li class="">
-                                        <a href="{{ asset('/') }}stores" title="Vendors">
+                                        <a href="#" title="Vendors">
                                             Vendors
                                         </a>
                                     </li>
                                     <li class="has-dropdown">
-                                        <a href="{{ asset('/') }}" title="Pages">
+                                        <a href="#" title="Pages">
                                             Pages
                                             <svg class="icon svg-icon-ti-ti-chevron-down"
                                                 xmlns="http://www.w3.org/2000/svg" width="24"
@@ -160,7 +160,7 @@
 
                                         <ul class="tp-submenu">
                                             <li class="">
-                                                <a href="{{ asset('/') }}faqs" title="FAQs">
+                                                <a href="#" title="FAQs">
                                                     FAQs
                                                 </a>
                                             </li>
@@ -174,25 +174,25 @@
                                                 </a>
                                             </li>
                                             <li class="">
-                                                <a href="{{ asset('/') }}password/reset"
+                                                <a href="#"
                                                     title="Forgot Password">
                                                     Forgot Password
                                                 </a>
                                             </li>
                                             <li class="">
-                                                <a href="{{ asset('/') }}404" title="404 Error">
+                                                <a href="#" title="404 Error">
                                                     404 Error
                                                 </a>
                                             </li>
                                             <li class="">
-                                                <a href="{{ asset('/') }}coming-soon" title="Coming Soon">
+                                                <a href="#" title="Coming Soon">
                                                     Coming Soon
                                                 </a>
                                             </li>
                                         </ul>
                                     </li>
                                     <li class="has-dropdown">
-                                        <a href="{{ asset('/') }}blog" title="Blog">
+                                        <a href="#" title="Blog">
                                             Blog
                                             <svg class="icon svg-icon-ti-ti-chevron-down"
                                                 xmlns="http://www.w3.org/2000/svg" width="24"
@@ -203,19 +203,19 @@
                                             </svg> </a>
                                         <ul class="tp-submenu">
                                             <li class="">
-                                                <a href="{{ asset('/') }}blog?layout=grid"
+                                                <a href="#"
                                                     title="Blog Grid">
                                                     Blog Grid
                                                 </a>
                                             </li>
                                             <li class="">
-                                                <a href="{{ asset('/') }}blog?layout=list"
+                                                <a href="#"
                                                     title="Blog List">
                                                     Blog List
                                                 </a>
                                             </li>
                                             <li class="">
-                                                <a href="{{ asset('/') }}blog"
+                                                <a href="#"
                                                     title="Blog Detail">
                                                     Blog Detail
                                                 </a>
@@ -223,7 +223,7 @@
                                         </ul>
                                     </li>
                                     <li class="">
-                                        <a href="{{ asset('/') }}contact" title="Contact">
+                                        <a href="#" title="Contact">
                                             Contact
                                         </a>
                                     </li>
@@ -233,7 +233,7 @@
                     </div>
                     <div class="d-none">
                         <div class="tp-header-search-5">
-                            <form role="search" action="{{ asset('/') }}products"
+                            <form role="search" action="{{ url('/') }}products"
                                 method="GET">
                                 <div class="tp-header-search-input-box-5">
                                     <div class="tp-header-search-input-5">

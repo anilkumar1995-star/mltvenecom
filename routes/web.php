@@ -82,7 +82,7 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/password/reset', function () {return 'Password reset is currently disabled.';})->name('password.request');
 
 // Vendor KYC Pending Page
-Route::get('/vendor/kyc-pending', function (\Illuminate\Http\Request $request) {
+Route::get('/v/kyc-pending', function (\Illuminate\Http\Request $request) {
     $customer = \App\Models\Customer::find($request->query('user_id'));
     if (!$customer || !$customer->is_vendor) {
         return redirect()->route('login')->with('error', 'Invalid request.');
@@ -114,10 +114,10 @@ Route::middleware('auth:customer,web')->prefix('customer')->name('customer.')->g
     Route::get('/dashboard', [CustomerController::class, 'dashboard'])->name('dashboard');
 });
 
-    Route::get('vendor/product-tags/all', [VendorProductController::class, 'getAllTags'])->name('frontend.vendor.product-tags.all');
     Route::name('frontend.')->group(function () {
 
-    Route::middleware(['auth:customer', 'role:vendor'])->prefix('vendor')->name('vendor.')->group(function () {
+    Route::middleware(['auth:customer', 'role:vendor'])->prefix('v')->name('vendor.')->group(function () {
+        Route::get('product-tags/all', [VendorProductController::class, 'getAllTags'])->name('product-tags.all');
         Route::get('/dashboard', [VendorProductController::class, 'dashboard'])->name('dashboard');
 
 

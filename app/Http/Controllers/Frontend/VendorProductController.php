@@ -138,6 +138,7 @@ class VendorProductController extends Controller
         $data['taxes'] = Tax::orderBy('id', 'desc')->get();
 
         $data['product_type'] = $type;
+        $data['sku'] = 'SKU-' . strtoupper(Str::random(6));
 
         if ($type === 'digital') {
             return view('frontend.vendor.products.create-digital', $data);
@@ -149,7 +150,6 @@ class VendorProductController extends Controller
     public function store(Request $request)
     {
         $user = auth('customer')->user();
-        dd($user);
         if (!$user) {
             return response()->json(['status' => false, 'message' => 'Unauthorized.'], 422);
         }
@@ -176,6 +176,8 @@ class VendorProductController extends Controller
             'price' => 'nullable|numeric|min:0',
             'sale_price' => 'nullable|numeric|min:0',
             'quantity' => 'nullable|integer|min:0',
+            'minimum_order_quantity' => 'nullable|integer|min:1',
+            'maximum_order_quantity' => 'nullable|integer|min:0',
             'image_file' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'video_file' => 'nullable|mimes:mp4,mov,ogg,qt|max:20000',
@@ -319,6 +321,8 @@ class VendorProductController extends Controller
             'price' => 'nullable|numeric|min:0',
             'sale_price' => 'nullable|numeric|min:0',
             'quantity' => 'nullable|integer|min:0',
+            'minimum_order_quantity' => 'nullable|integer|min:1',
+            'maximum_order_quantity' => 'nullable|integer|min:0',
             'image_file' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'video_file' => 'nullable|mimes:mp4,mov,ogg,qt|max:20000',

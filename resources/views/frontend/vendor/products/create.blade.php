@@ -146,8 +146,8 @@
                                             <input class="detect-schedule d-none" name="sale_type" type="hidden" value="0">
                                             <div class="col-md-6">
                                                 <div class="mb-3 position-relative">
-                                                    <label class="form-label" for="sku">SKU</label>
-                                                    <input class="form-control" type="text" name="sku" id="sku" value="" />
+                                                    <label class="form-label" for="sku">SKU (Unique ID)</label>
+                                                    <input class="form-control" type="text" name="sku" id="sku" placeholder="E.g. SOFT-001" value="{{ $sku }}" />
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -155,7 +155,7 @@
                                                     <label class="form-label" for="price">Price</label>
                                                     <div class="input-group">
                                                         <span class="input-group-text currency-symbol">₹</span>
-                                                        <input class="form-control input-mask-number" type="text" name="price" id="price" value="0" />
+                                                        <input class="form-control input-mask-number" type="text" name="price" id="price"/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -208,7 +208,7 @@
                                             <div class="col-md-6">
                                                 <div class="mb-3">
                                                     <label class="form-label">Quantity</label>
-                                                    <input class="form-control" type="number" name="quantity" id="quantity" value="0" />
+                                                    <input class="form-control font-weight-bold" type="number" name="quantity" id="quantity" value="0" />
                                                 </div>
                                             </div>
                                         </div>
@@ -441,6 +441,58 @@
                                 </div>
                                 <div class="card-body">
                                     <input class="form-control" name="tag" id="tag" data-url="{{ route('frontend.vendor.product-tags.all') }}" placeholder="Write some tags">
+                                </div>
+                            </div>
+
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <h4 class="card-title">Minimum Order Quantity</h4>
+                                </div>
+                                <div class="card-body">
+                                    <input class="form-control" type="number" name="minimum_order_quantity" value="1" min="1">
+                                    <small class="text-muted mt-1 d-block font-size-xs">Minimum quantity to place an order, if the value is 0, there is no limit.</small>
+                                </div>
+                            </div>
+
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <h4 class="card-title">Maximum Order Quantity</h4>
+                                </div>
+                                <div class="card-body">
+                                    <input class="form-control" type="number" name="maximum_order_quantity" value="0" min="0">
+                                    <small class="text-muted mt-1 d-block font-size-xs">Maximum quantity to place an order, if the value is 0, there is no limit.</small>
+                                </div>
+                            </div>
+
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <h4 class="card-title">Product collections</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div style="max-height: 200px; overflow-y: auto;">
+                                        @foreach ($collections as $collection)
+                                            <label class="form-check mb-1">
+                                                <input type="checkbox" name="product_collections[]" class="form-check-input" value="{{ $collection->id }}">
+                                                <span class="form-check-label small">{{ $collection->name }}</span>
+                                            </label>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <h4 class="card-title">Labels</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div style="max-height: 200px; overflow-y: auto;">
+                                        @foreach ($productionlabels as $label)
+                                            <label class="form-check mb-1">
+                                                <input type="checkbox" name="product_labels[]" class="form-check-input" value="{{ $label->id }}">
+                                                <span class="form-check-label small">{{ $label->name }}</span>
+                                            </label>
+                                        @endforeach
+                                    </div>
                                 </div>
                             </div>
                         </div>
