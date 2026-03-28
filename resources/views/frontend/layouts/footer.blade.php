@@ -55,7 +55,7 @@
                                     <li><a href="{{ asset('/') }}careers" title="Careers"> Careers </a></li>
                                     <li><a href="{{ asset('/') }}cookie-policy" title="Privacy Policy"> Privacy Policy </a></li>
                                     <li><a href="{{ asset('/') }}blog" title="Latest News"> Latest News </a></li>
-                                    <li><a href="{{ asset('/') }}contact" title="Contact Us"> Contact Us </a></li>
+                                    <li><a href="{{ route('frontend.contact.index') }}" title="Contact Us"> Contact Us </a></li>
                                 </ul>
                             </div>
                         </div>

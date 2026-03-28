@@ -86,64 +86,40 @@
                                             </svg> </a>
                                         <ul class="tp-submenu">
                                             <li class="">
-                                                <a href="#"
-                                                    title="Shop Categories">
-                                                    Shop Categories
-                                                </a>
+                                                <a href="{{ route('frontend.categories.index') }}" title="Shop Categories">Shop Categories</a>
                                             </li>
                                             <li class="">
-                                                <a href="#" title="Shop Brands">
-                                                    Shop Brands
-                                                </a>
+                                                <a href="{{ route('frontend.brands.index') }}" title="Shop Brands">Shop Brands</a>
+                                            </li>
+                                            <!-- <li class="">
+                                                <a href="{{ route('frontend.products.index', ['layout' => 'list']) }}" title="Shop List">Shop List</a>
                                             </li>
                                             <li class="">
-                                                <a href="#"
-                                                    title="Shop List">
-                                                    Shop List
-                                                </a>
+                                                <a href="{{ route('frontend.products.index', ['layout' => 'grid']) }}" title="Shop Grid">Shop Grid</a>
+                                            </li> -->
+                                            <li class="">
+                                                @php $firstProduct = \App\Models\EcProduct::published()->first(); @endphp
+                                                <a href="{{ $firstProduct ? route('frontend.products.show', $firstProduct->slug) : '#' }}" title="Product Detail">Product Detail</a>
                                             </li>
                                             <li class="">
-                                                <a href="#"
-                                                    title="Shop Grid">
-                                                    Shop Grid
-                                                </a>
+                                                <a href="{{ route('frontend.coupons.index') }}" title="Grab Coupons">Grab Coupons</a>
                                             </li>
                                             <li class="">
-                                                <a href="#"
-                                                    title="Product Detail">
-                                                    Product Detail
-                                                </a>
+                                                <a href="{{ route('frontend.cart.index') }}" title="Cart">Cart</a>
+                                            </li>
+                                            <!-- <li class="">
+                                                <a href="#" title="Compare">Compare</a>
+                                            </li> -->
+                                            <li class="">
+                                                <a href="{{ route('frontend.wishlist.index') }}" title="Wishlist">Wishlist</a>
                                             </li>
                                             <li class="">
-                                                <a href="#" title="Grab Coupons">
-                                                    Grab Coupons
-                                                </a>
-                                            </li>
-                                            <li class="">
-                                                <a href="#" title="Cart">
-                                                    Cart
-                                                </a>
-                                            </li>
-                                            <li class="">
-                                                <a href="#" title="Compare">
-                                                    Compare
-                                                </a>
-                                            </li>
-                                            <li class="">
-                                                <a href="#" title="Wishlist">
-                                                    Wishlist
-                                                </a>
-                                            </li>
-                                            <li class="">
-                                                <a href="#"
-                                                    title="Track Your Order">
-                                                    Track Your Order
-                                                </a>
+                                                <a href="{{ auth('customer')->check() ? route('frontend.customer.orders') : route('login') }}" title="Track Your Order">Track Your Order</a>
                                             </li>
                                         </ul>
                                     </li>
                                     <li class="">
-                                        <a href="#" title="Vendors">
+                                        <a href="{{ route('frontend.stores.index') }}" title="Vendors">
                                             Vendors
                                         </a>
                                     </li>
@@ -160,13 +136,12 @@
 
                                         <ul class="tp-submenu">
                                             <li class="">
-                                                <a href="#" title="FAQs">
+                                                <a href="{{ route('frontend.faqs.index') }}" title="FAQs">
                                                     FAQs
                                                 </a>
                                             </li>
                                             <li class="">
-                                                <a href="{{ route('login') }}" class="d-flex align-items-center me-2">
-
+                                                <a href="{{ route('login') }}" class="d-flex align-items-center me-2">Login</a>
                                             </li>
                                             <li class="">
                                                 <a href="{{ route('register') }}" title="Register">
@@ -174,12 +149,12 @@
                                                 </a>
                                             </li>
                                             <li class="">
-                                                <a href="#"
+                                                <a href="{{ route('password.request') }}"
                                                     title="Forgot Password">
                                                     Forgot Password
                                                 </a>
                                             </li>
-                                            <li class="">
+                                            <!-- <li class="">
                                                 <a href="#" title="404 Error">
                                                     404 Error
                                                 </a>
@@ -188,11 +163,11 @@
                                                 <a href="#" title="Coming Soon">
                                                     Coming Soon
                                                 </a>
-                                            </li>
+                                            </li> -->
                                         </ul>
                                     </li>
                                     <li class="has-dropdown">
-                                        <a href="#" title="Blog">
+                                        <a href="{{ route('frontend.blog.index') }}" title="Blog">
                                             Blog
                                             <svg class="icon svg-icon-ti-ti-chevron-down"
                                                 xmlns="http://www.w3.org/2000/svg" width="24"
@@ -203,30 +178,31 @@
                                             </svg> </a>
                                         <ul class="tp-submenu">
                                             <li class="">
-                                                <a href="#"
+                                                <a href="{{ route('frontend.blog.index', ['layout' => 'grid']) }}"
                                                     title="Blog Grid">
                                                     Blog Grid
                                                 </a>
                                             </li>
                                             <li class="">
-                                                <a href="#"
+                                                <a href="{{ route('frontend.blog.index', ['layout' => 'list']) }}"
                                                     title="Blog List">
                                                     Blog List
                                                 </a>
                                             </li>
                                             <li class="">
-                                                <a href="#"
+                                                @php $firstPost = \App\Models\Post::where('status', 'published')->first(); @endphp
+                                                <a href="{{ $firstPost ? route('frontend.blog.show', $firstPost->slug ? $firstPost->slug->key : $firstPost->id) : '#' }}"
                                                     title="Blog Detail">
                                                     Blog Detail
                                                 </a>
                                             </li>
                                         </ul>
                                     </li>
-                                    <li class="">
-                                        <a href="#" title="Contact">
-                                            Contact
-                                        </a>
-                                    </li>
+                                     <li class="">
+                                         <a href="{{ route('frontend.contact.index') }}" title="Contact">
+                                             Contact
+                                         </a>
+                                     </li>
                                 </ul>
                             </nav>
                         </div>

@@ -27,6 +27,14 @@ class Post extends Model
     }
 
     /**
+     * Get the post's slug.
+     */
+    public function slug()
+    {
+        return $this->morphOne(Slug::class, 'reference');
+    }
+
+    /**
      * The "booted" method of the model.
      *
      * @return void

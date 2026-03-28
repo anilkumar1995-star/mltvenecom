@@ -41,6 +41,16 @@ class Store extends Model
         'social_links' => 'array',
     ];
 
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
     public function customer()
     {
         return $this->belongsTo(Customer::class, 'customer_id');
