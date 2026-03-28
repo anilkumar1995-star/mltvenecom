@@ -67,12 +67,12 @@
                                     d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z">
                                 </path>
                                 <path d="M3 7l9 6l9 -6"></path>
-                            </svg> <span class="badge bg-red text-red-fg badge-pill unread-contacts">0</span>
+                            </svg> <span class="badge bg-red text-red-fg badge-pill unread-contacts menu-item-count">0</span>
                         </button>
                         <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-end dropdown-menu-card">
                             <div class="card">
                                 <div class="card-header">
-                                    <h4 class="card-title"> You have <span class="bold unread-contacts">0</span> New Messages </h4>
+                                    <h4 class="card-title"> You have <span class="bold unread-contacts menu-item-count">0</span> New Messages </h4>
                                     <div class="card-actions">
                                         <a href="{{ url("/") }}/admin/contacts">View all</a>
                                     </div>
