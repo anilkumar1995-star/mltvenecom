@@ -109,7 +109,19 @@
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label class="form-label">SKU (Unique ID)</label>
-                                            <input class="form-control" type="text" name="sku" placeholder="E.g. SOFT-001">
+                                            <input class="form-control" type="text" name="sku" placeholder="E.g. SOFT-001" value="{{ $sku }}">
+                                        </div>
+
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label text-primary fw-bold">Minimum Order Quantity</label>
+                                            <input class="form-control border-primary" type="number" name="minimum_order_quantity" value="1" min="1" />
+                                            <small class="text-muted small">Minimum quantity to place an order, if the value is 0, there is no limit.</small>
+                                        </div>
+
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label text-info fw-bold">Maximum Order Quantity</label>
+                                            <input class="form-control border-info" type="number" name="maximum_order_quantity" value="0" min="0" />
+                                            <small class="text-muted small">Maximum quantity to place an order, if the value is 0, there is no limit.</small>
                                         </div>
                                     </div>
                                 </div>

@@ -241,6 +241,69 @@
                                     <input type="file" name="image_file" class="form-control mt-2" accept="image/*" onchange="document.getElementById('preview-image').src = window.URL.createObjectURL(this.files[0])">
                                 </div>
                             </div>
+
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <h4 class="card-title">Tags</h4>
+                                </div>
+                                <div class="card-body">
+                                    <input class="form-control" name="tag" id="tag" data-url="{{ route('frontend.vendor.product-tags.all') }}" placeholder="Write some tags" value="{{ $product->tags->pluck('name')->implode(',') }}">
+                                </div>
+                            </div>
+
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <h4 class="card-title">Minimum Order Quantity</h4>
+                                </div>
+                                <div class="card-body">
+                                    <input class="form-control" type="number" name="minimum_order_quantity" value="{{ old('minimum_order_quantity', $product->minimum_order_quantity ?? 1) }}" min="1">
+                                    <small class="text-muted mt-1 d-block font-size-xs">Minimum quantity to place an order, if the value is 0, there is no limit.</small>
+                                </div>
+                            </div>
+
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <h4 class="card-title">Maximum Order Quantity</h4>
+                                </div>
+                                <div class="card-body">
+                                    <input class="form-control" type="number" name="maximum_order_quantity" value="{{ old('maximum_order_quantity', $product->maximum_order_quantity ?? 0) }}" min="0">
+                                    <small class="text-muted mt-1 d-block font-size-xs">Maximum quantity to place an order, if the value is 0, there is no limit.</small>
+                                </div>
+                            </div>
+
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <h4 class="card-title">Product collections</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div style="max-height: 200px; overflow-y: auto;">
+                                        @php $pCollections = $product->productCollections->pluck('id')->toArray(); @endphp
+                                        @foreach ($collections as $collection)
+                                            <label class="form-check mb-1">
+                                                <input type="checkbox" name="product_collections[]" class="form-check-input" value="{{ $collection->id }}" {{ in_array($collection->id, $pCollections) ? 'checked' : '' }}>
+                                                <span class="form-check-label small">{{ $collection->name }}</span>
+                                            </label>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <h4 class="card-title">Labels</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div style="max-height: 200px; overflow-y: auto;">
+                                        @php $pLabels = $product->productLabels->pluck('id')->toArray(); @endphp
+                                        @foreach ($productionlabels as $label)
+                                            <label class="form-check mb-1">
+                                                <input type="checkbox" name="product_labels[]" class="form-check-input" value="{{ $label->id }}" {{ in_array($label->id, $pLabels) ? 'checked' : '' }}>
+                                                <span class="form-check-label small">{{ $label->name }}</span>
+                                            </label>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -275,6 +338,17 @@
     $(document).ready(function() {
         $(document).on('click', '.remove-existing-img', function() { $(this).closest('.existing-image-item').remove(); });
         
+        // Tagify
+        var tagInput = document.querySelector('#tag');
+        if (tagInput) {
+            var tagify = new Tagify(tagInput, {
+                whitelist: [],
+                dropdown: { enabled: 0 }
+            });
+            fetch(tagInput.getAttribute('data-url'))
+                .then(res => res.json())
+                .then(whitelist => tagify.settings.whitelist = whitelist.map(t => t.name));
+        }
         // Specification Logic
         $('#specification_table_id').on('change', function() {
             let id = $(this).val();
