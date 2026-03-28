@@ -197,6 +197,30 @@ Route::middleware('auth:customer,web')->prefix('customer')->name('customer.')->g
     Route::get('/categories/{slug}', [FrontendProductController::class, 'category'])->name('categories.show');
     Route::get('/brands/{slug}', [FrontendProductController::class, 'brand'])->name('brands.show');
 
+    // Categories
+    Route::get('/categories', [App\Http\Controllers\Frontend\CategoryController::class, 'index'])->name('categories.index');
+
+    // Brands
+    Route::get('/brands', [App\Http\Controllers\Frontend\BrandController::class, 'index'])->name('brands.index');
+
+    // Coupons
+    Route::get('/coupons', [App\Http\Controllers\Frontend\CouponController::class, 'index'])->name('coupons.index');
+
+    // FAQs
+    Route::get('/faqs', [App\Http\Controllers\Frontend\FaqController::class, 'index'])->name('faqs.index');
+
+    // Blog
+    Route::get('/blog', [App\Http\Controllers\Frontend\BlogController::class, 'index'])->name('blog.index');
+    Route::get('/blog/{slug}', [App\Http\Controllers\Frontend\BlogController::class, 'show'])->name('blog.show');
+
+    // Contact
+    Route::get('/contact', [App\Http\Controllers\Frontend\ContactController::class, 'index'])->name('contact.index');
+    Route::post('/contact/send', [App\Http\Controllers\Frontend\ContactController::class, 'send'])->name('contact.send');
+
+    // Stores
+    Route::get('/stores', [StoreController::class, 'index'])->name('stores.index');
+    Route::get('/stores/{slug}', [StoreController::class, 'show'])->name('stores.show');
+
     // Cart
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');

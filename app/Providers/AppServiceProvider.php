@@ -15,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+    //
     }
 
     /**
@@ -23,7 +23,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Schema::defaultStringLength(191);
+        \Illuminate\Support\Facades\Schema::defaultStringLength(191);
+
+        \Illuminate\Database\Eloquent\Relations\Relation::morphMap([
+            'Botble\Blog\Models\Post' => \App\Models\Post::class ,
+        ]);
 
         // Share admin navigation and basic dashboard stats with admin views
         View::composer('admin.*', function ($view) {
@@ -59,10 +63,10 @@ class AppServiceProvider extends ServiceProvider
             ];
 
             $stats = [
-                'orders' => Schema::hasTable('orders') ? DB::table('orders')->count() : 0,
-                'products' => Schema::hasTable('products') ? DB::table('products')->count() : 0,
-                'customers' => Schema::hasTable('users') ? User::count() : 0,
-                'reviews' => Schema::hasTable('reviews') ? DB::table('reviews')->count() : 0,
+                'orders' => Schema::hasTable('orders') ?DB::table('orders')->count() : 0,
+                'products' => Schema::hasTable('products') ?DB::table('products')->count() : 0,
+                'customers' => Schema::hasTable('users') ?User::count() : 0,
+                'reviews' => Schema::hasTable('reviews') ?DB::table('reviews')->count() : 0,
             ];
 
             $view->with('adminNav', $nav)->with('adminStats', $stats);
