@@ -72,9 +72,9 @@ class CustomerController extends Controller
 
             if ($request->ajax()) {
                 return response()->json([
-                    'status' => true,
+                    'success' => true,
                     'message' => 'Customer created successfully',
-                    'redirect_url' => route('admin.customers.index')
+                    'redirect' => route('admin.customers.index')
                 ]);
             }
 
@@ -144,9 +144,9 @@ class CustomerController extends Controller
 
             if ($request->ajax()) {
                 return response()->json([
-                    'status' => true,
+                    'success' => true,
                     'message' => 'Customer updated successfully',
-                    'redirect_url' => route('admin.customers.index')
+                    'redirect' => route('admin.customers.index')
                 ]);
             }
 
@@ -200,7 +200,7 @@ class CustomerController extends Controller
 
             if ($request->ajax()) {
                 return response()->json([
-                    'status' => true,
+                    'success' => true,
                     'message' => 'Address added successfully',
                     'reload' => true
                 ]);

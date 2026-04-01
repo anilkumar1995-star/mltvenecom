@@ -50,22 +50,22 @@
                         <div class="card-body">
                             <div class="mb-3">
                                 <label class="form-label required">Products</label>
-                                <div class="mb-3">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" id="product-search" placeholder="Search products">
-                                        <span class="input-group-text"><i class="fa fa-search"></i></span>
-                                    </div>
-                                    <div class="list-group position-absolute w-100" id="product-search-results" style="z-index: 1000; display: none; max-height: 300px; overflow-y: auto;">
+                                    <div class="position-relative">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="product-search" placeholder="Search products">
+                                            <span class="input-group-text"><i class="fa fa-search"></i></span>
+                                        </div>
+                                        <div class="list-group position-absolute w-100 shadow-lg mt-1" id="product-search-results" style="z-index: 1000; display: none; max-height: 300px; overflow-y: auto; background: white; border: 1px solid #ddd;">
                                         <!-- Search results will appear here -->
                                         @foreach($products as $product)
                                             <a href="#" class="list-group-item list-group-item-action product-search-item" 
                                                data-id="{{ $product->id }}" 
                                                data-name="{{ $product->name }}" 
                                                data-price="{{ $product->price }}"
-                                               data-image="{{ $product->image ? asset('uploads/' . $product->image) : asset('home/placeholder.png') }}"
+                                               data-image="{{ $product->image_url }}"
                                                style="display: none;">
                                                 <div class="d-flex align-items-center">
-                                                    <img src="{{ $product->image ? asset('uploads/' . $product->image) : asset('home/placeholder.png') }}" alt="{{ $product->name }}" width="30" class="me-2">
+                                                    <img src="{{ $product->image_url }}" alt="{{ $product->name }}" width="30" class="me-2 text-dark">
                                                     <span>{{ $product->name }}</span>
                                                 </div>
                                             </a>
@@ -79,7 +79,7 @@
                                         @foreach($flashSale->products as $product)
                                         <div class="list-group-item product-item" data-id="{{ $product->id }}">
                                             <div class="d-flex align-items-center mb-2">
-                                                <img src="{{ $product->image ? asset('uploads/' . $product->image) : asset('home/placeholder.png') }}" alt="{{ $product->name }}" width="40" class="me-3 rounded">
+                                                <img src="{{ $product->image_url }}" alt="{{ $product->name }}" width="40" class="me-3 rounded">
                                                 <div>
                                                     <a href="#" target="_blank" class="fw-bold text-dark">{{ $product->name }}</a>
                                                 </div>

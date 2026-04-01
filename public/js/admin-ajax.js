@@ -23,7 +23,7 @@ $(document).ready(function () {
             success: function (response) {
                 $submitBtn.prop('disabled', false).html(originalBtnText);
 
-                if (response.success) {
+                if (response.success || response.status) {
                     // Show success message
                     if (typeof notify === 'function') {
                         notify(response.message, 'success');
@@ -34,9 +34,10 @@ $(document).ready(function () {
                     }
 
                     // Redirect if URL is provided
-                    if (response.redirect) {
+                    let redirectUrl = response.redirect || response.redirect_url;
+                    if (redirectUrl) {
                         setTimeout(function () {
-                            window.location.href = response.redirect;
+                            window.location.href = redirectUrl;
                         }, 1000);
                     } else {
                         // Optionally reset form if it's a create form and no redirect

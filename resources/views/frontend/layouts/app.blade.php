@@ -33,7 +33,7 @@
         content="Multive is a powerful tool eCommerce Laravel script for creating a professional and visually appealing online store.">
     <link rel="sitemap" title="Sitemap" href="{{ asset('/') }}sitemap.xml" type="application/xml">
 
-    <link rel="icon" type="image/x-icon" href="{{ asset('/') }}storage/main/general/favicon.png">
+    <link rel="icon" type="image/x-icon" href="{{ asset('/') }}assets1/img/favicon.png">
 
 
     <!-- <link rel="preload" as="image" href="./home/newsletter-popup.jpg"> -->

@@ -94,7 +94,7 @@
                                         <label class="form-label">Discount</label>
                                         <div class="input-group">
                                             <input type="number" class="form-control" name="value" required min="0" step="0.01" value="{{ $discount->value }}" placeholder="0">
-                                            <span class="input-group-text bg-white" id="discount-symbol">$</span>
+                                            <span class="input-group-text bg-white" id="discount-symbol">{{ $discount->type_option == 'amount' ? '₹' : '%' }}</span>
                                         </div>
                                     </div>
                                     <div class="col-md-4 mb-3">
@@ -239,5 +239,9 @@
             endDateSection.classList.remove('d-none');
         }
     }
+
+    document.getElementById('discount-type-option').addEventListener('change', function() {
+        document.getElementById('discount-symbol').innerText = this.value === 'amount' ? '₹' : '%';
+    });
 </script>
 @endsection

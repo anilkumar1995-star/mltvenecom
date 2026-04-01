@@ -58,10 +58,15 @@ class TaxController extends Controller
 
             DB::commit();
 
-            return response()->json([
-                'status' => true,
-                'message' => 'Tax created successfully.'
-            ]);
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Tax created successfully.',
+                    'redirect' => route('admin.taxes.index')
+                ]);
+            }
+
+            return redirect()->route('admin.taxes.index')->with('success', 'Tax created successfully.');
         } catch (Exception $e) {
             DB::rollBack();
             return response()->json([
@@ -98,10 +103,15 @@ class TaxController extends Controller
 
             DB::commit();
 
-            return response()->json([
-                'status' => true,
-                'message' => 'Tax updated successfully.'
-            ]);
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Tax updated successfully.',
+                    'redirect' => route('admin.taxes.index')
+                ]);
+            }
+
+            return redirect()->route('admin.taxes.index')->with('success', 'Tax updated successfully.');
         } catch (Exception $e) {
             DB::rollBack();
             return response()->json([

@@ -771,6 +771,18 @@
                 position: 'right top'
             })
         }
+
+        @if(session('success'))
+            $(document).ready(function() {
+                notify("{{ session('success') }}", "success");
+            });
+        @endif
+
+        @if(session('error'))
+            $(document).ready(function() {
+                notify("{{ session('error') }}", "error");
+            });
+        @endif
     </script>
     <script>
         $(document).ready(function() {

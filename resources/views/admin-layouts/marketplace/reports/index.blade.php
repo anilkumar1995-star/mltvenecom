@@ -99,7 +99,7 @@
                                     </div>
                                     <div class="mt-3">
                                         <p class="text-secondary mb-0">
-                                            Total fee: ${{ number_format($totalFee, 2) }}
+                                            Total fee: ₹{{ number_format($totalFee, 2) }}
                                         </p>
                                     </div>
                                 </div>
@@ -142,7 +142,7 @@
                                                     stroke-linejoin="round">
                                                     <path d="M17 8v-3a1 1 0 0 0 -1 -1h-10a2 2 0 0 0 0 4h12a1 1 0 0 1 1 1v3m0 4v3a1 1 0 0 1 -1 1h-12a2 2 0 0 1 -2 -2v-12" />
                                                     <path d="M20 12v4h-4a2 2 0 0 1 0 -4h4" />
-                                                </svg> <strong>${{ number_format($totalAmount - $totalFee, 2) }}</strong>
+                                                </svg> <strong>₹{{ number_format($totalAmount - $totalFee, 2) }}</strong>
                                                 <small>Total Earnings</small>
                                             </div>
                                         </div>
@@ -151,14 +151,14 @@
                                                 <svg class="icon icon-sm  mb-0 me-1 svg-icon-ti-ti-circle-filled" style="color: #80bc00" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                                     <path d="M7 3.34a10 10 0 1 1 -4.995 8.984l-.005 -.324l.005 -.324a10 10 0 0 1 4.995 -8.336z" stroke-width="0" fill="currentColor" />
-                                                </svg> <strong>${{ number_format($totalFee, 2) }}</strong>
+                                                </svg> <strong>₹{{ number_format($totalFee, 2) }}</strong>
                                                 <span>Total fee</span>
                                             </p>
                                             <p>
                                                 <svg class="icon icon-sm  mb-0 me-1 svg-icon-ti-ti-circle-filled" style="color: #E91E63" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                                     <path d="M7 3.34a10 10 0 1 1 -4.995 8.984l-.005 -.324l.005 -.324a10 10 0 0 1 4.995 -8.336z" stroke-width="0" fill="currentColor" />
-                                                </svg> <strong>${{ number_format($totalAmount, 2) }}</strong>
+                                                </svg> <strong>₹{{ number_format($totalAmount, 2) }}</strong>
                                                 <span>Total amount</span>
                                             </p>
                                         </div>
@@ -325,9 +325,9 @@
                                                                         N/A
                                                                     @endif
                                                                 </td>
-                                                                <td>${{ number_format($transaction->fee, 2) }}</td>
-                                                                <td>${{ number_format($transaction->amount - $transaction->fee, 2) }}</td>
-                                                                <td>${{ number_format($transaction->amount, 2) }}</td>
+                                                                <td>₹{{ number_format($transaction->fee, 2) }}</td>
+                                                                <td>₹{{ number_format($transaction->amount - $transaction->fee, 2) }}</td>
+                                                                <td>₹{{ number_format($transaction->amount, 2) }}</td>
                                                                 <td>
                                                                     <span class="badge bg-secondary">Withdrawal</span>
                                                                 </td>
@@ -397,8 +397,8 @@
                                                                         N/A
                                                                     @endif
                                                                 </td>
-                                                                <td>${{ number_format($withdrawal->amount, 2) }}</td>
-                                                                <td>${{ number_format($withdrawal->fee, 2) }}</td>
+                                                                <td>₹{{ number_format($withdrawal->amount, 2) }}</td>
+                                                                <td>₹{{ number_format($withdrawal->fee, 2) }}</td>
                                                                 <td>
                                                                     <span class="badge bg-{{ $withdrawal->status == 'pending' ? 'warning' : ($withdrawal->status == 'completed' ? 'success' : 'secondary') }} {{ $withdrawal->status == 'pending' ? 'text-white' : '' }}">
                                                                         {{ ucfirst($withdrawal->status) }}

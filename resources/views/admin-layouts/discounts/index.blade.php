@@ -76,11 +76,12 @@
                                     <td class="text-muted">{{ $discount->id }}</td>
                                     <td>
                                         @if($discount->type == 'coupon')
-                                            <div class="p-3 rounded-2 text-white shadow-sm" style="background: linear-gradient(135deg, #206bc4, #0054a6); max-width: 400px; border-left: 5px solid #ffcc00;">
+                                            <div class="p-3 rounded-2 text-white shadow-sm {{ $discount->isExpired() ? 'opacity-50' : '' }}" 
+                                                 style="background: {{ $discount->isExpired() ? '#6c757d' : 'linear-gradient(135deg, #206bc4, #0054a6)' }}; max-width: 400px; border-left: 5px solid {{ $discount->isExpired() ? '#adb5bd' : '#ffcc00' }}; {{ $discount->isExpired() ? 'filter: grayscale(1); pointer-events: none;' : '' }}">
                                                 <div class="d-flex align-items-center justify-content-between mb-2">
                                                     <span class="fw-bold tracking-tight">COUPON: <code class="text-white bg-dark bg-opacity-25 px-2 rounded">{{ $discount->code }}</code></span>
                                                     <button type="button" class="btn btn-sm btn-link text-white p-0 border-0" 
-                                                            onclick="navigator.clipboard.writeText('{{ $discount->code }}'); notify('Copied!', 'success');" title="Copy">
+                                                            onclick="navigator.clipboard.writeText('{{ $discount->code }}'); notify('Copied: {{ $discount->code }}', 'success');" title="Copy">
                                                         <i class="far fa-copy"></i>
                                                     </button>
                                                 </div>
@@ -102,7 +103,8 @@
                                                 @endif
                                             </div>
                                         @else
-                                            <div class="p-3 rounded-2 text-white shadow-sm" style="background: linear-gradient(135deg, #6f42c1, #522d9b); max-width: 400px; border-left: 5px solid #00f2fe;">
+                                            <div class="p-3 rounded-2 text-white shadow-sm {{ $discount->isExpired() ? 'opacity-50' : '' }}" 
+                                                 style="background: {{ $discount->isExpired() ? '#6c757d' : 'linear-gradient(135deg, #6f42c1, #522d9b)' }}; max-width: 400px; border-left: 5px solid {{ $discount->isExpired() ? '#adb5bd' : '#00f2fe' }}; {{ $discount->isExpired() ? 'filter: grayscale(1); pointer-events: none;' : '' }}">
                                                 <div class="fw-bold mb-1 letter-spacing-1 text-uppercase small">Promotion: {{ $discount->title }}</div>
                                                 <div class="small fw-semibold opacity-90">
                                                     Discount: 
@@ -126,7 +128,14 @@
                                     </td>
                                     <td class="text-center">
                                         @if($discount->end_date)
-                                            <span class="small">{{ $discount->end_date->format('M d, Y') }}</span>
+                                            <span class="small {{ $discount->isExpired() ? 'text-danger fw-bold' : '' }}">
+                                                {{ $discount->end_date->format('M d, Y') }}
+                                            </span>
+                                            @if($discount->isExpired())
+                                                <div class="mt-1">
+                                                    <span class="badge bg-danger-lt text-uppercase px-2" style="font-size: 10px;">Expired</span>
+                                                </div>
+                                            @endif
                                         @else
                                             <span class="badge bg-purple-lt text-uppercase px-2" style="font-size: 10px;">Lifetime</span>
                                         @endif

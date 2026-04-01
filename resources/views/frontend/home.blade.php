@@ -30,9 +30,7 @@
         transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1) !important;
     }
 
-    .tp-product-item-2:hover .tp-product-thumb-2 div img {
-        transform: scale(1.08) !important;
-    }
+    /* Product scaling removed as requested */
 
     .tp-product-action-2 {
         position: absolute !important;
@@ -204,9 +202,7 @@
         transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1) !important;
     }
 
-    .tp-category-item-5:hover .tp-category-thumb-5 img {
-        transform: scale(1.1) rotate(2deg) !important;
-    }
+    /* Category scaling removed as requested */
 
     .tp-category-title-5 {
         font-size: 18px !important;
@@ -407,6 +403,22 @@
             padding: 8px 15px !important;
             font-size: 14px !important;
         }
+    }
+    /* Dynamic Flash Sale Hover Effect */
+    .tp-deal-content-link {
+        text-decoration: none !important;
+        display: block !important;
+        width: 100% !important;
+        transition: transform 0.3s ease !important;
+    }
+    .tp-deal-content-link:hover {
+        /* Scaling removed as requested */
+    }
+    .tp-deal-area {
+        transition: all 0.5s ease-in-out !important;
+    }
+    .tp-deal-area:hover {
+        background-position: center !important;
     }
 </style>
 @endpush
@@ -672,29 +684,40 @@
 </section>
 {{-- Dynamic Flash Sale --}}
 @if ($flash_sale)
-@php
-    $flashSaleImage = $flash_sale->image ? (str_starts_with($flash_sale->image, 'http') ? $flash_sale->image : rtrim(\App\Helpers\ImageHelper::getImageUrl(), '/') . '/' . ltrim($flash_sale->image, '/')) : asset('home/placeholder.png');
-@endphp
-<section class="tp-deal-area pt-50 pb-35 p-relative z-index-1 fix scene" style="background-image: url({{ $flashSaleImage }}) !important; background-size: cover;">
+<section class="tp-deal-area pt-70 pb-70 p-relative z-index-1 fix" style="background: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)), url('{{ asset('winter_sale_banner_premium_1775029264836.png') }}') !important; background-size: cover; background-position: center;">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-xl-6 col-lg-7">
-                <div class="tp-deal-content text-center">
-                    <span class="tp-deal-title-pre">Best Deals of the week!</span>
-                    <h3 class="tp-deal-title">{{ $flash_sale->name }}</h3>
-                    <div class="tp-deal-countdown">
-                        <div class="tp-product-countdown" data-countdown="" data-date="{{ $flash_sale->end_date }}">
-                            <div class="tp-product-countdown-inner">
-                                <ul>
-                                    <li><span data-days="">0</span> Days</li>
-                                    <li><span data-hours="">0</span> Hrs</li>
-                                    <li><span data-minutes="">0</span> Mins</li>
-                                    <li><span data-seconds="">0</span> Secs</li>
-                                </ul>
+                <a href="{{ route('frontend.flash-sale.show', $flash_sale->id) }}" class="tp-deal-content-link">
+                    <div class="tp-deal-content text-center">
+                        <span class="tp-deal-title-pre" style="color: #678E61; font-weight: 600; font-size: 18px; margin-bottom: 5px; display: block;">Best Deals of the week!</span>
+                        <h3 class="tp-deal-title" style="font-size: 56px; font-weight: 800; color: #111; margin-bottom: 30px;">{{ $flash_sale->name }}</h3>
+                        <div class="tp-deal-countdown">
+                            <div class="tp-product-countdown" data-countdown="" data-date="{{ $flash_sale->end_date->format('Y/m/d H:i:s') }}">
+                                <div class="tp-product-countdown-inner">
+                                    <ul class="d-flex align-items-center justify-content-center gap-2">
+                                        <li class="bg-white rounded py-3 px-2 shadow-sm" style="min-width: 80px; text-align: center;">
+                                            <span data-days="" style="display: block; font-size: 28px; font-weight: 700; color: #678E61; line-height: 1;">0</span>
+                                            <small style="text-transform: uppercase; font-size: 10px; color: #666; font-weight: 600;">Days</small>
+                                        </li>
+                                        <li class="bg-white rounded py-3 px-2 shadow-sm" style="min-width: 80px; text-align: center;">
+                                            <span data-hours="" style="display: block; font-size: 28px; font-weight: 700; color: #678E61; line-height: 1;">0</span>
+                                            <small style="text-transform: uppercase; font-size: 10px; color: #666; font-weight: 600;">Hrs</small>
+                                        </li>
+                                        <li class="bg-white rounded py-3 px-2 shadow-sm" style="min-width: 80px; text-align: center;">
+                                            <span data-minutes="" style="display: block; font-size: 28px; font-weight: 700; color: #678E61; line-height: 1;">0</span>
+                                            <small style="text-transform: uppercase; font-size: 10px; color: #666; font-weight: 600;">Mins</small>
+                                        </li>
+                                        <li class="bg-white rounded py-3 px-2 shadow-sm" style="min-width: 80px; text-align: center;">
+                                            <span data-seconds="" style="display: block; font-size: 28px; font-weight: 700; color: #678E61; line-height: 1;">0</span>
+                                            <small style="text-transform: uppercase; font-size: 10px; color: #666; font-weight: 600;">Secs</small>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
     </div>
@@ -745,7 +768,12 @@
                                             <span class="ms-1 text-muted" style="font-size: 10px;">({{ $product->reviews_count ?? 0 }})</span>
                                         </div>
                                         <div class="tp-product-sm-price-wrapper-5 d-flex align-items-center justify-content-between">
-                                            <span class="tp-product-sm-price-5">₹{{ number_format($product->price) }}</span>
+                                            <div>
+                                                <span class="tp-product-sm-price-5">₹{{ number_format($product->final_price) }}</span>
+                                                @if($product->is_on_sale)
+                                                    <span class="tp-product-sm-price-5 old-price" style="text-decoration: line-through; color: #999; font-size: 12px; margin-left: 5px;">₹{{ number_format($product->price) }}</span>
+                                                @endif
+                                            </div>
                                             <button type="button" class="tp-add-cart-btn me-2" data-id="{{ $product->id }}" data-url="{{ route('frontend.cart.add') }}" style="border: none; background: transparent; color: var(--primary-color); font-size: 16px;" title="Add to Cart">
                                                 <i class="fas fa-shopping-basket"></i>
                                             </button>
@@ -788,7 +816,12 @@
                                             <span class="ms-1 text-muted" style="font-size: 10px;">({{ $product->reviews_count ?? 0 }})</span>
                                         </div>
                                         <div class="tp-product-sm-price-wrapper-5 d-flex align-items-center justify-content-between">
-                                            <span class="tp-product-sm-price-5">₹{{ number_format($product->price) }}</span>
+                                            <div>
+                                                <span class="tp-product-sm-price-5">₹{{ number_format($product->final_price) }}</span>
+                                                @if($product->is_on_sale)
+                                                    <span class="tp-product-sm-price-5 old-price" style="text-decoration: line-through; color: #999; font-size: 12px; margin-left: 5px;">₹{{ number_format($product->price) }}</span>
+                                                @endif
+                                            </div>
                                             <button type="button" class="tp-add-cart-btn me-2" data-id="{{ $product->id }}" data-url="{{ route('frontend.cart.add') }}" style="border: none; background: transparent; color: var(--primary-color); font-size: 16px;" title="Add to Cart">
                                                 <i class="fas fa-shopping-basket"></i>
                                             </button>
@@ -960,7 +993,10 @@
                                                 <span class="ms-1 text-muted" style="font-size: 11px;">({{ $product->reviews_count ?? 0 }})</span>
                                             </div>
                                             <div class="tp-product-price-wrapper-5">
-                                                <span class="tp-product-price-5">₹{{ number_format($product->price) }}</span>
+                                                <span class="tp-product-price-5">₹{{ number_format($product->final_price) }}</span>
+                                                @if($product->is_on_sale)
+                                                    <span class="tp-product-price-5 old-price" style="text-decoration: line-through; color: #999; font-size: 12px; margin-left: 5px;">₹{{ number_format($product->price) }}</span>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>
@@ -987,4 +1023,23 @@
     </div>
 </section>
 
+@push('scripts')
+<script src="{{ asset('home/countdown.js') }}"></script>
+<script>
+    $(document).ready(function() {
+        if (typeof $.fn.countdown === 'function') {
+            $('[data-countdown]').each(function() {
+                var $this = $(this);
+                var finalDate = $this.data('date');
+                $this.countdown(finalDate, function(event) {
+                    $this.find('[data-days]').html(event.strftime('%D'));
+                    $this.find('[data-hours]').html(event.strftime('%H'));
+                    $this.find('[data-minutes]').html(event.strftime('%M'));
+                    $this.find('[data-seconds]').html(event.strftime('%S'));
+                });
+            });
+        }
+    });
+</script>
+@endpush
 @endsection

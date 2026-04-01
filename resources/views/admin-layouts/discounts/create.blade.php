@@ -1,6 +1,7 @@
-@extends('admin-layouts.master')
+@extends('admin-layouts.app')
 
 @section('content')
+<div class="page-wrapper">
     <div class="page-header d-print-none">
         <div class="container-xl">
             <div class="row g-2 align-items-center">
@@ -98,8 +99,8 @@
                                     <div class="col-md-4">
                                         <div class="mb-3">
                                             <label class="form-label required">Discount type</label>
-                                            <select class="form-select" name="type_option">
-                                                <option value="amount" {{ old('type_option') == 'amount' ? 'selected' : '' }}>$</option>
+                                            <select class="form-select" name="type_option" id="discount-type-option">
+                                                <option value="amount" {{ old('type_option') == 'amount' ? 'selected' : '' }}>₹</option>
                                                 <option value="percentage" {{ old('type_option') == 'percentage' ? 'selected' : '' }}>%</option>
                                             </select>
                                         </div>
@@ -109,7 +110,7 @@
                                             <label class="form-label required">Discount</label>
                                             <div class="input-group">
                                                 <input type="number" step="0.01" class="form-control" name="value" placeholder="0" value="{{ old('value') }}">
-                                                <span class="input-group-text">$</span>
+                                                <span class="input-group-text" id="discount-symbol">{{ old('type_option') == 'percentage' ? '%' : '₹' }}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -176,6 +177,7 @@
             </form>
         </div>
     </main>
+</div>
 
 <script>
     function generateCode() {
@@ -222,6 +224,13 @@
         toggleType(document.getElementById('discount-type-select').value);
         toggleUnlimited();
         toggleNeverExpired();
+        
+        const typeOption = document.getElementById('discount-type-option');
+        if (typeOption) {
+            typeOption.addEventListener('change', function() {
+                document.getElementById('discount-symbol').innerText = this.value === 'amount' ? '₹' : '%';
+            });
+        }
     });
 </script>
 @endsection
