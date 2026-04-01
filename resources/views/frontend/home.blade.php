@@ -684,7 +684,7 @@
 </section>
 {{-- Dynamic Flash Sale --}}
 @if ($flash_sale)
-<section class="tp-deal-area pt-70 pb-70 p-relative z-index-1 fix" style="background: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)), url('{{ asset('winter_sale_banner_premium_1775029264836.png') }}') !important; background-size: cover; background-position: center;">
+<section class="tp-deal-area pt-70 pb-70 p-relative z-index-1 fix" style="background: linear-gradient(rgba(215, 210, 210, 0.7), rgba(180, 172, 172, 0.7))">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-xl-6 col-lg-7">

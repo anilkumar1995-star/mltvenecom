@@ -11,8 +11,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('title', 'Default')</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link href="{{ asset('storage/main/general/favicon.png') }}" rel="icon shortcut" type="image/x-icon">
-    <meta property="og:image" content="{{ asset('storage/main/general/favicon.png') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('/') }}assets1/img/favicon.png">
     <meta name="description" content="Copyright 2026 © Your App. Version 1.4.3">
     <meta property="og:description" content="Copyright 2026 © Your App. Version 1.4.3">
     <link rel="stylesheet" href="https://cdn.datatables.net/2.3.6/css/dataTables.dataTables.css" />
