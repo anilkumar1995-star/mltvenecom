@@ -104,7 +104,7 @@
                         <div class="card-footer bg-light text-end py-3">
                             <div class="d-flex justify-content-end align-items-center">
                                 <div class="btn-list text-end">
-                                    <button class="btn btn-outline-danger px-4" type="button" data-bs-toggle="modal" data-bs-target="#reject-vendor-modal">
+                                    <button class="btn btn-outline-danger px-4 reject-vendor-btn" type="button" data-url="{{ route('admin.marketplace.vendors.reject', $vendor->id) }}">
                                         <svg class="icon icon-left svg-icon-ti-ti-x" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                             <path d="M18 6l-12 12"></path>
                                             <path d="M6 6l12 12"></path>
@@ -149,9 +149,38 @@
                 });
             }
         }).then((result) => {
-            if (result.value && result.value.status) {
+            if (result.isConfirmed && result.value && result.value.status) {
                 Swal.fire('Approved!', 'Vendor has been approved.', 'success').then(() => {
-                    location.reload();
+                    window.location.href = "{{ route('admin.marketplace.unverified-vendors') }}";
+                });
+            } else if (result.value) {
+                Swal.fire('Error!', result.value.message || 'Action failed.', 'error');
+            }
+        });
+    });
+
+    $(document).on('click', '.reject-vendor-btn', function() {
+        let url = $(this).data('url');
+        Swal.fire({
+            title: 'Reject Vendor?',
+            text: "Are you sure you want to reject this vendor? This will disable their account.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d63939',
+            confirmButtonText: 'Yes, Reject!',
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                return $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: { _token: '{{ csrf_token() }}' },
+                    success: function(res) { return res; }
+                });
+            }
+        }).then((result) => {
+            if (result.isConfirmed && result.value && result.value.status) {
+                Swal.fire('Rejected!', 'Vendor has been rejected.', 'success').then(() => {
+                    window.location.href = "{{ route('admin.marketplace.unverified-vendors') }}";
                 });
             } else if (result.value) {
                 Swal.fire('Error!', result.value.message || 'Action failed.', 'error');

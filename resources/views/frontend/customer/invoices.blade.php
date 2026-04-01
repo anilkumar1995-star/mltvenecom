@@ -57,24 +57,82 @@
                                     <h1 class="bb-profile-header-title h3 mb-0"> Invoices </h1>
                                 </div>
                                 <div class="bb-profile-main">
-                                    <div class="card border-0 shadow-sm rounded-3">
-                                        <div class="card-body p-4 p-md-5 text-center">
-                                            <div class="mb-4">
-                                                <svg class="icon text-muted" style="width: 64px; height: 64px;" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                                                    <path d="M14 3v4a1 1 0 0 0 1 1h4" />
-                                                    <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2" />
-                                                    <path d="M9 7l1 0" />
-                                                    <path d="M9 13l6 0" />
-                                                    <path d="M13 17l2 0" />
-                                                </svg>
+                                    @if($invoices->isNotEmpty())
+                                        <div class="card border-0 shadow-sm rounded-3">
+                                            <div class="card-body p-0">
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover align-middle mb-0">
+                                                        <thead class="bg-light">
+                                                            <tr>
+                                                                <th class="ps-4 py-3 text-uppercase small fw-bold text-muted border-0">Invoice Code</th>
+                                                                <th class="py-3 text-uppercase small fw-bold text-muted border-0">Date</th>
+                                                                <th class="py-3 text-uppercase small fw-bold text-muted border-0 text-center">Amount</th>
+                                                                <th class="py-3 text-uppercase small fw-bold text-muted border-0 text-center">Status</th>
+                                                                <th class="pe-4 py-3 text-uppercase small fw-bold text-muted border-0 text-end">Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach($invoices as $invoice)
+                                                                <tr>
+                                                                    <td class="ps-4 py-3">
+                                                                        <span class="fw-semibold text-dark">{{ $invoice->code }}</span>
+                                                                    </td>
+                                                                    <td class="py-3 text-muted small">
+                                                                        {{ $invoice->created_at->format('M d, Y') }}
+                                                                    </td>
+                                                                    <td class="py-3 text-center fw-bold">
+                                                                        ₹{{ number_format($invoice->amount, 2) }}
+                                                                    </td>
+                                                                    <td class="py-3 text-center">
+                                                                        @php
+                                                                            $statusClass = match($invoice->status) {
+                                                                                'paid' => 'bg-success-subtle text-success',
+                                                                                'pending' => 'bg-warning-subtle text-warning',
+                                                                                'cancelled' => 'bg-danger-subtle text-danger',
+                                                                                default => 'bg-light text-muted'
+                                                                            };
+                                                                        @endphp
+                                                                        <span class="badge rounded-pill {{ $statusClass }} px-3 py-2 text-uppercase small" style="letter-spacing: 0.5px;">
+                                                                            {{ $invoice->status }}
+                                                                        </span>
+                                                                    </td>
+                                                                    <td class="pe-4 py-3 text-end">
+                                                                        <a href="{{ route('frontend.customer.invoices.show', $invoice->id) }}" class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                                                                            View
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             </div>
-                                            <h4 class="fw-semibold text-dark">No invoices found</h4>
-                                            <p class="text-muted mb-4">You do not have any invoices generated for your orders yet.</p>
-                                            <a href="{{ route('frontend.products.index') }}" class="btn btn-primary px-4">
-                                                Start shopping now
-                                            </a>
+                                            @if($invoices->hasPages())
+                                                <div class="card-footer bg-white border-0 py-4">
+                                                    {{ $invoices->links() }}
+                                                </div>
+                                            @endif
                                         </div>
-                                    </div>
+                                    @else
+                                        <div class="card border-0 shadow-sm rounded-3">
+                                            <div class="card-body p-4 p-md-5 text-center">
+                                                <div class="mb-4">
+                                                    <svg class="icon text-muted" style="width: 64px; height: 64px;" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                                        <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+                                                        <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2" />
+                                                        <path d="M9 7l1 0" />
+                                                        <path d="M9 13l6 0" />
+                                                        <path d="M13 17l2 0" />
+                                                    </svg>
+                                                </div>
+                                                <h4 class="fw-semibold text-dark">No invoices found</h4>
+                                                <p class="text-muted mb-4">You do not have any invoices generated for your orders yet.</p>
+                                                <a href="{{ route('frontend.products.index') }}" class="btn btn-primary px-4">
+                                                    Start shopping now
+                                                </a>
+                                            </div>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>

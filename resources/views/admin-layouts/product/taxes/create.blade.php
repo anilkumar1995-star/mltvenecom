@@ -17,7 +17,7 @@
 
     <main class="page-body page-content">
         <div class="container-xl">
-            <form id="tax-form" action="{{ route('admin.taxes.store') }}" method="POST">
+            <form id="tax-form" action="{{ route('admin.taxes.store') }}" method="POST" class="ajax-form">
                 @csrf
                 <div class="row">
                     <div class="col-md-8">
@@ -61,23 +61,3 @@
     </main>
 </div>
 @endsection
-
-@push('scripts')
-<script>
-$('#tax-form').on('submit', function(e) {
-    e.preventDefault();
-    $.ajax({
-        url: $(this).attr('action'), method: 'POST', data: new FormData(this), processData: false, contentType: false,
-        success: function(res) { if (res.status) Swal.fire('Success', res.message, 'success').then(() => window.location.href = '{{ route("admin.taxes.index") }}'); },
-        error: function(xhr) {
-            if (xhr.status === 422) {
-                let errors = xhr.responseJSON.errors;
-                let msg = '';
-                $.each(errors, function(k, v) { msg += v[0] + '<br>'; });
-                Swal.fire('Validation Error', msg, 'error');
-            } else { Swal.fire('Error', 'Something went wrong!', 'error'); }
-        }
-    });
-});
-</script>
-@endpush

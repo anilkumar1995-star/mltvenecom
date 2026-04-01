@@ -164,6 +164,9 @@ class OrderController extends Controller
             }
         }
 
+        // Generate Invoice
+        \App\Services\InvoiceService::createInvoiceFromOrder($order);
+
         return redirect()->route('admin.orders.index')->with('success', 'Order created successfully!');
     }
 
@@ -299,6 +302,9 @@ class OrderController extends Controller
                 ]);
             }
         }
+
+        // Generate Invoice (or update if status changed)
+        \App\Services\InvoiceService::createInvoiceFromOrder($order);
 
         return redirect()->route('admin.orders.index')->with('success', 'Order updated successfully!');
     }

@@ -286,6 +286,23 @@
                 <div class="col-lg-6">
                     <div class="your-order">
                         <h3>Your Order</h3>
+                        
+                        {{-- Coupon Section --}}
+                        <div class="checkout-coupon mb-30">
+                            <div class="row g-2">
+                                <div class="col-8">
+                                    <input type="text" id="coupon_code" class="form-control" placeholder="Enter coupon code" value="{{ $couponCode ?? '' }}" {{ isset($couponCode) ? 'disabled' : '' }}>
+                                </div>
+                                <div class="col-4 text-end">
+                                    @if(isset($couponCode))
+                                        <a href="{{ route('frontend.checkout.remove-coupon') }}" class="tp-btn btn-danger w-100" style="padding: 12px 10px; font-size: 14px; background-color: #dc3545;">Remove</a>
+                                    @else
+                                        <button type="button" id="apply_coupon_btn" class="tp-btn w-100" style="padding: 12px 10px; font-size: 14px;">Apply</button>
+                                    @endif
+                                </div>
+                            </div>
+                            <div id="coupon_message" class="mt-2 small"></div>
+                        </div>
                         <div class="your-order-table table-responsive">
                             <table>
                                 <thead>
@@ -312,13 +329,20 @@
                                         <td><span class="amount">₹{{ number_format($subtotal, 2) }}</span></td>
                                     </tr>
                                     <tr class="shipping">
-                                        <th>Tax</th>
+                                        <th>{{ $taxTitle ?? 'Tax' }} ({{ $taxPercentage ?? 0 }}%)</th>
                                         <td>
-                                            <ul>
-                                                <li><span class="amount">₹{{ number_format($tax, 2) }}</span></li>
-                                            </ul>
+                                            <span class="amount">₹{{ number_format($tax, 2) }}</span>
                                         </td>
                                     </tr>
+                                    {{-- Shipping removed as requested --}}
+                                    @if($discountAmount > 0)
+                                    <tr class="shipping text-success">
+                                        <th>Discount ({{ $couponCode }})</th>
+                                        <td>
+                                            <strong>-₹{{ number_format($discountAmount, 2) }}</strong>
+                                        </td>
+                                    </tr>
+                                    @endif
                                     <tr class="order-total">
                                         <th>Order Total</th>
                                         <td><strong><span class="amount">₹{{ number_format($total, 2) }}</span></strong></td>
@@ -428,6 +452,44 @@
             var btn = $('#place-order-btn');
             btn.prop('disabled', true);
             btn.html('<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Processing...');
+        });
+
+        // Apply Coupon
+        $('#apply_coupon_btn').on('click', function() {
+            var btn = $(this);
+            var code = $('#coupon_code').val();
+            var messageBox = $('#coupon_message');
+
+            if (!code) {
+                messageBox.css('color', 'red').text('Please enter a coupon code.');
+                return;
+            }
+
+            btn.prop('disabled', true).text('Applying...');
+
+            $.ajax({
+                url: '{{ route("frontend.checkout.apply-coupon") }}',
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    coupon_code: code
+                },
+                success: function(response) {
+                    if (response.success) {
+                        messageBox.css('color', 'green').text(response.message);
+                        setTimeout(function() {
+                            window.location.reload();
+                        }, 500);
+                    } else {
+                        btn.prop('disabled', false).text('Apply');
+                        messageBox.css('color', 'red').text(response.message);
+                    }
+                },
+                error: function() {
+                    btn.prop('disabled', false).text('Apply');
+                    messageBox.css('color', 'red').text('Something went wrong. Please try again.');
+                }
+            });
         });
     });
 </script>

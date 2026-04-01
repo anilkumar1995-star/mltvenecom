@@ -79,6 +79,39 @@ class VendorController extends Controller
         }
     }
 
+    public function reject($id)
+    {
+        try {
+            DB::beginTransaction();
+            $vendor = Customer::findOrFail($id);
+
+            $vendor->status = 'disabled';
+            $vendor->kyc_status = 'rejected';
+            $vendor->save();
+
+            if ($vendor->store) {
+                $vendor->store->is_verified = 0;
+                $vendor->store->status = 'pending';
+                $vendor->store->save();
+            }
+
+            DB::commit();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Vendor rejected successfully.',
+                'reload' => true
+            ]);
+        }
+        catch (Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'status' => false,
+                'message' => 'Something went wrong: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
     public function destroy($id)
     {
         return TableHelpers::performDelete($id, Customer::class , 'Vendor');

@@ -407,7 +407,7 @@
                                 </div>
                                 <div class="tp-frequently-content">
                                     <h6 class="tp-frequently-title text-truncate" style="max-width: 150px;" title="{{ $product->name }}">{{ $product->name }}</h6>
-                                    <span class="tp-frequently-price">₹{{ number_format($product->price, 2) }}</span>
+                                    <span class="tp-frequently-price">₹{{ number_format($product->final_price, 2) }}</span>
                                 </div>
                             </div>
 
@@ -424,7 +424,7 @@
                                     </div>
                                     <div class="tp-frequently-content">
                                         <h6 class="tp-frequently-title text-truncate" style="max-width: 150px;" title="{{ $crossProduct->name }}">{{ $crossProduct->name }}</h6>
-                                        <span class="tp-frequently-price">₹{{ number_format($crossProduct->price, 2) }}</span>
+                                        <span class="tp-frequently-price">₹{{ number_format($crossProduct->final_price, 2) }}</span>
                                     </div>
                                 </div>
                                 
@@ -440,7 +440,13 @@
                                 <div class="tp-frequently-total mb-2 text-end">
                                     <span class="text-muted">Total Price:</span>
                                     <span class="fw-bold text-dark fs-5">
-                                        ₹{{ number_format($product->price + $product->crossSellingProducts->sum('price'), 2) }}
+                                        @php
+                                            $totalBundlePrice = $product->final_price;
+                                            foreach($product->crossSellingProducts as $crossProduct) {
+                                                $totalBundlePrice += $crossProduct->final_price;
+                                            }
+                                        @endphp
+                                        ₹{{ number_format($totalBundlePrice, 2) }}
                                     </span>
                                 </div>
                                 <button type="submit" class="tp-btn-dark w-100">Add Bundle To Cart</button>

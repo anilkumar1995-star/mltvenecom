@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Store;
+use App\Models\Message;
 use Illuminate\Http\Request;
 
 class StoreController extends Controller
@@ -75,10 +76,44 @@ class StoreController extends Controller
         $products = $query->paginate($perPage);
 
         // Get categories that have products in this store
-        $categories = \App\Models\EcProductCategory::whereHas('products', function ($q) use ($store) {
-            $q->where('store_id', $store->id);
-        })->get();
+        $categories = \App\Models\EcProductCategory::published()
+            ->whereHas('products', function ($q) use ($store) {
+                $q->where('store_id', $store->id)
+                  ->where('ec_products.status', 'published');
+            })
+            ->orderBy('name', 'asc')
+            ->get();
 
         return view('frontend.stores.show', compact('store', 'products', 'categories'));
+    }
+
+    /**
+     * Store a message to the store.
+     */
+    public function storeMessage(Request $request, $slug)
+    {
+        $store = Store::where('slug', $slug)
+            ->where('status', 'published')
+            ->firstOrFail();
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'content' => 'required|string|max:1000',
+        ]);
+
+        try {
+            Message::create([
+                'store_id' => $store->id,
+                'customer_id' => auth('customer')->id() ?? auth()->id(),
+                'name' => $request->input('name'),
+                'email' => $request->input('email'),
+                'content' => $request->input('content'),
+            ]);
+
+            return back()->with('success', 'Your message has been sent to the store successfully!');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Something went wrong. Please try again later.');
+        }
     }
 }

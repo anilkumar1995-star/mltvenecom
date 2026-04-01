@@ -94,8 +94,8 @@
                                 </div>
                                 <div class="tp-contact-info-content">
                                     <h4 class="fs-6 fw-bold mb-1">Email & Phone</h4>
-                                    <p class="mb-0 text-muted small">contact@multive.com</p>
-                                    <p class="mb-0 fw-bold">+670 413 90 762</p>
+                                    <p class="mb-0 text-muted small">{{ $footer_settings->footer_email ?? 'contact@multive.com' }}</p>
+                                    <p class="mb-0 fw-bold">{{ $footer_settings->footer_phone ?? '+670 413 90 762' }}</p>
                                 </div>
                             </div>
 
@@ -108,7 +108,7 @@
                                 </div>
                                 <div class="tp-contact-info-content">
                                     <h4 class="fs-6 fw-bold mb-1">Visit Our Store</h4>
-                                    <p class="mb-0 text-muted small">502 New St, Brighton VIC 3186, Melbourne, Australia</p>
+                                    <p class="mb-0 text-muted small">{{ $footer_settings->footer_address ?? '502 New St, Brighton VIC 3186, Melbourne, Australia' }}</p>
                                 </div>
                             </div>
 
@@ -123,10 +123,10 @@
                                 <div class="tp-contact-info-content">
                                     <h4 class="fs-6 fw-bold mb-2">Find on Social Media</h4>
                                     <div class="d-flex gap-2">
-                                        <a href="#" class="btn btn-sm btn-outline-secondary rounded-circle" style="width: 32px; height: 32px; padding: 0; line-height: 30px;"><i class="fab fa-facebook-f"></i></a>
-                                        <a href="#" class="btn btn-sm btn-outline-secondary rounded-circle" style="width: 32px; height: 32px; padding: 0; line-height: 30px;"><i class="fab fa-twitter"></i></a>
-                                        <a href="#" class="btn btn-sm btn-outline-secondary rounded-circle" style="width: 32px; height: 32px; padding: 0; line-height: 30px;"><i class="fab fa-linkedin-in"></i></a>
-                                        <a href="#" class="btn btn-sm btn-outline-secondary rounded-circle" style="width: 32px; height: 32px; padding: 0; line-height: 30px;"><i class="fab fa-youtube"></i></a>
+                                        <a href="{{ $footer_settings->facebook_url ?? '#' }}" class="btn btn-sm btn-outline-secondary rounded-circle" style="width: 32px; height: 32px; padding: 0; line-height: 30px;"><i class="fab fa-facebook-f"></i></a>
+                                        <a href="{{ $footer_settings->twitter_url ?? '#' }}" class="btn btn-sm btn-outline-secondary rounded-circle" style="width: 32px; height: 32px; padding: 0; line-height: 30px;"><i class="fab fa-twitter"></i></a>
+                                        <a href="{{ $footer_settings->linkedin_url ?? '#' }}" class="btn btn-sm btn-outline-secondary rounded-circle" style="width: 32px; height: 32px; padding: 0; line-height: 30px;"><i class="fab fa-linkedin-in"></i></a>
+                                        <a href="{{ $footer_settings->youtube_url ?? '#' }}" class="btn btn-sm btn-outline-secondary rounded-circle" style="width: 32px; height: 32px; padding: 0; line-height: 30px;"><i class="fab fa-youtube"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -143,15 +143,27 @@
             <div class="row">
                 <div class="col-xl-12">
                     <div class="tp-map-wrapper rounded overflow-hidden shadow-sm" style="height: 450px;">
-                        <iframe 
-                            src="https://maps.google.com/maps?q=502 New Street, Brighton VIC, Australia&amp;t=&amp;z=13&amp;ie=UTF8&amp;iwloc=&amp;output=embed" 
-                            width="100%" 
-                            height="100%" 
-                            frameborder="0" 
-                            style="border:0;" 
-                            allowfullscreen="" 
-                            loading="lazy">
-                        </iframe>
+                        @if(isset($footer_settings->contact_map_iframe) && !empty($footer_settings->contact_map_iframe))
+                            <iframe 
+                                src="{{ $footer_settings->contact_map_iframe }}" 
+                                width="100%" 
+                                height="100%" 
+                                frameborder="0" 
+                                style="border:0;" 
+                                allowfullscreen="" 
+                                loading="lazy">
+                            </iframe>
+                        @else
+                            <iframe 
+                                src="https://maps.google.com/maps?q=502 New Street, Brighton VIC, Australia&amp;t=&amp;z=13&amp;ie=UTF8&amp;iwloc=&amp;output=embed" 
+                                width="100%" 
+                                height="100%" 
+                                frameborder="0" 
+                                style="border:0;" 
+                                allowfullscreen="" 
+                                loading="lazy">
+                            </iframe>
+                        @endif
                     </div>
                 </div>
             </div>

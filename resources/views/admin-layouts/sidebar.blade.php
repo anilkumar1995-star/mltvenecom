@@ -1052,7 +1052,7 @@
                                         <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"></path>
                                     </svg></span><span class="nav-link-title text-truncate"> Ads Settings
                                 </span></a></div>
-                    </li>
+                    </li>  --}}
                     
                     <li class="nav-item dropdown"><a class="nav-link dropdown-toggle nav-priority-120" href="{{ url("/") }}/admin#cms-plugins-contact" id="cms-plugins-contact" data-bs-toggle="dropdown"
                              role="button" aria-expanded="false" title="Contact"><span
@@ -1099,9 +1099,20 @@
                                     </svg></span><span class="nav-link-title text-truncate"> Custom Fields
                                 </span></a></div>
                     </li>
+                      <li class="nav-item"><a class="nav-link nav-priority-9999" href="{{ route('admin.footer-settings.index') }}"
+                            id="cms-core-footer-settings" title="Footer Settings"><span
+                                class="nav-link-icon d-md-none d-lg-inline-block" title="Footer Settings"><svg
+                                    class="icon svg-icon-ti-ti-settings" xmlns="http://www.w3.org/2000/svg" width="24"
+                                    height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path
+                                        d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z">
+                                    </path>
+                                    <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"></path>
+                                </svg></span><span class="nav-link-title text-truncate"> Footer Settings </span></a></li>
                     
 
-                    <li class="nav-item"><a class="nav-link nav-priority-430" href="{{ url("/") }}/admin/newsletters"
+                 {{--   <li class="nav-item"><a class="nav-link nav-priority-430" href="{{ url("/") }}/admin/newsletters"
                             id="cms-plugins-newsletter" title="Newsletters"><span
                                 class="nav-link-icon d-md-none d-lg-inline-block" title="Newsletters"><svg
                                     class="icon svg-icon-ti-ti-mail" xmlns="http://www.w3.org/2000/svg" width="24"
@@ -1397,17 +1408,6 @@
                                     </svg></span><span class="nav-link-title text-truncate"> Export/Import Data
                                 </span></a></div>
                     </li>
-                    <li class="nav-item"><a class="nav-link nav-priority-9999" href="{{ url("/") }}/admin/settings"
-                            id="cms-core-settings" title="Settings"><span
-                                class="nav-link-icon d-md-none d-lg-inline-block" title="Settings"><svg
-                                    class="icon svg-icon-ti-ti-settings" xmlns="http://www.w3.org/2000/svg" width="24"
-                                    height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round">
-                                    <path
-                                        d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z">
-                                    </path>
-                                    <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"></path>
-                                </svg></span><span class="nav-link-title text-truncate"> Settings </span></a></li>
                     <li class="nav-item"><a class="nav-link nav-priority-10000" --}} {{-- href="{{ url("/")
                             }}/admin/system" id="cms-core-system" title="Platform Administration"><span
                                 class="nav-link-icon d-md-none d-lg-inline-block" title="Platform Administration"><svg

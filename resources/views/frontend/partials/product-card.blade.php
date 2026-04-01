@@ -54,11 +54,11 @@
         </div>
 
         <div class="tp-product-price-wrapper-5">
-            <span class="tp-product-price-5 new-price">₹{{ number_format($product->price, 2) }}</span>
-            @if($product->original_price > $product->price)
+            <span class="tp-product-price-5 new-price">₹{{ number_format($product->final_price, 2) }}</span>
+            @if($product->is_on_sale)
                 <span class="">
                     <small>
-                        <del class="tp-product-price-5 old-price">₹{{ number_format($product->original_price, 2) }}</del>
+                        <del class="tp-product-price-5 old-price">₹{{ number_format($product->price, 2) }}</del>
                     </small>
                 </span>
             @endif

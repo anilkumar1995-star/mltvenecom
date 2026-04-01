@@ -22,11 +22,15 @@
                                 </button>
                             </div>
                             <div class="logo">
-                                <a href="{{ url('/') }}">
-                                    <img src="{{ asset('/') }}home/logo-white.png" data-bb-lazy="false"
-                                        style="max-height: 35px !important;" loading="eager"
-                                        alt="Multive - Multipurpose eCommerce Laravel Script">
-                                </a>
+                                 <a href="{{ asset('/') }}">
+                                        @if(isset($footer_settings->footer_logo))
+                                            <img src="{{ \App\Helpers\ImageHelper::getImageUrl() }}{{ $footer_settings->footer_logo }}"
+                                                alt="{{ $footer_settings->site_name ?? 'Logo' }}">
+                                        @else
+                                            <img src="{{ asset('/') }}home/logo.png"
+                                                alt="Multive - Multipurpose eCommerce Laravel Script">
+                                        @endif
+                                    </a>
                             </div>
                         </div>
                     </div>
@@ -98,8 +102,7 @@
                                                 <a href="{{ route('frontend.products.index', ['layout' => 'grid']) }}" title="Shop Grid">Shop Grid</a>
                                             </li> -->
                                             <li class="">
-                                                @php $firstProduct = \App\Models\EcProduct::published()->first(); @endphp
-                                                <a href="{{ $firstProduct ? route('frontend.products.show', $firstProduct->slug) : '#' }}" title="Product Detail">Product Detail</a>
+                                                <a href="{{ route('frontend.products.index') }}" title="Product Detail">Products</a>
                                             </li>
                                             <li class="">
                                                 <a href="{{ route('frontend.coupons.index') }}" title="Grab Coupons">Grab Coupons</a>

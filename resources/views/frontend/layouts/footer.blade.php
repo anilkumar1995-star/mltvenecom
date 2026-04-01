@@ -8,23 +8,29 @@
                             <div class="tp-footer-widget-content">
                                 <div class="tp-footer-logo">
                                     <a href="{{ asset('/') }}">
-                                        <img src="{{ asset('/') }}home/logo.png"
-                                            alt="Multive - Multipurpose eCommerce Laravel Script">
+                                        @if(isset($footer_settings->footer_logo))
+                                            <img src="{{ \App\Helpers\ImageHelper::getImageUrl() }}{{ $footer_settings->footer_logo }}"
+                                                alt="{{ $footer_settings->site_name ?? 'Logo' }}">
+                                        @else
+                                            <img src="{{ asset('/') }}home/logo.png"
+                                                alt="Multive - Multipurpose eCommerce Laravel Script">
+                                        @endif
                                     </a>
                                 </div>
-                                <div class="tp-footer-desc"> Multive is a powerful tool eCommerce Laravel script for
-                                    creating a professional and visually appealing online store. </div>
+                                <div class="tp-footer-desc">
+                                    {{ $footer_settings->footer_description ?? 'Multive is a powerful tool eCommerce Laravel script for creating a professional and visually appealing online store.' }}
+                                </div>
                                 <div class="tp-footer-social">
-                                    <a href="#" title="Facebook" target="_blank">
+                                    <a href="{{ $footer_settings->facebook_url ?? '#' }}" title="Facebook" target="_blank">
                                         <i class="fab fa-facebook-f"></i>
                                     </a>
-                                    <a href="#" title="X (Twitter)" target="_blank">
+                                    <a href="{{ $footer_settings->twitter_url ?? '#' }}" title="X (Twitter)" target="_blank">
                                         <i class="fab fa-twitter"></i>
                                     </a>
-                                    <a href="#" title="YouTube" target="_blank">
+                                    <a href="{{ $footer_settings->youtube_url ?? '#' }}" title="YouTube" target="_blank">
                                         <i class="fab fa-youtube"></i>
                                     </a>
-                                    <a href="#" title="Linkedin" target="_blank">
+                                    <a href="{{ $footer_settings->linkedin_url ?? '#' }}" title="Linkedin" target="_blank">
                                         <i class="fab fa-linkedin-in"></i>
                                     </a>
                                 </div>
@@ -65,7 +71,7 @@
                             <h4 class="tp-footer-widget-title">Talk To Us</h4>
                             <div class="tp-footer-widget-content">
                                 <div class="tp-footer-talk mb-20"><span>Got Questions? Call us</span>
-                                    <h4><a href="tel:+670 413 90 762">+670 413 90 762</a></h4>
+                                    <h4><a href="tel:{{ $footer_settings->footer_phone ?? '+670 413 90 762' }}">{{ $footer_settings->footer_phone ?? '+670 413 90 762' }}</a></h4>
                                 </div>
                                 <div class="tp-footer-contact">
                                     <div class="tp-footer-contact-item d-flex align-items-start">
@@ -73,7 +79,7 @@
                                             <i class="far fa-envelope"></i>
                                         </div>
                                         <div class="tp-footer-contact-content">
-                                            <p><a href="mailto:support@multive.com">support@multive.com</a></p>
+                                            <p><a href="mailto:{{ $footer_settings->footer_email ?? 'support@multive.com' }}">{{ $footer_settings->footer_email ?? 'support@multive.com' }}</a></p>
                                         </div>
                                     </div>
                                     <div class="tp-footer-contact-item d-flex align-items-start">
@@ -81,7 +87,7 @@
                                             <i class="fas fa-map-marker-alt"></i>
                                         </div>
                                         <div class="tp-footer-contact-content">
-                                            <p><a href="#" target="_blank"> 79 Sleepy Hollow St. Jamaica, New York 1432 </a></p>
+                                            <p><a href="#" target="_blank">{{ $footer_settings->footer_address ?? '79 Sleepy Hollow St. Jamaica, New York 1432' }}</a></p>
                                         </div>
                                     </div>
                                 </div>
@@ -97,7 +103,7 @@
                     <div class="row align-items-center">
                         <div class="col-md-6">
                             <div class="tp-footer-copyright">
-                                <div>© {{ date('Y') }} All Rights Reserved.</div>
+                                <div>© {{ date('Y') }} {{ $footer_settings->site_name ?? 'All Rights Reserved.' }}</div>
                             </div>
                         </div>
                         <div class="col-md-6">

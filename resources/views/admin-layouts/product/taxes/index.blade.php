@@ -99,7 +99,7 @@
                                                 <i class="fas fa-edit"></i>
                                             </a>
                                             <button type="button" class="btn btn-sm btn-outline-danger delete-confirm-btn" 
-                                                data-url="{{ route('admin.taxes.delete', ['id' => $row->id]) }}"
+                                                data-url="{{ route('admin.taxes.destroy', $row->id) }}"
                                                 title="Delete">
                                                 <i class="fas fa-trash"></i>
                                             </button>

@@ -10,6 +10,9 @@ use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use App\Models\Discount;
+use App\Models\Tax;
+use Carbon\Carbon;
 
 class CheckoutController extends Controller
 {
@@ -65,11 +68,36 @@ class CheckoutController extends Controller
             $subtotal += $item['price'] * $item['quantity'];
         }
 
-        $tax = $subtotal * 0.15; // 15% tax
-        $shipping = 20; // Flat shipping
-        $total = $subtotal + $tax + $shipping;
+        // Fetch Dynamic Tax
+        // 1. Calculate Discount
+        $discountAmount = 0;
+        $couponCode = Session::get('applied_coupon');
+        if ($couponCode) {
+            $discount = Discount::active()->available()->where('code', $couponCode)->first();
+            if ($discount) {
+                if ($discount->type_option === 'percentage') {
+                    $discountAmount = $subtotal * ($discount->value / 100);
+                } else {
+                    $discountAmount = $discount->value;
+                }
+            } else {
+                Session::forget('applied_coupon');
+            }
+        }
 
-        return view('frontend.checkout.index', compact('cart', 'subtotal', 'tax', 'shipping', 'total'));
+        // 2. Fetch Dynamic Tax Rate
+        $taxItem = Tax::where('status', 'published')->orderBy('priority', 'desc')->first();
+        $taxPercentage = $taxItem ? $taxItem->percentage : 0;
+        $taxTitle = $taxItem ? $taxItem->title : 'Tax';
+        
+        // 3. Calculate Tax on Discounted Subtotal
+        $taxableSubtotal = max(0, $subtotal - $discountAmount);
+        $tax = $taxableSubtotal * ($taxPercentage / 100);
+        
+        $shipping = 0; // Removed as requested
+        $total = $taxableSubtotal + $tax + $shipping;
+
+        return view('frontend.checkout.index', compact('cart', 'subtotal', 'tax', 'shipping', 'total', 'discountAmount', 'couponCode', 'taxPercentage', 'taxTitle'));
     }
 
     public function process(Request $request)
@@ -108,9 +136,32 @@ class CheckoutController extends Controller
                 $subtotal += $item['price'] * $item['quantity'];
             }
 
-            $tax = $subtotal * 0.15;
-            $shipping = 20;
-            $total = $subtotal + $tax + $shipping;
+            // 1. Calculate Discount
+            $discountAmount = 0;
+            $couponCode = Session::get('applied_coupon');
+            if ($couponCode) {
+                $discount = Discount::active()->available()->where('code', $couponCode)->first();
+                if ($discount) {
+                    if ($discount->type_option === 'percentage') {
+                        $discountAmount = $subtotal * ($discount->value / 100);
+                    } else {
+                        $discountAmount = $discount->value;
+                    }
+                    // Increment usage count
+                    $discount->increment('total_used');
+                }
+            }
+
+            // 2. Fetch Dynamic Tax
+            $taxItem = Tax::where('status', 'published')->orderBy('priority', 'desc')->first();
+            $taxPercentage = $taxItem ? $taxItem->percentage : 0;
+            
+            // 3. Calculate Tax on Discounted Subtotal
+            $taxableSubtotal = max(0, $subtotal - $discountAmount);
+            $tax = $taxableSubtotal * ($taxPercentage / 100);
+            
+            $shipping = 0;
+            $total = $taxableSubtotal + $tax + $shipping;
             // Generate unique #000000 style code
             do {
                 $code = '#' . str_pad(mt_rand(1, 999999), 6, '0', STR_PAD_LEFT);
@@ -124,6 +175,19 @@ class CheckoutController extends Controller
             $productModel = \App\Models\EcProduct::find($firstCartItem['id']);
             $storeId = $productModel ? $productModel->store_id : null;
 
+            // Create Payment
+            $payment = \App\Models\Payment::create([
+                'currency' => 'INR',
+                'user_id' => $this->getUserId() ?? 0,
+                'payment_channel' => $request->input('payment_method', 'cod'),
+                'description' => 'Online checkout order',
+                'amount' => $total,
+                'status' => 'pending',
+                'payment_type' => 'confirm',
+                'customer_id' => $this->getUserId(),
+                'customer_type' => 'App\\Models\\Customer',
+            ]);
+
             // Create order
             $order = Order::create([
                 'user_id' => $this->getUserId(),
@@ -132,15 +196,20 @@ class CheckoutController extends Controller
                 'sub_total' => $subtotal,
                 'tax_amount' => $tax,
                 'shipping_amount' => $shipping,
-                'discount_amount' => 0,
+                'discount_amount' => $discountAmount,
+                'coupon_code' => $couponCode,
                 'amount' => $total,
                 'status' => 'pending',
                 'description' => $request->input('description'),
                 'shipping_method' => $request->input('payment_method', 'cod'),
+                'payment_id' => $payment->id,
                 'is_confirmed' => 0,
                 'is_finished' => 0,
                 'store_id' => $storeId,
             ]);
+
+            // Link order to payment
+            $payment->update(['order_id' => $order->id]);
 
             // Create order items and update inventory
             foreach ($cart as $item) {
@@ -203,8 +272,12 @@ class CheckoutController extends Controller
 
             DB::commit();
 
+            // Generate Invoice automatically
+            \App\Services\InvoiceService::createInvoiceFromOrder($order);
+
             // Clear cart
-            Session::forget('cart');
+            // Clear cart and coupon
+            Session::forget(['cart', 'applied_coupon']);
 
             return redirect()->route('frontend.checkout.success')
                 ->with('order_id', $order->id);
@@ -219,5 +292,41 @@ class CheckoutController extends Controller
     {
         $order_id = session('order_id');
         return view('frontend.checkout.success', compact('order_id'));
+    }
+
+    public function applyCoupon(Request $request)
+    {
+        $code = $request->input('coupon_code');
+        
+        if (!$code) {
+            return response()->json(['success' => false, 'message' => 'Please enter a coupon code.']);
+        }
+
+        $discount = Discount::active()->available()->where('code', $code)->first();
+
+        if (!$discount) {
+            return response()->json(['success' => false, 'message' => 'Invalid or expired coupon code.']);
+        }
+
+        // Optional: Check min order price if applicable
+        $cart = Session::get('cart', []);
+        $subtotal = 0;
+        foreach ($cart as $item) {
+            $subtotal += $item['price'] * $item['quantity'];
+        }
+
+        if ($discount->min_order_price && $subtotal < $discount->min_order_price) {
+            return response()->json(['success' => false, 'message' => 'Order subtotal must be at least ₹' . number_format($discount->min_order_price, 2) . ' to use this coupon.']);
+        }
+
+        Session::put('applied_coupon', $code);
+
+        return response()->json(['success' => true, 'message' => 'Coupon applied successfully!']);
+    }
+
+    public function removeCoupon()
+    {
+        Session::forget('applied_coupon');
+        return back()->with('success', 'Coupon removed successfully.');
     }
 }

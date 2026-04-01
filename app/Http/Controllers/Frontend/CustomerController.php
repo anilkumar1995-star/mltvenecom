@@ -237,7 +237,22 @@ class CustomerController extends Controller
     public function invoices()
     {
         $customer = $this->getCustomer();
-        return view('frontend.customer.invoices', compact('customer'));
+        $invoices = \App\Models\Invoice::where('customer_email', $customer->email)
+            ->latest()
+            ->paginate(10);
+            
+        return view('frontend.customer.invoices', compact('customer', 'invoices'));
+    }
+
+    public function invoiceDetail($id)
+    {
+        $customer = $this->getCustomer();
+        $invoice = \App\Models\Invoice::where('id', $id)
+            ->where('customer_email', $customer->email)
+            ->with(['items', 'payment', 'reference'])
+            ->firstOrFail();
+
+        return view('frontend.customer.invoice-detail', compact('customer', 'invoice'));
     }
 
     public function reviews()

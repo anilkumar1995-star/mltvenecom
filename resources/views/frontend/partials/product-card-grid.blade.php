@@ -63,9 +63,9 @@
             <span class="ms-1 text-muted" style="font-size: 11px;">({{ $product->reviews_count ?? 0 }})</span>
         </div>
         <div class="tp-product-price-wrapper-2">
-            <span class="tp-product-price-2 new-price">₹{{ number_format($product->price, 2) }}</span>
-            @if($product->original_price > $product->price)
-                <span class="tp-product-price-2 old-price">₹{{ number_format($product->original_price, 2) }}</span>
+            <span class="tp-product-price-2 new-price">₹{{ number_format($product->final_price, 2) }}</span>
+            @if($product->is_on_sale)
+                <span class="tp-product-price-2 old-price">₹{{ number_format($product->price, 2) }}</span>
             @endif
         </div>
     </div>
