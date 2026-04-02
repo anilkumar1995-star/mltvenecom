@@ -67,7 +67,12 @@
                                     <!-- Top section -->
                                     <div class="row mb-5 invoice-header-row">
                                         <div class="col-6">
+                                            @if ($footer_settings->footer_logo)
+                                            <img src="{{ \App\Helpers\ImageHelper::getImageUrl() }}{{ $footer_settings->footer_logo }}"
+                                                alt="{{ $footer_settings->site_name ?? 'Logo' }}" alt="Logo" class="invoice-logo" style="max-height: 50px;">
+                                            @else
                                             <img src="{{ asset('home/logo.png') }}" alt="Logo" class="invoice-logo" style="max-height: 50px;">
+                                            @endif
                                         </div>
                                         <div class="col-6 text-end">
                                             <h2 class="h1 mb-3 fw-black text-dark invoice-title-text" style="letter-spacing: -2px;">INVOICE</h2>

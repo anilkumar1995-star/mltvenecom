@@ -259,6 +259,9 @@ class VendorProductController extends Controller
             // Save Options
             $this->saveOptions($product, $request);
 
+            // Save Attributes
+            $this->saveAttributes($product, $request);
+
             // Sync Relations & FAQs
             $this->syncProductRelations($product, $request);
 
@@ -385,6 +388,9 @@ class VendorProductController extends Controller
             // Save Options
             $this->saveOptions($product, $request);
 
+            // Save Attributes
+            $this->saveAttributes($product, $request);
+
             // Sync Relations & FAQs
             $this->syncProductRelations($product, $request);
 
@@ -431,10 +437,37 @@ class VendorProductController extends Controller
             'selected_existing_faqs' => 'productFaqs',
             'product_collections' => 'productCollections',
             'product_labels' => 'productLabels',
+            'categories' => 'categories',
         ];
 
         foreach ($relations as $inputKey => $relationMethod) {
-            $product->$relationMethod()->sync($request->input($inputKey, []));
+            if ($request->has($inputKey)) {
+                $product->$relationMethod()->sync($request->input($inputKey, []));
+            }
+        }
+    }
+
+    protected function saveAttributes($product, $request)
+    {
+        if ($request->has('attributes')) {
+            $attributeSets = [];
+            $attributes = [];
+            
+            foreach ($request->input('attributes') as $item) {
+                if (!empty($item['attribute_set_id'])) {
+                    $attributeSets[] = $item['attribute_set_id'];
+                }
+                if (!empty($item['attribute_id'])) {
+                    $attributes[] = $item['attribute_id'];
+                }
+            }
+
+            if (method_exists($product, 'productAttributeSets')) {
+                $product->productAttributeSets()->sync(array_unique($attributeSets));
+            }
+            if (method_exists($product, 'productAttributes')) {
+                $product->productAttributes()->sync(array_unique($attributes));
+            }
         }
     }
 
@@ -503,12 +536,28 @@ class VendorProductController extends Controller
 
     public function getRelationProducts(Request $request)
     {
-        $products = EcProduct::where('id', '!=', $request->input('product_id'))
-            ->where('name', 'LIKE', '%' . $request->input('search') . '%')
-            ->limit(10)
-            ->get(['id', 'name', 'image']);
+        $search = $request->input('search') ?: $request->input('q');
+        $query = EcProduct::query();
+        
+        if ($search) {
+            $query->where('name', 'like', '%' . $search . '%')
+                  ->orWhere('sku', 'like', '%' . $search . '%');
+        }
 
-        return response()->json(['data' => $products]);
+        $userId = auth('customer')->id();
+        $products = $query->limit(20)->get();
+
+        $results = [];
+        foreach ($products as $product) {
+            $results[] = [
+                'id' => $product->id,
+                'name' => $product->name,
+                'text' => $product->name,
+                'image' => $product->image_url,
+            ];
+        }
+
+        return response()->json(['data' => $results, 'results' => $results]);
     }
 
     public function getSpecificationtablesData(Request $request)
@@ -528,6 +577,18 @@ class VendorProductController extends Controller
         $attributes = ProductAttribute::where('attribute_set_id', $attributeSetId)->get(['id', 'title as name']);
 
         return response()->json(['data' => $attributes]);
+    }
+
+    public function getGlobalOption($id = null)
+    {
+        if (!$id) {
+            return response()->json(['status' => false, 'message' => 'No ID provided'], 400);
+        }
+        $option = GlobalOption::with('values')->find($id);
+        if (!$option) {
+            return response()->json(['status' => false, 'message' => 'Option not found'], 404);
+        }
+        return response()->json(['status' => true, 'data' => $option]);
     }
 
     public function getAllTags()

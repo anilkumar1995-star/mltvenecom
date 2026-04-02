@@ -195,11 +195,14 @@
                                     <div class="bb-product-items-wrapper tp-shop-item-primary">
                                         <div class="row mb-30 row-cols-xxl-3 row-cols-md-2 row-cols-sm-2 row-cols-2">
                                             @forelse ($products as $product)
+                                             @php
+                                                $imageUrl = $product->image ? (str_starts_with($product->image, 'http') ? $product->image : rtrim(\App\Helpers\ImageHelper::getImageUrl(), '/') . '/' . ltrim($product->image, '/')) : asset('home/placeholder.png');
+                                                @endphp
                                             <div class="col">
                                                 <div class="tp-product-item-5 p-relative white-bg mb-40 ">
                                                     <div class="tp-product-thumb-5 w-img fix mb-15"><a href="{{ route('frontend.products.show', $product->slug ?: $product->id) }}">
                                                             @if($product->image)
-                                                                <img src="{{ asset($product->image) }}" data-bb-lazy="true" loading="lazy" alt="{{ $product->name }}">
+                                                                <img src="{{ $imageUrl }}" data-bb-lazy="true" loading="lazy" alt="{{ $product->name }}">
                                                             @else
                                                                 <img src="{{ asset('storage/main/general/placeholder.png') }}" data-bb-lazy="true" loading="lazy" alt="{{ $product->name }}">
                                                             @endif

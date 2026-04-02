@@ -42,12 +42,12 @@
                             <h4 class="tp-footer-widget-title">My Account</h4>
                             <div class="tp-footer-widget-content">
                                 <ul>
-                                    <li><a href="{{ asset('/') }}orders/tracking" title="Track Orders"> Track Orders </a></li>
-                                    <li><a href="{{ asset('/') }}shipping" title="Shipping"> Shipping </a></li>
+                                    <li><a href="{{ route('frontend.orders.tracking') }}" title="Track Orders"> Track Orders </a></li>
+                                    <li><a href="{{ route('frontend.shipping') }}" title="Shipping"> Shipping </a></li>
                                     <li><a href="{{ asset('/') }}wishlist" title="Wishlist"> Wishlist </a></li>
                                     <li><a href="{{ route('frontend.customer.dashboard') }}" title="My Account"> My Account </a></li>
                                     <li><a href="{{ asset('/') }}customer/orders" title="Order History"> Order History </a></li>
-                                    <li><a href="{{ asset('/') }}customer/order-returns" title="Returns"> Returns </a></li>
+                                    <li><a href="{{ asset('/') }}customer/returns" title="Returns"> Returns </a></li>
                                 </ul>
                             </div>
                         </div>
@@ -57,9 +57,9 @@
                             <h4 class="tp-footer-widget-title">Information</h4>
                             <div class="tp-footer-widget-content">
                                 <ul>
-                                    <li><a href="{{ asset('/') }}our-story" title="Our Story"> Our Story </a></li>
-                                    <li><a href="{{ asset('/') }}careers" title="Careers"> Careers </a></li>
-                                    <li><a href="{{ asset('/') }}cookie-policy" title="Privacy Policy"> Privacy Policy </a></li>
+                                    <li><a href="{{ route('frontend.our-story') }}" title="Our Story"> Our Story </a></li>
+                                    <li><a href="{{ route('frontend.careers') }}" title="Careers"> Careers </a></li>
+                                    <li><a href="{{ route('frontend.cookie-policy') }}" title="Cookie Policy"> Cookie Policy </a></li>
                                     <li><a href="{{ asset('/') }}blog" title="Latest News"> Latest News </a></li>
                                     <li><a href="{{ route('frontend.contact.index') }}" title="Contact Us"> Contact Us </a></li>
                                 </ul>

@@ -73,7 +73,7 @@
                                                     @foreach($orders as $order)
                                                     <tr>
                                                         <td class="py-3 px-4">
-                                                            <a href="{{ route('frontend.customer.orders.detail', $order->id) }}" class="fw-semibold text-primary">#ORD-{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}</a>
+                                                            <a href="{{ route('frontend.customer.orders.detail', $order->id) }}" class="fw-semibold text-primary">{{$order->code}}</a>
                                                         </td>
                                                         <td class="py-3">{{ $order->created_at->format('M d, Y') }}</td>
                                                         <td class="py-3">

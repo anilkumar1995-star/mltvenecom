@@ -83,6 +83,7 @@ class CustomerController extends Controller
             ->with('items')
             ->orderBy('created_at', 'desc')
             ->paginate(10);
+            // dd($orders);
 
         return view('frontend.customer.orders', compact('customer', 'orders'));
     }

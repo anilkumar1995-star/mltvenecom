@@ -23,11 +23,18 @@ class InvoiceService
             ->first();
             
         if ($existingInvoice) {
-            // Update status if order is completed
-            if ($order->status === 'completed' && $existingInvoice->status !== 'paid') {
+            // Update status based on order status dynamically
+            $newStatus = match($order->status) {
+                'completed' => 'paid',
+                'canceled' => 'cancelled',
+                'processing', 'shipped' => 'processing',
+                default => 'pending'
+            };
+            
+            if ($existingInvoice->status !== $newStatus) {
                 $existingInvoice->update([
-                    'status' => 'paid',
-                    'paid_at' => now(),
+                    'status' => $newStatus,
+                    'paid_at' => ($newStatus === 'paid') ? now() : $existingInvoice->paid_at,
                 ]);
             }
             return $existingInvoice;

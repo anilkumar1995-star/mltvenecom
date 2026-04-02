@@ -226,7 +226,7 @@
                                                         <tr>
                                                             <th class="ps-4">Order ID</th>
                                                             <th>Date</th>
-                                                            <th>Items</th>
+                                                            <th>Quantity</th>
                                                             <th>Total</th>
                                                             <th>Status</th>
                                                             <th class="pe-4">Action</th>
@@ -235,9 +235,9 @@
                                                     <tbody>
                                                         @foreach($recent_orders as $order)
                                                         <tr>
-                                                            <td class="ps-4"><strong>#{{ $order->id }}</strong></td>
+                                                            <td class="ps-4"><strong>{{ $order->code }}</strong></td>
                                                             <td>{{ $order->created_at->format('M d, Y') }}</td>
-                                                            <td>{{ $order->items ? $order->items->count() : 0 }} items</td>
+                                                            <td>{{ $order->items ? $order->items->count() : 0 }}</td>
                                                             <td><strong>₹{{ number_format($order->amount, 2) }}</strong></td>
                                                             <td>
                                                                 @php
@@ -250,7 +250,7 @@
                                                                     ];
                                                                     $color = $statusColors[$order->status] ?? 'secondary';
                                                                 @endphp
-                                                                <span class="badge bg-{{ $color }}">{{ ucfirst($order->status) }}</span>
+                                                                <span class="badge text-white bg-{{ $color }}">{{ ucfirst($order->status) }}</span>
                                                             </td>
                                                             <td class="pe-4">
                                                                 <a href="{{ route('frontend.customer.orders.detail', $order->id) }}" class="btn btn-sm btn-outline-primary">

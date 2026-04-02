@@ -141,19 +141,49 @@
                                     <select class="form-select" name="status">
                                         <option value="pending" {{ $order->status == 'pending' ? 'selected' : '' }}>Pending</option>
                                         <option value="processing" {{ $order->status == 'processing' ? 'selected' : '' }}>Processing</option>
+                                        <option value="shipped" {{ $order->status == 'shipped' ? 'selected' : '' }}>Shipped</option>
                                         <option value="completed" {{ $order->status == 'completed' ? 'selected' : '' }}>Completed</option>
                                         <option value="canceled" {{ $order->status == 'canceled' ? 'selected' : '' }}>Canceled</option>
                                     </select>
                                 </div>
                                 <div class="form-footer">
-                                    <button type="submit" class="btn btn-primary w-100">
+                                    <button type="submit" class="btn btn-primary w-100" id="btn-update-status">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-inline" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l5 5l10 -10"/></svg>
                                         Update Status
                                     </button>
                                 </div>
                             </form>
                         </div>
+                    </div>                    <div class="card mb-3 shadow-sm border-info mt-3" style="border-left: 4px solid var(--tblr-info)">
+                        <div class="card-header">
+                            <h3 class="card-title">Order History Log</h3>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="list-group list-group-flush" style="max-height: 250px; overflow-y: auto;">
+                                @forelse($order->histories->sortByDesc('created_at') as $history)
+                                    <div class="list-group-item">
+                                        <div class="d-flex justify-content-between mb-1">
+                                            <span class="badge bg-info-lt">Update</span>
+                                            <small class="text-muted">{{ $history->created_at->format('M d, H:i') }}</small>
+                                        </div>
+                                        <div class="small fw-bold">{{ $history->description }}</div>
+                                    </div>
+                                @empty
+                                    <div class="list-group-item text-center text-muted py-4">
+                                        No history entries recorded.
+                                    </div>
+                                @endforelse
+                                <div class="list-group-item bg-light-subtle">
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <span class="badge bg-success-lt">System</span>
+                                        <small class="text-muted">{{ $order->created_at->format('M d, H:i') }}</small>
+                                    </div>
+                                    <div class="small fw-bold text-success">Order was successfully placed by customer.</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
 
                     <div class="card mb-3">
                         <div class="card-header">
@@ -215,4 +245,42 @@
         </div>
     </div>
 
+@push('scripts')
+<script>
+    $(document).ready(function() {
+        $('#btn-update-status').on('click', function(e) {
+            e.preventDefault();
+            const form = $(this).closest('form');
+            const status = form.find('select[name="status"] option:selected').text();
+
+            Swal.fire({
+                title: 'Confirm Status Update',
+                text: `Update order status to "${status}"?`,
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonColor: '#206bc4',
+                cancelButtonColor: '#6c7a91',
+                confirmButtonText: 'Yes, update now',
+                background: '#ffffff',
+                customClass: {
+                    popup: 'rounded-3 shadow-lg'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Processing...',
+                        text: 'Updating order information...',
+                        allowOutsideClick: false,
+                        showConfirmButton: false,
+                        willOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                    form.submit();
+                }
+            });
+        });
+    });
+</script>
+@endpush
 @endsection

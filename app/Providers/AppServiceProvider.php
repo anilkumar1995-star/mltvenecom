@@ -29,6 +29,7 @@ class AppServiceProvider extends ServiceProvider
         try {
             $footer_settings = DB::table('footer_settings')->first();
             View::share('footer_settings', $footer_settings);
+            
         } catch (\Exception $e) {
             View::share('footer_settings', null);
         }

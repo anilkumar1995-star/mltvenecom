@@ -12,10 +12,9 @@
     
     <!-- Essential CSS Only -->
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home/bootstrap.min.css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/fontawesome.min.css">
+    <link media="all" type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home/theme.css">
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/core.css">
-    <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/main.css">
     
     <style>
         body { background-color: #f5f5f5; font-family: 'Jost', sans-serif; }
@@ -36,8 +35,14 @@
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                     <a href="{{ route('frontend.home') }}">
-                        <img src="{{ asset('storage/main/general/logo.png') }}" alt="Shofy" class="checkout-logo">
+                     <a href="{{ asset('/') }}">
+                      @if(isset($footer_settings->footer_logo))
+                        <img src="{{ \App\Helpers\ImageHelper::getImageUrl() }}{{ $footer_settings->footer_logo }}"
+                        alt="{{ $footer_settings->site_name ?? 'Logo' }}" class="checkout-logo">
+                      @else
+                        <img src="{{ asset('/') }}home/logo.png"
+                        alt="Multive - Multipurpose eCommerce Laravel Script">
+                      @endif
                     </a>
                 </div>
             </div>
@@ -59,6 +64,7 @@
     <!-- Essential Scripts -->
     <script src="{{ asset('/') }}home/jquery-3.7.1.min.js"></script>
     <script src="{{ asset('/') }}home/bootstrap.min.js"></script>
+    <script src="{{ asset('/') }}home/meanmenu.js"></script>
     <script src="{{ asset('/') }}home/theme.js"></script>
     @stack('scripts')
 </body>
