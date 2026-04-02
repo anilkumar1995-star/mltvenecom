@@ -63,6 +63,7 @@ use App\Http\Controllers\Frontend\VendorSpecificationController;
 use App\Http\Controllers\Frontend\VendorKycController;
 use App\Http\Controllers\Frontend\VendorSettingsController;
 use App\Http\Controllers\Frontend\WishlistController;
+use App\Http\Controllers\Frontend\PublicEcommerceController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\StoreController;
 use Illuminate\Support\Facades\Auth;
@@ -133,8 +134,9 @@ Route::name('frontend.')->group(function () {
 
             // Helper routes for product creation (mirrored from admin)
             Route::get('/products/get-relations', [VendorProductController::class , 'getRelationProducts'])->name('products.get-relations');
+            Route::get('/products/get-attribute-values', [VendorProductController::class, 'getAttributeValues'])->name('products.get-attribute-values');
+            Route::get('/products/get-global-option/{id?}', [VendorProductController::class, 'getGlobalOption'])->name('products.get-global-option');
             Route::post('/getatablesData', [VendorProductController::class , 'getSpecificationtablesData'])->name('getatablesData');
-            Route::post('/get-attribute-values', [VendorProductController::class , 'getAttributeValues'])->name('getAttributeValues');
 
             // Vendor Orders
             Route::get('/orders', [VendorOrderController::class , 'index'])->name('orders.index');
@@ -248,6 +250,22 @@ Route::name('frontend.')->group(function () {
         
         // Flash Sale
         Route::get('/flash-sale/{id}', [App\Http\Controllers\Frontend\FlashSaleController::class, 'show'])->name('flash-sale.show');
+
+        // Order Tracking
+        Route::get('/orders/tracking', [PublicEcommerceController::class, 'orderTracking'])->name('orders.tracking');
+        Route::post('/orders/tracking', [PublicEcommerceController::class, 'trackOrder'])->name('orders.tracking.post');
+
+        // Our Story
+        Route::get('/our-story', [PublicEcommerceController::class, 'ourStory'])->name('our-story');
+
+        // Shipping
+        Route::get('/shipping', [PublicEcommerceController::class, 'shipping'])->name('shipping');
+
+        // Careers
+        Route::get('/careers', [PublicEcommerceController::class, 'careers'])->name('careers');
+
+        // Cookie Policy
+        Route::get('/cookie-policy', [PublicEcommerceController::class, 'cookiePolicy'])->name('cookie-policy');
 
         // Account Deletion Confirmation
         Route::get('/account/delete/confirm/{token}', [AccountDeletionController::class , 'confirm'])->name('account.deletion.confirm');

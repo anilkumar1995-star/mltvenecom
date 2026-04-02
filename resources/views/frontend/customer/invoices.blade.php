@@ -86,13 +86,14 @@
                                                                     <td class="py-3 text-center">
                                                                         @php
                                                                             $statusClass = match($invoice->status) {
-                                                                                'paid' => 'bg-success-subtle text-success',
-                                                                                'pending' => 'bg-warning-subtle text-warning',
-                                                                                'cancelled' => 'bg-danger-subtle text-danger',
-                                                                                default => 'bg-light text-muted'
+                                                                                'paid', 'completed' => 'bg-success text-white',
+                                                                                'pending' => 'bg-warning text-white',
+                                                                                'processing', 'shipped' => 'bg-primary text-white',
+                                                                                'cancelled' => 'bg-danger text-white',
+                                                                                default => 'bg-secondary text-white'
                                                                             };
                                                                         @endphp
-                                                                        <span class="badge rounded-pill {{ $statusClass }} px-3 py-2 text-uppercase small" style="letter-spacing: 0.5px;">
+                                                                        <span class="badge rounded-pill {{ $statusClass }} px-3 py-2 text-uppercase fw-bold" style="letter-spacing: 0.5px; font-size: 10px;">
                                                                             {{ $invoice->status }}
                                                                         </span>
                                                                     </td>

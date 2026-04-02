@@ -51,7 +51,7 @@ class VendorOrderController extends Controller
             abort(403);
         }
 
-        $order->load(['items.product', 'address', 'payment', 'user']);
+        $order->load(['items.product', 'address', 'payment', 'user', 'histories.user']);
         return view('frontend.vendor.orders.show', compact('order'));
     }
 
@@ -65,9 +65,22 @@ class VendorOrderController extends Controller
         }
 
         $request->validate(['status' => 'required|string']);
+        $oldStatus = $order->status;
         $order->update(['status' => $request->status]);
 
-        return back()->with('success', 'Order status updated successfully.');
+        // Sync Invoice
+        \App\Services\InvoiceService::createInvoiceFromOrder($order);
+
+        // Record history
+        \App\Models\OrderHistory::create([
+            'action' => 'update_status',
+            'description' => "Order status updated from " . ucfirst($oldStatus) . " to " . ucfirst($order->status) . " by vendor.",
+            'order_id' => $order->id,
+            'user_id' => null, // Since vendor is a Customer model, we log details in description for now or use extras
+            'extras' => json_encode(['vendor_id' => $user->id, 'vendor_name' => $user->name])
+        ]);
+
+        return redirect()->route('frontend.vendor.orders.index')->with('success', 'Order status updated successfully.');
     }
 
     public function bulkDelete(Request $request)

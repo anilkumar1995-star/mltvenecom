@@ -24,14 +24,6 @@
                             </nav>
                         </div>
                     </div>
-                    <div class="col-auto ms-auto d-print-none">
-                        <div class="btn-list">
-                            <a href="{{ route('frontend.vendor.products.index') }}" class="btn btn-outline-secondary">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M5 12l14 0"></path><path d="M5 12l6 6"></path><path d="M5 12l6 -6"></path></svg>
-                                Back
-                            </a>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -42,456 +34,382 @@
                     id="botble-ecommerce-forms-product-form" class="js-base-form dirty-check" enctype="multipart/form-data">
                     @csrf
 
-                    <div class="row">
-                        <div class="gap-3 col-md-9">
-                            <div class="card mb-3">
+                    <div class="row g-3">
+                        <div class="col-md-9 gap-3 d-flex flex-column">
+                            <div class="card shadow-sm border-0">
                                 <div class="card-body">
                                     <div class="form-body">
                                         <div class="mb-3 position-relative">
-                                            <label class="form-label form-label required" for="name">
-                                                Name
-                                            </label>
-                                            <input class="form-control" data-counter="250" placeholder="Name"
+                                            <label class="form-label form-label required fw-bold" for="name">Product Name</label>
+                                            <input class="form-control shadow-none" data-counter="250" placeholder="Enter product name"
                                                 required="required" name="name" type="text" id="name">
                                         </div>
                                         
                                         <div class="mb-3 position-relative">
-                                            <label class="form-label" for="description">
-                                                Description
-                                            </label>
-                                            <div class="mb-2 btn-list">
-                                                <button class="btn show-hide-editor-btn" type="button"
-                                                    data-result="description">
-                                                    Show/Hide Editor
-                                                </button>
-                                            </div>
-                                            <textarea class="form-control editor-ckeditor" data-counter="100000" rows="4"
-                                                placeholder="Short description" id="description" name="description" cols="50"></textarea>
-                                        </div>
-                                        <div class="mb-3 position-relative">
-                                            <label class="form-label" for="content">
-                                                Content
-                                            </label>
-                                            <div class="mb-2 btn-list">
-                                                <button class="btn show-hide-editor-btn" type="button"
-                                                    data-result="content">
-                                                    Show/Hide Editor
-                                                </button>
-                                            </div>
-                                            <textarea class="form-control editor-ckeditor" data-counter="100000" rows="4"
-                                                placeholder="Write your content" id="content" name="content" cols="50"></textarea>
+                                            <label class="form-label fw-bold" for="description">Short Description</label>
+                                            <textarea class="form-control editor-ckeditor" data-counter="1000" rows="3"
+                                                placeholder="Provide a brief summary" id="description" name="description" cols="50"></textarea>
                                         </div>
 
-                                        <!-- Images Upload Section -->
                                         <div class="mb-3 position-relative">
-                                            <label class="form-label">Images</label>
-                                            <div class="card p-3 border-dashed" style="border: 2px dashed #e2e8f0; background: #f8fafc;">
-                                                <div class="text-center cursor-pointer" onclick="document.getElementById('product_images_input').click();">
-                                                    <div class="mb-2">
-                                                        <svg class="icon icon-lg text-secondary" width="48" height="48" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 8h.01" /><path d="M12.5 21h-6.5a3 3 0 0 1 -3 -3v-12a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v6.5" /><path d="M3 16l5 -5c.928 -.893 2.072 -.893 3 0l4 4" /><path d="M14 14l1 -1c.67 -.644 1.45 -.824 2.182 -.54" /><path d="M16 19h6" /><path d="M19 16v6" /><path d="M19 19m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /><path d="M17 21l4 -4" /></svg>
-                                                    </div>
-                                                    <p class="mb-0 text-muted fw-medium">Click to upload images</p>
-                                                    <p class="small text-muted">You can select multiple files</p>
+                                            <label class="form-label fw-bold" for="content">Full Content / Details</label>
+                                            <textarea class="form-control editor-ckeditor" data-counter="100000" rows="6"
+                                                placeholder="Describe the product in detail" id="content" name="content" cols="50"></textarea>
+                                        </div>
+
+                                        <div class="mb-3 position-relative">
+                                            <label class="form-label fw-bold">Product Gallery</label>
+                                            <div class="card p-4 border-dashed bg-light text-center cursor-pointer" onclick="document.getElementById('product_images_input').click();" style="border: 2px dashed #cbd5e1;">
+                                                <div class="mb-2">
+                                                    <svg class="icon icon-lg text-primary bg-primary-lt p-2 rounded-circle" style="width:50px; height:50px;" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 8h.01" /><path d="M12.5 21h-6.5a3 3 0 0 1 -3 -3v-12a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v6.5" /><path d="M3 16l5 -5c.928 -.893 2.072 -.893 3 0l4 4" /><path d="M14 14l1 -1c.67 -.644 1.45 -.824 2.182 -.54" /><path d="M16 19h6" /><path d="M19 16v6" /><path d="M19 19m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /><path d="M17 21l4 -4" /></svg>
                                                 </div>
+                                                <h5 class="mb-1 fw-bold">Upload Images</h5>
+                                                <p class="text-secondary small mb-0">Drop files here or click to browse. Multiple selection allowed.</p>
                                                 <input type="file" id="product_images_input" class="d-none" name="images[]" multiple accept="image/*" onchange="previewImages(this)">
-                                                <div id="image_preview_container" class="row g-2 mt-3"></div>
                                             </div>
+                                            <div id="image_preview_container" class="row g-2 mt-2"></div>
                                         </div>
 
-                                        <!-- Video Upload Section -->
-                                        <div class="mb-3 position-relative">
-                                            <label class="form-label">Video</label>
-                                            <div class="card p-3 border-dashed" style="border: 2px dashed #e2e8f0; background: #f8fafc;">
-                                                 <div class="text-center cursor-pointer" onclick="document.getElementById('product_video_input').click();">
-                                                    <div class="mb-2">
-                                                        <svg class="icon icon-lg text-secondary" width="48" height="48" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 10l4.553 -2.276a1 1 0 0 1 1.447 .894v6.764a1 1 0 0 1 -1.447 .894l-4.553 -2.276v-4z" /><path d="M3 6m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z" /></svg>
-                                                    </div>
-                                                    <p class="mb-0 text-muted fw-medium">Click to upload video</p>
+                                        <div class="mb-0 position-relative">
+                                            <label class="form-label fw-bold">Product Video</label>
+                                            <div class="card p-3 border-dashed bg-light text-center cursor-pointer" onclick="document.getElementById('product_video_input').click();" style="border: 2px dashed #cbd5e1;">
+                                                 <div class="mb-1 text-center">
+                                                    <i class="fas fa-video text-secondary fs-2 p-2 rounded bg-white shadow-sm"></i>
                                                 </div>
+                                                <p class="mb-1 small fw-bold">Add Video Link or Upload MP4</p>
                                                 <input type="file" id="product_video_input" class="d-none" name="video_file" accept="video/*" onchange="previewVideo(this)">
-                                                <div id="video_preview_container" class="mt-3"></div>
                                             </div>
+                                            <div id="video_preview_container" class="mt-2"></div>
                                         </div>
-
-                                        <input class="form-control" name="product_type" type="hidden" value="physical">
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="card mb-3 product-specification-table">
-                                <div class="card-header">
-                                    <h4 class="card-title">Specification Tables</h4>
-                                    <div class="card-actions">
-                                        <select class="form-select" name="specification_table_id" id="specification_table_id">
-                                            <option value="">None</option>
-                                            @foreach ($tables as $table)
-                                                <option value="{{ $table->id }}">{{ $table->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
+                            <div class="card mb-3 shadow-sm border-0">
+                                <div class="card-header bg-white py-3">
+                                    <h4 class="card-title mb-0">Pricing & Inventory</h4>
                                 </div>
-                                <div class="p-3 text-secondary mb-0 instruction-text">
-                                    Select the specification table to display in this product
-                                </div>
-                                <div class="specification-table"></div>
-                            </div>
-
-                            <div id="main-manage-product-type">
-                                <div class="card mb-3">
-                                    <div class="card-header">
-                                        <h4 class="card-title">Overview</h4>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="row price-group">
-                                            <input class="detect-schedule d-none" name="sale_type" type="hidden" value="0">
-                                            <div class="col-md-6">
-                                                <div class="mb-3 position-relative">
-                                                    <label class="form-label" for="sku">SKU (Unique ID)</label>
-                                                    <input class="form-control" type="text" name="sku" id="sku" placeholder="E.g. SOFT-001" value="{{ $sku }}" />
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="mb-3 position-relative">
-                                                    <label class="form-label" for="price">Price</label>
-                                                    <div class="input-group">
-                                                        <span class="input-group-text currency-symbol">₹</span>
-                                                        <input class="form-control input-mask-number" type="text" name="price" id="price"/>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="mb-3 position-relative">
-                                                    <label class="form-label" for="sale_price">
-                                                        Price sale
-                                                        <span class="form-label-description ms-auto">
-                                                            <a class="turn-on-schedule" href="javascript:void(0)">Choose Discount Period</a>
-                                                            <a class="turn-off-schedule" style="display: none;" href="javascript:void(0)">Cancel</a>
-                                                        </span>
-                                                    </label>
-                                                    <div class="input-group font-weight-bold">
-                                                        <span class="input-group-text currency-symbol">₹</span>
-                                                        <input class="form-control input-mask-number" type="text" name="sale_price" id="sale_price" />
-                                                    </div>
-                                                    <small class="form-hint">Discount <strong>0%</strong> from original price.</small>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6 scheduled-time" style="display: none;">
-                                                <div class="mb-3 position-relative">
-                                                    <label class="form-label" for="start_date">From date</label>
-                                                    <input class="form-control form-date-time" type="text" name="start_date" id="start_date" placeholder="Y-m-d H:i:s" />
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 scheduled-time" style="display: none;">
-                                                <div class="mb-3 position-relative">
-                                                    <label class="form-label" for="end_date">To date</label>
-                                                    <input class="form-control form-date-time" type="text" name="end_date" id="end_date" placeholder="Y-m-d H:i:s" />
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-12">
-                                                <div class="mb-3">
-                                                    <label class="form-check">
-                                                        <input type="checkbox" name="price_includes_tax" class="form-check-input" value="1">
-                                                        <span class="form-check-label">Price includes tax</span>
-                                                    </label>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <div class="mb-3">
-                                                    <label class="form-label">Barcode (ISBN, UPC, GTIN, etc.)</label>
-                                                    <input class="form-control" type="text" name="barcode" id="barcode" placeholder="Enter barcode" />
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <div class="mb-3">
-                                                    <label class="form-label">Quantity</label>
-                                                    <input class="form-control font-weight-bold" type="number" name="quantity" id="quantity" value="0" />
-                                                </div>
+                                <div class="card-body">
+                                    <div class="row g-3 price-group">
+                                        <input class="detect-schedule d-none" name="sale_type" type="hidden" value="0">
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-bold">SKU</label>
+                                            <input class="form-control shadow-none" type="text" name="sku" value="{{ $sku }}" placeholder="Unique identifier">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-bold">Regular Price</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text currency-symbol">₹</span>
+                                                <input class="form-control shadow-none" type="number" name="price" id="price" step="0.01">
                                             </div>
                                         </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-bold d-flex align-items-center">
+                                                Sale Price
+                                                <div class="ms-auto small">
+                                                    <a class="turn-on-schedule text-decoration-none" href="javascript:void(0)"><i class="far fa-calendar-alt me-1"></i>Schedule Sale</a>
+                                                    <a class="turn-off-schedule text-danger text-decoration-none" style="display: none;" href="javascript:void(0)" onclick="cancelSchedule()">Cancel Schedule</a>
+                                                </div>
+                                            </label>
+                                            <div class="input-group border-info-subtle">
+                                                <span class="input-group-text currency-symbol bg-info-lt text-info border-info-subtle">₹</span>
+                                                <input class="form-control border-info-subtle shadow-none" type="number" name="sale_price" id="sale_price" step="0.01">
+                                            </div>
+                                            <div class="form-hint small text-muted mt-1">Discount Calculation: <strong class="text-success">0%</strong></div>
+                                        </div>
 
-                                        <div class="mb-3">
-                                            <label class="form-check">
-                                                <input type="checkbox" name="with_storehouse_management" class="form-check-input storehouse-management-status" value="1">
-                                                <span class="form-check-label">With storehouse management</span>
+                                        <div class="col-md-6 scheduled-time" style="display: none;">
+                                            <label class="form-label fw-bold">Sale From Date</label>
+                                            <input class="form-control shadow-none" type="date" name="start_date">
+                                        </div>
+                                        <div class="col-md-6 scheduled-time" style="display: none;">
+                                            <label class="form-label fw-bold">Sale To Date</label>
+                                            <input class="form-control shadow-none" type="date" name="end_date">
+                                        </div>
+
+                                        <div class="col-12">
+                                            <label class="form-check p-2 rounded bg-light border cursor-pointer">
+                                                <input type="checkbox" name="price_includes_tax" class="form-check-input ms-0" value="1">
+                                                <span class="form-check-label ms-1">Price includes tax <i class="fas fa-question-circle text-muted ms-1" title="Check this if the entered price already includes taxes."></i></span>
                                             </label>
                                         </div>
 
-                                        <fieldset class="form-fieldset storehouse-info" style="display: none;">
-                                            <div class="mb-3">
-                                                <label class="form-check">
-                                                    <input type="checkbox" name="allow_checkout_when_out_of_stock" class="form-check-input" value="1">
-                                                    <span class="form-check-label">Allow customer checkout when this product out of stock</span>
-                                                </label>
-                                            </div>
-                                        </fieldset>
+                                        <div class="col-md-12">
+                                            <label class="form-label fw-bold">Barcode (ISBN, UPC, GTIN, etc.)</label>
+                                            <input class="form-control shadow-none" type="text" name="barcode" placeholder="Optional barcode for inventory">
+                                        </div>
+                                    </div>
 
-                                        <fieldset class="form-fieldset stock-status-wrapper">
-                                            <label class="form-label">Stock status</label>
-                                            <div class="d-flex gap-3">
-                                                <label class="form-check form-check-inline">
+                                    <div class="mt-4 border-top pt-3">
+                                        <label class="form-check form-switch mb-3 cursor-pointer">
+                                            <input type="checkbox" name="with_storehouse_management" class="form-check-input storehouse-management-status" value="1">
+                                            <span class="form-check-label fw-bold">Track Stock Quantity</span>
+                                        </label>
+
+                                        <div class="storehouse-info bg-light p-3 rounded" style="display: none;">
+                                            <div class="row g-3">
+                                                <div class="col-md-6">
+                                                    <label class="form-label fw-bold">Initial Stock Level</label>
+                                                    <input class="form-control shadow-none" type="number" name="quantity" value="0">
+                                                </div>
+                                                <div class="col-md-6 d-flex align-items-end">
+                                                    <label class="form-check mb-0 cursor-pointer">
+                                                        <input type="checkbox" name="allow_checkout_when_out_of_stock" class="form-check-input" value="1">
+                                                        <span class="form-check-label small">Oversell Allowed (Backorders)</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="stock-status-wrapper mt-2">
+                                            <div class="d-flex gap-4">
+                                                <label class="form-check cursor-pointer">
                                                     <input type="radio" name="stock_status" class="form-check-input" value="in_stock" checked>
-                                                    <span class="form-check-label">In stock</span>
+                                                    <span class="form-check-label">In Stock</span>
                                                 </label>
-                                                <label class="form-check form-check-inline">
+                                                <label class="form-check cursor-pointer">
                                                     <input type="radio" name="stock_status" class="form-check-input" value="out_of_stock">
-                                                    <span class="form-check-label">Out of stock</span>
+                                                    <span class="form-check-label">Out of Stock</span>
                                                 </label>
-                                                <label class="form-check form-check-inline">
+                                                <label class="form-check cursor-pointer">
                                                     <input type="radio" name="stock_status" class="form-check-input" value="on_backorder">
-                                                    <span class="form-check-label">On backorder</span>
+                                                    <span class="form-check-label">On Backorder</span>
                                                 </label>
                                             </div>
-                                        </fieldset>
-
-                                        <fieldset class="form-fieldset mt-3 shadow-none border">
-                                            <legend class="px-2 fw-bold">Shipping</legend>
-                                            <div class="row">
-                                                <div class="col-md-3">
-                                                    <label class="form-label">Weight (g)</label>
-                                                    <input class="form-control" type="number" name="weight" value="0" />
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <label class="form-label">Length (cm)</label>
-                                                    <input class="form-control" type="number" name="length" value="0" />
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <label class="form-label">Wide (cm)</label>
-                                                    <input class="form-control" type="number" name="wide" value="0" />
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <label class="form-label">Height (cm)</label>
-                                                    <input class="form-control" type="number" name="height" value="0" />
-                                                </div>
-                                            </div>
-                                        </fieldset>
-                                    </div>
-                                </div>
-
-                                <div class="card mb-3">
-                                    <div class="card-header d-flex justify-content-between">
-                                        <h4 class="card-title">Attributes</h4>
-                                        <button type="button" class="btn btn-outline-primary btn-open-attributes">Add new attributes</button>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="product-select-attribute-item-template d-none">
-                                            <div class="row align-items-center mb-3 attribute-row">
-                                                <div class="col-md-5">
-                                                    <label>Attribute name</label>
-                                                    <select class="form-control attr-name" name="attributes[__INDEX__][attribute_set_id]">
-                                                        <option value="">Select attribute</option>
-                                                        @foreach ($attributeSets as $set)
-                                                            <option value="{{ $set->id }}">{{ $set->title }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                                <div class="col-md-5">
-                                                    <label>Value</label>
-                                                    <select class="form-control attr-value" name="attributes[__INDEX__][attribute_id]">
-                                                        <option value="">Select value</option>
-                                                        @foreach ($attributes as $attr)
-                                                            <option value="{{ $attr->id }}" data-set="{{ $attr->attribute_set_id }}">{{ $attr->title }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                                <div class="col-md-2 text-end pt-4">
-                                                    <button type="button" class="btn btn-danger btn-remove-attr mt-1">🗑</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="list-product-attribute-values-wrap d-none">
-                                            <div class="list-product-attribute-items-wrap"></div>
-                                            <button type="button" class="btn btn-light border btn-trigger-add-attribute-item mt-3">Add more attribute</button>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="card mb-3">
-                                    <div class="card-header">
-                                        <h4 class="card-title">Product options</h4>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="product-option-form-wrap">
-                                            <input name="has_product_options" type="hidden" value="1">
-                                            <div class="accordion mb-3" id="accordion-product-option"></div>
-                                            <div class="d-flex flex-wrap gap-2">
-                                                <button class="btn btn-outline-primary add-new-option" type="button" id="add-new-option">Add new option</button>
-                                                <div class="ms-md-auto d-flex gap-2">
-                                                    <select class="form-select" id="global-option" style="width: 200px;">
-                                                        <option value="0">Select Global Option</option>
-                                                        @foreach($globalOptions as $globalOption)
-                                                            <option value="{{ $globalOption->id }}">{{ $globalOption->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                    <button class="btn btn-primary add-from-global-option" type="button">Add Global Option</button>
+                                    <fieldset class="mt-4 bg-light p-3 rounded border shadow-none">
+                                        <legend class="px-2 fw-bold h6 text-primary" style="float: none; width: auto;"><i class="fas fa-truck me-2"></i>Shipping Dimensions</legend>
+                                        <div class="row g-2">
+                                            <div class="col-md-3">
+                                                <label class="form-label small mb-1">Weight (g)</label>
+                                                <div class="input-group input-group-sm">
+                                                    <span class="input-group-text">g</span>
+                                                    <input class="form-control shadow-none" type="number" name="weight" value="0">
                                                 </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label small mb-1">Length (cm)</label>
+                                                <input class="form-control form-control-sm shadow-none" type="number" name="length" value="0">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label small mb-1">Width (cm)</label>
+                                                <input class="form-control form-control-sm shadow-none" type="number" name="wide" value="0">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label small mb-1">Height (cm)</label>
+                                                <input class="form-control form-control-sm shadow-none" type="number" name="height" value="0">
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+
+                            <div class="card mb-3 shadow-sm border-0 product-specification-table">
+                                <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+                                    <h4 class="card-title mb-0">Technical Specification</h4>
+                                    <select class="form-select w-auto form-select-sm shadow-none" name="specification_table_id" id="specification_table_id">
+                                        <option value="">None</option>
+                                        @foreach ($tables as $table)
+                                            <option value="{{ $table->id }}">{{ $table->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="card-body">
+                                    <p class="text-secondary small instruction-text mb-0">Map this product to a specification group for detailed data display.</p>
+                                    <div class="specification-table mt-2"></div>
+                                </div>
+                            </div>
+
+                            <div class="card mb-3 shadow-sm border-0">
+                                <div class="card-header d-flex justify-content-between align-items-center bg-white py-3">
+                                    <h4 class="card-title mb-0">Attributes & Variations</h4>
+                                    <button type="button" class="btn btn-sm btn-outline-primary btn-open-attributes shadow-none">Define Attributes</button>
+                                </div>
+                                <div class="card-body">
+                                    <div class="list-product-attribute-values-wrap d-none">
+                                        <div class="list-product-attribute-items-wrap"></div>
+                                        <button type="button" class="btn btn-sm btn-light border btn-trigger-add-attribute-item mt-3 shadow-none"><i class="fas fa-plus me-1"></i>Add Attribute Group</button>
+                                    </div>
+                                    <p class="text-muted small empty-attributes-text mb-0">Add size, color, or other product variations.</p>
+                                    <div class="product-select-attribute-item-template d-none">
+                                        <div class="row g-2 align-items-end mb-3 attribute-row border p-3 rounded bg-light-subtle shadow-none">
+                                            <div class="col-md-5">
+                                                <label class="form-label small fw-bold">Attribute Type</label>
+                                                <select class="form-select form-select-sm shadow-none attr-set-select" name="attributes[__INDEX__][attribute_set_id]">
+                                                    <option value="">Choose set...</option>
+                                                    @foreach ($attributeSets as $set)
+                                                        <option value="{{ $set->id }}">{{ $set->title }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <label class="form-label small fw-bold">Value Selection</label>
+                                                <select class="form-select form-select-sm shadow-none attr-val-select" name="attributes[__INDEX__][attribute_id]" disabled>
+                                                    <option value="">Choose type first...</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2 text-end">
+                                                <button type="button" class="btn btn-sm btn-danger btn-remove-attr py-1 px-3 shadow-none">Remove</button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h4 class="card-title">Related Products</h4>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="mb-3 position-relative">
-                                            <input type="text" class="form-control box-search-input" placeholder="Search products..." data-target="related-products">
-                                            <div class="box-search-results list-group position-absolute w-100 mt-1 shadow" style="z-index: 1000; display: none; max-height: 200px; overflow-y: auto;"></div>
+                            <div class="card mb-3 shadow-sm border-0">
+                                <div class="card-header bg-white py-3">
+                                    <h4 class="card-title mb-0">Custom Product Options</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="product-option-form-wrap">
+                                        <input name="has_product_options" type="hidden" value="1">
+                                        <div class="accordion mb-3 overflow-hidden shadow-none border-0" id="accordion-product-option"></div>
+                                        <div class="d-flex flex-wrap gap-2 align-items-center mt-3 pt-3 border-top">
+                                            <button class="btn btn-sm btn-outline-primary add-new-option shadow-none" type="button"><i class="fas fa-plus-circle me-1"></i>Add Custom Field</button>
+                                            <div class="ms-md-auto d-flex gap-2">
+                                                <select class="form-select form-select-sm shadow-none" id="global-option" style="min-width: 180px;">
+                                                    <option value="0">Use Global Preset</option>
+                                                    @foreach($globalOptions as $globalOption)
+                                                        <option value="{{ $globalOption->id }}">{{ $globalOption->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                                <button class="btn btn-sm btn-primary add-from-global-option px-3 shadow-none" type="button">Apply Preset</button>
+                                            </div>
                                         </div>
-                                        <div id="selected-related-products" class="list-group"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card mb-3 shadow-sm border-0">
+                                <div class="card-header bg-white py-3">
+                                    <h4 class="card-title mb-0">Linked / Related Products</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-0 position-relative">
+                                        <p class="text-muted small mb-2">Search for products to link as related, up-sells, or cross-sells.</p>
+                                        <div class="input-icon">
+                                            <input type="text" class="form-control form-control-sm box-search-input shadow-none" placeholder="Target product name or SKU..." data-target="related-products">
+                                            <span class="input-icon-addon"><i class="fas fa-search small opacity-50"></i></span>
+                                        </div>
+                                        <div class="box-search-results list-group position-absolute w-100 mt-2 shadow-lg rounded border" style="z-index: 1050; display: none; max-height: 250px; overflow-y: auto; background: white;"></div>
+                                    </div>
+                                    <div id="selected-related-products" class="list-group list-group-flush border rounded-3 overflow-hidden mt-3 shadow-none" style="display: none;"></div>
+                                </div>
+                            </div>
+
+                            <div class="card mb-3 shadow-sm border-0">
+                                <div class="card-header bg-white py-3">
+                                    <h4 class="card-title mb-0">Product Q&A / FAQs</h4>
+                                </div>
+                                <div class="card-body">
+                                    <p class="text-secondary small mb-3">Provide answers to common customer questions for this specific item.</p>
+                                    <div class="faq-items-wrapper">
+                                        <div id="faq-repeater"></div>
+                                        <button type="button" class="btn btn-sm btn-outline-primary add-faq-item w-100 border-dashed py-2 shadow-none"><i class="fas fa-plus me-1"></i>Insert New FAQ Entry</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-md-3">
-                            <div class="card mb-3">
-                                <div class="card-header">
-                                    <h4 class="card-title">Publish</h4>
-                                </div>
-                                <div class="card-body">
-                                    <div class="btn-list">
-                                        <button class="btn btn-primary w-100" type="submit">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-floppy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2"></path><path d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path><path d="M14 4l0 4l-6 0l0 -4"></path></svg>
-                                            Save Product
+                        <div class="col-md-3 gap-3 d-flex flex-column mb-md-0 mb-5">
+                            <div class="sticky-top" style="top: 2rem; z-index: 50;">
+                                <div class="card shadow-sm border-0 bg-primary bg-opacity-10 mb-3">
+                                    <div class="card-header bg-transparent py-2 border-bottom-0">
+                                        <h4 class="card-title mb-0 text-primary small fw-bold">PUBLISH CONTROL</h4>
+                                    </div>
+                                    <div class="card-body pt-0">
+                                        <button class="btn btn-primary w-100 py-2 d-flex align-items-center justify-content-center shadow-sm" type="submit">
+                                            <i class="fas fa-save me-2"></i><strong>SAVE LISTING</strong>
                                         </button>
+                                        <a href="{{ route('frontend.vendor.products.index') }}" class="btn btn-link link-secondary w-100 mt-1 text-decoration-none small">Exit without saving</a>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="card mb-3">
-                                <div class="card-header d-flex justify-content-between align-items-center">
-                                    <h4 class="card-title mb-0">Status</h4>
-                                    <span class="badge bg-warning-lt">Pending</span>
+                                <div class="card shadow-sm border-0 border-start border-warning border-4 mb-3">
+                                    <div class="card-header d-flex justify-content-between align-items-center py-2 bg-white shadow-none">
+                                        <h4 class="card-title mb-0 small text-muted fw-bold">APPROVAL QUEUE</h4>
+                                        <span class="badge bg-warning text-white px-2" style="font-size: 9px;">PENDING</span>
+                                    </div>
+                                    <div class="card-body py-2">
+                                        <input type="hidden" name="status" value="pending">
+                                        <p class="small text-muted mb-0" style="font-size: 11px;"><i class="fas fa-clock me-1 opacity-50"></i> Review typically takes 24-48 hours.</p>
+                                    </div>
                                 </div>
-                                <div class="card-body py-2">
-                                    <input type="hidden" name="status" value="pending">
-                                    <p class="small text-muted mb-0">Products added by vendors require admin approval.</p>
-                                </div>
-                            </div>
 
-                            <div class="card mb-3">
-                                <div class="card-header">
-                                    <h4 class="card-title">Categories</h4>
+                                <div class="card shadow-sm border-0 mb-3">
+                                    <div class="card-header py-2 bg-white border-bottom shadow-none">
+                                        <h4 class="card-title mb-0 small fw-bold">CATEGORIZATION</h4>
+                                    </div>
+                                    <div class="card-body p-3">
+                                        <div class="mb-3">
+                                            <div class="input-icon">
+                                                <input type="text" id="category-search" class="form-control form-control-sm shadow-none bg-light border-0" placeholder="Filter List...">
+                                                <span class="input-icon-addon"><i class="fas fa-filter small opacity-50"></i></span>
+                                            </div>
+                                        </div>
+                                        <div id="categories-tree" class="overflow-auto border p-2 rounded bg-light-subtle" style="max-height: 280px; font-size: 0.85rem;">
+                                            <ul class="list-unstyled mb-0">
+                                                @foreach ($categories->where('parent_id', 0) as $parent)
+                                                    <li class="category-item mb-1">
+                                                        <label class="form-check cursor-pointer mb-0">
+                                                            <input type="checkbox" name="categories[]" class="form-check-input parent-category" value="{{ $parent->id }}">
+                                                            <span class="form-check-label fw-bold opacity-75">{{ $parent->name }}</span>
+                                                        </label>
+                                                        @php $subcats = $categories->where('parent_id', $parent->id); @endphp
+                                                        @if ($subcats->count())
+                                                            <ul class="list-unstyled ms-3 mt-1 ps-2 border-start">
+                                                                @foreach ($subcats as $sub)
+                                                                    <li class="category-item mb-1">
+                                                                        <label class="form-check cursor-pointer mb-0">
+                                                                            <input type="checkbox" name="categories[]" class="form-check-input child-category" value="{{ $sub->id }}" data-parent="{{ $parent->id }}">
+                                                                            <span class="form-check-label text-muted">{{ $sub->name }}</span>
+                                                                        </label>
+                                                                    </li>
+                                                                @endforeach
+                                                            </ul>
+                                                        @endif
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="card-body pt-2" style="max-height: 300px; overflow-y: auto;">
-                                    <div id="categories-tree">
-                                        <ul class="list-unstyled">
-                                            @foreach ($categories->where('parent_id', 0) as $parent)
-                                                <li class="mb-1">
-                                                    <label class="form-check">
-                                                        <input type="checkbox" name="categories[]" class="form-check-input parent-category" value="{{ $parent->id }}">
-                                                        <span class="form-check-label">{{ $parent->name }}</span>
-                                                    </label>
-                                                    @php
-                                                        $subcats = $categories->where('parent_id', $parent->id);
-                                                    @endphp
-                                                    @if ($subcats->count())
-                                                        <ul class="list-unstyled ms-3 mt-1">
-                                                            @foreach ($subcats as $sub)
-                                                                <li class="mb-1">
-                                                                    <label class="form-check">
-                                                                        <input type="checkbox" name="categories[]" class="form-check-input child-category" value="{{ $sub->id }}" data-parent="{{ $parent->id }}">
-                                                                        <span class="form-check-label small">{{ $sub->name }}</span>
-                                                                    </label>
-                                                                </li>
-                                                            @endforeach
-                                                        </ul>
-                                                    @endif
-                                                </li>
+
+                                <div class="card shadow-sm border-0 mb-3">
+                                    <div class="card-header py-2 bg-white shadow-none">
+                                        <h4 class="card-title mb-0 small fw-bold text-muted">BRANDING</h4>
+                                    </div>
+                                    <div class="card-body p-3">
+                                        <select class="form-select form-select-sm shadow-none" name="brand_id">
+                                            <option value="">Generic / No Brand</option>
+                                            @foreach ($brands as $brand)
+                                                <option value="{{ $brand->id }}">{{ $brand->name }}</option>
                                             @endforeach
-                                        </ul>
+                                        </select>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="card mb-3">
-                                <div class="card-header">
-                                    <h4 class="card-title">Brand</h4>
-                                </div>
-                                <div class="card-body">
-                                    <select class="form-select" name="brand_id">
-                                        <option value="">Select a brand...</option>
-                                        @foreach ($brands as $brand)
-                                            <option value="{{ $brand->id }}">{{ $brand->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="card mb-3">
-                                <div class="card-header">
-                                    <h4 class="card-title">Featured Image</h4>
-                                </div>
-                                <div class="card-body text-center">
-                                    <div class="preview-image-wrapper mb-2">
-                                        <img id="preview-image" src="{{ asset('vendor/core/core/base/images/placeholder.png') }}" alt="Preview" style="width: 100%; height: 160px; object-fit: cover; border-radius: 4px; border: 1px solid #e1e1e1;">
+                                <div class="card shadow-sm border-0 overflow-hidden mb-3">
+                                    <div class="card-header py-2 bg-white shadow-none">
+                                        <h4 class="card-title mb-0 small fw-bold">PRIMARY COVER</h4>
                                     </div>
-                                    <input type="file" name="image_file" class="form-control" accept="image/*" onchange="document.getElementById('preview-image').src = window.URL.createObjectURL(this.files[0])">
-                                </div>
-                            </div>
-
-                            <div class="card mb-3">
-                                <div class="card-header">
-                                    <h4 class="card-title">Tags</h4>
-                                </div>
-                                <div class="card-body">
-                                    <input class="form-control" name="tag" id="tag" data-url="{{ route('frontend.vendor.product-tags.all') }}" placeholder="Write some tags">
-                                </div>
-                            </div>
-
-                            <div class="card mb-3">
-                                <div class="card-header">
-                                    <h4 class="card-title">Minimum Order Quantity</h4>
-                                </div>
-                                <div class="card-body">
-                                    <input class="form-control" type="number" name="minimum_order_quantity" value="1" min="1">
-                                    <small class="text-muted mt-1 d-block font-size-xs">Minimum quantity to place an order, if the value is 0, there is no limit.</small>
-                                </div>
-                            </div>
-
-                            <div class="card mb-3">
-                                <div class="card-header">
-                                    <h4 class="card-title">Maximum Order Quantity</h4>
-                                </div>
-                                <div class="card-body">
-                                    <input class="form-control" type="number" name="maximum_order_quantity" value="0" min="0">
-                                    <small class="text-muted mt-1 d-block font-size-xs">Maximum quantity to place an order, if the value is 0, there is no limit.</small>
-                                </div>
-                            </div>
-
-                            <div class="card mb-3">
-                                <div class="card-header">
-                                    <h4 class="card-title">Product collections</h4>
-                                </div>
-                                <div class="card-body">
-                                    <div style="max-height: 200px; overflow-y: auto;">
-                                        @foreach ($collections as $collection)
-                                            <label class="form-check mb-1">
-                                                <input type="checkbox" name="product_collections[]" class="form-check-input" value="{{ $collection->id }}">
-                                                <span class="form-check-label small">{{ $collection->name }}</span>
-                                            </label>
-                                        @endforeach
+                                    <div class="card-body p-3 text-center bg-light-subtle">
+                                        <div class="preview-image-wrapper mb-3 border rounded overflow-hidden shadow-sm bg-white" style="height: 160px;">
+                                            <img id="preview-image" src="{{ asset('vendor/core/core/base/images/placeholder.png') }}" class="img-fluid w-100 h-100" style="object-fit: contain;">
+                                        </div>
+                                        <input type="file" name="image_file" id="image_file" class="d-none" accept="image/*" onchange="document.getElementById('preview-image').src = window.URL.createObjectURL(this.files[0])">
+                                        <button type="button" class="btn btn-outline-primary btn-sm w-100 border-2 fw-bold" onclick="document.getElementById('image_file').click()">SELECT IMAGE</button>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="card mb-3">
-                                <div class="card-header">
-                                    <h4 class="card-title">Labels</h4>
-                                </div>
-                                <div class="card-body">
-                                    <div style="max-height: 200px; overflow-y: auto;">
-                                        @foreach ($productionlabels as $label)
-                                            <label class="form-check mb-1">
-                                                <input type="checkbox" name="product_labels[]" class="form-check-input" value="{{ $label->id }}">
-                                                <span class="form-check-label small">{{ $label->name }}</span>
-                                            </label>
-                                        @endforeach
+                                <div class="card shadow-sm border-0 border-start border-3 border-info">
+                                    <div class="card-header py-2 bg-white shadow-none">
+                                        <h4 class="card-title mb-0 small fw-bold text-muted">TAGS FOR DISCOVERY</h4>
+                                    </div>
+                                    <div class="card-body p-3">
+                                        <input class="form-control form-control-sm shadow-none border-0 bg-light" name="tag" id="tag" data-url="{{ route('frontend.vendor.product-tags.all') }}" placeholder="SEO Tags...">
                                     </div>
                                 </div>
                             </div>
@@ -503,7 +421,25 @@
     </div>
 @endsection
 
+@push('styles')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<style>
+    .page-wrapper { background-color: #f8fafc; }
+    .card { border-radius: 12px; transition: transform 0.2s, box-shadow 0.2s; }
+    .card:hover { box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+    .border-dashed { border-style: dashed !important; border-width: 2px !important; }
+    .cursor-pointer { cursor: pointer; }
+    .category-item { transition: all 0.2s; }
+    .input-icon-addon { color: #64748b; }
+    .form-control:focus, .form-select:focus { border-color: #0081ff; box-shadow: 0 0 0 4px rgba(0, 129, 255, 0.1); }
+    .accordion-button:not(.collapsed) { background-color: #f0f7ff; color: #0081ff; }
+    .x-small { font-size: 0.65rem; letter-spacing: 0.05em; }
+</style>
+@endpush
+
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
 <script>
     function previewImages(input) {
         const container = document.getElementById('image_preview_container');
@@ -514,7 +450,7 @@
                 reader.onload = (e) => {
                     const col = document.createElement('div');
                     col.className = 'col-3';
-                    col.innerHTML = `<img src="${e.target.result}" class="img-fluid rounded border" style="height: 80px; width: 100%; object-fit: cover;">`;
+                    col.innerHTML = `<div class="position-relative shadow-sm"><img src="${e.target.result}" class="img-fluid rounded border" style="height: 70px; width: 100%; object-fit: cover;"></div>`;
                     container.appendChild(col);
                 };
                 reader.readAsDataURL(file);
@@ -527,12 +463,12 @@
         container.innerHTML = '';
         if (input.files && input.files[0]) {
             const url = URL.createObjectURL(input.files[0]);
-            container.innerHTML = `<video src="${url}" controls class="w-100 rounded border" style="max-height: 200px;"></video>`;
+            container.innerHTML = `<video src="${url}" controls class="w-100 rounded border shadow-sm" style="max-height: 180px;"></video>`;
         }
     }
 
     $(document).ready(function() {
-        // Tagify
+        // Tagify Initialization
         var tagInput = document.querySelector('#tag');
         if (tagInput) {
             var tagify = new Tagify(tagInput, {
@@ -544,122 +480,145 @@
                 .then(whitelist => tagify.settings.whitelist = whitelist.map(t => t.name));
         }
 
-        // Parent/Child Categories logic
-        $('.parent-category').on('change', function() {
-            var isChecked = $(this).prop('checked');
-            $(this).closest('li').find('.child-category').prop('checked', isChecked);
-        });
-        $('.child-category').on('change', function() {
-            if ($(this).prop('checked')) {
-                $(this).closest('ul').prev('label').find('.parent-category').prop('checked', true);
-            }
-        });
-
-        // AJAX Submission
-        $('#botble-ecommerce-forms-product-form').validate({
-            rules: { name: { required: true } },
-            errorClass: "text-danger smaller",
-            submitHandler: function(form) {
-                var formData = new FormData(form);
-                if (typeof CKEDITOR !== 'undefined') {
-                    for (instance in CKEDITOR.instances) CKEDITOR.instances[instance].updateElement();
-                }
-                $.ajax({
-                    url: $(form).attr('action'),
-                    type: 'POST',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function(res) {
-                        if (res.status) {
-                            Swal.fire('Success', res.message, 'success').then(() => {
-                                window.location.href = "{{ route('frontend.vendor.products.index') }}";
-                            });
-                        } else {
-                            Swal.fire('Error', res.message, 'error');
-                        }
-                    },
-                    error: function(xhr) {
-                        let msg = 'Server error';
-                        if (xhr.status === 422 && xhr.responseJSON && xhr.responseJSON.errors) {
-                            msg = Object.values(xhr.responseJSON.errors).map(e => e[0]).join('<br>');
-                        } else if (xhr.responseJSON && xhr.responseJSON.message) {
-                            msg = xhr.responseJSON.message;
-                        }
-                        Swal.fire('Error', msg, 'error');
-                    }
-                });
-            }
-        });
-
-        // Specification Tables
-        $('#specification_table_id').on('change', function() {
-            let id = $(this).val();
-            let $container = $('.specification-table');
-            if (!id) { $container.empty(); $('.instruction-text').show(); return; }
-            $.post("{{ route('frontend.vendor.getatablesData') }}", { group_id: id, _token: "{{ csrf_token() }}" }, function(res) {
-                if (res.data && res.data.length > 0) {
-                    let rows = "";
-                    res.data.forEach(group => {
-                        group.attributes.forEach(attr => {
-                            let input = attr.type === 'select' ? `<select class="form-select small" name="specs[${group.id}][${attr.id}][value]">` + JSON.parse(attr.options).map(o => `<option value="${o}">${o}</option>`).join('') + `</select>` : `<input type="text" class="form-control" name="specs[${group.id}][${attr.id}][value]">`;
-                            rows += `<tr><td class="small fw-bold">${group.name}</td><td>${attr.name}</td><td>${input}</td><td class="text-center"><input type="checkbox" name="specs[${group.id}][${attr.id}][hide]" value="1"></td></tr>`;
-                        });
-                    });
-                    $container.html(`<table class="table table-sm table-bordered mt-2"><thead><tr><th>Group</th><th>Attribute</th><th>Value</th><th>Hide</th></tr></thead><tbody>${rows}</tbody></table>`);
-                    $('.instruction-text').hide();
-                }
+        // Category Filter
+        $('#category-search').on('keyup', function() {
+            let q = $(this).val().toLowerCase();
+            $('.category-item').each(function() {
+                $(this).toggle($(this).text().toLowerCase().includes(q));
             });
         });
 
-        // Relations Search
+        $('.parent-category').on('change', function() {
+            $(this).closest('li').find('.child-category').prop('checked', $(this).prop('checked'));
+        });
+
+        // Attributes Dynamic Rows
+        let attrIndex = 0;
+        $('.btn-open-attributes').on('click', function() {
+            $('.list-product-attribute-values-wrap').removeClass('d-none');
+            $('.empty-attributes-text').addClass('d-none');
+            addAttributeRow();
+        });
+
+        $('.btn-trigger-add-attribute-item').on('click', addAttributeRow);
+
+        function addAttributeRow() {
+            let html = $('.product-select-attribute-item-template').html().replace(/__INDEX__/g, attrIndex++);
+            $('.list-product-attribute-items-wrap').append(html);
+        }
+
+        $(document).on('change', '.attr-set-select', function() {
+            let setId = $(this).val();
+            let $valSelect = $(this).closest('.attribute-row').find('.attr-val-select');
+            if (!setId) { $valSelect.prop('disabled', true).empty(); return; }
+            $valSelect.prop('disabled', false).html('<option value="">Searching...</option>');
+            $.get("{{ route('frontend.vendor.products.get-attribute-values') }}", { attribute_set_id: setId }, function(res) {
+                let options = '<option value="">Choose value...</option>';
+                res.data.forEach(v => options += `<option value="${v.id}">${v.name}</option>`);
+                $valSelect.html(options);
+            });
+        });
+
+        $(document).on('click', '.btn-remove-attr', function() { $(this).closest('.attribute-row').remove(); });
+
+        // Pricing Period Toggle
+        $('.turn-on-schedule').on('click', function() { $(this).hide(); $('.turn-off-schedule').show(); $('.scheduled-time').fadeIn(); $('.detect-schedule').val('1'); });
+        $('.turn-off-schedule').on('click', function() { $(this).hide(); $('.turn-on-schedule').show(); $('.scheduled-time').fadeOut(); $('.detect-schedule').val('0'); });
+
+        // Custom Options Repeater
+        let optionIndex = 0;
+        $('.add-new-option').on('click', function() { buildOptionForm(); });
+        
+        $('.add-from-global-option').on('click', function() {
+            let id = $('#global-option').val();
+            if (id == 0) return;
+            $.get("{{ route('frontend.vendor.products.get-global-option', '') }}/" + id, function(res) { buildOptionForm(res.data); });
+        });
+
+        function buildOptionForm(data = null) {
+            let id = optionIndex++;
+            let name = data ? data.name : '';
+            let type = data ? data.option_type : 'dropdown';
+            let req = data && data.required ? 'checked' : '';
+            let html = `
+                <div class="accordion-item border-0 mb-3 rounded-3 shadow-sm overflow-hidden" id="option-${id}">
+                    <h2 class="accordion-header"><button class="accordion-button py-2 bg-light-subtle small fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-opt-${id}"><i class="fas fa-list-check me-2 opacity-75"></i>${name || 'Variation Group'}</button></h2>
+                    <div id="collapse-opt-${id}" class="accordion-collapse collapse show"><div class="accordion-body p-3 bg-white border">
+                        <div class="row g-2 mb-3">
+                            <div class="col-md-6"><label class="form-label small fw-bold">Option Label</label><input type="text" name="options[${id}][name]" class="form-control form-control-sm" value="${name}" required></div>
+                            <div class="col-md-4"><label class="form-label small fw-bold">Field Type</label><select name="options[${id}][option_type]" class="form-select form-select-sm"><option value="dropdown" ${type=='dropdown'?'selected':''}>Select Menu</option><option value="checkbox" ${type=='checkbox'?'selected':''}>Checkbox List</option></select></div>
+                            <div class="col-md-2 d-flex align-items-end pb-1"><label class="form-check mb-0 x-small fw-bold"><input type="checkbox" name="options[${id}][required]" class="form-check-input" ${req}><span class="form-check-label ms-1">MANDATORY</span></label></div>
+                        </div>
+                        <div class="option-values-container"><table class="table table-sm table-borderless mb-0"><thead><tr class="x-small text-muted fw-bold"><th>VALUE LABEL</th><th>FEE</th><th>MODE</th><th></th></tr></thead><tbody id="val-body-${id}"></tbody></table><button type="button" class="btn btn-sm text-primary p-0 fw-bold add-val-btn mt-2" data-opt-id="${id}">+ ADD ROW</button></div>
+                        <div class="text-end border-top mt-3 pt-2"><button type="button" class="btn btn-sm btn-link text-danger p-0 fw-bold text-decoration-none" onclick="$('#option-${id}').remove()">DESTROY BLOCK</button></div>
+                    </div></div>
+                </div>`;
+            $('#accordion-product-option').append(html);
+            if (data && data.values) data.values.forEach(v => addOptionValue(id, v)); else addOptionValue(id);
+        }
+
+        $(document).on('click', '.add-val-btn', function() { addOptionValue($(this).data('opt-id')); });
+
+        function addOptionValue(optId, data = null) {
+            let rowId = Date.now() + Math.random();
+            let val = data ? data.option_value : '';
+            let pr = data ? data.affect_price : 0;
+            let ty = data ? data.affect_type : '0';
+            let row = `<tr class="align-middle">
+                <td class="ps-0"><input type="text" name="options[${optId}][values][${rowId}][option_value]" class="form-control form-control-sm" value="${val}" required></td>
+                <td><input type="number" name="options[${optId}][values][${rowId}][affect_price]" class="form-control form-control-sm" value="${pr}"></td>
+                <td><select name="options[${optId}][values][${rowId}][affect_type]" class="form-select form-select-sm"><option value="0" ${ty=='0'?'selected':''}>₹ FIXED</option><option value="1" ${ty=='1'?'selected':''}>% PERCENT</option></select></td>
+                <td class="text-end pe-0"><button type="button" class="btn btn-sm text-muted p-0 opacity-50" onclick="$(this).closest('tr').remove()"><i class="fas fa-times"></i></button></td></tr>`;
+            $(`#val-body-${optId}`).append(row);
+        }
+
+        // Linked Products AJAX Search
         $('.box-search-input').on('keyup', function() {
-            let $input = $(this);
-            let target = $input.data('target');
-            let $results = $input.next('.box-search-results');
-            let query = $input.val();
-            if (query.length < 2) { $results.hide(); return; }
-            $.get("{{ route('frontend.vendor.products.get-relations') }}", { search: query }, function(res) {
-                let html = res.data.map(p => `<a href="#" class="list-group-item list-group-item-action select-relation" data-id="${p.id}" data-name="${p.name}" data-image="${p.image}">${p.name}</a>`).join('');
-                $results.html(html || '<div class="list-group-item">No results</div>').show();
+            let $input = $(this); let $res = $input.next('.box-search-results'); let q = $input.val();
+            if (q.length < 2) { $res.hide(); return; }
+            $.get("{{ route('frontend.vendor.products.get-relations') }}", { search: q }, function(res) {
+                let html = res.data.map(p => `<a href="#" class="list-group-item list-group-item-action py-2 select-relation d-flex align-items-center" data-id="${p.id}" data-name="${p.name}" data-image="${p.image}"><img src="${p.image || '/vendor/core/core/base/images/placeholder.png'}" width="30" height="30" class="rounded me-2 border-primary-subtle"><span class="small fw-bold">${p.name}</span></a>`).join('');
+                $res.html(html || '<div class="list-group-item small text-center italic text-muted">No matches</div>').show();
             });
         });
 
         $(document).on('click', '.select-relation', function(e) {
-            e.preventDefault();
-            let p = $(this).data();
-            let $list = $(this).closest('.card-body').find('.list-group').last();
+            e.preventDefault(); let p = $(this).data(); let $list = $('#selected-related-products');
             if ($list.find(`input[value="${p.id}"]`).length) return;
-            $list.append(`<div class="list-group-item d-flex justify-content-between align-items-center"><span>${p.name}</span><input type="hidden" name="related_products[]" value="${p.id}"><button type="button" class="btn btn-sm text-danger remove-relation">&times;</button></div>`);
+            $list.show().append(`<div class="list-group-item d-flex justify-content-between align-items-center py-2 bg-info bg-opacity-10 border-0 border-bottom border-info-subtle"><span><img src="${p.image}" width="22" height="22" class="rounded me-2 border"><span class="small fw-bold text-info">${p.name}</span></span><input type="hidden" name="related_products[]" value="${p.id}"><button type="button" class="btn btn-sm text-danger p-0 border-0" onclick="$(this).parent().remove()"><i class="fas fa-trash-alt"></i></button></div>`);
             $(this).parent().hide();
         });
 
-        $(document).on('click', '.remove-relation', function() { $(this).parent().remove(); });
+        // FAQ Repeater
+        let faqIdx = 0;
+        $('.add-faq-item').on('click', function() { addFaq(); });
+        function addFaq(q = '', a = '') {
+            let id = faqIdx++;
+            let h = `<div class="faq-item p-3 mb-3 bg-white rounded-3 shadow-sm border border-info border-opacity-25" id="faq-${id}">
+                <div class="mb-3"><label class="x-small fw-bold opacity-50 mb-1">PROMPT / QUESTION</label><input type="text" name="faq_schema_config[${id}][question]" class="form-control form-control-sm border-0 bg-info bg-opacity-10 shadow-none" value="${q}"></div>
+                <div class="mb-1"><label class="x-small fw-bold opacity-50 mb-1">DETAILED ANSWER</label><textarea name="faq_schema_config[${id}][answer]" class="form-control form-control-sm border-0 bg-info bg-opacity-10 shadow-none" rows="2">${a}</textarea></div>
+                <div class="text-end"><button type="button" class="btn btn-sm text-danger p-0 fw-bold x-small text-decoration-none" onclick="$('#faq-${id}').remove()">ERASE RECORD</button></div></div>`;
+            $('#faq-repeater').append(h);
+        }
 
-        // Storehouse Management Toggle
-        $(document).on('change', '.storehouse-management-status', function() {
-            if ($(this).prop('checked')) {
-                $('.storehouse-info').show();
-                $('.stock-status-wrapper').hide();
-            } else {
-                $('.storehouse-info').hide();
-                $('.stock-status-wrapper').show();
+        // Inventory Management Toggle
+        $('.storehouse-management-status').on('change', function() { 
+            $('.storehouse-info').fadeToggle($(this).prop('checked')); 
+            $('.stock-status-wrapper').fadeToggle(!$(this).prop('checked')); 
+        });
+
+        // Form Submit via AJAX
+        $('#botble-ecommerce-forms-product-form').validate({
+            rules: { name: { required: true } },
+            submitHandler: function(form) {
+                if (typeof CKEDITOR !== 'undefined') for(i in CKEDITOR.instances) CKEDITOR.instances[i].updateElement();
+                $.ajax({
+                    url: $(form).attr('action'), type: 'POST', data: new FormData(form), processData: false, contentType: false,
+                    beforeSend: function() { Swal.fire({ title: 'Deploying Listing...', html: 'Synchronizing assets and meta-records.', allowOutsideClick: false, didOpen: () => { Swal.showLoading() } }); },
+                    success: function(res) { if(res.status) { Swal.fire({ icon:'success', title:'Listing Active!', text:res.message, confirmButtonColor: '#0081ff' }).then(() => { window.location.href = res.redirect; }); } else { Swal.fire('Error', res.message, 'error'); } },
+                    error: function(xhr) { Swal.fire('Deployment Failed', 'Check connectivity and required fields.', 'error'); }
+                });
             }
-        });
-
-        // Price Schedule Toggle
-        $(document).on('click', '.turn-on-schedule', function() {
-            $(this).hide();
-            $('.turn-off-schedule').show();
-            $('.scheduled-time').show();
-            $('.detect-schedule').val('1');
-        });
-
-        $(document).on('click', '.turn-off-schedule', function() {
-            $(this).hide();
-            $('.turn-on-schedule').show();
-            $('.scheduled-time').hide();
-            $('.detect-schedule').val('0');
         });
     });
 </script>

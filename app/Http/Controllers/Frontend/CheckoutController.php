@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\EcProduct;
 use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Models\OrderAddress;
 use App\Models\Customer;
+use App\Models\Payment;
+use App\Services\InvoiceService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -136,7 +139,6 @@ class CheckoutController extends Controller
                 $subtotal += $item['price'] * $item['quantity'];
             }
 
-            // 1. Calculate Discount
             $discountAmount = 0;
             $couponCode = Session::get('applied_coupon');
             if ($couponCode) {
@@ -147,36 +149,42 @@ class CheckoutController extends Controller
                     } else {
                         $discountAmount = $discount->value;
                     }
-                    // Increment usage count
                     $discount->increment('total_used');
                 }
             }
 
-            // 2. Fetch Dynamic Tax
             $taxItem = Tax::where('status', 'published')->orderBy('priority', 'desc')->first();
             $taxPercentage = $taxItem ? $taxItem->percentage : 0;
             
-            // 3. Calculate Tax on Discounted Subtotal
             $taxableSubtotal = max(0, $subtotal - $discountAmount);
             $tax = $taxableSubtotal * ($taxPercentage / 100);
             
             $shipping = 0;
             $total = $taxableSubtotal + $tax + $shipping;
-            // Generate unique #000000 style code
             do {
-                $code = '#' . str_pad(mt_rand(1, 999999), 6, '0', STR_PAD_LEFT);
+                $code = 'ORD' . str_pad(mt_rand(1, 99999999), 8, '0', STR_PAD_LEFT);
             } while (Order::where('code', $code)->exists());
 
-            // Generate unique token
             $token = \Illuminate\Support\Str::random(32);
 
-            // Get store_id from the first product in the cart
-            $firstCartItem = reset($cart);
-            $productModel = \App\Models\EcProduct::find($firstCartItem['id']);
-            $storeId = $productModel ? $productModel->store_id : null;
+            // Identify store for the order (scanning all items for parent store)
+            $storeId = null;
+            foreach ($cart as $cartItem) {
+                $product = EcProduct::find($cartItem['id']);
+                if ($product) {
+                    if ($product->store_id) {
+                        $storeId = $product->store_id;
+                    } elseif ($product->is_variation) {
+                        $parent = \App\Models\ProductVariation::getParentOfVariation($product->id);
+                        if ($parent && $parent->store_id) {
+                            $storeId = $parent->store_id;
+                        }
+                    }
+                }
+                if ($storeId) break;
+            }
 
-            // Create Payment
-            $payment = \App\Models\Payment::create([
+            $payment = Payment::create([
                 'currency' => 'INR',
                 'user_id' => $this->getUserId() ?? 0,
                 'payment_channel' => $request->input('payment_method', 'cod'),
@@ -188,7 +196,6 @@ class CheckoutController extends Controller
                 'customer_type' => 'App\\Models\\Customer',
             ]);
 
-            // Create order
             $order = Order::create([
                 'user_id' => $this->getUserId(),
                 'code' => $code,
@@ -208,10 +215,8 @@ class CheckoutController extends Controller
                 'store_id' => $storeId,
             ]);
 
-            // Link order to payment
             $payment->update(['order_id' => $order->id]);
 
-            // Create order items and update inventory
             foreach ($cart as $item) {
                 OrderProduct::create([
                     'order_id' => $order->id,
@@ -223,8 +228,7 @@ class CheckoutController extends Controller
                     'tax_amount' => 0,
                 ]);
 
-                // Update Product Inventory
-                $product = \App\Models\EcProduct::find($item['id']);
+                $product = EcProduct::find($item['id']);
                 if ($product && $product->with_storehouse_management) {
                     $newQty = max(0, $product->quantity - $item['quantity']);
                     $product->quantity = $newQty;
@@ -237,7 +241,6 @@ class CheckoutController extends Controller
                 }
             }
 
-            // Create shipping address
             OrderAddress::create([
                 'order_id' => $order->id,
                 'name' => $addressData['name'],
@@ -251,7 +254,6 @@ class CheckoutController extends Controller
                 'type' => 'shipping',
             ]);
 
-            // If billing address is different
             if (!$request->input('billing_address_same_as_shipping_address')) {
                 $billingData = $request->input('billing_address', []);
                 if (!empty($billingData['name'])) {
@@ -272,11 +274,8 @@ class CheckoutController extends Controller
 
             DB::commit();
 
-            // Generate Invoice automatically
-            \App\Services\InvoiceService::createInvoiceFromOrder($order);
+            InvoiceService::createInvoiceFromOrder($order);
 
-            // Clear cart
-            // Clear cart and coupon
             Session::forget(['cart', 'applied_coupon']);
 
             return redirect()->route('frontend.checkout.success')

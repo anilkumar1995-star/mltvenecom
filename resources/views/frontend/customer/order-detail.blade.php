@@ -54,12 +54,69 @@
                         <div class="col-lg-9 col-xl-9">
                             <div class="bb-profile-content p-4 p-md-5">
                                 <div class="bb-profile-header mb-4 d-flex justify-content-between align-items-center">
-                                    <h1 class="bb-profile-header-title h3 mb-0"> Order Details #{{ $order->id }} </h1>
+                                    <h1 class="bb-profile-header-title h3 mb-0"> Order Details ({{ $order->code }}) </h1>
                                     <a href="{{ route('frontend.customer.orders') }}" class="btn btn-outline-secondary btn-sm">
                                         Back to Orders
                                     </a>
                                 </div>
                                 <div class="bb-profile-main">
+                                    {{-- Order Timeline --}}
+                                    <div class="card border-0 shadow-sm rounded-3 mb-4 overflow-hidden">
+                                        <div class="card-header bg-primary text-white py-3">
+                                            <h5 class="mb-0 fw-bold">Track Your Order Progress</h5>
+                                        </div>
+                                        <div class="card-body p-4 bg-light bg-opacity-10">
+                                            <div class="order-tracking-timeline">
+                                                @php
+                                                    $steps = [
+                                                        ['status' => 'pending', 'icon' => 'shopping-cart', 'label' => 'Placed'],
+                                                        ['status' => 'processing', 'icon' => 'cog', 'label' => 'Processing'],
+                                                        ['status' => 'shipped', 'icon' => 'truck', 'label' => 'Shipped'],
+                                                        ['status' => 'completed', 'icon' => 'check-circle', 'label' => 'Delivered']
+                                                    ];
+                                                    
+                                                    // Determine the current step index
+                                                    $currentStepIdx = 0;
+                                                    foreach($steps as $idx => $step) {
+                                                        if($order->status == $step['status']) $currentStepIdx = $idx;
+                                                    }
+                                                    if($order->status == 'completed') $currentStepIdx = 3;
+                                                    if($order->status == 'canceled') $currentStepIdx = -1;
+                                                @endphp
+
+                                                <div class="timeline-steps d-flex justify-content-between position-relative">
+                                                    @foreach($steps as $idx => $step)
+                                                        @php
+                                                            $isActive = ($idx <= $currentStepIdx) && ($order->status != 'canceled');
+                                                            $isCurrent = ($idx == $currentStepIdx);
+                                                        @endphp
+                                                        <div class="timeline-step text-center flex-fill position-relative z-index-1">
+                                                            <div class="timeline-icon mx-auto mb-2 rounded-circle d-flex align-items-center justify-content-center shadow-sm 
+                                                                {{ $isActive ? 'bg-primary text-white' : 'bg-white text-muted border' }} 
+                                                                {{ $isCurrent ? 'pulse-primary' : '' }}" 
+                                                                style="width: 45px; height: 45px;">
+                                                                <i class="fas fa-{{ $step['icon'] }}"></i>
+                                                            </div>
+                                                            <div class="timeline-label small fw-bold {{ $isActive ? 'text-primary' : 'text-muted' }}">
+                                                                {{ $step['label'] }}
+                                                            </div>
+                                                        </div>
+                                                    @endforeach
+                                                    
+                                                    {{-- Progress Line --}}
+                                                    <div class="position-absolute top-50 start-0 translate-middle-y w-100 bg-secondary bg-opacity-25" style="height: 4px; z-index: 0; margin-top: -12px;">
+                                                        <div class="bg-primary h-100 transition-all" style="width: {{ $order->status == 'canceled' ? '0' : ($currentStepIdx * 33.33) }}%;"></div>
+                                                    </div>
+                                                </div>
+
+                                                @if($order->status == 'canceled')
+                                                    <div class="mt-4 p-2 bg-danger bg-opacity-10 rounded border border-danger text-danger text-center fw-bold small">
+                                                        <i class="fas fa-times-circle me-1"></i> THIS ORDER HAS BEEN CANCELED
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
                                     
                                     <div class="card border-0 shadow-sm rounded-3 mb-4">
                                         <div class="card-body p-4 d-flex justify-content-between">
@@ -97,19 +154,20 @@
                                                         <tr>
                                                             <td class="ps-4 py-3">
                                                                 <div class="d-flex align-items-center gap-3">
-                                                                    @if($item->product && $item->product->image)
-                                                                        <img src="{{ $item->product->image_url }}" alt="{{ $item->product->name }}" class="rounded shadow-sm" width="50" height="50" style="object-fit:cover;">
-                                                                    @else
-                                                                        <div class="bg-light rounded d-flex align-items-center justify-content-center" style="width:50px; height:50px;">
-                                                                            <svg class="icon text-muted" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-                                                                                <circle cx="8.5" cy="8.5" r="1.5" />
-                                                                                <polyline points="21 15 16 10 5 21" />
-                                                                            </svg>
-                                                                        </div>
-                                                                    @endif
+                                                                    @php
+                                                                        $pImg = $item->product_image ?: ($item->product ? $item->product->image : null);
+                                                                        $pImgUrl = $pImg ? (str_starts_with($pImg, 'http') ? $pImg : rtrim(\App\Helpers\ImageHelper::getImageUrl(), '/') . '/' . ltrim($pImg, '/')) : asset('home/placeholder.png');
+                                                                    @endphp
+                                                                    <img src="{{ $pImgUrl }}" alt="{{ $item->product_name }}" class="rounded shadow-sm" width="50" height="50" style="object-fit:cover;">
                                                                     <div>
-                                                                        <h6 class="mb-0 fw-semibold">{{ $item->product ? $item->product->name : 'Product Not Found' }}</h6>
+                                                                        <h6 class="mb-0 fw-semibold text-wrap">{{ $item->product_name ?: ($item->product ? $item->product->name : 'Product Not Found') }}</h6>
+                                                                        @if($item->options)
+                                                                            <div class="text-muted small">
+                                                                                @foreach($item->options as $key => $value)
+                                                                                    {{ ucfirst($key) }}: {{ $value }}@if(!$loop->last), @endif
+                                                                                @endforeach
+                                                                            </div>
+                                                                        @endif
                                                                     </div>
                                                                 </div>
                                                             </td>
@@ -125,10 +183,45 @@
                                                         <td class="pe-4 py-3 text-end fw-bold text-primary">₹{{ number_format($order->amount, 2) }}</td>
                                                     </tr>
                                                 </tfoot>
-                                            </table>
+                                    </table>
                                         </div>
                                     </div>
 
+                                    <h5 class="fw-semibold mb-3 mt-4">Order History Log</h5>
+                                    <div class="card border-0 shadow-sm rounded-3 mb-4">
+                                        <div class="card-body p-0 text-start">
+                                            <ul class="list-group list-group-flush mb-0">
+                                                <li class="list-group-item bg-light-subtle d-flex justify-content-between align-items-center py-3">
+                                                    <div class="d-flex align-items-center text-start">
+                                                        <div class="bg-primary rounded-circle p-2 text-white me-3 d-flex align-items-center justify-content-center flex-shrink-0" style="width: 32px; height: 32px;">
+                                                            <i class="fas fa-plus small text-white"></i>
+                                                        </div>
+                                                        <div class="text-start">
+                                                            <div class="fw-bold fs-6">Order was created</div>
+                                                            <div class="text-muted small">Success: Listing generated in the system.</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-end small text-muted ms-2 flex-shrink-0">{{ $order->created_at->format('M d, H:i') }}</div>
+                                                </li>
+                                                @foreach($order->histories->sortByDesc('created_at') as $history)
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center py-3">
+                                                        <div class="d-flex align-items-center text-start">
+                                                            <div class="bg-info rounded-circle p-2 text-white me-3 d-flex align-items-center justify-content-center flex-shrink-0" style="width: 32px; height: 32px;">
+                                                                <i class="fas fa-edit small text-white"></i>
+                                                            </div>
+                                                            <div class="text-start">
+                                                                <div class="fw-bold fs-6 text-wrap">{{ $history->description }}</div>
+                                                                @if(isset($history->extras['vendor_name']))
+                                                                    <div class="text-muted small italic">Update provided by {{ $history->extras['vendor_name'] }}</div>
+                                                                @endif
+                                                            </div>
+                                                        </div>
+                                                        <div class="text-end small text-muted ms-2 flex-shrink-0">{{ $history->created_at->format('M d, H:i') }}</div>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -169,4 +262,18 @@
             @csrf
         </form>
     </main>
+@push('styles')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+    .pulse-primary { animation: pulse-primary-anim 2s infinite; }
+    @keyframes pulse-primary-anim {
+        0% { box-shadow: 0 0 0 0 rgba(13, 110, 253, 0.4); }
+        70% { box-shadow: 0 0 0 10px rgba(13, 110, 253, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(13, 110, 253, 0); }
+    }
+    .transition-all { transition: all 0.5s ease-in-out; }
+    .z-index-1 { z-index: 1; }
+    .italic { font-style: italic; }
+</style>
+@endpush
 @endsection

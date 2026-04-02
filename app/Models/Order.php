@@ -66,6 +66,11 @@ class Order extends Model
         return $this->belongsTo(Store::class, 'store_id');
     }
 
+    public function histories(): HasMany
+    {
+        return $this->hasMany(OrderHistory::class, 'order_id');
+    }
+
     // Helper Methods
     public function getTotalAmount(): float
     {

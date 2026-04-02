@@ -23,33 +23,39 @@ class CartController extends Controller
 
     public function add(Request $request)
     {
-        // if (!auth()->guard('customer')->check() && !auth()->guard('web')->check()) {
-        //     if (!$request->ajax()) {
-        //         session(['url.intended' => url()->previous()]);
-        //         return redirect()->route('login');
-        //     }
-        //      return response()->json(['error' => 'Unauthenticated', 'url' => route('login')], 401);
-        // }
-
-        $product = EcProduct::findOrFail($request->product_id);
+        $product_ids = $request->input('product_ids');
+        if (!is_array($product_ids)) {
+            $product_ids = [$request->input('product_id')];
+        }
 
         $cart = Session::get('cart', []);
         $quantity = $request->quantity ?? 1;
+        $added_count = 0;
 
-        if (isset($cart[$product->id])) {
-            $cart[$product->id]['quantity'] += $quantity;
-        } else {
-            $cart[$product->id] = [
-                'id' => $product->id,
-                'name' => $product->name,
-                'price' => $product->final_price,
-                'quantity' => $quantity,
-                'image' => $product->image,
-                'slug' => $product->slug ?: $product->id,
-            ];
+        foreach ($product_ids as $id) {
+            if (!$id) continue;
+            
+            $product = EcProduct::where('id', $id)->first();
+            if (!$product) continue;
+
+            if (isset($cart[$product->id])) {
+                $cart[$product->id]['quantity'] += $quantity;
+            } else {
+                $cart[$product->id] = [
+                    'id' => $product->id,
+                    'name' => $product->name,
+                    'price' => $product->final_price,
+                    'quantity' => $quantity,
+                    'image' => $product->image,
+                    'slug' => $product->slug ?: $product->id,
+                ];
+            }
+            $added_count++;
         }
 
-        Session::put('cart', $cart);
+        if ($added_count > 0) {
+            Session::put('cart', $cart);
+        }
 
         if ($request->ajax()) {
             $total = 0;
@@ -58,14 +64,14 @@ class CartController extends Controller
             }
             return response()->json([
                 'success' => true,
-                'message' => 'Product added to cart!',
+                'message' => $added_count > 1 ? 'Bundle added to cart!' : 'Product added to cart!',
                 'count' => count($cart),
                 'subtotal' => $total,
                 'html' => view('frontend.partials.mini-cart')->render(),
             ]);
         }
 
-        return back()->with('success', 'Product added to cart!');
+        return back()->with('success', $added_count > 1 ? 'Bundle added to cart!' : 'Product added to cart!');
     }
 
     public function update(Request $request)

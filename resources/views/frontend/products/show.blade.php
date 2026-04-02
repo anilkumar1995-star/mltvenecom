@@ -182,10 +182,10 @@
                     <div class="product-custom-gallery">
                         <div class="product-thumbnails">
                             @if($product->image)
-                                <img src="{{ $product->image_url }}" class="active" onclick="changeMainImage(this.src)">
+                                <img src="{{ $product->image_url }}" class="active" onclick="changeMainImage(this.src, this)">
                             @endif
                             @foreach($product->gallery_image_urls as $imgUrl)
-                                <img src="{{ $imgUrl }}" onclick="changeMainImage(this.src)">
+                                <img src="{{ $imgUrl }}" onclick="changeMainImage(this.src, this)">
                             @endforeach
                         </div>
                         <div class="product-main-image">
@@ -204,7 +204,7 @@
                             <a href="#" class="product-brand">{{ $product->brand->name }}</a>
                         @endif
 
-                        <h3 class="product__details-title">{{ $product->name }}</h3>
+                        <h3 class="product__details-title">{{ $product->name }} @if($product->weight) <small class="text-muted" style="font-size: 18px; font-weight: 400;">({{ $product->weight }}{{ $product->weight > 999 ? 'kg' : 'g' }})</small> @endif</h3>
                         
                         <div class="product__details-rating d-flex align-items-center mb-3">
                             <div class="rating-star me-2">
@@ -356,6 +356,9 @@
 
                         <div class="product__details-meta">
                             <div class="mb-2"><strong>SKU:</strong> {{ $product->sku ?? 'N/A' }}</div>
+                            @if($product->barcode)
+                                <div class="mb-2"><strong>Barcode:</strong> {{ $product->barcode }}</div>
+                            @endif
                             <div class="mb-2"><strong>Category:</strong> 
                                 @foreach($product->categories as $category)
                                     <a href="{{ route('frontend.categories.show', $category->slug) }}" class="text-muted">{{ $category->name }}</a>{{ !$loop->last ? ',' : '' }}
@@ -371,20 +374,20 @@
                                 <a href="#"><i class="fab fa-facebook-f"></i></a>
                                 <a href="#"><i class="fab fa-twitter"></i></a>
                                 <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                                <a href="#"><i class="fab fa-pinterest-p"></i></a>
+                                <a href="#"><i class="fab fa-whatsapp"></i></a>
                             </div>
                         </div>
                         
                         <div class="tp-product-details-msg">
                             <ul>
-                                <li><i class="fas fa-check-circle"></i> 30 days easy returns</li>
-                                <li><i class="fas fa-check-circle"></i> Order yours before 2.30pm for same day dispatch</li>
-                                <li><i class="fas fa-check-circle"></i> Guaranteed safe & secure checkout</li>
+                                <li> 30 days easy returns</li>
+                                <li> Order yours before 2.30pm for same day dispatch</li>
+                                <li> Guaranteed safe & secure checkout</li>
                             </ul>
                         </div>
 
                         <div class="tp-product-details-payment">
-                            <img src="{{ asset('home/payment-option.png') }}" alt="Payment">
+                            <img src="{{ asset('home/footer-pay.png') }}" alt="Payment">
                         </div>
                     </div>
                 </div>
@@ -397,13 +400,17 @@
                     <div class="tp-frequently-bought-wrapper mb-4">
                         <h4 class="tp-frequently-bought-header mb-4">Frequently Bought Together</h4>
                         
-                        <form action="{{ route('frontend.cart.add') }}" method="POST" class="d-flex flex-wrap align-items-center gap-3">
+                        <form id="frequently-bought-form" action="{{ route('frontend.cart.add') }}" method="POST" class="d-flex flex-wrap align-items-center gap-3">
                             @csrf
-                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                            <input type="hidden" name="product_ids[]" value="{{ $product->id }}">
+                            
                             <!-- Main Product Card -->
                             <div class="tp-frequently-card">
+                                <div class="tp-frequently-check">
+                                    <input type="checkbox" checked disabled>
+                                </div>
                                 <div class="tp-frequently-img-wrapper">
-                                    <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="img-fluid">
+                                    <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="img-fluid">
                                 </div>
                                 <div class="tp-frequently-content">
                                     <h6 class="tp-frequently-title text-truncate" style="max-width: 150px;" title="{{ $product->name }}">{{ $product->name }}</h6>
@@ -419,6 +426,10 @@
                             <!-- Cross Sell Products -->
                             @foreach($product->crossSellingProducts as $crossProduct)
                                 <div class="tp-frequently-card">
+                                    <div class="tp-frequently-check">
+                                        <input type="checkbox" name="product_ids[]" value="{{ $crossProduct->id }}" 
+                                            class="bundle-checkbox" data-price="{{ $crossProduct->final_price }}" checked>
+                                    </div>
                                     <div class="tp-frequently-img-wrapper">
                                         <img src="{{ asset('storage/' . $crossProduct->image) }}" alt="{{ $crossProduct->name }}" class="img-fluid">
                                     </div>
@@ -440,13 +451,15 @@
                                 <div class="tp-frequently-total mb-2 text-end">
                                     <span class="text-muted">Total Price:</span>
                                     <span class="fw-bold text-dark fs-5">
-                                        @php
-                                            $totalBundlePrice = $product->final_price;
-                                            foreach($product->crossSellingProducts as $crossProduct) {
-                                                $totalBundlePrice += $crossProduct->final_price;
-                                            }
-                                        @endphp
-                                        ₹{{ number_format($totalBundlePrice, 2) }}
+                                        <span id="bundle-total-price" data-base-price="{{ $product->final_price }}">
+                                            @php
+                                                $totalBundlePrice = $product->final_price;
+                                                foreach($product->crossSellingProducts as $crossProduct) {
+                                                    $totalBundlePrice += $crossProduct->final_price;
+                                                }
+                                            @endphp
+                                            ₹{{ number_format($totalBundlePrice, 2) }}
+                                        </span>
                                     </span>
                                 </div>
                                 <button type="submit" class="tp-btn-dark w-100">Add Bundle To Cart</button>
@@ -515,6 +528,22 @@
                             background-color: #678E61;
                             color: #fff;
                         }
+                        .tp-frequently-check {
+                            flex-shrink: 0;
+                        }
+                        .tp-frequently-check input {
+                            width: 18px;
+                            height: 18px;
+                            cursor: pointer;
+                            accent-color: #678E61;
+                        }
+                        .tp-frequently-card.unchecked {
+                            opacity: 0.6;
+                            background-color: #f5f5f5;
+                        }
+                        .tp-frequently-card.unchecked .tp-frequently-price {
+                            color: #999;
+                        }
                     </style>
                 </div>
             </div>
@@ -550,14 +579,30 @@
                             <div class="tab-pane fade" id="spec" role="tabpanel" aria-labelledby="spec-tab">
                                 <table class="table table-bordered">
                                     <tbody>
+                                        @if($product->weight)
                                         <tr>
                                             <th>Weight</th>
-                                            <td>{{ $product->weight }} {{ $product->weight_unit ?? 'kg' }}</td>
+                                            <td>{{ $product->weight }} {{ $product->weight > 999 ? 'kg' : 'g' }}</td>
                                         </tr>
+                                        @endif
+                                        @if($product->sku)
+                                        <tr>
+                                            <th>SKU</th>
+                                            <td>{{ $product->sku }}</td>
+                                        </tr>
+                                        @endif
+                                        @if($product->barcode)
+                                        <tr>
+                                            <th>Barcode</th>
+                                            <td>{{ $product->barcode }}</td>
+                                        </tr>
+                                        @endif
+                                        @if($product->length || $product->wide || $product->height)
                                         <tr>
                                             <th>Dimensions</th>
-                                            <td>{{ $product->length }}x{{ $product->wide }}x{{ $product->height }}</td>
+                                            <td>{{ $product->length }}x{{ $product->wide }}x{{ $product->height }} cm</td>
                                         </tr>
+                                        @endif
                                     </tbody>
                                 </table>
                             </div>
@@ -621,10 +666,40 @@
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="vendor" role="tabpanel" aria-labelledby="vendor-tab">
-                                <p class="text-muted">Vendor information not available.</p>
+                                @if($product->store)
+                                    <div class="d-flex align-items-center gap-3">
+                                        <img src="{{ $product->store->logo_url }}" style="width: 80px; height: 80px; border-radius: 50%; border: 1px solid #e1e1e1;">
+                                        <div>
+                                            <h5 class="mb-0">{{ $product->store->name }}</h5>
+                                            <p class="mb-0 text-muted">{{ $product->store->address }}</p>
+                                            <a href="{{ route('frontend.stores.show', $product->store->slug) }}" class="text-primary small fw-bold">Visit Store →</a>
+                                        </div>
+                                    </div>
+                                @else
+                                    <p class="text-muted">Vendor information not available.</p>
+                                @endif
                             </div>
                             <div class="tab-pane fade" id="faq" role="tabpanel" aria-labelledby="faq-tab">
-                                <p class="text-muted">No FAQs found.</p>
+                                @if($product->faq_schema_config && count($product->faq_schema_config))
+                                    <div class="accordion" id="faqAccordion">
+                                        @foreach($product->faq_schema_config as $index => $faq)
+                                            <div class="accordion-item border-0 mb-3 shadow-sm rounded">
+                                                <h2 class="accordion-header" id="faq-heading-{{ $index }}">
+                                                    <button class="accordion-button rounded {{ $loop->first ? '' : 'collapsed' }}" type="button" data-bs-toggle="collapse" data-bs-target="#faq-collapse-{{ $index }}">
+                                                        {{ $faq['question'] }}
+                                                    </button>
+                                                </h2>
+                                                <div id="faq-collapse-{{ $index }}" class="accordion-collapse collapse {{ $loop->first ? 'show' : '' }}" data-bs-parent="#faqAccordion">
+                                                    <div class="accordion-body text-muted">
+                                                        {{ $faq['answer'] }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    <p class="text-muted">No FAQs found for this product.</p>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -700,44 +775,53 @@
 
     @push('scripts')
     <script>
-        function changeMainImage(src) {
-            document.getElementById('mainImage').src = src;
-            // Also update active state of thumbnail
-            document.querySelectorAll('.product-thumbnails img').forEach(img => img.classList.remove('active'));
-            event.target.classList.add('active');
+        function changeMainImage(src, element) {
+            const mainImg = document.getElementById('mainImage');
+            if (mainImg) mainImg.src = src;
+            
+            // Update active state of thumbnail
+            document.querySelectorAll('.product-thumbnails img').forEach(img => {
+                img.classList.remove('active');
+            });
+            if (element) element.classList.add('active');
         }
 
         function incrementValue() {
-            var value = parseInt(document.getElementById('qty').value, 10);
+            const qtyInput = document.getElementById('qty');
+            if (!qtyInput) return;
+            let value = parseInt(qtyInput.value, 10);
             value = isNaN(value) ? 1 : value;
-            if(value < {{ $product->quantity }}) {
+            const max = parseInt('{{ $product->quantity ?? 0 }}', 10);
+            if(value < max) {
                 value++;
-                document.getElementById('qty').value = value;
+                qtyInput.value = value;
             }
         }
 
         function decrementValue() {
-            var value = parseInt(document.getElementById('qty').value, 10);
+            const qtyInput = document.getElementById('qty');
+            if (!qtyInput) return;
+            let value = parseInt(qtyInput.value, 10);
             value = isNaN(value) ? 1 : value;
             if(value > 1) {
                 value--;
-                document.getElementById('qty').value = value;
+                qtyInput.value = value;
             }
         }
 
-        // Countdown Timer
         document.addEventListener('DOMContentLoaded', function() {
+            // Countdown Timer
             const timer = document.getElementById('countdown-timer');
-            if (timer) {
+            if (timer && timer.dataset.endDate) {
                 const endDate = new Date(timer.dataset.endDate).getTime();
-                
                 const interval = setInterval(function() {
                     const now = new Date().getTime();
                     const distance = endDate - now;
 
                     if (distance < 0) {
                         clearInterval(interval);
-                        document.querySelector('.tp-product-details-countdown').style.display = 'none';
+                        const countdownArea = document.querySelector('.tp-product-details-countdown');
+                        if (countdownArea) countdownArea.style.display = 'none';
                         return;
                     }
 
@@ -746,82 +830,78 @@
                     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-                    document.getElementById('days').innerText = days < 10 ? '0' + days : days;
-                    document.getElementById('hours').innerText = hours < 10 ? '0' + hours : hours;
-                    document.getElementById('minutes').innerText = minutes < 10 ? '0' + minutes : minutes;
-                    document.getElementById('seconds').innerText = seconds < 10 ? '0' + seconds : seconds;
+                    const dEl = document.getElementById('days');
+                    const hEl = document.getElementById('hours');
+                    const mEl = document.getElementById('minutes');
+                    const sEl = document.getElementById('seconds');
+
+                    if (dEl) dEl.innerText = days < 10 ? '0' + days : days;
+                    if (hEl) hEl.innerText = hours < 10 ? '0' + hours : hours;
+                    if (mEl) mEl.innerText = minutes < 10 ? '0' + minutes : minutes;
+                    if (sEl) sEl.innerText = seconds < 10 ? '0' + seconds : seconds;
                 }, 1000);
             }
             
-            // Sticky Bar
-            document.addEventListener('scroll', function() {
-                const stickyBar = document.getElementById('stickyCartBar');
-                const trigger = document.querySelector('.product__details-action');
-                
-                if (trigger) {
+            // Sticky Bar Visibility
+            const stickyBar = document.getElementById('stickyCartBar');
+            const trigger = document.querySelector('.product__details-action');
+            if (stickyBar && trigger) {
+                document.addEventListener('scroll', function() {
                     const rect = trigger.getBoundingClientRect();
                     if (rect.top < 0) {
                         stickyBar.classList.add('visible');
                     } else {
                         stickyBar.classList.remove('visible');
                     }
-                }
-            });
+                });
+            }
 
-            // Review Star Rating
+            // Review Star Rating System
             const starItems = document.querySelectorAll('#star-rating-container .star-item');
             const starInput = document.getElementById('star-rating-input');
 
-            starItems.forEach(item => {
-                item.addEventListener('mouseenter', function() {
-                    const value = parseInt(this.getAttribute('data-value'));
-                    starItems.forEach(star => {
-                        const starValue = parseInt(star.getAttribute('data-value'));
-                        if (starValue <= value) {
-                            star.classList.add('hover');
-                        } else {
-                            star.classList.remove('hover');
-                        }
+            if (starItems.length > 0 && starInput) {
+                starItems.forEach(item => {
+                    item.addEventListener('mouseenter', function() {
+                        const val = parseInt(this.getAttribute('data-value'), 10);
+                        starItems.forEach(star => {
+                            const sVal = parseInt(star.getAttribute('data-value'), 10);
+                            star.classList.toggle('hover', sVal <= val);
+                        });
+                    });
+
+                    item.addEventListener('mouseleave', function() {
+                        starItems.forEach(star => star.classList.remove('hover'));
+                    });
+
+                    item.addEventListener('click', function() {
+                        const val = parseInt(this.getAttribute('data-value'), 10);
+                        starInput.value = val;
+                        starItems.forEach(star => {
+                            const sVal = parseInt(star.getAttribute('data-value'), 10);
+                            star.classList.toggle('active', sVal <= val);
+                        });
                     });
                 });
-
-                item.addEventListener('mouseleave', function() {
-                    starItems.forEach(star => star.classList.remove('hover'));
-                });
-
-                item.addEventListener('click', function() {
-                    const value = parseInt(this.getAttribute('data-value'));
-                    starInput.value = value;
-                    starItems.forEach(star => {
-                        const starValue = parseInt(star.getAttribute('data-value'));
-                        if (starValue <= value) {
-                            star.classList.add('active');
-                        } else {
-                            star.classList.remove('active');
-                        }
-                    });
-                });
-            });
+            }
 
             // AJAX Review Submission
             const reviewForm = document.getElementById('review-form');
             if (reviewForm) {
                 reviewForm.addEventListener('submit', function(e) {
                     e.preventDefault();
-                    
                     const submitBtn = document.getElementById('submit-review-btn');
+                    if (!submitBtn) return;
+
                     const originalText = submitBtn.innerText;
                     submitBtn.innerText = 'Submitting...';
                     submitBtn.disabled = true;
 
                     const formData = new FormData(this);
-
                     fetch(this.action, {
                         method: 'POST',
                         body: formData,
-                        headers: {
-                            'X-Requested-With': 'XMLHttpRequest'
-                        }
+                        headers: { 'X-Requested-With': 'XMLHttpRequest' }
                     })
                     .then(response => response.json())
                     .then(data => {
@@ -841,6 +921,39 @@
                         submitBtn.disabled = false;
                     });
                 });
+            }
+
+            // Bundle Price Calculation
+            const bundleForm = document.getElementById('frequently-bought-form');
+            if (bundleForm) {
+                const bundleCheckboxes = bundleForm.querySelectorAll('.bundle-checkbox');
+                const bundleTotalPriceSpan = document.getElementById('bundle-total-price');
+                
+                if (bundleTotalPriceSpan) {
+                    const basePrice = parseFloat(bundleTotalPriceSpan.dataset.basePrice) || 0;
+
+                    function updateBundleTotal() {
+                        let total = basePrice;
+                        bundleCheckboxes.forEach(cb => {
+                            const card = cb.closest('.tp-frequently-card');
+                            const price = parseFloat(cb.dataset.price) || 0;
+                            if (cb.checked) {
+                                total += price;
+                                if (card) card.classList.remove('unchecked');
+                            } else {
+                                if (card) card.classList.add('unchecked');
+                            }
+                        });
+                        bundleTotalPriceSpan.innerText = '₹' + total.toLocaleString('en-IN', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        });
+                    }
+
+                    bundleCheckboxes.forEach(cb => {
+                        cb.addEventListener('change', updateBundleTotal);
+                    });
+                }
             }
         });
     </script>
