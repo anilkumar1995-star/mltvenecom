@@ -150,7 +150,10 @@ class ProductController extends Controller
             'sku' => 'nullable|string|max:191|unique:ec_products,sku',
             'price' => 'nullable|numeric|min:0',
             'sale_price' => 'nullable|numeric|min:0',
-            'quantity' => 'nullable|integer|min:0',
+            'quantity' => 'nullable|numeric|min:0',
+            'weight' => 'nullable|numeric|min:0',
+            'minimum_order_quantity' => 'nullable|numeric|min:1',
+            'maximum_order_quantity' => 'nullable|numeric|min:0',
             'status' => 'required|string|max:60',
             'image_file' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -208,6 +211,9 @@ class ProductController extends Controller
             // 6. Save Options
             $this->saveOptions($product, $request);
 
+            // 6.5 Save Attributes & Variations
+            $this->saveAttributes($product, $request);
+
             // 7. Sync Relations & FAQs
             $this->syncProductRelations($product, $request);
 
@@ -258,7 +264,8 @@ class ProductController extends Controller
             'sku' => 'nullable|string|max:191|unique:ec_products,sku,' . $product->id,
             'price' => 'nullable|numeric|min:0',
             'sale_price' => 'nullable|numeric|min:0',
-            'quantity' => 'nullable|integer|min:0',
+            'quantity' => 'nullable|numeric|min:0',
+            'weight' => 'nullable|numeric|min:0',
             'status' => 'required|string|max:60',
             // ... keys
             'image_file' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -270,7 +277,7 @@ class ProductController extends Controller
         try {
             $data = $request->except(['image_file', 'images', 'video_file', 'options', 'related_products', 'up_selling_products', 'cross_selling_products', 'selected_existing_faqs']);
 
-            $data['slug'] = \Illuminate\Support\Str::slug($request->name);
+            // $data['slug'] = \Illuminate\Support\Str::slug($request->name);
 
             // Force Pending for Vendors
             if (auth()->check() && auth()->user()->role === 'vendor') {
@@ -321,6 +328,9 @@ class ProductController extends Controller
 
             // Save Options
             $this->saveOptions($product, $request);
+
+            // Save Attributes & Variations
+            $this->saveAttributes($product, $request);
 
             // Sync Relations & FAQs
             $this->syncProductRelations($product, $request);
@@ -407,6 +417,44 @@ class ProductController extends Controller
                         $value->order = $valueData['order'] ?? 0;
                         $value->save();
                     }
+                }
+            }
+        }
+    }
+
+    protected function saveAttributes($product, $request)
+    {
+        if ($request->has('attributes')) {
+            $attributeSets = [];
+            $attributes = [];
+            
+            foreach ($request->input('attributes') as $item) {
+                if (!empty($item['attribute_set_id'])) {
+                    $attributeSets[] = $item['attribute_set_id'];
+                }
+                if (!empty($item['attribute_id'])) {
+                    $attributes[] = $item['attribute_id'];
+                }
+            }
+
+            // 1. Sync Attribute Sets (Template)
+            if (method_exists($product, 'productAttributeSets')) {
+                $product->productAttributeSets()->sync(array_unique($attributeSets));
+            }
+
+            // 2. Handle Basic Variation Assignment
+            if (!empty($attributes)) {
+                // Find or create the first variation for this product
+                $variation = \App\Models\ProductVariation::firstOrCreate([
+                    'configurable_product_id' => $product->id
+                ], [
+                    'product_id' => $product->id, // Default to self
+                    'is_default' => 1
+                ]);
+
+                // Sync the attributes to this variation via the variation items table
+                if ($variation && method_exists($variation, 'productAttributes')) {
+                    $variation->productAttributes()->sync(array_unique($attributes));
                 }
             }
         }

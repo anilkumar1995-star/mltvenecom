@@ -66,7 +66,10 @@ class VendorOrderController extends Controller
 
         $request->validate(['status' => 'required|string']);
         $oldStatus = $order->status;
-        $order->update(['status' => $request->status]);
+        $order->update([
+            'status' => $request->status,
+            'is_finished' => 1
+        ]);
 
         // Sync Invoice
         \App\Services\InvoiceService::createInvoiceFromOrder($order);

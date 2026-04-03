@@ -273,6 +273,7 @@ class CheckoutController extends Controller
             }
 
             DB::commit();
+            $order->update(['is_finished' => 1]);
 
             InvoiceService::createInvoiceFromOrder($order);
 
@@ -298,13 +299,13 @@ class CheckoutController extends Controller
         $code = $request->input('coupon_code');
         
         if (!$code) {
-            return response()->json(['success' => false, 'message' => 'Please enter a coupon code.']);
+            return response()->json(['success' => false, 'error' => true, 'message' => 'Please enter a coupon code.']);
         }
 
         $discount = Discount::active()->available()->where('code', $code)->first();
 
         if (!$discount) {
-            return response()->json(['success' => false, 'message' => 'Invalid or expired coupon code.']);
+            return response()->json(['success' => false, 'error' => true, 'message' => 'Invalid or expired coupon code.']);
         }
 
         // Optional: Check min order price if applicable
@@ -315,12 +316,12 @@ class CheckoutController extends Controller
         }
 
         if ($discount->min_order_price && $subtotal < $discount->min_order_price) {
-            return response()->json(['success' => false, 'message' => 'Order subtotal must be at least ₹' . number_format($discount->min_order_price, 2) . ' to use this coupon.']);
+            return response()->json(['success' => false, 'error' => true, 'message' => 'Order subtotal must be at least ₹' . number_format($discount->min_order_price, 2) . ' to use this coupon.']);
         }
 
         Session::put('applied_coupon', $code);
 
-        return response()->json(['success' => true, 'message' => 'Coupon applied successfully!']);
+        return response()->json(['success' => true, 'error' => false, 'message' => 'Coupon applied successfully!']);
     }
 
     public function removeCoupon()

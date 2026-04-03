@@ -13,7 +13,7 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $query = EcProduct::published()
-            ->with(['brand', 'categories']);
+            ->with(['brand', 'categories', 'store']);
 
         // Filter by category
         if ($category_id = $request->get('category')) {
@@ -40,7 +40,7 @@ class ProductController extends Controller
                     $query->orWhere('id', $slug);
                 }
             })
-            ->with(['brand', 'categories', 'reviews.customer', 'tags'])
+            ->with(['brand', 'categories', 'reviews.customer', 'tags', 'store'])
             ->firstOrFail();
 
         // Increment views
@@ -75,7 +75,7 @@ class ProductController extends Controller
             ->whereHas('categories', function ($q) use ($allCategoryIds) {
                 $q->whereIn('ec_product_categories.id', $allCategoryIds);
             })
-            ->with(['brand', 'categories']);
+            ->with(['brand', 'categories', 'store']);
 
         $query = $this->applyFilters($query, $request);
 
@@ -193,7 +193,7 @@ class ProductController extends Controller
 
         $products = EcProduct::published()
             ->where('brand_id', $brand->id)
-            ->with(['brand', 'categories'])
+            ->with(['brand', 'categories', 'store'])
             ->paginate(12);
 
         return view('frontend.products.brand', compact('brand', 'products'));

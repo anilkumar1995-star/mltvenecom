@@ -736,7 +736,10 @@
     <script src="{{ asset('home/ecommerce.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-notify@0.5.5/dist/simple-notify.min.js"></script>
 
-    @include('frontend.partials.mini-cart')
+    <div class="cartmini__area">
+        @include('frontend.partials.mini-cart')
+    </div>
+    <div class="body-overlay"></div>
 
     <!-- Quick View Modal -->
     <div class="modal fade tp-product-modal" id="quickViewModal" tabindex="-1" aria-labelledby="quickViewModalLabel" aria-hidden="true">
@@ -789,11 +792,7 @@
 
             function refreshMiniCart(html) {
                 if (html) {
-                    var $temp = $('<div>').append($.parseHTML(html));
-                    var $newWrapper = $temp.find('.cartmini__wrapper');
-                    if ($newWrapper.length) {
-                        $('.cartmini__wrapper').html($newWrapper.html());
-                    }
+                    $('.cartmini__area').html(html);
                 }
             }
 
