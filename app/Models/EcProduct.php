@@ -100,6 +100,11 @@ class EcProduct extends Model
         return $this->hasMany(Option::class, 'product_id');
     }
 
+    public function variations(): HasMany
+    {
+        return $this->hasMany(ProductVariation::class, 'configurable_product_id');
+    }
+
     public function relatedProducts(): BelongsToMany
     {
         return $this->belongsToMany(
@@ -177,6 +182,16 @@ class EcProduct extends Model
             'ec_product_tag_product',
             'product_id',
             'tag_id'
+        );
+    }
+
+    public function productAttributeSets(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            ProductAttributeSet::class,
+            'ec_product_with_attribute_set',
+            'product_id',
+            'attribute_set_id'
         );
     }
 

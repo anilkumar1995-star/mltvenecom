@@ -204,7 +204,7 @@
                             <a href="#" class="product-brand">{{ $product->brand->name }}</a>
                         @endif
 
-                        <h3 class="product__details-title">{{ $product->name }} @if($product->weight) <small class="text-muted" style="font-size: 18px; font-weight: 400;">({{ $product->weight }}{{ $product->weight > 999 ? 'kg' : 'g' }})</small> @endif</h3>
+                        <h3 class="product__details-title">{{ $product->name }} @if($product->weight) <small class="text-muted" style="font-size: 18px; font-weight: 400;"></small> @endif</h3>
                         
                         <div class="product__details-rating d-flex align-items-center mb-3">
                             <div class="rating-star me-2">

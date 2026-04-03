@@ -754,8 +754,11 @@
                                     </div>
                                     <div class="tp-product-sm-content-5">
                                         <div class="tp-product-sm-tag-5">
-                                            <a href="{{ ($product->categories->first()->slug ?? null) ? route('frontend.categories.show', $product->categories->first()->slug) : '#' }}">
-                                                {{ $product->categories->first()->name ?? 'Uncategorized' }}
+                                            <a href="{{ ($product->store->slug ?? null) ? route('frontend.stores.show', $product->store->slug) : '#' }}">
+                                                {{ $product->store->name ?? 'Shofy Store' }}
+                                                @if ($product->store && $product->store->is_verified)
+                                                    <i class="fas fa-check-circle text-primary ms-1" style="font-size: 9px;"></i>
+                                                @endif
                                             </a>
                                         </div>
                                         <h4 class="tp-product-sm-title-5">
@@ -802,8 +805,11 @@
                                     </div>
                                     <div class="tp-product-sm-content-5">
                                         <div class="tp-product-sm-tag-5">
-                                            <a href="{{ ($product->categories->first()->slug ?? null) ? route('frontend.categories.show', $product->categories->first()->slug) : '#' }}">
-                                                {{ $product->categories->first()->name ?? 'Uncategorized' }}
+                                            <a href="{{ ($product->store->slug ?? null) ? route('frontend.stores.show', $product->store->slug) : '#' }}">
+                                                {{ $product->store->name ?? 'Shofy Store' }}
+                                                @if ($product->store && $product->store->is_verified)
+                                                    <i class="fas fa-check-circle text-primary ms-1" style="font-size: 9px;"></i>
+                                                @endif
                                             </a>
                                         </div>
                                         <h4 class="tp-product-sm-title-5">
@@ -983,7 +989,12 @@
                                             </h3>
                                             @if($product->store)
                                             <div class="tp-product-store-name">
-                                                <span style="font-size: 12px; color: #678E61; font-weight: 600;">{{ $product->store->name }}</span>
+                                                <a href="{{ route('frontend.stores.show', $product->store->slug) }}" style="font-size: 12px; color: #678E61; font-weight: 600;">
+                                                    {{ $product->store->name }}
+                                                    @if ($product->store->is_verified)
+                                                        <i class="fas fa-check-circle text-primary ms-1" style="font-size: 10px;"></i>
+                                                    @endif
+                                                </a>
                                             </div>
                                             @endif
                                             <div class="tp-product-rating-icon-2 mb-5">

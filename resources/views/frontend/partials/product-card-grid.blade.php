@@ -51,7 +51,12 @@
     
     <div class="tp-product-content-2">
         <div class="tp-product-tag-2">
-            <a href="#">{{ $product->brand->name ?? 'Brand' }}</a>
+            <a href="{{ ($product->store->slug ?? null) ? route('frontend.stores.show', $product->store->slug) : '#' }}">
+                {{ $product->store->name ?? ($product->brand->name ?? 'Shofy Store') }}
+                @if ($product->store && $product->store->is_verified)
+                    <i class="fas fa-check-circle text-primary ms-1" style="font-size: 10px;" title="Verified Store"></i>
+                @endif
+            </a>
         </div>
         <h3 class="tp-product-title-2">
             <a href="{{ route('frontend.products.show', $product->slug ?: $product->id) }}">{{ $product->name }}</a>

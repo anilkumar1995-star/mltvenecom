@@ -18,19 +18,19 @@ class HomeController extends Controller
 
         $featured_products = EcProduct::published()
             ->featured()
-            ->with(['brand', 'categories'])
+            ->with(['brand', 'categories', 'store'])
             ->take(8)
             ->get();
 
         $new_arrivals = EcProduct::published()
-            ->with(['brand', 'categories'])
+            ->with(['brand', 'categories', 'store'])
             ->latest()
             ->take(8)
             ->get();
 
         $on_sale = EcProduct::published()
             ->onSale()
-            ->with(['brand', 'categories'])
+            ->with(['brand', 'categories', 'store'])
             ->take(8)
             ->get();
 
@@ -47,21 +47,21 @@ class HomeController extends Controller
 
         // All Products
         $all_products = EcProduct::published()
-            ->with(['brand', 'categories'])
+            ->with(['brand', 'categories', 'store'])
             ->latest()
             ->take(8)
             ->get();
 
         // Trending Products (Most Viewed)
         $trending_products = EcProduct::published()
-            ->with(['brand', 'categories'])
+            ->with(['brand', 'categories', 'store'])
             ->orderBy('views', 'desc')
             ->take(8)
             ->get();
 
         // Top Rated Products (Best Reviews)
         $top_rated_products = EcProduct::published()
-            ->with(['brand', 'categories'])
+            ->with(['brand', 'categories', 'store'])
             ->orderBy('reviews_avg', 'desc')
             ->orderBy('reviews_count', 'desc')
             ->take(3)

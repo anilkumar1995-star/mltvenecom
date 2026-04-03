@@ -182,22 +182,15 @@
                                     <fieldset class="mt-4 bg-light p-3 rounded border shadow-none">
                                         <legend class="px-2 fw-bold h6 text-primary" style="float: none; width: auto;"><i class="fas fa-truck me-2"></i>Shipping Dimensions</legend>
                                         <div class="row g-2">
-                                            <div class="col-md-3">
-                                                <label class="form-label small mb-1">Weight (g)</label>
-                                                <div class="input-group input-group-sm">
-                                                    <span class="input-group-text">g</span>
-                                                    <input class="form-control shadow-none" type="number" name="weight" value="0">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
+                                            <div class="col-md-4">
                                                 <label class="form-label small mb-1">Length (cm)</label>
                                                 <input class="form-control form-control-sm shadow-none" type="number" name="length" value="0">
                                             </div>
-                                            <div class="col-md-3">
+                                            <div class="col-md-4">
                                                 <label class="form-label small mb-1">Width (cm)</label>
-                                                <input class="form-control form-control-sm shadow-none" type="number" name="wide" value="0">
+                                                <input class="form-control form-control-sm shadow-none" type="wide" name="wide" value="0">
                                             </div>
-                                            <div class="col-md-3">
+                                            <div class="col-md-4">
                                                 <label class="form-label small mb-1">Height (cm)</label>
                                                 <input class="form-control form-control-sm shadow-none" type="number" name="height" value="0">
                                             </div>
@@ -335,6 +328,44 @@
                                     <div class="card-body py-2">
                                         <input type="hidden" name="status" value="pending">
                                         <p class="small text-muted mb-0" style="font-size: 11px;"><i class="fas fa-clock me-1 opacity-50"></i> Review typically takes 24-48 hours.</p>
+                                    </div>
+                                </div>
+
+                                <div class="card shadow-sm border-0 mb-3">
+                                    <div class="card-header py-2 bg-white border-bottom shadow-none">
+                                        <h4 class="card-title mb-0 small fw-bold text-muted">INVENTORY & UNIT</h4>
+                                    </div>
+                                    <div class="card-body p-3">
+                                        <div class="mb-3">
+                                            <label class="x-small fw-bold opacity-50 mb-1">UNIT WEIGHT (PHYSICAL):</label>
+                                            <input type="number" name="weight" 
+                                                class="form-control form-control-sm border-0 bg-light-subtle fw-bold" 
+                                                value="0.00" step="0.01" placeholder="e.g. 0.5 for 500g">
+                                        </div>
+                                        <div class="row g-2">
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="x-small fw-bold opacity-50 mb-1">STOCK QTY</label>
+                                                    <input type="number" name="quantity" class="form-control form-control-sm border-0 bg-light-subtle fw-bold" value="0" step="0.001">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="x-small fw-bold opacity-50 mb-1">UNIT TYPE</label>
+                                                    <select name="unit_type" class="form-select form-select-sm border-0 bg-light-subtle fw-bold">
+                                                        <option value="pcs" selected>Pcs</option>
+                                                        <option value="kg">Kg</option>
+                                                        <option value="g">Gram</option>
+                                                        <option value="l">Litre</option>
+                                                        <option value="pvt">PVT</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mb-1">
+                                            <label class="x-small fw-bold opacity-50 mb-1">PRODUCT SKU</label>
+                                            <input type="text" name="sku" class="form-control form-control-sm" value="{{ $sku }}">
+                                        </div>
                                     </div>
                                 </div>
 

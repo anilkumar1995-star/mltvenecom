@@ -100,6 +100,7 @@ class OrderController extends Controller
         $order->description = $request->description;
         $order->store_id = $request->store_id ?? 1;
         $order->is_confirmed = 1;
+        $order->is_finished = 1;
         $order->code = 'ORD-' . strtoupper(uniqid());
         $order->save();
 
@@ -225,6 +226,7 @@ class OrderController extends Controller
         $order->payment_id = $request->payment_id ?? $order->payment_id;
         $order->description = $request->description;
         $order->store_id = $request->store_id ?? $order->store_id;
+        $order->is_finished = 1;
         $order->save();
 
         // Inventory Reduction Logic
