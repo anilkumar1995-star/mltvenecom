@@ -293,6 +293,17 @@ class CheckoutController extends Controller
                 }
             }
 
+
+            if (!empty($addressData['email'])) {
+                try {
+                    $order->load(['items', 'payment', 'address']);
+                    $html = view('frontend.mail.customer-order-confirmation', compact('order'))->render();
+                    CommonHelper::sendZohoEmail($addressData['email'], "Order Confirmation: #" . $order->code . " [" . config('app.name') . "]", $html);
+                } catch (\Exception $e) {
+                    \Illuminate\Support\Facades\Log::error('Customer notification failed: ' . $e->getMessage());
+                }
+            }
+
             Session::forget(['cart', 'applied_coupon']);
 
             return redirect()->route('frontend.checkout.success')
@@ -328,7 +339,6 @@ class CheckoutController extends Controller
             return response()->json(['success' => false, 'error' => true, 'message' => 'Invalid or expired coupon code.']);
         }
 
-        // Optional: Check min order price if applicable
         $cart = Session::get('cart', []);
         $subtotal = 0;
         foreach ($cart as $item) {
