@@ -33,10 +33,10 @@
                     <div class="bb-shop-banner-rating d-flex align-items-center gap-2 mb-3">
                         <div class="bb-product-rating">
                             @for($i = 1; $i <= 5; $i++)
-                                <span class="fas fa-star" style="color: #ffb21d;"></span>
+                                <span class="{{ $i <= round($reviewsAvg) ? 'fas' : 'far' }} fa-star" style="color: #ffb21d;"></span>
                             @endfor
                         </div>
-                        <small class="text-white-50">({{ $products->total() }} Products)</small>
+                        <small class="text-white-50">({{ $reviewsCount }} {{ \Illuminate\Support\Str::plural('Review', $reviewsCount) }})</small>
                     </div>
                     
                     <div class="bb-shop-banner-contact d-flex flex-wrap gap-4 small mb-3">

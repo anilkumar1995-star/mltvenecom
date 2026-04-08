@@ -395,10 +395,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="mb-1">
-                                            <label class="x-small fw-bold opacity-50 mb-1">PRODUCT SKU</label>
-                                            <input type="text" name="sku" class="form-control form-control-sm" value="{{ $product->sku }}">
-                                        </div>
                                     </div>
                                 </div>
 

@@ -12,7 +12,13 @@
                     <h2>Order Placed Successfully!</h2>
                     <p class="text-muted mb-4">Thank you for your order. We'll send you a confirmation email shortly.</p>
                     
-                    @if($order_id)
+                    @if($order)
+                    <div class="mt-4 text-start bg-light p-3 rounded">
+                        <p class="mb-1">Order Code: <strong>{{ $order->code }}</strong></p>
+                        <p class="mb-1">Payment Mode: <strong>{{ ucfirst(str_replace('_', ' ', $order->payment?->payment_channel ?? 'N/A')) }}</strong></p>
+                        <p class="mb-0">Payment Status: <strong>{{ ucfirst($order->payment?->status ?? 'Pending') }}</strong></p>
+                    </div>
+                    @elseif($order_id)
                     <p>Order ID: <strong>#{{ $order_id }}</strong></p>
                     @endif
                     

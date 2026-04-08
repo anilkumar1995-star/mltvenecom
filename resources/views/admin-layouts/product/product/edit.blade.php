@@ -417,7 +417,7 @@
                                     @endif
                                 </div>
                             </div>
-                            <div class="card meta-boxes"><div class="card-header"><h4 class="card-title"><label class="form-label" for="store_id">Store</label></h4></div><div class=" card-body"><select class="select-search-full form-select" data-placeholder="Select a store..." data-allow-clear="true" id="store_id-select" name="store_id">@foreach ($stores as $row)<option value="{{ $row->id }}" {{ $product->store_id == $row->id ? 'selected' : '' }}>{{ $row->name }}</option>@endforeach</select></div></div>
+                            <div class="card meta-boxes"><div class="card-header"><h4 class="card-title"><label class="form-label required" for="store_id">Store</label></h4></div><div class=" card-body"><select class="select-search-full form-select" data-placeholder="Select a store..." data-allow-clear="true" id="store_id-select" name="store_id" required>@foreach ($stores as $row)<option value="{{ $row->id }}" {{ $product->store_id == $row->id ? 'selected' : '' }}>{{ $row->name }}</option>@endforeach</select></div></div>
                             <div class="card meta-boxes"><div class="card-header"><h4 class="card-title"><label class="form-label" for="is_featured">Is featured?</label></h4></div><div class=" card-body"><label class="form-check form-switch d-inline-block "><input name="is_featured" type="hidden" value="0" /><input class="form-check-input" name="is_featured" type="checkbox" value="1" id="is_featured" {{ $product->is_featured ? 'checked' : '' }}/></label></div></div>
                             <div class="card meta-boxes">
                                 <div class="card-header">

@@ -10,12 +10,14 @@ use App\Models\OrderAddress;
 use App\Models\Customer;
 use App\Models\Payment;
 use App\Services\InvoiceService;
+use App\Helpers\CommonHelper;
+use App\Models\Discount;
+use App\Models\Tax;
+use App\Models\Store;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
-use App\Models\Discount;
-use App\Models\Tax;
-use Carbon\Carbon;
 
 class CheckoutController extends Controller
 {
@@ -277,6 +279,20 @@ class CheckoutController extends Controller
 
             InvoiceService::createInvoiceFromOrder($order);
 
+            // Notify Vendor about new order
+            if ($order->store_id) {
+                $store = Store::find($order->store_id);
+                if ($store && !empty($store->email)) {
+                    try {
+                        $order->load('items');
+                        $html = view('frontend.mail.order-notification', compact('order', 'store'))->render();
+                        CommonHelper::sendZohoEmail($store->email, "[" . config('app.name') . "] New Order Received: #" . $order->code, $html);
+                    } catch (\Exception $e) {
+                        \Illuminate\Support\Facades\Log::error('Vendor notification failed: ' . $e->getMessage());
+                    }
+                }
+            }
+
             Session::forget(['cart', 'applied_coupon']);
 
             return redirect()->route('frontend.checkout.success')
@@ -291,7 +307,11 @@ class CheckoutController extends Controller
     public function success()
     {
         $order_id = session('order_id');
-        return view('frontend.checkout.success', compact('order_id'));
+        $order = null;
+        if ($order_id) {
+            $order = Order::find($order_id);
+        }
+        return view('frontend.checkout.success', compact('order_id', 'order'));
     }
 
     public function applyCoupon(Request $request)

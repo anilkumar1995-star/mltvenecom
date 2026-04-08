@@ -858,7 +858,7 @@
                                 <div class="card meta-boxes">
                                     <div class="card-header">
                                         <h4 class="card-title">
-                                            <label class="form-label" for="store_id">
+                                            <label class="form-label required" for="store_id">
                                                 Store
                                             </label>
                                         </h4>
@@ -866,10 +866,10 @@
                                     <div class=" card-body">
                                         <select class="select-search-full form-select"
                                             data-placeholder="Select a store..." data-allow-clear="true"
-                                            id="store_id-select-59624" name="store_id">
+                                            id="store_id-select-59624" name="store_id" required>
+                                        <option value="" disabled selected>Select a store...</option>
                                         @if(!empty($stores))
                                             @foreach ($stores as $row)
-                                                 <option selected="selected" value="">Select a store...</option>
                                                 <option value="{{ $row->id }}">{{ $row->name }}</option>
                                             @endforeach
                                         @endif

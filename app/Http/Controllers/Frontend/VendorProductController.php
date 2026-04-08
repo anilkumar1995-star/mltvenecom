@@ -35,12 +35,13 @@ class VendorProductController extends Controller
     public function index(Request $request)
     {
         $userId = auth('customer')->id();
-        $query = EcProduct::where('created_by_id', $userId)
+        $query = EcProduct::query()
+            ->where('created_by_id', $userId)
             ->where('created_by_type', Customer::class);
 
         TableHelpers::applyTableLogic($query, $request,
-        ['id', 'name', 'sku'], // searchable
-        ['id', 'name', 'sku', 'price', 'status', 'created_at'] // filterable
+            ['id', 'name', 'sku'], // searchable
+            ['id', 'name', 'sku', 'price', 'status', 'created_at'] // filterable
         );
 
         $products = $query->orderBy('id', 'desc')->paginate(TableHelpers::getPerPage($request));
@@ -99,8 +100,13 @@ class VendorProductController extends Controller
             ->take(5)
             ->get();
 
+        $pendingProductsCount = EcProduct::where('created_by_id', $user->id)
+            ->where('created_by_type', Customer::class)
+            ->where('status', 'pending')
+            ->count();
+
         return view('frontend.vendor.dashboard', compact(
-            'ordersCount', 'productsCount', 'reviewsCount',
+            'ordersCount', 'productsCount', 'reviewsCount', 'pendingProductsCount',
             'revenueCount', 'pendingOrdersCount', 'recentProducts', 'store'
         ));
     }
