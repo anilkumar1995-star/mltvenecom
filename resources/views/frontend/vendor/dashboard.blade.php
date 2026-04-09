@@ -123,7 +123,7 @@
                         <div class="h1 fw-bold mb-0">{{ $ordersCount }}</div>
                         <div class="d-flex align-items-center mt-2">
                             <span class="badge bg-warning text-white me-2">{{ $pendingOrdersCount }}</span>
-                            <span class="text-muted small">Pending approval</span>
+                            <span class="text-muted small">Pending orders</span>
                         </div>
                     </div>
                 </div>
@@ -140,7 +140,10 @@
                             <div class="fw-bold text-muted text-uppercase small">Inventory</div>
                         </div>
                         <div class="h1 fw-bold mb-0">{{ $productsCount }}</div>
-                        <div class="text-muted small mt-2">Active products in store</div>
+                        <div class="d-flex align-items-center mt-2">
+                            <span class="badge bg-info text-white me-2">{{ $pendingProductsCount }}</span>
+                            <span class="text-muted small">Pending approval</span>
+                        </div>
                     </div>
                 </div>
             </div>

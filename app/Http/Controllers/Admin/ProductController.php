@@ -155,6 +155,7 @@ class ProductController extends Controller
             'minimum_order_quantity' => 'nullable|numeric|min:1',
             'maximum_order_quantity' => 'nullable|numeric|min:0',
             'status' => 'required|string|max:60',
+            'store_id' => 'required|exists:mp_stores,id',
             'image_file' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'video_file' => 'nullable|mimes:mp4,mov,ogg,qt|max:20000',
@@ -267,7 +268,7 @@ class ProductController extends Controller
             'quantity' => 'nullable|numeric|min:0',
             'weight' => 'nullable|numeric|min:0',
             'status' => 'required|string|max:60',
-            // ... keys
+            'store_id' => 'required|exists:mp_stores,id',
             'image_file' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'video_file' => 'nullable|mimes:mp4,mov,ogg,qt|max:20000',

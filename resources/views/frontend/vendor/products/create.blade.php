@@ -31,7 +31,7 @@
         <main class="page-body page-content">
             <div class="container-xl">
                 <form method="POST" action="{{ route('frontend.vendor.products.store') }}" accept-charset="UTF-8"
-                    id="botble-ecommerce-forms-product-form" class="js-base-form dirty-check" enctype="multipart/form-data">
+                    id="botble-ecommerce-forms-product-form" class="js-base-form dirty-check" enctype="multipart/form-data" novalidate>
                     @csrf
 
                     <div class="row g-3">
@@ -362,10 +362,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="mb-1">
-                                            <label class="x-small fw-bold opacity-50 mb-1">PRODUCT SKU</label>
-                                            <input type="text" name="sku" class="form-control form-control-sm" value="{{ $sku }}">
-                                        </div>
                                     </div>
                                 </div>
 
@@ -639,17 +635,66 @@
         });
 
         // Form Submit via AJAX
+        $('#botble-ecommerce-forms-product-form').on('submit', function(e) {
+            e.preventDefault();
+            let $form = $(this);
+            let $btn = $form.find('button[type="submit"]');
+            let originalText = $btn.html();
+
+            if (!$form.valid()) return false;
+
+            if (typeof CKEDITOR !== 'undefined') {
+                for(let i in CKEDITOR.instances) CKEDITOR.instances[i].updateElement();
+            }
+
+            $.ajax({
+                url: $form.attr('action'),
+                type: 'POST',
+                data: new FormData(this),
+                processData: false,
+                contentType: false,
+                beforeSend: function() {
+                    $btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i>SAVE...');
+                    Swal.fire({
+                        title: 'Deploying Listing...',
+                        text: 'Synchronizing assets and meta-records.',
+                        allowOutsideClick: false,
+                        didOpen: () => { Swal.showLoading() }
+                    });
+                },
+                success: function(res) {
+                    $btn.prop('disabled', false).html(originalText);
+                    if(res.status) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Listing Active!',
+                            text: res.message,
+                            confirmButtonColor: '#0081ff'
+                        }).then(() => {
+                            if(res.redirect) window.location.href = res.redirect;
+                        });
+                    } else {
+                        Swal.fire('Error', res.message, 'error');
+                    }
+                },
+                error: function(xhr) {
+                    $btn.prop('disabled', false).html(originalText);
+                    let msg = 'Deployment Failed. Check connectivity and required fields.';
+                    if(xhr.responseJSON && xhr.responseJSON.message) msg = xhr.responseJSON.message;
+                    Swal.fire('Failed', msg, 'error');
+                }
+            });
+        });
+
+        // Initialize Validation
         $('#botble-ecommerce-forms-product-form').validate({
             rules: { name: { required: true } },
-            submitHandler: function(form) {
-                if (typeof CKEDITOR !== 'undefined') for(i in CKEDITOR.instances) CKEDITOR.instances[i].updateElement();
-                $.ajax({
-                    url: $(form).attr('action'), type: 'POST', data: new FormData(form), processData: false, contentType: false,
-                    beforeSend: function() { Swal.fire({ title: 'Deploying Listing...', html: 'Synchronizing assets and meta-records.', allowOutsideClick: false, didOpen: () => { Swal.showLoading() } }); },
-                    success: function(res) { if(res.status) { Swal.fire({ icon:'success', title:'Listing Active!', text:res.message, confirmButtonColor: '#0081ff' }).then(() => { window.location.href = res.redirect; }); } else { Swal.fire('Error', res.message, 'error'); } },
-                    error: function(xhr) { Swal.fire('Deployment Failed', 'Check connectivity and required fields.', 'error'); }
-                });
-            }
+            errorPlacement: function(error, element) {
+                error.addClass('invalid-feedback');
+                element.after(error);
+            },
+            highlight: function(element) { $(element).addClass('is-invalid'); },
+            unhighlight: function(element) { $(element).removeClass('is-invalid'); }
         });
     });
 </script>

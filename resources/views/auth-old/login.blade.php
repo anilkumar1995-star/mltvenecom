@@ -153,15 +153,15 @@
     <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Admin | Botble Technologies</title>
+    <title>Admin | iPaymnt Tech</title>
     <meta name="csrf-token" content="GFkR5VbE4gqD2PeBVLUMg1U78EuvAiPyzmyKxBlc">
 
-    <link href="{{ asset('storage/main/general/favicon.png') }}" rel="icon shortcut"
+    <link href="{{ asset('assets1/img/favicon.png') }}" rel="icon shortcut"
         type="image/x-icon">
-    <meta property="og:image" content="{{ asset('storage/main/general/favicon.png') }}">
+    <meta property="og:image" content="{{ asset('assets1/img/favicon.png') }}">
 
-    <meta name="description" content="Copyright 2026 © Botble Technologies. Version 1.4.4">
-    <meta property="og:description" content="Copyright 2026 © Botble Technologies. Version 1.4.4">
+    <meta name="description" content="© {{ date('Y') }} iPaymnt Tech. All Rights Reserved.">
+    <meta property="og:description" content="© {{ date('Y') }} iPaymnt Tech. All Rights Reserved.">
 
 
 
@@ -526,8 +526,8 @@
                 <div class="container container-tight my-5 px-lg-5">
                     <div class="text-center mb-4">
                         <a href="{{ asset('admin') }}">
-                            <img src="{{ asset('storage/main/general/logo-white.png') }}"
-                                style="max-height: 50px; height: auto;" alt="Botble Technologies"
+                            <img src="{{ asset('assets1/img/ipayment-logo.png') }}"
+                                style="max-height: 50px; height: auto;" alt="ipayment"
                                 class="navbar-brand-image">
                         </a>
                     </div>
@@ -702,14 +702,14 @@
                 </div>
             </div>
             <div class="position-relative col-12 col-lg-6 col-xl-8 d-none d-lg-block">
+                @php $bgImage = rand(1, 10) . '.jpg'; @endphp
                 <div class="bg-cover bg-white h-100 min-vh-100"
-                    style="background-image: url({{ asset('vendor/core/core/acl/images/backgrounds/10.jpg') }})">
+                    style="background-image: url({{ asset('vendor/core/core/acl/images/backgrounds/' . $bgImage) }})">
                 </div>
                 <div class="end-0 bottom-0 position-absolute">
                     <div class="text-white me-5 mb-4">
-                        <h1 class="mb-1">Botble Technologies</h1>
-                        <p>Copyright 2026 © Botble Technologies. Version <span class="fw-medium">1.4.4</span>
-                        </p>
+                        <h1 class="mb-1">iPaymnt Tech</h1>
+                        <p>© {{ date('Y') }} iPaymnt Tech. All Rights Reserved.</p>
                     </div>
                 </div>
             </div>

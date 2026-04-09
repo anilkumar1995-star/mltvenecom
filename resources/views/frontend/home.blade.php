@@ -420,6 +420,9 @@
     .tp-deal-area:hover {
         background-position: center !important;
     }
+    .tp-slider-height-5 {
+    min-height: 400px !important;
+}
 </style>
 @endpush
 <section data-block-id="simple-slider" class="tp-slider-area p-relative z-index-1 fix">

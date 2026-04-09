@@ -84,7 +84,15 @@ class StoreController extends Controller
             ->orderBy('name', 'asc')
             ->get();
 
-        return view('frontend.stores.show', compact('store', 'products', 'categories'));
+        $reviewsCount = \App\Models\Review::whereHas('product', function ($q) use ($store) {
+            $q->where('store_id', $store->id);
+        })->published()->count();
+
+        $reviewsAvg = \App\Models\Review::whereHas('product', function ($q) use ($store) {
+            $q->where('store_id', $store->id);
+        })->published()->avg('star') ?? 0;
+
+        return view('frontend.stores.show', compact('store', 'products', 'categories', 'reviewsCount', 'reviewsAvg'));
     }
 
     /**
