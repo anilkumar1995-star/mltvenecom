@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Models\OrderHistory;
 use App\Models\Store;
+use App\Services\InvoiceService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -22,11 +24,11 @@ class VendorOrderController extends Controller
         }
 
         $query = Order::where('store_id', $store->id)
-            ->with(['user', 'payment']);
+            ->with(['user', 'payment', 'items']);
 
         TableHelpers::applyTableLogic($query, $request, 
-            ['id', 'code', 'amount'], // searchable
-            ['id', 'status', 'amount', 'created_at'] // filterable
+            ['id', 'code', 'amount'], 
+            ['id', 'status', 'amount', 'created_at'] 
         );
 
         $orders = $query->orderBy('id', 'desc')->paginate(TableHelpers::getPerPage($request));
@@ -66,20 +68,46 @@ class VendorOrderController extends Controller
 
         $request->validate(['status' => 'required|string']);
         $oldStatus = $order->status;
+        $newStatus = $request->status;
+        
         $order->update([
-            'status' => $request->status,
+            'status' => $newStatus,
             'is_finished' => 1
         ]);
 
+        // Explicitly load products to ensure stock can be updated
+        $order->load('items.product');
+
+        // Stock Management Logic
+        $reducedStatuses = ['pending', 'processing', 'shipped', 'completed'];
+        $wasReduced = in_array($oldStatus, $reducedStatuses);
+        $isReduced = in_array($newStatus, $reducedStatuses);
+
+        if (!$wasReduced && $isReduced) {
+            // Deduct from stock
+            foreach ($order->items as $item) {
+                if ($item->product) {
+                    $item->product->decrement('quantity', $item->qty);
+                }
+            }
+        } elseif ($wasReduced && !$isReduced && in_array($newStatus, ['canceled', 'returned'])) {
+            // Restore stock
+            foreach ($order->items as $item) {
+                if ($item->product) {
+                    $item->product->increment('quantity', $item->qty);
+                }
+            }
+        }
+
         // Sync Invoice
-        \App\Services\InvoiceService::createInvoiceFromOrder($order);
+        InvoiceService::createInvoiceFromOrder($order);
 
         // Record history
-        \App\Models\OrderHistory::create([
+        OrderHistory::create([
             'action' => 'update_status',
             'description' => "Order status updated from " . ucfirst($oldStatus) . " to " . ucfirst($order->status) . " by vendor.",
             'order_id' => $order->id,
-            'user_id' => null, // Since vendor is a Customer model, we log details in description for now or use extras
+            'user_id' => $user->id ?? null, 
             'extras' => json_encode(['vendor_id' => $user->id, 'vendor_name' => $user->name])
         ]);
 

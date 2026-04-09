@@ -48,9 +48,12 @@
                                             <input class="form-check-input m-0 align-middle table-check-all" type="checkbox" id="check-all">
                                         </th>
                                         <th title="ID" width="50" class="text-center">ID</th>
-                                        <th title="Order Code">Code</th>
+                                        <th title="Order Code">Order Id</th>
+                                        <th title="Products">Products</th>
                                         <th title="Customer">Customer</th>
                                         <th title="Amount">Amount</th>
+                                        <th title="Payment Status">Payment Status</th>
+                                        <th title="Payment Method">Payment Method</th>
                                         <th title="Status" width="120" class="text-center">Status</th>
                                         <th title="Created At">Date</th>
                                         <th title="Operations" class="text-end">Operations</th>
@@ -65,6 +68,20 @@
                                         <td class="text-center">{{ $order->id }}</td>
                                         <td><strong>{{ $order->code }}</strong></td>
                                         <td>
+                                            @foreach($order->items as $item)
+                                                @php 
+                                                    $imageUrl = $item->product_image ? (str_starts_with($item->product_image, 'http') ? $item->product_image : rtrim(\App\Helpers\ImageHelper::getImageUrl(), '/') . '/' . ltrim($item->product_image, '/')) : asset('home/placeholder.png');
+                                                @endphp
+                                                <div class="d-flex align-items-center mb-1">
+                                                    <span class="avatar avatar-sm me-2 border" style="background-image: url({{ $imageUrl }}); width: 32px; height: 32px; min-width: 32px;"></span>
+                                                    <div class="small text-truncate" style="max-width: 150px;" title="{{ $item->product_name }}">
+                                                        {{ $item->product_name }} <br>
+                                                        <span class="text-muted">(x{{ $item->qty }})</span>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </td>
+                                        <td>
                                             @if($order->user)
                                                 <div>{{ $order->user->name }}</div>
                                                 <div class="text-muted small">{{ $order->user->email }}</div>
@@ -73,6 +90,29 @@
                                             @endif
                                         </td>
                                         <td>₹{{ number_format($order->amount, 2) }}</td>
+                                        <td>
+                                            @if($order->payment)
+                                                @php
+                                                    $payStatus = $order->payment->status;
+                                                    $badgeClass = 'bg-secondary'; 
+                                                    if (in_array($payStatus, ['completed', 'success', 'paid', 'confirmed'])) $badgeClass = 'bg-success text-white';
+                                                    elseif ($payStatus == 'pending') $badgeClass = 'bg-warning text-white';
+                                                    elseif (in_array($payStatus, ['failed', 'canceled', 'refunded'])) $badgeClass = 'bg-danger text-white';
+                                                @endphp
+                                                <span class="badge {{ $badgeClass }} text-capitalize">
+                                                    {{ str_replace(['-', '_'], ' ', $payStatus) }}
+                                                </span>
+                                            @else
+                                                <span class="badge bg-secondary-lt text-capitalize">No Payment</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if($order->payment)
+                                                <div class="small fw-bold text-uppercase">{{ str_replace(['-', '_'], ' ', $order->payment->payment_channel) }}</div>
+                                            @else
+                                                <span class="text-muted small">N/A</span>
+                                            @endif
+                                        </td>
                                         <td class="text-center">
                                             @if($order->status == 'completed')
                                                 <span class="badge bg-success text-white">Completed</span>
@@ -98,7 +138,7 @@
                                     </tr>
                                     @empty
                                     <tr>
-                                        <td colspan="8" class="text-center text-muted">No orders found</td>
+                                        <td colspan="11" class="text-center text-muted">No orders found</td>
                                     </tr>
                                     @endforelse
                                 </tbody>

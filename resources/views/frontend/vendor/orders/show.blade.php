@@ -196,7 +196,26 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label text-muted small text-uppercase">Payment Method</label>
-                                <div class="badge bg-blue-lt text-uppercase">{{ $order->payment->payment_channel ?? 'COD' }}</div>
+                                <div class="badge bg-blue-lt text-uppercase">{{ str_replace(['-', '_'], ' ', $order->payment->payment_channel ?? 'COD') }}</div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label text-muted small text-uppercase">Payment Status</label>
+                                <div>
+                                    @if($order->payment)
+                                        @php
+                                            $payStatus = $order->payment->status;
+                                            $badgeClass = 'bg-secondary'; 
+                                            if (in_array($payStatus, ['completed', 'success', 'paid', 'confirmed'])) $badgeClass = 'bg-success text-white';
+                                            elseif ($payStatus == 'pending') $badgeClass = 'bg-warning text-white';
+                                            elseif (in_array($payStatus, ['failed', 'canceled', 'refunded'])) $badgeClass = 'bg-danger text-white';
+                                        @endphp
+                                        <span class="badge {{ $badgeClass }} text-capitalize">
+                                            {{ str_replace(['-', '_'], ' ', $payStatus) }}
+                                        </span>
+                                    @else
+                                        <span class="badge bg-secondary-lt text-capitalize">No Payment Info Found</span>
+                                    @endif
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -235,7 +254,7 @@
                                     {{ $shippingAddress->address }}<br>
                                     {{ $shippingAddress->city }}, {{ $shippingAddress->state }}<br>
                                     {{ $shippingAddress->country }}<br>
-                                    <span class="text-dark small"><abbr title="Phone">P:</abbr> {{ $shippingAddress->phone }}</span>
+                                    <span class="text-dark small"><abbr title="Phone">Phone:</abbr> {{ $shippingAddress->phone }}</span>
                                 </address>
                             </div>
                         </div>

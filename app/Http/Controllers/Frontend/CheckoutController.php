@@ -99,7 +99,7 @@ class CheckoutController extends Controller
         $taxableSubtotal = max(0, $subtotal - $discountAmount);
         $tax = $taxableSubtotal * ($taxPercentage / 100);
         
-        $shipping = 0; // Removed as requested
+        $shipping = 0; 
         $total = $taxableSubtotal + $tax + $shipping;
 
         return view('frontend.checkout.index', compact('cart', 'subtotal', 'tax', 'shipping', 'total', 'discountAmount', 'couponCode', 'taxPercentage', 'taxTitle'));
@@ -107,22 +107,28 @@ class CheckoutController extends Controller
 
     public function process(Request $request)
     {
+        \Illuminate\Support\Facades\Log::info('Checkout process started');
         if (!auth('customer')->check() && !auth('web')->check()) {
             session(['url.intended' => route('frontend.checkout.index')]);
             return redirect()->route('login')->with('error', 'Please login to proceed to checkout.');
         }
 
-        $validated = $request->validate([
-            'address.name' => 'required|string|max:255',
-            'address.email' => 'required|email',
-            'address.phone_display' => 'nullable|string',
-            'address.address' => 'required|string',
-            'address.city' => 'required|string',
-            'address.state' => 'required|string',
-            'address.country' => 'required|string',
-            'payment_method' => 'required|string',
-            'description' => 'nullable|string',
-        ]);
+        try {
+            $validated = $request->validate([
+                'address.name' => 'required|string|max:255',
+                'address.email' => 'required|email',
+                'address.phone_display' => 'nullable|string',
+                'address.address' => 'required|string',
+                'address.city' => 'required|string',
+                'address.state' => 'required|string',
+                'address.country' => 'required|string',
+                'payment_method' => 'required|string',
+                'description' => 'nullable|string',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            \Illuminate\Support\Facades\Log::warning('Checkout Validation Failed', $e->errors());
+            throw $e;
+        }
 
         $cart = Session::get('cart', []);
 
@@ -135,7 +141,6 @@ class CheckoutController extends Controller
 
         DB::beginTransaction();
         try {
-            // Calculate totals
             $subtotal = 0;
             foreach ($cart as $item) {
                 $subtotal += $item['price'] * $item['quantity'];
@@ -192,7 +197,6 @@ class CheckoutController extends Controller
                 'payment_channel' => $request->input('payment_method', 'cod'),
                 'description' => 'Online checkout order',
                 'amount' => $total,
-                'status' => 'pending',
                 'payment_type' => 'confirm',
                 'customer_id' => $this->getUserId(),
                 'customer_type' => 'App\\Models\\Customer',
@@ -231,11 +235,11 @@ class CheckoutController extends Controller
                 ]);
 
                 $product = EcProduct::find($item['id']);
-                if ($product && $product->with_storehouse_management) {
-                    $newQty = max(0, $product->quantity - $item['quantity']);
+                if ($product && isset($product->quantity)) {
+                    $newQty = max(0, (int)$product->quantity - (int)$item['quantity']);
                     $product->quantity = $newQty;
                     
-                    if ($newQty <= 0 && !$product->allow_checkout_when_out_of_stock) {
+                    if ($newQty <= 0) {
                         $product->stock_status = 'out_of_stock';
                     }
                     
@@ -311,6 +315,11 @@ class CheckoutController extends Controller
 
         } catch (\Exception $e) {
             DB::rollBack();
+            \Illuminate\Support\Facades\Log::error('Order Placement Failed: ' . $e->getMessage(), [
+                'exception' => $e,
+                'cart' => Session::get('cart'),
+                'request' => $request->all()
+            ]);
             return back()->with('error', 'Order failed: ' . $e->getMessage())->withInput();
         }
     }

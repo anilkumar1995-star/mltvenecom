@@ -63,6 +63,8 @@
                                                 <thead class="table-light">
                                                     <tr>
                                                         <th scope="col" class="py-3 px-4">Order ID</th>
+                                                        <th scope="col" class="py-3">Products</th>
+                                                        <th scope="col" class="py-3 text-center">Qty</th>
                                                         <th scope="col" class="py-3">Date</th>
                                                         <th scope="col" class="py-3">Status</th>
                                                         <th scope="col" class="py-3">Total</th>
@@ -75,19 +77,57 @@
                                                         <td class="py-3 px-4">
                                                             <a href="{{ route('frontend.customer.orders.detail', $order->id) }}" class="fw-semibold text-primary">{{$order->code}}</a>
                                                         </td>
-                                                        <td class="py-3">{{ $order->created_at->format('M d, Y') }}</td>
                                                         <td class="py-3">
-                                                            @if($order->status == 'completed' || $order->status == 'delivered')
-                                                                <span class="badge bg-success bg-opacity-10 text-success px-2 py-1 rounded-pill">Completed</span>
-                                                            @elseif($order->status == 'processing' || $order->status == 'shipped')
-                                                                <span class="badge bg-info bg-opacity-10 text-info px-2 py-1 rounded-pill">Processing</span>
-                                                            @elseif($order->status == 'cancelled')
-                                                                <span class="badge bg-danger bg-opacity-10 text-danger px-2 py-1 rounded-pill">Cancelled</span>
-                                                            @else
-                                                                <span class="badge bg-warning bg-opacity-10 text-warning px-2 py-1 rounded-pill">Pending</span>
-                                                            @endif
+                                                            <div class="d-flex flex-column gap-2">
+                                                                @foreach($order->items as $item)
+                                                                    @php
+                                                                        $pImg = $item->product_image ?: ($item->product ? $item->product->image : null);
+                                                                        $pImgUrl = $pImg ? (str_starts_with($pImg, 'http') ? $pImg : rtrim(\App\Helpers\ImageHelper::getImageUrl(), '/') . '/' . ltrim($pImg, '/')) : asset('img/noimg.png');
+                                                                    @endphp
+                                                                    <div class="d-flex align-items-center gap-2" style="height: 40px;">
+                                                                        <div class="flex-shrink-0">
+                                                                            <img src="{{ $pImgUrl }}" 
+                                                                                 onerror="this.src='{{ asset('img/noimg.png') }}'"
+                                                                                 style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px;" 
+                                                                                 alt="{{ $item->product_name }}">
+                                                                        </div>
+                                                                        <div class="min-w-0">
+                                                                            <div class="fw-medium text-truncate small" style="max-width: 150px;" title="{{ $item->product_name ?: ($item->product ? $item->product->name : 'Product') }}">
+                                                                                {{ $item->product_name ?: ($item->product ? $item->product->name : 'Product') }}
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                @endforeach
+                                                            </div>
                                                         </td>
-                                                        <td class="py-3 fw-semibold">₹{{ number_format($order->amount, 2) }}</td>
+                                                        <td class="py-3 text-center">
+                                                            <div class="d-flex flex-column gap-2">
+                                                                @foreach($order->items as $item)
+                                                                    <div class="small fw-semibold text-muted d-flex align-items-center justify-content-center" style="height: 42px;">
+                                                                        {{ $item->qty }}
+                                                                    </div>
+                                                                @endforeach
+                                                            </div>
+                                                        </td>
+                                                        <td class="py-3 small text-nowrap">{{ $order->created_at->format('M d, Y') }}</td>
+                                                        <td class="py-3">
+                                                            @php
+                                                                $statusClass = 'warning';
+                                                                $statusText = 'Pending';
+                                                                if(in_array($order->status, ['completed', 'delivered'])) {
+                                                                    $statusClass = 'success';
+                                                                    $statusText = 'Completed';
+                                                                } elseif(in_array($order->status, ['processing', 'shipped'])) {
+                                                                    $statusClass = 'info';
+                                                                    $statusText = 'Processing';
+                                                                } elseif(in_array($order->status, ['cancelled', 'returned'])) {
+                                                                    $statusClass = 'danger';
+                                                                    $statusText = ucfirst($order->status);
+                                                                }
+                                                            @endphp
+                                                            <span class="badge bg-{{ $statusClass }} bg-opacity-10 text-{{ $statusClass }} px-2 py-1 rounded-pill small">{{ $statusText }}</span>
+                                                        </td>
+                                                        <td class="py-3 fw-bold small text-dark text-nowrap">₹{{ number_format($order->amount, 2) }}</td>
                                                         <td class="py-3 px-4 text-end">
                                                             <a href="{{ route('frontend.customer.orders.detail', $order->id) }}" class="btn btn-sm btn-outline-primary rounded-pill px-3">View</a>
                                                         </td>
