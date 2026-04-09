@@ -34,14 +34,27 @@ class ReviewController extends Controller
             }
         }
 
-        \App\Models\Review::create([
-            'product_id'  => $request->product_id,
-            'customer_id' => Auth::guard('customer')->id() ?? Auth::id(),
-            'star'        => $request->star,
-            'comment'     => $request->comment,
-            'images'      => $imagePaths,
-            'status'      => 'published',
-        ]);
+        $customerId = Auth::guard('customer')->id() ?? Auth::id();
+        
+        $reviewData = [
+            'star'    => $request->star,
+            'comment' => $request->comment,
+            'status'  => 'published',
+        ];
+
+        if (!empty($imagePaths)) {
+            $reviewData['images'] = $imagePaths;
+        }
+
+        $review = \App\Models\Review::updateOrCreate(
+            [
+                'product_id'  => $request->product_id,
+                'customer_id' => $customerId,
+            ],
+            $reviewData
+        );
+
+        $message = $review->wasRecentlyCreated ? 'Review added successfully.' : 'Review updated successfully.';
 
         // Update product reviews columns
         $product = Product::find($request->product_id);
@@ -53,7 +66,7 @@ class ReviewController extends Controller
 
         return response()->json([
             'status' => true,
-            'message' => 'Review added successfully.'
+            'message' => $message
         ]);
     }
 

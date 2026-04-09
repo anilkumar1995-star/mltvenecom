@@ -23,6 +23,7 @@ class Order extends Model
         'shipping_option',
         'payment_id',
         'payment_fee',
+        'payment_status',
         'description',
         'coupon_code',
         'discount_description',
