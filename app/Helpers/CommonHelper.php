@@ -4,7 +4,7 @@ namespace App\Helpers;
 
 use App\Models\Aepsreport;
 use App\Models\Api;
-use App\Models\Apilog;
+use App\Models\ApiLog;
 use App\Models\GlobalProducts;
 use App\Models\PortalSetting;
 use App\Models\Provider;
@@ -670,7 +670,7 @@ class CommonHelper
 
         if ($log != "no") {
             try {
-                Apilog::create([
+                ApiLog::create([
                     "url"      => $url,
                     "modal"    => $modal,
                     "txnid"    => @$txnid,

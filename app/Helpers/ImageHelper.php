@@ -4,7 +4,7 @@ namespace App\Helpers;
 
 use App\Models\Aepsreport;
 use App\Models\Api;
-use App\Models\Apilog;
+use App\Models\ApiLog;
 use App\Models\PortalSetting;
 use App\Models\Provider;
 use App\Models\Report;
