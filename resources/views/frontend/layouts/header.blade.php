@@ -22,7 +22,7 @@
                                 </button>
                             </div>
                             <div class="logo">
-                                 <a href="{{ asset('/') }}">
+                                 <a href="{{ url('/') }}">
                                         @if(isset($footer_settings->footer_logo))
                                             <img src="{{ \App\Helpers\ImageHelper::getImageUrl() }}{{ $footer_settings->footer_logo }}"
                                                 alt="{{ $footer_settings->site_name ?? 'Logo' }}">
@@ -212,7 +212,7 @@
                     </div>
                     <div class="d-none">
                         <div class="tp-header-search-5">
-                            <form role="search" action="{{ url('/') }}products"
+                            <form role="search" action="{{ url('/products') }}"
                                 method="GET">
                                 <div class="tp-header-search-input-box-5">
                                     <div class="tp-header-search-input-5">
@@ -287,7 +287,7 @@
                             <div class="tp-header-action-5 d-flex align-items-center ml-20">
                                 <div
                                     class="tp-header-action-item-5 d-none d-sm-block tp-header-action-item-wishlist">
-                                    <a href="{{ asset('/') }}wishlist">
+                                    <a href="{{ route('frontend.wishlist.index') }}">
                                         <svg width="18" height="17" viewBox="0 0 18 17"
                                             fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path fill-rule="evenodd" clip-rule="evenodd"
