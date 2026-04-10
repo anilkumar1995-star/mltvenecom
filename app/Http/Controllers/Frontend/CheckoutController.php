@@ -73,8 +73,6 @@ class CheckoutController extends Controller
             $subtotal += $item['price'] * $item['quantity'];
         }
 
-        // Fetch Dynamic Tax
-        // 1. Calculate Discount
         $discountAmount = 0;
         $couponCode = Session::get('applied_coupon');
         if ($couponCode) {
@@ -84,6 +82,11 @@ class CheckoutController extends Controller
                     $discountAmount = $subtotal * ($discount->value / 100);
                 } else {
                     $discountAmount = $discount->value;
+                }
+                
+                // Safety Cap: Discount cannot exceed subtotal
+                if ($discountAmount > $subtotal) {
+                    $discountAmount = $subtotal;
                 }
             } else {
                 Session::forget('applied_coupon');
@@ -102,7 +105,9 @@ class CheckoutController extends Controller
         $shipping = 0; 
         $total = $taxableSubtotal + $tax + $shipping;
 
-        return view('frontend.checkout.index', compact('cart', 'subtotal', 'tax', 'shipping', 'total', 'discountAmount', 'couponCode', 'taxPercentage', 'taxTitle'));
+        $availableDiscounts = Discount::active()->available()->where('display_at_checkout', 1)->get();
+
+        return view('frontend.checkout.index', compact('cart', 'subtotal', 'tax', 'shipping', 'total', 'discountAmount', 'couponCode', 'taxPercentage', 'taxTitle', 'availableDiscounts'));
     }
 
     public function process(Request $request)
@@ -148,15 +153,32 @@ class CheckoutController extends Controller
 
             $discountAmount = 0;
             $couponCode = Session::get('applied_coupon');
+            $discountId = null;
             if ($couponCode) {
                 $discount = Discount::active()->available()->where('code', $couponCode)->first();
                 if ($discount) {
+                    $discountId = $discount->id;
                     if ($discount->type_option === 'percentage') {
                         $discountAmount = $subtotal * ($discount->value / 100);
                     } else {
                         $discountAmount = $discount->value;
                     }
+
+                    // Safety Cap: Discount cannot exceed subtotal
+                    if ($discountAmount > $subtotal) {
+                        $discountAmount = $subtotal;
+                    }
+
+                    // Increment usage count
                     $discount->increment('total_used');
+                    
+                    // Log usage for current customer
+                    if ($this->getUserId()) {
+                        DB::table('ec_discount_customers')->insertOrIgnore([
+                            'discount_id' => $discount->id,
+                            'customer_id' => $this->getUserId(),
+                        ]);
+                    }
                 }
             }
 

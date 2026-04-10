@@ -101,12 +101,12 @@
                         </div>
                         <div class="d-flex justify-content-between mb-2">
                             <span>Shipping:</span>
-                            <strong id="summary-shipping">₹20.00</strong>
+                            <strong id="summary-shipping">₹0.00</strong>
                         </div>
                         <hr>
                         <div class="d-flex justify-content-between mb-3">
                             <strong>Total:</strong>
-                            <strong class="text-primary" id="summary-total">₹{{ number_format(($total ?? 0) + (($total ?? 0) * 0.15) + 20, 2) }}</strong>
+                            <strong class="text-primary" id="summary-total">₹{{ number_format(($total ?? 0) + (($total ?? 0) * 0.15), 2) }}</strong>
                         </div>
                         <div class="d-flex gap-2">
                             <a href="{{ route('frontend.checkout.index') }}" class="btn btn-primary flex-grow-1">
@@ -140,7 +140,7 @@ $(document).ready(function() {
         }
 
         var tax = subtotal * 0.15;
-        var shipping = 20.00;
+        var shipping = 0.00;
         var total = subtotal + tax + shipping;
 
         $('#summary-subtotal').text(formatCurrency(subtotal));

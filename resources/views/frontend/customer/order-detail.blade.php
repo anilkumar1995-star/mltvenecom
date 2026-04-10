@@ -179,8 +179,35 @@
                                                 </tbody>
                                                 <tfoot class="table-light">
                                                     <tr>
-                                                        <td colspan="3" class="text-end fw-semibold py-3">Total Amount:</td>
-                                                        <td class="pe-4 py-3 text-end fw-bold text-primary">₹{{ number_format($order->amount, 2) }}</td>
+                                                        <td colspan="3" class="text-end fw-semibold py-2">Subtotal:</td>
+                                                        <td class="pe-4 py-2 text-end">₹{{ number_format($order->sub_total, 2) }}</td>
+                                                    </tr>
+                                                    @if($order->shipping_amount > 0)
+                                                        <tr>
+                                                            <td colspan="3" class="text-end fw-semibold py-2">Shipping Fee:</td>
+                                                            <td class="pe-4 py-2 text-end">₹{{ number_format($order->shipping_amount, 2) }}</td>
+                                                        </tr>
+                                                    @endif
+                                                    @if($order->tax_amount > 0)
+                                                        <tr>
+                                                            <td colspan="3" class="text-end fw-semibold py-2">Tax Amount:</td>
+                                                            <td class="pe-4 py-2 text-end">₹{{ number_format($order->tax_amount, 2) }}</td>
+                                                        </tr>
+                                                    @else
+                                                        <tr>
+                                                            <td colspan="3" class="text-end fw-semibold py-2">Tax Amount:</td>
+                                                            <td class="pe-4 py-2 text-end">₹0.00</td>
+                                                        </tr>
+                                                    @endif
+                                                    @if($order->discount_amount > 0)
+                                                        <tr>
+                                                            <td colspan="3" class="text-end fw-semibold py-2 text-danger">Discount:</td>
+                                                            <td class="pe-4 py-2 text-end text-danger">-₹{{ number_format($order->discount_amount, 2) }}</td>
+                                                        </tr>
+                                                    @endif
+                                                    <tr class="border-top border-dark border-opacity-10">
+                                                        <td colspan="3" class="text-end fw-bold py-3 fs-5">Total Amount:</td>
+                                                        <td class="pe-4 py-3 text-end fw-bold text-primary fs-5">₹{{ number_format($order->amount, 2) }}</td>
                                                     </tr>
                                                 </tfoot>
                                     </table>

@@ -4,7 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Checkout - Shofy')</title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('/') }}assets1/img/favicon.png">
+    <title>@yield('title', 'Checkout - iPaymnt Tech')</title>
     
     <!-- Fonts and Core CSS -->
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
@@ -15,6 +16,7 @@
     <link media="all" type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}home/theme.css">
     <link media="all" type="text/css" rel="stylesheet" href="{{ asset('/') }}css/core.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-notify@0.5.5/dist/simple-notify.min.css" />
     
     <style>
         body { background-color: #f5f5f5; font-family: 'Jost', sans-serif; }
@@ -57,7 +59,7 @@
     <!-- Minimal Footer -->
     <footer class="checkout-footer">
         <div class="container">
-            <p>&copy; {{ date('Y') }} Shofy. All rights reserved.</p>
+            <p>&copy; {{ date('Y') }} iPaymnt Tech. All rights reserved.</p>
         </div>
     </footer>
 
@@ -66,6 +68,7 @@
     <script src="{{ asset('/') }}home/bootstrap.min.js"></script>
     <script src="{{ asset('/') }}home/meanmenu.js"></script>
     <script src="{{ asset('/') }}home/theme.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-notify@0.5.5/dist/simple-notify.min.js"></script>
     @stack('scripts')
 </body>
 </html>

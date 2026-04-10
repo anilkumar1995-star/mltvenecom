@@ -1,6 +1,6 @@
 @extends('frontend.layouts.checkout')
 
-@section('title', 'Checkout - Shofy')
+@section('title', 'Checkout - iPaymnt Tech')
 
 @push('styles')
 <style>
@@ -60,8 +60,30 @@
     }
     .place-order-btn .tp-btn:hover { background-color: #156296; }
     
-    /* Reveal Styles */
-    #create_pass_box, #shipping_address_box, #tax_information_box { display: none; }
+    /* Modal Styling */
+    #discountModal .modal-content { border-radius: 12px; border: none; overflow: hidden; }
+    #discountModal .modal-header { background: #f8f9fa; border-bottom: 1px solid #eee; padding: 20px; }
+    #discountModal .modal-title { font-weight: 700; color: #010f1c; }
+    
+    .coupon-card { 
+        border: 2px dashed #d9d9d9; border-radius: 10px; padding: 15px; margin-bottom: 15px; 
+        transition: all 0.3s ease; cursor: pointer; position: relative; background: #fff;
+    }
+    .coupon-card:hover { border-color: #197BBD; background: #f0f7ff; transform: translateY(-2px); }
+    .coupon-card .code-badge { 
+        background: #197BBD; color: #fff; padding: 5px 12px; border-radius: 20px; 
+        font-weight: 700; font-size: 14px; margin-bottom: 8px; display: inline-block;
+    }
+    .coupon-card .offer-value { color: #010f1c; font-weight: 700; font-size: 18px; margin-bottom: 4px; }
+    .coupon-card .offer-desc { color: #55585b; font-size: 13px; line-height: 1.4; }
+    .coupon-card .copy-btn { 
+        position: absolute; top: 15px; right: 15px; color: #197BBD; font-weight: 600; font-size: 13px; 
+        text-transform: uppercase;
+    }
+    .view-offers-link { 
+        color: #197BBD; font-size: 13px; font-weight: 600; text-decoration: underline; 
+        display: inline-block; margin-top: 8px; cursor: pointer;
+    }
 </style>
 @endpush
 
@@ -289,19 +311,35 @@
                         
                         {{-- Coupon Section --}}
                         <div class="checkout-coupon mb-30">
-                            <div class="row g-2">
+                            <div class="row g-2 align-items-center">
                                 <div class="col-8">
-                                    <input type="text" id="coupon_code" class="form-control" placeholder="Enter coupon code" value="{{ $couponCode ?? '' }}" {{ isset($couponCode) ? 'disabled' : '' }}>
+                                    <div class="position-relative">
+                                        <input type="text" id="coupon_code" class="form-control {{ isset($couponCode) ? 'is-valid border-success' : '' }}" 
+                                            placeholder="Enter coupon code" value="{{ $couponCode ?? '' }}" {{ isset($couponCode) ? 'disabled' : '' }}
+                                            style="height: 54px; padding-left: 15px; font-weight: 600;">
+                                        @if(isset($couponCode))
+                                            <span class="position-absolute translate-middle-y top-50 end-0 me-3 badge bg-success text-white">Applied</span>
+                                        @endif
+                                    </div>
                                 </div>
-                                <div class="col-4 text-end">
+                                <div class="col-4">
                                     @if(isset($couponCode))
-                                        <a href="{{ route('frontend.checkout.remove-coupon') }}" class="tp-btn btn-danger w-100" style="padding: 12px 10px; font-size: 14px; background-color: #dc3545;">Remove</a>
+                                        <a href="{{ route('frontend.checkout.remove-coupon') }}" class="btn btn-danger w-100 d-flex align-items-center justify-content-center px-0" 
+                                            style="height: 54px; font-size: 14px; background-color: #dc3545; border: none; font-weight: 600; border-radius: 0;">
+                                            <i class="fas fa-trash-alt me-2"></i> Remove
+                                        </a>
                                     @else
-                                        <button type="button" id="apply_coupon_btn" class="tp-btn w-100" style="padding: 12px 10px; font-size: 14px;">Apply</button>
+                                        <button type="button" id="apply_coupon_btn" class="tp-btn w-100" 
+                                            style="height: 54px; padding: 0; font-size: 14px; background-color: #197BBD; font-weight: 600;">Apply</button>
                                     @endif
                                 </div>
                             </div>
                             <div id="coupon_message" class="mt-2 small"></div>
+                            @if(isset($availableDiscounts) && $availableDiscounts->count() > 0)
+                                <div class="view-offers-link" data-bs-toggle="modal" data-bs-target="#discountModal">
+                                    <i class="fas fa-percentage me-1"></i> View Available Offers
+                                </div>
+                            @endif
                         </div>
                         <div class="your-order-table table-responsive">
                             <table>
@@ -404,6 +442,83 @@
 </section>
 @endsection
 
+<!-- Discount Offers Modal -->
+<div class="modal fade" id="discountModal" tabindex="-1" aria-labelledby="discountModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="discountModalLabel">Available Discount Offers</h5>
+                <button type="button" class="btn-close" data-bs-toggle="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="max-height: 450px; overflow-y: auto; padding: 20px;">
+                @if(isset($availableDiscounts) && $availableDiscounts->count() > 0)
+                    @foreach($availableDiscounts as $discount)  
+                        <div class="coupon-card" onclick="copyCouponCode('{{ $discount->code }}')" title="Click to copy and apply">
+                            <span class="copy-btn">Copy Code</span>
+                            <div class="code-badge">{{ $discount->code }}</div>
+                            <div class="offer-value">
+                                @if($discount->type_option == 'percentage')
+                                    {{ (int)$discount->value }}% Discount
+                                @elseif($discount->type_option == 'shipping')
+                                    FREE SHIPPING (₹{{ number_format($discount->value, 0) }})
+                                @else
+                                    ₹{{ number_format($discount->value, 0) }} OFF
+                                @endif
+                                <span class="badge bg-light text-dark border ms-2 small fw-normal">{{ ucfirst($discount->type_option) }} Offer</span>
+                            </div>
+                            
+                            <div class="offer-desc mb-2">
+                                <strong>Description:</strong> {{ $discount->description ?? ($discount->title ?? 'Flat discount on your purchase.') }}
+                            </div>
+
+                            <div class="offer-details small text-muted">
+                                <div class="mb-1">
+                                    <i class="far fa-clock me-1"></i> 
+                                    @if($discount->end_date)
+                                        Valid till: {{ $discount->end_date->format('d M, Y') }}
+                                    @else
+                                        Lifetime Validity
+                                    @endif
+                                </div>
+                                @if($discount->min_order_price > 0)
+                                    <div class="mb-1">
+                                        <i class="fas fa-shopping-basket me-1"></i>
+                                        Min Order: <strong>₹{{ number_format($discount->min_order_price, 0) }}</strong>
+                                    </div>
+                                @endif
+                                <div class="mb-1">
+                                    <i class="fas fa-users me-1"></i>
+                                    Redemptions Left: <strong>{{ $discount->quantity ? ($discount->quantity - $discount->total_used) : 'Unlimited' }}</strong>
+                                </div>
+                            </div>
+
+                            @php
+                                $restrictions = [];
+                                if($discount->products->count() > 0) $restrictions[] = 'Specific Products';
+                                if($discount->productCategories->count() > 0) $restrictions[] = 'Certain Categories';
+                            @endphp
+                            
+                            @if(!empty($restrictions))
+                                <div class="mt-2 pt-2 border-top">
+                                    <small class="text-danger fw-bold"><i class="fas fa-info-circle me-1"></i> Valid on: {{ implode(', ', $restrictions) }}</small>
+                                </div>
+                            @endif
+                        </div>
+                    @endforeach
+                @else
+                    <div class="text-center py-4">
+                        <i class="fas fa-ticket-alt fa-3x text-muted mb-3"></i>
+                        <p class="text-muted">No active offers available right now.</p>
+                    </div>
+                @endif
+            </div>
+            <div class="modal-footer bg-light">
+                <small class="text-muted w-100 text-center">Click on any card to copy the code!</small>
+            </div>
+        </div>
+    </div>
+</div>
+
 @push('scripts')
 <script>
     $(document).ready(function() {
@@ -492,5 +607,47 @@
             });
         });
     });
+
+    /**
+     * Copy Coupon Code to Clipboard
+     */
+    function copyCouponCode(code) {
+        navigator.clipboard.writeText(code).then(function() {
+            // Put it into the input field
+            $('#coupon_code').val(code);
+            
+            // Show premium feedback
+            if (typeof Notify !== 'undefined') {
+                new Notify({
+                    status: 'success',
+                    title: 'Coupon Copied!',
+                    text: 'Code: <strong>' + code + '</strong> is ready to use.',
+                    effect: 'fade',
+                    speed: 300,
+                    showIcon: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    position: 'right top'
+                });
+            } else {
+                alert('Coupon code ' + code + ' copied to clipboard!');
+            }
+
+            // Close the modal
+            var modal = bootstrap.Modal.getInstance(document.getElementById('discountModal'));
+            if (modal) {
+                modal.hide();
+            }
+            
+            // Highlight the input
+            $('#coupon_code').addClass('is-valid').focus();
+            setTimeout(() => {
+                $('#coupon_code').removeClass('is-valid');
+            }, 1000);
+
+        }, function(err) {
+            console.error('Could not copy text: ', err);
+        });
+    }
 </script>
 @endpush

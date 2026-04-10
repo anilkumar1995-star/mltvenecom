@@ -81,9 +81,11 @@ Route::post('/login', [LoginController::class , 'login'])->name('login.post');
 Route::get('/register', [RegisterController::class , 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegisterController::class , 'register']);
 Route::match (['get', 'post'], '/logout', [LoginController::class , 'logout'])->name('logout');
-Route::get('/password/reset', function () {
-    return 'Password reset is currently disabled.';
-})->name('password.request');
+// Password Reset Routes
+Route::get('password/reset', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+Route::post('password/email', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+Route::get('password/reset/{token}', [App\Http\Controllers\Auth\ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::post('password/reset', [App\Http\Controllers\Auth\ResetPasswordController::class, 'reset'])->name('password.update');
 
 // Vendor KYC Pending Page
 Route::get('/v/kyc-pending', function (\Illuminate\Http\Request $request) {

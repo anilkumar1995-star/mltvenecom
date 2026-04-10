@@ -167,12 +167,10 @@
                                                     <td class="text-end pt-4 fw-bold text-muted border-0 small no-wrap">Sub Total:</td>
                                                     <td class="text-end pe-4 pt-4 fw-bold text-dark border-0 no-wrap">₹{{ number_format($invoice->sub_total, 2) }}</td>
                                                 </tr>
-                                                @if($invoice->tax_amount > 0)
                                                 <tr>
                                                     <td class="text-end fw-bold text-muted border-0 small no-wrap">Tax:</td>
                                                     <td class="text-end pe-4 fw-bold text-dark border-0 no-wrap">₹{{ number_format($invoice->tax_amount, 2) }}</td>
                                                 </tr>
-                                                @endif
                                                 @if($invoice->shipping_amount > 0)
                                                 <tr>
                                                     <td class="text-end fw-bold text-muted border-0 small no-wrap">Shipping:</td>
