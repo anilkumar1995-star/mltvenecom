@@ -11,6 +11,7 @@ class CartController extends Controller
 {
     public function index()
     {
+        Session::forget('applied_coupon');
         $cart = Session::get('cart', []);
         $total = 0;
 
@@ -62,12 +63,27 @@ class CartController extends Controller
             foreach ($cart as $item) {
                 $total += $item['price'] * $item['quantity'];
             }
+            $is_already_added = false;
+            foreach ($product_ids as $pid) {
+                if (isset(Session::get('cart', [])[$pid])) {
+                    $is_already_added = true;
+                    break;
+                }
+            }
+
             return response()->json([
                 'success' => true,
+                'error' => false,
+                'is_already_added' => $is_already_added,
                 'message' => $added_count > 1 ? 'Bundle added to cart!' : 'Product added to cart!',
                 'count' => count($cart),
                 'subtotal' => $total,
                 'html' => view('frontend.partials.mini-cart')->render(),
+                'data' => [
+                    'count' => count($cart),
+                    'subtotal' => $total,
+                    'cart_mini' => view('frontend.partials.mini-cart')->render(),
+                ],
             ]);
         }
 

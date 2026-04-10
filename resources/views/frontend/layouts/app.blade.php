@@ -983,7 +983,7 @@
                 showIcon: true,
                 showCloseButton: true,
                 autoclose: true,
-                autotimeout: 2000,
+                autotimeout: 4000,
                 gap: 20,
                 distance: 15,
                 type: 1,
@@ -993,6 +993,7 @@
 
         @if(session('success')) notify("{{ session('success') }}", 'success'); @endif
         @if(session('error')) notify("{{ session('error') }}", 'error'); @endif
+        @if(session('status')) notify("{{ session('status') }}", 'success'); @endif
         @if($errors->any()) @foreach($errors->all() as $error) notify("{{ $error }}", 'error'); @endforeach @endif
     </script>
     <form id="global-logout-form" action="{{ route('logout') }}" method="POST" class="d-none">

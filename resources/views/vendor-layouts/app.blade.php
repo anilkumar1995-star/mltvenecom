@@ -932,9 +932,8 @@
     <script src="{{ asset('vendor/core/core/base/libraries/jquery-ui/jquery-ui.min.js?v=1.4.4') }}"></script>
     <script src="{{ asset('vendor/core/core/base/libraries/tagify/tagify.js?v=1.4.4') }}"></script>
     
-    {{-- Dependencies for js-validation --}}
-    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.19.2/jquery.validate.min.js"></script>
-    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.19.2/additional-methods.min.js"></script>
+    {{-- Dependencies for js-validation - Using local files to avoid tracking prevention issues --}}
+    <script src="{{ asset('vendor/core/plugins/ecommerce/libraries/validate/jquery.validate.min.js?v=1.4.4') }}"></script>
     <script src="{{ asset('vendor/core/core/js-validation/js/js-validation.js?v=1.4.4') }}"></script>
 
     <script src="{{ asset('vendor/core/core/base/libraries/jquery.are-you-sure/jquery.are-you-sure.js?v=1.4.4') }}"></script>

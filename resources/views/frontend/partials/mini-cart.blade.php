@@ -12,7 +12,7 @@
         <h4>Shopping Cart</h4>
         <div class="cartmini__close">
             <button type="button" class="cartmini__close-btn cartmini-close-btn">
-                <i class="fal fa-times"></i>
+                <i class="fas fa-times"></i>
             </button>
         </div>
     </div>
@@ -51,14 +51,14 @@
                             <div class="product__sm-price-wrapper">
                                 <span class="product__sm-price" style="color: #678E61; font-weight: 600;">₹{{ number_format($item['price'] * $item['quantity'], 2) }}</span>
                             </div>
-                            <a href="#" class="cartmini__del" data-id="{{ $id }}"><i class="fal fa-times"></i></a>
+                            <a href="#" class="cartmini__del" data-id="{{ $id }}"><i class="fas fa-times"></i></a>
                         </div>
                     </li>
                     @endforeach
                 </ul>
             @else
                 <div class="text-center py-5">
-                    <i class="fal fa-shopping-basket mb-3" style="font-size: 40px; color: #eee;"></i>
+                    <i class="fas fa-shopping-basket mb-3" style="font-size: 40px; color: #eee;"></i>
                     <p class="text-muted">Your cart is empty</p>
                     <a href="{{ route('frontend.products.index') }}" class="tp-btn mt-10">Shop Now</a>
                 </div>

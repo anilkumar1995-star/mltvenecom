@@ -47,13 +47,13 @@
                                         
                                         <div class="mb-3 position-relative">
                                             <label class="form-label fw-bold" for="description">Short Description</label>
-                                            <textarea class="form-control editor-ckeditor" data-counter="1000" rows="3"
+                                            <textarea class="form-control editor-ckeditor" data-counter="1000" rows="5"
                                                 placeholder="Provide a brief summary" id="description" name="description" cols="50"></textarea>
                                         </div>
 
                                         <div class="mb-3 position-relative">
                                             <label class="form-label fw-bold" for="content">Full Content / Details</label>
-                                            <textarea class="form-control editor-ckeditor" data-counter="100000" rows="6"
+                                            <textarea class="form-control editor-ckeditor" data-counter="100000" rows="5"
                                                 placeholder="Describe the product in detail" id="content" name="content" cols="50"></textarea>
                                         </div>
 
@@ -100,7 +100,7 @@
                                             <label class="form-label fw-bold">Regular Price</label>
                                             <div class="input-group">
                                                 <span class="input-group-text currency-symbol">₹</span>
-                                                <input class="form-control shadow-none" type="number" name="price" id="price" step="0.01">
+                                                <input class="form-control shadow-none" type="number" name="price" id="price" step="0.01" data-sale-percent-text="Discount Calculation: :percent">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -113,9 +113,9 @@
                                             </label>
                                             <div class="input-group border-info-subtle">
                                                 <span class="input-group-text currency-symbol bg-info-lt text-info border-info-subtle">₹</span>
-                                                <input class="form-control border-info-subtle shadow-none" type="number" name="sale_price" id="sale_price" step="0.01">
+                                                <input class="form-control border-info-subtle shadow-none" type="number" name="sale_price" id="sale_price" step="0.01" data-sale-percent-text="Discount Calculation: :percent">
                                             </div>
-                                            <div class="form-hint small text-muted mt-1">Discount Calculation: <strong class="text-success">0%</strong></div>
+                                            <small class="form-hint text-muted mt-1">Discount Calculation: <strong class="text-success">0%</strong></small>
                                         </div>
 
                                         <div class="col-md-6 scheduled-time" style="display: none;">
@@ -466,7 +466,6 @@
 
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
 <script>
     function previewImages(input) {
         const container = document.getElementById('image_preview_container');
@@ -530,8 +529,11 @@
         $('.btn-trigger-add-attribute-item').on('click', addAttributeRow);
 
         function addAttributeRow() {
-            let html = $('.product-select-attribute-item-template').html().replace(/__INDEX__/g, attrIndex++);
-            $('.list-product-attribute-items-wrap').append(html);
+            let $template = $('.product-select-attribute-item-template');
+            if ($template.length > 0) {
+                let html = $template.html().replace(/__INDEX__/g, attrIndex++);
+                $('.list-product-attribute-items-wrap').append(html);
+            }
         }
 
         $(document).on('change', '.attr-set-select', function() {
@@ -686,16 +688,18 @@
             });
         });
 
-        // Initialize Validation
-        $('#botble-ecommerce-forms-product-form').validate({
-            rules: { name: { required: true } },
-            errorPlacement: function(error, element) {
-                error.addClass('invalid-feedback');
-                element.after(error);
-            },
-            highlight: function(element) { $(element).addClass('is-invalid'); },
-            unhighlight: function(element) { $(element).removeClass('is-invalid'); }
-        });
+        // Initialize Validation (Ensure jQuery Validation is loaded)
+        if (typeof $.fn.validate !== 'undefined') {
+            $('#botble-ecommerce-forms-product-form').validate({
+                rules: { name: { required: true } },
+                errorPlacement: function(error, element) {
+                    error.addClass('invalid-feedback');
+                    element.after(error);
+                },
+                highlight: function(element) { $(element).addClass('is-invalid'); },
+                unhighlight: function(element) { $(element).removeClass('is-invalid'); }
+            });
+        }
     });
 </script>
 @endpush
