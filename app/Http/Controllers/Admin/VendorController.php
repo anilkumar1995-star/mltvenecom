@@ -54,9 +54,8 @@ class VendorController extends Controller
             $vendor->vendor_verified_at = now();
             $vendor->save();
 
-            // also verify store
             if ($vendor->store) {
-                $vendor->store->is_verified = 1;
+                // $vendor->store->is_verified = 1;
                 $vendor->store->verified_at = now();
                 $vendor->store->status = 'published';
                 $vendor->store->save();
