@@ -5,10 +5,13 @@
 @push('styles')
 <style>
     .breadcrumb__area {
-        background-color: #f5f5f5;
-        background-image: url('{{ asset("storage/main/general/breadcrumb.jpg") }}');
-        background-size: cover;
-        background-position: center;
+        background-color: #f3f3f3;
+        position: relative;
+    }
+    .breadcrumb__title {
+        font-size: 40px;
+        font-weight: 600;
+        color: #010f1c;
     }
     .ck-content h4 {
         margin-top: 30px;
@@ -26,7 +29,7 @@
 
 @section('content')
 <main>
-    <section class="breadcrumb__area include-bg pt-60 pb-60 mb-50 text-start">
+    <section class="breadcrumb__area pt-40 pb-40 mb-30 text-start">
         <div class="container">
             <div class="breadcrumb__content p-relative z-index-1">
                 <h3 class="breadcrumb__title">Our Story</h3>

@@ -261,6 +261,14 @@
             --h6-size: 16px;
         }
 
+        /* Category Sidebar Desktop Fix */
+        .tp-side-menu-5 {
+            display: none !important;
+        }
+        .tp-side-menu-5.is-open {
+            display: block !important;
+        }
+
         h1 {
             font-size: var(--h1-size);
         }
@@ -736,10 +744,31 @@
     <script src="{{ asset('home/ecommerce.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-notify@0.5.5/dist/simple-notify.min.js"></script>
 
+    @include('frontend.partials.offcanvas')
     <div class="cartmini__area">
         @include('frontend.partials.mini-cart')
     </div>
     <div class="body-overlay"></div>
+
+    <script>
+        function openOffcanvas() {
+            $('.offcanvas__area').addClass('offcanvas-opened');
+            $('.body-overlay').addClass('opened');
+            $('body').css('overflow', 'hidden');
+        }
+        function closeOffcanvas() {
+            $('.offcanvas__area').removeClass('offcanvas-opened');
+            $('.body-overlay').removeClass('opened');
+            $('body').css('overflow', '');
+        }
+        $(document).on('click', '.tp-offcanvas-open-btn', function(e) {
+            e.preventDefault();
+            openOffcanvas();
+        });
+        $(document).on('click', '.offcanvas-close-btn, .body-overlay', function(e) {
+            closeOffcanvas();
+        });
+    </script>
 
     <!-- Quick View Modal -->
     <div class="modal fade tp-product-modal" id="quickViewModal" tabindex="-1" aria-labelledby="quickViewModalLabel" aria-hidden="true">
@@ -970,6 +999,12 @@
                 $('#quickViewModal').modal('hide');
                 $('.tp-add-cart-btn[data-id="' + id + '"]').first().trigger('click');
             });
+
+            // Category Sidebar Toggle (Desktop)
+            $(document).on('click', '.tp-hamburger-toggle', function(e) {
+                e.preventDefault();
+                $('.tp-side-menu-5').toggleClass('is-open');
+            });
         });
 
         function notify(text, status) {
@@ -990,6 +1025,15 @@
                 position: 'right top'
             })
         }
+
+        $(document).ready(function() {
+            // Mobile Menu Dropdown Toggle
+            $(document).on('click', '.menu-toggle', function(e) {
+                e.preventDefault();
+                $(this).siblings('.submenu').slideToggle();
+                $(this).find('i').toggleClass('fa-chevron-down fa-chevron-up');
+            });
+        });
 
         @if(session('success')) notify("{{ session('success') }}", 'success'); @endif
         @if(session('error')) notify("{{ session('error') }}", 'error'); @endif

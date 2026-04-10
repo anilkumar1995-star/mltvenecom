@@ -246,6 +246,13 @@ class CheckoutController extends Controller
             $payment->update(['order_id' => $order->id]);
 
             foreach ($cart as $item) {
+                // Calculate item-level tax proportionally (optional, but good for reporting)
+                $itemSubtotal = $item['price'] * $item['quantity'];
+                $itemTax = 0;
+                if ($subtotal > 0) {
+                    $itemTax = ($itemSubtotal / $subtotal) * $tax;
+                }
+
                 OrderProduct::create([
                     'order_id' => $order->id,
                     'product_id' => $item['id'],
@@ -253,7 +260,7 @@ class CheckoutController extends Controller
                     'product_image' => $item['image'] ?? null,
                     'qty' => $item['quantity'],
                     'price' => $item['price'],
-                    'tax_amount' => 0,
+                    'tax_amount' => $itemTax,
                 ]);
 
                 $product = EcProduct::find($item['id']);

@@ -96,7 +96,7 @@
                                 <small class="text-muted">{{ $product->brand->name }}</small>
                             @endif
                             <div class="mb-2">
-                                @if($product->isOnSale())
+                                @if($product->isOnSale() && round($product->sale_price, 2) < round($product->price, 2))
                                     <span class="text-danger fw-bold">₹{{ number_format($product->sale_price, 2) }}</span>
                                     <span class="text-muted text-decoration-line-through ms-2">₹{{ number_format($product->price, 2) }}</span>
                                 @else

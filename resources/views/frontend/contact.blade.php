@@ -4,7 +4,7 @@
 
 <main>
     {{-- Breadcrumb --}}
-    <section class="breadcrumb__area include-bg pt-60 pb-60 mb-50 mb-30 text-start pt-30 page_speed_1551811272">
+    <section class="breadcrumb__area pt-40 pb-40 mb-30 text-start">
         <div class="container">
             <div class="breadcrumb__content p-relative z-index-1">
                 <h3 class="breadcrumb__title">Contact</h3>
@@ -86,7 +86,7 @@
                     <div class="col-xl-3 col-lg-4 mt-5 mt-lg-0">
                         <div class="tp-contact-info-wrapper">
                             <div class="tp-contact-info-item mb-40 d-flex align-items-start gap-3">
-                                <div class="tp-contact-info-icon flex-shrink-0 bg-light rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                <div class="tp-contact-info-icon flex-shrink-0 rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; background-color: rgba(103, 142, 97, 0.1);">
                                     <svg class="text-primary" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z"></path>
                                         <path d="M3 7l9 6l9 -6"></path>
@@ -100,7 +100,7 @@
                             </div>
 
                             <div class="tp-contact-info-item mb-40 d-flex align-items-start gap-3">
-                                <div class="tp-contact-info-icon flex-shrink-0 bg-light rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                <div class="tp-contact-info-icon flex-shrink-0 rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; background-color: rgba(103, 142, 97, 0.1);">
                                     <svg class="text-primary" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"></path>
                                         <path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z"></path>
@@ -113,12 +113,8 @@
                             </div>
 
                             <div class="tp-contact-info-item d-flex align-items-start gap-3">
-                                <div class="tp-contact-info-icon flex-shrink-0 bg-light rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
-                                    <svg class="text-primary" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"></path>
-                                        <path d="M8 4l8 16"></path>
-                                        <path d="M12 4v16"></path>
-                                    </svg>
+                                <div class="tp-contact-info-icon flex-shrink-0 rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; background-color: rgba(103, 142, 97, 0.1);">
+                                    <i class="fas fa-share-alt text-primary" style="font-size: 20px;"></i>
                                 </div>
                                 <div class="tp-contact-info-content">
                                     <h4 class="fs-6 fw-bold mb-2">Find on Social Media</h4>
@@ -249,8 +245,10 @@
         background-color: var(--primary-color) !important;
         color: #fff !important;
     }
+    .tp-contact-info-item:hover .tp-contact-info-icon i,
     .tp-contact-info-item:hover .tp-contact-info-icon svg {
         color: #fff !important;
+        stroke: #fff !important;
     }
     .tp-contact-info-icon {
         transition: all 0.3s;

@@ -2,24 +2,76 @@
 
 @section('title', 'Shopping Cart - Shofy E-commerce')
 
+@push('styles')
+<style>
+    .breadcrumb__area {
+        background-color: #f3f3f3;
+        position: relative;
+    }
+    .breadcrumb__title {
+        font-size: 40px;
+        font-weight: 600;
+        color: #010f1c;
+        margin-bottom: 5px;
+    }
+    .breadcrumb__list span {
+        font-size: 14px;
+        color: #55585b;
+        position: relative;
+    }
+    .breadcrumb__list span:not(:last-child)::after {
+        content: ".";
+        margin: 0 10px;
+        font-weight: 700;
+    }
+    .breadcrumb__list span a {
+        color: #010f1c;
+    }
+</style>
+@endpush
+
 @section('content')
-<div class="container py-5">
-    <h2 class="mb-4">Shopping Cart</h2>
+<main>
+    <section class="breadcrumb__area pt-40 pb-40 mb-30">
+        <div class="container">
+            <div class="row">
+                <div class="col-xxl-12">
+                    <div class="breadcrumb__content p-relative z-index-1">
+                        <h3 class="breadcrumb__title">Shopping Cart</h3>
+                        <div class="breadcrumb__list">
+                           <span><a href="{{ route('frontend.home') }}">Home</a></span>
+                           <span>Shopping Cart</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container pb-100">
 
     @if(empty($cart) || count($cart) == 0)
         <div id="empty-cart-message" class="text-center py-5">
-            <i class="fas fa-shopping-cart fa-4x text-muted mb-3"></i>
-            <h4>Your cart is empty</h4>
-            <p class="text-muted">Add some products to get started!</p>
-            <a href="{{ route('frontend.products.index') }}" class="btn btn-primary">Continue Shopping</a>
+            <div class="mb-4">
+                <img src="{{ asset('home/empty-cart.png') }}" alt="Empty Cart" style="max-width: 250px; opacity: 0.8;">
+            </div>
+            <h4 class="fw-bold text-dark">Your cart is empty</h4>
+            <p class="text-muted mb-4">Looks like you haven't added anything to your cart yet.</p>
+            <a href="{{ route('frontend.products.index') }}" class="btn btn-primary px-5 py-3 fw-bold" style="border-radius: 8px;">
+                Start Shopping
+            </a>
         </div>
         <div id="cart-content" class="row d-none">
     @else
         <div id="empty-cart-message" class="text-center py-5 d-none">
-            <i class="fas fa-shopping-cart fa-4x text-muted mb-3"></i>
-            <h4>Your cart is empty</h4>
-            <p class="text-muted">Add some products to get started!</p>
-            <a href="{{ route('frontend.products.index') }}" class="btn btn-primary">Continue Shopping</a>
+            <div class="mb-4">
+                <img src="{{ asset('home/empty-cart.png') }}" alt="Empty Cart" style="max-width: 250px; opacity: 0.8;">
+            </div>
+            <h4 class="fw-bold text-dark">Your cart is empty</h4>
+            <p class="text-muted mb-4">Looks like you haven't added anything to your cart yet.</p>
+            <a href="{{ route('frontend.products.index') }}" class="btn btn-primary px-5 py-3 fw-bold" style="border-radius: 8px;">
+                Start Shopping
+            </a>
         </div>
         <div id="cart-content" class="row">
             <div class="col-md-8">
@@ -121,6 +173,8 @@
             </div>
         </div>
     @endif
+    </div>
+</main>
 @endsection
 
 @push('scripts')

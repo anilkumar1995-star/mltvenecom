@@ -45,7 +45,7 @@
                                 <div class="mb-4 position-relative">
                                     <label class="form-label fw-medium text-dark" for="email">Email</label>
                                     <div class="position-relative">
-                                        <input class="form-control ps-3 py-2 @error('email') is-invalid @enderror" value="{{ $email ?? old('email') }}" name="email" type="email" id="email" required autocomplete="email">
+                                        <input class="form-control ps-3 py-2 bg-light @error('email') is-invalid @enderror" value="{{ $email ?? old('email') }}" name="email" type="email" id="email" required autocomplete="email" readonly>
                                         @error('email')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
