@@ -679,13 +679,10 @@
                                                 <img src="{{ $store->logo_url }}" alt="{{ $store->name }}" style="width: 70px; height: 70px; object-fit: contain; border: 1px solid #eee; padding: 5px; border-radius: 6px;">
                                             </div>
                                             <div class="vendor-meta">
-                                                <h5 class="mb-0 fw-bold text-dark">
+                                                <h5 class="mb-0 text-dark fw-bold d-flex align-items-center">
                                                     {{ $store->name }}
                                                     @if($store->is_verified)
-                                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-left: 2px;">
-                                                            <path d="M10.5213 2.62368C11.3147 1.75255 12.6853 1.75255 13.4787 2.62368L14.4989 3.74391C14.8023 4.07713 15.2531 4.2612 15.7223 4.24394L17.2972 4.18589C18.5216 4.14076 19.5397 5.15883 19.4945 6.38321L19.4365 7.95809C19.4192 8.42732 19.6033 8.87809 19.9365 9.18157L21.0567 10.2017C21.9278 10.9951 21.9278 12.3657 21.0567 13.1591L19.9365 14.1793C19.6033 14.4827 19.4192 14.9335 19.4365 15.4027L19.4945 16.9776C19.5397 18.202 18.5216 19.2201 17.2972 19.1749L15.7223 19.1169C15.2531 19.0996 14.8023 19.2837 14.4989 19.6169L13.4787 20.7371C12.6853 21.6083 11.3147 21.6083 10.5213 20.7371L9.5011 19.6169C9.19762 19.2837 8.74685 19.0996 8.27763 19.1169L6.70275 19.1749C5.47837 19.2201 4.4603 18.202 4.50543 16.9776L4.56348 15.4027C4.58074 14.9335 4.39667 14.4827 4.06345 14.1793L2.94323 13.1591C2.0721 12.3657 2.0721 10.9951 2.94323 10.2017L4.06345 9.18157C4.39667 8.87809 4.58074 8.42732 4.56348 7.95809L4.50543 6.38321C4.4603 5.15883 5.47837 4.14076 6.70275 4.18589L8.27763 4.24394C8.74685 4.2612 9.19762 4.07713 9.5011 3.74391L10.5213 2.62368Z" fill="#0095F6"/>
-                                                            <path d="M9 12L11 14L15 10" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                                        </svg>
+                                                        <i class="fas fa-check-circle ms-1" style="font-size: 14px; color: #0095f6;"></i>
                                                     @endif
                                                 </h5>
                                                 <div class="text-muted" style="font-size: 11px;">Joined {{ $store->created_at->format('M d, Y') }}</div>

@@ -93,7 +93,7 @@
                                     <label class="form-label">Cover Image</label>
                                     <div class="mb-2">
                                         @php
-                                            $coverUrl = $store->cover_image ? (str_starts_with($store->cover_image, 'http') ? $store->cover_image : 'https://images.incomeowl.in/incomeowl/b2b/images/' . $store->cover_image) : 'https://via.placeholder.com/800x300';
+                                            $coverUrl = $store->cover_image ? (str_starts_with($store->cover_image, 'http') ? $store->cover_image : 'https://images.incomeowl.in/incomeowl/b2b/images/' . $store->cover_image) :  asset('home/placeholder.png');
                                         @endphp
                                         <img src="{{ $coverUrl }}" class="img-thumbnail" style="max-height: 100px; width: 100%; object-fit: cover;">
                                     </div>

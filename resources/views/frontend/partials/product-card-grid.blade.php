@@ -54,7 +54,7 @@
             <a href="{{ ($product->store->slug ?? null) ? route('frontend.stores.show', $product->store->slug) : '#' }}">
                 {{ $product->store->name ?? ($product->brand->name ?? 'Shofy Store') }}
                 @if ($product->store && $product->store->is_verified)
-                    <i class="fas fa-check-circle text-primary ms-1" style="font-size: 10px;" title="Verified Store"></i>
+                    <i class="fas fa-check-circle ms-1" style="font-size: 10px; color: #0095f6;" title="Verified Store"></i>
                 @endif
             </a>
         </div>
@@ -69,7 +69,7 @@
         </div>
         <div class="tp-product-price-wrapper-2">
             <span class="tp-product-price-2 new-price">₹{{ number_format($product->final_price, 2) }}</span>
-            @if($product->is_on_sale)
+            @if($product->is_on_sale && round($product->final_price, 2) < round($product->price, 2))
                 <span class="tp-product-price-2 old-price">₹{{ number_format($product->price, 2) }}</span>
             @endif
         </div>

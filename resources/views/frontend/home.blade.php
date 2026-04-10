@@ -760,7 +760,7 @@
                                             <a href="{{ ($product->store->slug ?? null) ? route('frontend.stores.show', $product->store->slug) : '#' }}">
                                                 {{ $product->store->name ?? 'Shofy Store' }}
                                                 @if ($product->store && $product->store->is_verified)
-                                                    <i class="fas fa-check-circle text-primary ms-1" style="font-size: 9px;"></i>
+                                                    <i class="fas fa-check-circle ms-1" style="font-size: 9px; color: #0095f6;"></i>
                                                 @endif
                                             </a>
                                         </div>
@@ -776,7 +776,7 @@
                                         <div class="tp-product-sm-price-wrapper-5 d-flex align-items-center justify-content-between">
                                             <div>
                                                 <span class="tp-product-sm-price-5">₹{{ number_format($product->final_price) }}</span>
-                                                @if($product->is_on_sale)
+                                                @if($product->is_on_sale && round($product->final_price, 2) < round($product->price, 2))
                                                     <span class="tp-product-sm-price-5 old-price" style="text-decoration: line-through; color: #999; font-size: 12px; margin-left: 5px;">₹{{ number_format($product->price) }}</span>
                                                 @endif
                                             </div>
@@ -811,7 +811,7 @@
                                             <a href="{{ ($product->store->slug ?? null) ? route('frontend.stores.show', $product->store->slug) : '#' }}">
                                                 {{ $product->store->name ?? 'Shofy Store' }}
                                                 @if ($product->store && $product->store->is_verified)
-                                                    <i class="fas fa-check-circle text-primary ms-1" style="font-size: 9px;"></i>
+                                                    <i class="fas fa-check-circle ms-1" style="font-size: 12px; color: #0095f6;"></i>
                                                 @endif
                                             </a>
                                         </div>
@@ -827,7 +827,7 @@
                                         <div class="tp-product-sm-price-wrapper-5 d-flex align-items-center justify-content-between">
                                             <div>
                                                 <span class="tp-product-sm-price-5">₹{{ number_format($product->final_price) }}</span>
-                                                @if($product->is_on_sale)
+                                                @if($product->is_on_sale && round($product->final_price, 2) < round($product->price, 2))
                                                     <span class="tp-product-sm-price-5 old-price" style="text-decoration: line-through; color: #999; font-size: 12px; margin-left: 5px;">₹{{ number_format($product->price) }}</span>
                                                 @endif
                                             </div>
@@ -995,7 +995,7 @@
                                                 <a href="{{ route('frontend.stores.show', $product->store->slug) }}" style="font-size: 12px; color: #678E61; font-weight: 600;">
                                                     {{ $product->store->name }}
                                                     @if ($product->store->is_verified)
-                                                        <i class="fas fa-check-circle text-primary ms-1" style="font-size: 10px;"></i>
+                                                        <i class="fas fa-check-circle ms-1" style="font-size: 10px; color: #0095f6;"></i>
                                                     @endif
                                                 </a>
                                             </div>
@@ -1008,7 +1008,7 @@
                                             </div>
                                             <div class="tp-product-price-wrapper-5">
                                                 <span class="tp-product-price-5">₹{{ number_format($product->final_price) }}</span>
-                                                @if($product->is_on_sale)
+                                                @if($product->is_on_sale && round($product->final_price, 2) < round($product->price, 2))
                                                     <span class="tp-product-price-5 old-price" style="text-decoration: line-through; color: #999; font-size: 12px; margin-left: 5px;">₹{{ number_format($product->price) }}</span>
                                                 @endif
                                             </div>
