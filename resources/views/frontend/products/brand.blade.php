@@ -7,8 +7,8 @@
         <section class="breadcrumb__area include-bg pt-30 pb-15 mb-10 text-start page_speed_462687251" style="border-bottom: 1px solid #f0f0f0; background-color: #fcfcfc;">
             <div class="container">
                 <div class="breadcrumb__content p-relative z-index-1">
-                    <h3 class="breadcrumb__title mb-1">{{ $category->name }}</h3>
-                    <div class="breadcrumb__list js_breadcrumb_reduce_length_on_mobile"><span><a class="d-inline-block" href="{{ url('/') }}">Home</a></span><span><a class="d-inline-block" href="{{ route('frontend.products.index') }}">Products</a></span><span> {{ $category->name }} </span></div>
+                    <h3 class="breadcrumb__title mb-1">{{ $brand->name }}</h3>
+                    <div class="breadcrumb__list js_breadcrumb_reduce_length_on_mobile"><span><a class="d-inline-block" href="{{ url('/') }}">Home</a></span><span><a class="d-inline-block" href="{{ route('frontend.products.index') }}">Products</a></span><span> {{ $brand->name }} </span></div>
                 </div>
             </div>
         </section>
@@ -28,7 +28,7 @@
                                         <div class="bb-shop-sidebar">
                                             <form action="{{ url()->current() }}" method="GET" class="bb-product-form-filter">
                                                 <div class="bb-ecommerce-filter-hidden-fields">
-                                                    <input name="category" type="hidden" value="{{ $category->id }}">
+                                                    <input name="brand" type="hidden" value="{{ $brand->id }}">
                                                     <input name="layout" type="hidden" class="product-filter-item" value="">
                                                     <input name="page" type="hidden" class="product-filter-item" value="">
                                                     <input name="per-page" type="hidden" class="product-filter-item" value="">
@@ -61,20 +61,19 @@
                                                             </li>
                                                             @foreach($categories as $cat)
                                                                 @php
-                                                                    $isActive = $category->id == $cat->id || ($category->parent_id == $cat->id && $category->parent_id != 0);
                                                                     $hasChildren = $cat->children->count() > 0;
                                                                 @endphp
                                                                 <li class="bb-product-filter-item">
-                                                                    <a href="{{ route('frontend.categories.show', $cat->slug) }}" class="bb-product-filter-link {{ $isActive ? 'active' : '' }}" data-id="{{ $cat->id }}">
+                                                                    <a href="{{ route('frontend.categories.show', $cat->slug) }}" class="bb-product-filter-link" data-id="{{ $cat->id }}">
                                                                         <svg class="icon svg-icon-ti-ti-folder" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                                                             <path d="M5 4h4l3 3h7a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-11a2 2 0 0 1 2 -2" />
                                                                         </svg> {{ $cat->name }}
                                                                     </a>
                                                                     @if($hasChildren)
-                                                                        <ul class="bb-product-filter-items {{ $isActive ? 'active' : '' }}">
+                                                                        <ul class="bb-product-filter-items">
                                                                             @foreach($cat->children as $child)
                                                                                 <li class="bb-product-filter-item">
-                                                                                    <a href="{{ route('frontend.categories.show', $child->slug) }}" class="bb-product-filter-link {{ $category->id == $child->id ? 'active' : '' }}" data-id="{{ $child->id }}">
+                                                                                    <a href="{{ route('frontend.categories.show', $child->slug) }}" class="bb-product-filter-link" data-id="{{ $child->id }}">
                                                                                         {{ $child->name }}
                                                                                     </a>
                                                                                 </li>
@@ -136,7 +135,7 @@
                                 <div class="tp-shop-main-wrapper">
                                     <div class="bb-product-listing-page-description">
                                         <div class="bb-block__header">
-                                            <h1 class="h1">{{ $category->name }}</h1>
+                                            <h1 class="h1">Brand: {{ $brand->name }}</h1>
                                         </div>
                                     </div>
                                     <div class="tp-shop-top mb-45">
@@ -257,7 +256,7 @@
                                             @empty
                                             <div class="col-12">
                                                 <div class="text-center py-5">
-                                                    <h5>No products found in this category</h5>
+                                                    <h5>No products found for this brand</h5>
                                                 </div>
                                             </div>
                                             @endforelse

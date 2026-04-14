@@ -809,34 +809,33 @@
     </div>
 @stack('scripts')
     <script>
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        
+        // --- Utility Functions (Global) ---
+        function updateCartBadge(count) {
+            $('[data-bb-value="cart-count"]').text(count);
+            $('.tp-cart-count').text(count);
+        }
+
+        function refreshMiniCart(html) {
+            if (html) {
+                $('.cartmini__area').html(html);
+            }
+        }
+
+        function openMiniCart() {
+            $('.cartmini__area').addClass('cartmini-opened');
+            $('.body-overlay').addClass('opened');
+            $('body').css('overflow', 'hidden');
+        }
+
+        function closeMiniCart() {
+            $('.cartmini__area').removeClass('cartmini-opened');
+            $('.body-overlay').removeClass('opened');
+            $('body').css('overflow', '');
+        }
+
         $(document).ready(function() {
-            var csrfToken = $('meta[name="csrf-token"]').attr('content');
-
-            // --- Utility Functions ---
-
-            function updateCartBadge(count) {
-                $('[data-bb-value="cart-count"]').text(count);
-                $('.tp-cart-count').text(count);
-            }
-
-            function refreshMiniCart(html) {
-                if (html) {
-                    $('.cartmini__area').html(html);
-                }
-            }
-
-            function openMiniCart() {
-                $('.cartmini__area').addClass('cartmini-opened');
-                $('.body-overlay').addClass('opened');
-                $('body').css('overflow', 'hidden');
-            }
-
-            function closeMiniCart() {
-                $('.cartmini__area').removeClass('cartmini-opened');
-                $('.body-overlay').removeClass('opened');
-                $('body').css('overflow', '');
-            }
-
             // --- Event Listeners ---
 
             // Close actions
@@ -997,13 +996,83 @@
             $(document).on('click', '#qv-add-to-cart-btn', function() {
                 var id = $(this).data('id');
                 $('#quickViewModal').modal('hide');
-                $('.tp-add-cart-btn[data-id="' + id + '"]').first().trigger('click');
+                var $target = $('.tp-add-to-cart-zepto-card[data-id="' + id + '"], .tp-add-cart-btn[data-id="' + id + '"]').first();
+                if ($target.length) {
+                    $target.trigger('click');
+                } else {
+                    // Fallback to global handler if no button on page
+                    $('.tp-add-cart-btn').first().data('id', id).trigger('click');
+                }
             });
 
             // Category Sidebar Toggle (Desktop)
             $(document).on('click', '.tp-hamburger-toggle', function(e) {
                 e.preventDefault();
                 $('.tp-side-menu-5').toggleClass('is-open');
+            });
+
+            // Global AJAX Search Logic
+            let searchTimer;
+            const $searchInput = $('#zepto-global-search');
+            const $resultsBox = $('.zepto-search-results');
+            const $overlay = $('.zepto-search-overlay');
+
+            $searchInput.on('keyup', function() {
+                clearTimeout(searchTimer);
+                let query = $(this).val();
+
+                if (query.length > 0) {
+                    searchTimer = setTimeout(function() {
+                        $.ajax({
+                            url: "{{ route('public.ajax.search') }}",
+                            method: 'GET',
+                            data: { q: query },
+                            success: function(res) {
+                                if (res.status && res.data.length > 0) {
+                                    let html = '';
+                                    res.data.forEach(product => {
+                                        let img = "{{ \App\Helpers\ImageHelper::getImageUrl() }}" + (product.image || 'placeholder.png');
+                                        let price = parseFloat(product.price);
+                                        let url = "{{ url('/products') }}/" + (product.slug || product.id);
+                                        
+                                        html += `
+                                            <a href="${url}" class="zepto-result-item">
+                                                <div class="zepto-result-thumb">
+                                                    <img src="${img}" alt="${product.name}">
+                                                </div>
+                                                <div class="zepto-result-info">
+                                                    <h6>${product.name}</h6>
+                                                    <span>₹${price.toLocaleString()}</span>
+                                                </div>
+                                            </a>
+                                        `;
+                                    });
+                                    $resultsBox.html(html).fadeIn(200);
+                                    $overlay.fadeIn(200);
+                                } else {
+                                    $resultsBox.html('<div class="p-3 text-center text-muted"><i class="fas fa-search mb-2 d-block" style="font-size: 24px; opacity: 0.3;"></i>No products found</div>').fadeIn(200);
+                                    $overlay.fadeIn(200);
+                                }
+                            }
+                        });
+                    }, 300);
+                } else {
+                    $resultsBox.hide();
+                    $overlay.hide();
+                }
+            });
+
+            // Close search results
+            $overlay.on('click', function() {
+                $resultsBox.fadeOut(200);
+                $overlay.fadeOut(200);
+            });
+
+            $(document).on('click', function(e) {
+                if (!$(e.target).closest('.zepto-search-container').length) {
+                    $resultsBox.fadeOut(200);
+                    $overlay.fadeOut(200);
+                }
             });
         });
 
@@ -1110,6 +1179,289 @@
         })();
     </script>
     @endauth
+
+    <script>
+        $(document).ready(function() {
+            // Zepto Add to Cart AJAX
+            $(document).on('click', '.tp-add-to-cart-zepto-card', function(e) {
+                e.preventDefault();
+                let $btn = $(this);
+                let id = $btn.data('id');
+                let url = $btn.data('url');
+                let $wrapper = $btn.closest('.tp-product-action-zepto');
+
+                $btn.prop('disabled', true).css('opacity', '0.7');
+
+                $.ajax({
+                    url: url,
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        product_id: id,
+                        quantity: 1
+                    },
+                    success: function(response) {
+                        if (response.error) {
+                            notify(response.message, 'error');
+                            $btn.prop('disabled', false).css('opacity', '1');
+                        } else {
+                            // Update UI
+                            $btn.addClass('d-none');
+                            $wrapper.find('.tp-qty-selector-zepto').removeClass('d-none');
+                            $wrapper.find('.qty-count-zepto').text(1);
+                            
+                            // Update Mini Cart
+                            let cartMiniHtml = response.html || (response.data ? response.data.cart_mini : '');
+                            let count = response.count || (response.data ? response.data.count : 0);
+                            
+                            if (cartMiniHtml) {
+                                $('.cartmini__area').html(cartMiniHtml);
+                                $('[data-bb-value="cart-count"]').text(count);
+                            }
+                            notify("Added to cart", 'success');
+                            openMiniCart();
+                        }
+                    },
+                    error: function() {
+                        notify("Something went wrong", 'error');
+                        $btn.prop('disabled', false).css('opacity', '1');
+                    }
+                });
+            });
+
+            // Zepto Plus/Minus AJAX
+            $(document).on('click', '.qty-btn-zepto', function(e) {
+                e.preventDefault();
+                let $btn = $(this);
+                let $wrapper = $btn.closest('.tp-product-action-zepto');
+                let $countSpan = $wrapper.find('.qty-count-zepto');
+                let id = $wrapper.data('id');
+                
+                let currentQty = parseInt($countSpan.text()) || 0;
+                let newQty = $btn.hasClass('plus') ? currentQty + 1 : currentQty - 1;
+
+                if (newQty < 0) return;
+
+                $wrapper.css('opacity', '0.5');
+
+                $.ajax({
+                    url: "{{ route('frontend.cart.update') }}",
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        product_id: id,
+                        quantity: newQty
+                    },
+                    success: function(response) {
+                        $wrapper.css('opacity', '1');
+                        if (response.error) {
+                            notify(response.message, 'error');
+                        } else {
+                            if (newQty <= 0) {
+                                $wrapper.find('.tp-qty-selector-zepto').addClass('d-none');
+                                $wrapper.find('.tp-add-to-cart-zepto-card').removeClass('d-none').prop('disabled', false).css('opacity', '1');
+                            } else {
+                                $countSpan.text(newQty);
+                            }
+
+                            // Update Mini Cart & Badges
+                            let count = response.count || (response.data ? response.data.count : 0);
+                            let cartMiniHtml = response.html || (response.data ? response.data.cart_mini : '');
+
+                            $('[data-bb-value="cart-count"]').text(count);
+                            if (cartMiniHtml) {
+                                $('.cartmini__area').html(cartMiniHtml);
+                            }
+                        }
+                    },
+                    error: function() {
+                        $wrapper.css('opacity', '1');
+                        notify("Update failed", 'error');
+                    }
+                });
+            });
+        });
+    </script>
+
+    <style>
+        /* Mobile Bottom Navigation */
+        .mobile-bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: #ffffff;
+            box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.1);
+            display: flex !important;
+            justify-content: space-around;
+            padding-top: 10px;
+            padding-bottom: calc(10px + env(safe-area-inset-bottom));
+            z-index: 1000000;
+            border-top: 1px solid #f0f0f0;
+            height: auto;
+            min-height: 70px;
+        }
+
+        @media (min-width: 992px) {
+            .mobile-bottom-nav {
+                display: none !important;
+            }
+        }
+
+        .mobile-bottom-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none !important;
+            color: #777;
+            font-size: 10px;
+            font-weight: 600;
+            gap: 5px;
+            flex: 1;
+        }
+
+        .mobile-bottom-nav-item i {
+            font-size: 18px;
+        }
+
+        .mobile-bottom-nav-item.active {
+            color: #0c831f; /* Zepto Green */
+        }
+
+        @media (min-width: 992px) {
+            .mobile-bottom-nav {
+                display: none;
+            }
+        }
+        
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+        }
+        
+        body {
+            padding-bottom: 90px; /* Spacer for mobile nav */
+        }
+        @media (min-width: 992px) {
+            body {
+                padding-bottom: 0; /* Fixes the extra white space beneath the footer on desktop */
+            }
+        }
+    </style>
+
+    <div class="mobile-bottom-nav">
+        <a href="{{ url('/') }}" class="mobile-bottom-nav-item {{ request()->is('/') ? 'active' : '' }}">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="{{ route('frontend.categories.index') }}" class="mobile-bottom-nav-item {{ request()->is('categories*') ? 'active' : '' }}">
+            <i class="fas fa-th-large"></i>
+            <span>Categories</span>
+        </a>
+        <a href="{{ route('frontend.cart.index') }}" class="mobile-bottom-nav-item {{ request()->is('cart*') ? 'active' : '' }}">
+            <div class="position-relative">
+                <i class="fas fa-shopping-basket"></i>
+                <span style="position: absolute; top: -5px; right: -5px; background: #0c831f; color: #fff; border-radius: 50%; width: 16px; height: 16px; font-size: 10px; display: flex; align-items: center; justify-content: center; border: 1.5px solid #fff;" data-bb-value="cart-count">
+                    {{ count(session('cart', [])) }}
+                </span>
+            </div>
+            <span>Cart</span>
+        </a>
+        <a href="{{ route('frontend.customer.dashboard') }}" class="mobile-bottom-nav-item {{ request()->is('customer*') ? 'active' : '' }}">
+            <i class="fas fa-user-circle"></i>
+            <span>Account</span>
+        </a>
+    </div>
+    
+    <!-- Global Loader -->
+    <div id="ipayment-global-loader">
+        <div class="loader-content">
+            @if(isset($footer_settings->footer_logo))
+                <img src="{{ \App\Helpers\ImageHelper::getImageUrl() }}{{ $footer_settings->footer_logo }}" alt="Loading...">
+            @else
+                <img src="{{ asset('/') }}home/logo.png" alt="Loading...">
+            @endif
+        </div>
+    </div>
+
+    <style>
+        #ipayment-global-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            z-index: 999999999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            pointer-events: none;
+        }
+        #ipayment-global-loader.active {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+        #ipayment-global-loader .loader-content img {
+            max-height: 45px;
+            animation: ipaymntPulse 1.2s infinite ease-in-out;
+        }
+        @keyframes ipaymntPulse {
+            0% { transform: scale(0.85); opacity: 0.6; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(0.85); opacity: 0.6; }
+        }
+    </style>
+
+    <script>
+        $(document).ready(function() {
+            // Intercept link clicks
+            $(document).on('click', 'a', function(e) {
+                var href = $(this).attr('href');
+                var target = $(this).attr('target');
+                var hasClass = $(this).hasClass('no-loader'); // specific opt-out if needed
+                
+                if (e.ctrlKey || e.metaKey || target === '_blank' || hasClass) return;
+                
+                if (href && href.indexOf('#') !== 0 && href.indexOf('javascript:') !== 0 && href !== '') {
+                    setTimeout(function() {
+                        if (!e.isDefaultPrevented() && !(e.originalEvent && e.originalEvent.defaultPrevented)) {
+                            $('#ipayment-global-loader').addClass('active');
+                        }
+                    }, 50);
+                }
+            });
+
+            // Intercept form submissions
+            $(document).on('submit', 'form', function(e) {
+                var target = $(this).attr('target');
+                var hasClass = $(this).hasClass('no-loader');
+                setTimeout(function() {
+                    if (target !== '_blank' && !e.isDefaultPrevented() && !(e.originalEvent && e.originalEvent.defaultPrevented) && !hasClass) {
+                        $('#ipayment-global-loader').addClass('active');
+                    }
+                }, 50);
+            });
+
+            // Fallback: Clear loader when any AJAX request completes to ensure it never hangs
+            $(document).ajaxComplete(function() {
+                $('#ipayment-global-loader').removeClass('active');
+            });
+
+            // Hide loader if page is loaded from bfcache (Back/Forward navigation)
+            $(window).on('pageshow', function (event) {
+                if (event.originalEvent.persisted) {
+                    $('#ipayment-global-loader').removeClass('active');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
 

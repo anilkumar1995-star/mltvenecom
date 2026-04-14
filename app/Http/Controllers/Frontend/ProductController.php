@@ -180,15 +180,10 @@ class ProductController extends Controller
         return $ids;
     }
 
-    public function brand($slug)
+    public function brand($id)
     {
         $brand = EcBrand::published()
-            ->where(function ($query) use ($slug) {
-                $query->where('slug', $slug);
-                if (is_numeric($slug)) {
-                    $query->orWhere('id', $slug);
-                }
-            })
+            ->where('id', $id)
             ->firstOrFail();
 
         $products = EcProduct::published()
@@ -196,6 +191,11 @@ class ProductController extends Controller
             ->with(['brand', 'categories', 'store'])
             ->paginate(12);
 
-        return view('frontend.products.brand', compact('brand', 'products'));
+        $brands = EcBrand::published()->get();
+        $categories = EcProductCategory::published()->parent()->with('children')->get();
+        $minPrice = EcProduct::published()->where('brand_id', $brand->id)->min('price') ?? 0;
+        $maxPrice = EcProduct::published()->where('brand_id', $brand->id)->max('price') ?? 1000;
+
+        return view('frontend.products.brand', compact('brand', 'products', 'brands', 'categories', 'minPrice', 'maxPrice'));
     }
 }

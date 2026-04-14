@@ -80,7 +80,7 @@ class HomeController extends Controller
             ->take(5)
             ->get();
 
-        return view('frontend.home', compact(
+        return view('frontend.home-new', compact(
             'home_slider',
             'featured_products',
             'new_arrivals',
