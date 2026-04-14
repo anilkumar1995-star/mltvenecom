@@ -68,10 +68,13 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\StoreController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Frontend\PublicAjaxController;
 use App\Models\Order;
 use App\Models\Review;
 use App\Models\Store;
 use App\Http\Controllers\Admin\ContactController;
+
+Route::get('/ajax-search', [PublicAjaxController::class, 'ajaxSearchProducts'])->name('public.ajax.search');
 
 
 // Route::get('/', [LoginController::class, 'home'])->name('home');

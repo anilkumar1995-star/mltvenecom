@@ -147,9 +147,15 @@
                             <span>Subtotal:</span>
                             <strong id="summary-subtotal">₹{{ number_format($total ?? 0, 2) }}</strong>
                         </div>
+                        @php
+                            $taxItem = \App\Models\Tax::where('status', 'published')->orderBy('priority', 'desc')->first();
+                            $taxPercentage = $taxItem ? (float) $taxItem->percentage : 0;
+                            $taxTitle = $taxItem ? $taxItem->title : 'Tax';
+                            $taxAmount = ($total ?? 0) * ($taxPercentage / 100);
+                        @endphp
                         <div class="d-flex justify-content-between mb-2">
-                            <span>Tax (15%):</span>
-                            <strong id="summary-tax">₹{{ number_format(($total ?? 0) * 0.15, 2) }}</strong>
+                            <span id="dynamic-tax-label">{{ $taxTitle }} ({{ $taxPercentage }}%):</span>
+                            <strong id="summary-tax">₹{{ number_format($taxAmount, 2) }}</strong>
                         </div>
                         <div class="d-flex justify-content-between mb-2">
                             <span>Shipping:</span>
@@ -158,7 +164,7 @@
                         <hr>
                         <div class="d-flex justify-content-between mb-3">
                             <strong>Total:</strong>
-                            <strong class="text-primary" id="summary-total">₹{{ number_format(($total ?? 0) + (($total ?? 0) * 0.15), 2) }}</strong>
+                            <strong class="text-primary" id="summary-total">₹{{ number_format(($total ?? 0) + $taxAmount, 2) }}</strong>
                         </div>
                         <div class="d-flex gap-2">
                             <a href="{{ route('frontend.checkout.index') }}" class="btn btn-primary flex-grow-1">
@@ -193,7 +199,8 @@ $(document).ready(function() {
             return;
         }
 
-        var tax = subtotal * 0.15;
+        var taxRate = {{ isset($taxPercentage) ? $taxPercentage : 0 }} / 100;
+        var tax = subtotal * taxRate;
         var shipping = 0.00;
         var total = subtotal + tax + shipping;
 

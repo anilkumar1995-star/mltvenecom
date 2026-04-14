@@ -15,11 +15,23 @@ class PublicAjaxController extends Controller
         $keyword = $request->input('q');
 
         $products = Product::query()
-            ->when($keyword, function ($query) use ($keyword) {
-                $query->where('name', 'like', '%' . $keyword . '%');
+            ->published() // Only show published products
+            ->where(function ($query) use ($keyword) {
+                $query->where('name', 'like', '%' . $keyword . '%')
+                    ->orWhere('description', 'like', '%' . $keyword . '%')
+                    ->orWhere('sku', 'like', '%' . $keyword . '%')
+                    ->orWhereHas('categories', function ($q) use ($keyword) {
+                        $q->where('name', 'like', '%' . $keyword . '%');
+                    })
+                    ->orWhereHas('brand', function ($q) use ($keyword) {
+                        $q->where('name', 'like', '%' . $keyword . '%');
+                    })
+                    ->orWhereHas('tags', function ($q) use ($keyword) {
+                        $q->where('name', 'like', '%' . $keyword . '%');
+                    });
             })
             ->latest()
-            ->take(12)
+            ->take(15)
             ->get();
 
         return response()->json([

@@ -220,7 +220,6 @@
     }
 
 
-
     .tp-slider-height-5 {
         min-height: 280px !important;
     }
@@ -396,8 +395,9 @@
 
 <section class="tp-category-area pt-60 pb-60">
     <div class="container">
-        <div class="tp-section-title-wrapper-5 mb-40">
-            <h3 class="tp-section-title-5" style="font-weight: 800; font-size: 24px;">Shop by Category</h3>
+                <div class="tp-section-title-wrapper-5 mb-40 d-flex align-items-center justify-content-between">
+            <h3 class="tp-section-title-5" style="font-weight: 800; font-size: 24px; margin:0;">Shop by Category</h3>
+            <a href="{{ route('frontend.categories.index') }}" class="text-decoration-none fw-bold" style="color: #ff3269; font-size: 14px;">See All <i class="fas fa-chevron-right ms-1" style="font-size: 10px;"></i></a>
         </div>
         <div class="row">
             <div class="col-xl-12">
@@ -423,6 +423,17 @@
                                 </a>
                             </div>
                             @endforeach
+                            {{-- See All Card --}}
+                            <div class="swiper-slide">
+                                <a href="{{ route('frontend.categories.index') }}" class="tp-category-card-link">
+                                    <div class="tp-category-item-5 p-relative z-index-1 mb-10" style="background: #fdf2f5 !important; border: 1px dashed #ff3269 !important;">
+                                        <div class="tp-category-thumb-5" style="color: #ff3269;">
+                                            <i class="fas fa-arrow-right" style="font-size: 24px;"></i>
+                                        </div>
+                                    </div>
+                                    <h3 class="tp-category-title-5" style="color: #ff3269 !important;">See All</h3>
+                                </a>
+                            </div>
                             @endif
                         </div>
                     </div>
@@ -448,9 +459,9 @@
     <div class="container">
         <div class="row align-items-center">
             <div class="col-xl-5 col-lg-6">
-                <div class="tp-section-title-wrapper-5 mb-50">
-                    <span class="tp-section-title-pre-5"> Trending Products </span>
-                    <h3 class="section-title tp-section-title-5"> <span>Featured</span> Products </h3>
+                <div class="tp-section-title-wrapper-5 mb-50 d-flex align-items-baseline gap-3">
+                    <h3 class="section-title tp-section-title-5 m-0"> <span>Featured</span> Products </h3>
+                    <a href="{{ url('/products') }}" class="text-decoration-none fw-bold" style="color: #ff3269; font-size: 14px;">See All <i class="fas fa-chevron-right ms-1" style="font-size: 10px;"></i></a>
                 </div>
             </div>
             <div class="col-xl-7 col-lg-6">
@@ -553,10 +564,10 @@
 <section class="tp-product-area pb-70">
     <div class="container">
         <div class="row align-items-center">
-            <div class="col-xl-6">
-                <div class="tp-section-title-wrapper-5 mb-50">
-                    <span class="tp-section-title-pre-5"> New Collections </span>
-                    <h3 class="section-title tp-section-title-5"> <span>New</span> Arrivals </h3>
+            <div class="col-12">
+                <div class="tp-section-title-wrapper-5 mb-50 d-flex justify-content-between align-items-baseline">
+                    <h3 class="section-title tp-section-title-5 m-0"> <span>New</span> Arrivals </h3>
+                    <a href="{{ url('/products') }}" class="text-decoration-none fw-bold" style="color: #ff3269; font-size: 14px;">See All <i class="fas fa-chevron-right ms-1" style="font-size: 10px;"></i></a>
                 </div>
             </div>
         </div>
@@ -667,10 +678,15 @@
                                             @endif
                                         </div>
                                         <div class="tp-product-sm-price-wrapper-5 d-flex align-items-center justify-content-between">
-                                            <div>
-                                                <span class="tp-product-sm-price-5">₹{{ number_format($product->final_price) }}</span>
+                                            <div class="d-flex flex-column align-items-start">
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <span class="tp-product-sm-price-5" style="background: #25a541; color: #fff !important; font-weight: 800; font-size: 13px; padding: 2px 6px; border-radius: 6px;">₹{{ number_format($product->final_price) }}</span>
+                                                    @if($product->is_on_sale && round($product->final_price, 2) < round($product->price, 2))
+                                                        <span class="tp-product-sm-price-5 old-price" style="text-decoration: line-through; color: #999; font-size: 12px; margin-left: -2px;">₹{{ number_format($product->price) }}</span>
+                                                    @endif
+                                                </div>
                                                 @if($product->is_on_sale && round($product->final_price, 2) < round($product->price, 2))
-                                                    <span class="tp-product-sm-price-5 old-price" style="text-decoration: line-through; color: #999; font-size: 12px; margin-left: 5px;">₹{{ number_format($product->price) }}</span>
+                                                    <span style="color: #25a541; font-weight: 800; font-size: 11px; margin-top: 4px;">₹{{ number_format($product->price - $product->final_price) }} OFF</span>
                                                 @endif
                                             </div>
                                             <div class="tp-product-action-zepto" data-id="{{ $product->id }}" style="position: absolute; bottom: 12px; right: 12px; z-index: 3;">
@@ -680,7 +696,7 @@
                                                 @endphp
                                                 {{-- ADD Button --}}
                                                 <button type="button"
-                                                    class="tp-add-cart-btn tp-add-to-cart-zepto-card {{ $cartItem ? 'd-none' : '' }}"
+                                                    class="tp-add-to-cart-zepto-card {{ $cartItem ? 'd-none' : '' }}"
                                                     data-id="{{ $product->id }}"
                                                     data-url="{{ route('frontend.cart.add') }}"
                                                     style="background: #fff; color: #ff3269; border: 1px solid #ff3269; border-radius: 6px; font-weight: 800; font-size: 11px; height: 28px; min-width: 60px; text-transform: uppercase; padding: 0 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: all 0.2s ease;">
@@ -736,10 +752,15 @@
                                             <span class="ms-1 text-muted" style="font-size: 10px;">({{ $product->reviews_count ?? 0 }})</span>
                                         </div>
                                         <div class="tp-product-sm-price-wrapper-5 d-flex align-items-center justify-content-between">
-                                            <div>
-                                                <span class="tp-product-sm-price-5">₹{{ number_format($product->final_price) }}</span>
+                                            <div class="d-flex flex-column align-items-start">
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <span class="tp-product-sm-price-5" style="background: #25a541; color: #fff !important; font-weight: 800; font-size: 13px; padding: 2px 6px; border-radius: 6px;">₹{{ number_format($product->final_price) }}</span>
+                                                    @if($product->is_on_sale && round($product->final_price, 2) < round($product->price, 2))
+                                                        <span class="tp-product-sm-price-5 old-price" style="text-decoration: line-through; color: #999; font-size: 12px; margin-left: -2px;">₹{{ number_format($product->price) }}</span>
+                                                    @endif
+                                                </div>
                                                 @if($product->is_on_sale && round($product->final_price, 2) < round($product->price, 2))
-                                                    <span class="tp-product-sm-price-5 old-price" style="text-decoration: line-through; color: #999; font-size: 12px; margin-left: 5px;">₹{{ number_format($product->price) }}</span>
+                                                    <span style="color: #25a541; font-weight: 800; font-size: 11px; margin-top: 4px;">₹{{ number_format($product->price - $product->final_price) }} OFF</span>
                                                 @endif
                                             </div>
                                             <div class="tp-product-action-zepto" data-id="{{ $product->id }}" style="position: absolute; bottom: 12px; right: 12px; z-index: 3;">
@@ -749,7 +770,7 @@
                                                 @endphp
                                                 {{-- ADD Button --}}
                                                 <button type="button"
-                                                    class="tp-add-cart-btn tp-add-to-cart-zepto-card {{ $cartItem ? 'd-none' : '' }}"
+                                                    class="tp-add-to-cart-zepto-card {{ $cartItem ? 'd-none' : '' }}"
                                                     data-id="{{ $product->id }}"
                                                     data-url="{{ route('frontend.cart.add') }}"
                                                     style="background: #fff; color: #ff3269; border: 1px solid #ff3269; border-radius: 6px; font-weight: 800; font-size: 11px; height: 28px; min-width: 60px; text-transform: uppercase; padding: 0 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: all 0.2s ease;">
@@ -931,6 +952,28 @@
                 });
             });
         }
+
+        // Swiper slider auto-width compatibility fix
+        // This ensures the custom CSS `width: auto` is handled correctly
+        setTimeout(function() {
+            if (typeof Swiper !== 'undefined') {
+                var catSliders = document.querySelectorAll('.tp-category-slider-active-2');
+                catSliders.forEach(function(el) {
+                    if (el.swiper) {
+                        el.swiper.destroy(true, true);
+                    }
+                    new Swiper(el, {
+                        slidesPerView: 'auto',
+                        spaceBetween: 0, // Handled correctly by margins
+                        loop: false,
+                        navigation: {
+                            nextEl: '.tp-category-slider-button-next',
+                            prevEl: '.tp-category-slider-button-prev',
+                        }
+                    });
+                });
+            }
+        }, 600);
     });
 </script>
 @endpush
