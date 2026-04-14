@@ -61,6 +61,7 @@ class EcProduct extends Model
         'notify_attachment_updated',
         'specification_table_id',
         'faq_schema_config',
+        'unit_type',
     ];
 
     protected $casts = [
