@@ -355,8 +355,9 @@
                                                     <select name="unit_type" class="form-select form-select-sm border-0 bg-light-subtle fw-bold">
                                                         <option value="pcs" selected>Pcs</option>
                                                         <option value="kg">Kg</option>
-                                                        <option value="g">Gram</option>
-                                                        <option value="l">Litre</option>
+                                                        <option value="gram">Gram</option>
+                                                        <option value="L">Litre</option>
+                                                        <option value="ml">Ml</option>
                                                         <option value="pvt">PVT</option>
                                                     </select>
                                                 </div>

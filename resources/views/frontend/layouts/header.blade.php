@@ -22,8 +22,10 @@
         z-index: 1030;
         background-color: #fff !important;
         border-bottom: 1px solid var(--zepto-border) !important;
-        height: auto !important;
-        padding: 12px 0 !important;
+        height: 75px !important; /* Precision height */
+        padding: 0 !important;
+        display: flex;
+        align-items: center;
         transition: all 0.3s ease;
     }
 

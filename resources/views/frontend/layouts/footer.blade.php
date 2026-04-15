@@ -1,9 +1,9 @@
 <footer>
-    <div class="tp-footer-area pt-70 pb-40" style="background: #fff; border-top: 1px solid #f1f1f1;">
+    <div class="tp-footer-area pt-50 pb-10" style="background: #fff; border-top: 1px solid #f1f1f1;">
         <div class="container">
             <div class="row">
                 <!-- Branding Section -->
-                <div class="col-xl-3 col-lg-3 col-md-12 mb-40 text-center text-lg-start">
+                <div class="col-xl-3 col-lg-3 col-md-12 mb-10 text-center text-lg-start">
                     <div class="tp-footer-widget">
                         <div class="tp-footer-logo mb-25">
                             <a href="{{ url('/') }}">
@@ -136,7 +136,7 @@
         }
         @media (max-width: 991px) {
             .tp-footer-area {
-                padding-bottom: 110px !important;
+                padding-bottom: 0px !important;
             }
         }
     </style>

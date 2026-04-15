@@ -7,11 +7,29 @@ use App\Models\EcProduct;
 use App\Models\EcProductCategory;
 use App\Models\EcBrand;
 use App\Models\SimpleSlider;
+use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        // Category filtering logic for Dynamic Home
+        $active_category = null;
+        $category_products = null;
+
+        if ($request->has('category')) {
+            $active_category = EcProductCategory::where('slug', $request->category)->first();
+            if ($active_category) {
+                $category_products = EcProduct::published()
+                    ->join('ec_product_category_product', 'ec_products.id', '=', 'ec_product_category_product.product_id')
+                    ->where('ec_product_category_product.category_id', $active_category->id)
+                    ->with(['brand', 'categories', 'store'])
+                    ->select('ec_products.*')
+                    ->latest()
+                    ->paginate(12);
+            }
+        }
+
         $home_slider = SimpleSlider::with(['sliderItems' => function($q) {
             $q->orderBy('order', 'asc');
         }])->where('key', 'home-slider')->where('status', 'published')->first();
@@ -91,7 +109,9 @@ class HomeController extends Controller
             'trending_products',
             'top_rated_products',
             'flash_sale',
-            'testimonials'
+            'testimonials',
+            'active_category',
+            'category_products'
         ));
     }
 }
