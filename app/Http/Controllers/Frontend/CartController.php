@@ -39,6 +39,24 @@ class CartController extends Controller
             $product = EcProduct::where('id', $id)->first();
             if (!$product) continue;
 
+            $currentCartQty = isset($cart[$product->id]) ? $cart[$product->id]['quantity'] : 0;
+            $requestedQty = $currentCartQty + $quantity;
+
+            if ($product->with_storehouse_management == 1 && $product->allow_checkout_when_out_of_stock == 0) {
+                if ($product->quantity <= 0 || $product->stock_status === 'out_of_stock') {
+                    if ($request->ajax()) {
+                        return response()->json(['success' => false, 'error' => true, 'message' => "{$product->name} is out of stock!"]);
+                    }
+                    return back()->with('error', "{$product->name} is out of stock!");
+                }
+                if ($requestedQty > $product->quantity) {
+                    if ($request->ajax()) {
+                        return response()->json(['success' => false, 'error' => true, 'message' => "Only {$product->quantity} items available for {$product->name}."]);
+                    }
+                    return back()->with('error', "Only {$product->quantity} items available for {$product->name}.");
+                }
+            }
+
             if (isset($cart[$product->id])) {
                 $cart[$product->id]['quantity'] += $quantity;
             } else {
@@ -96,6 +114,25 @@ class CartController extends Controller
 
         if (isset($cart[$request->product_id])) {
             $newQty = (int) $request->quantity;
+            $product = EcProduct::find($request->product_id);
+
+            if ($newQty > 0 && $product) {
+                if ($product->with_storehouse_management == 1 && $product->allow_checkout_when_out_of_stock == 0) {
+                    if ($product->quantity <= 0 || $product->stock_status === 'out_of_stock') {
+                        if ($request->ajax()) {
+                            return response()->json(['success' => false, 'error' => true, 'message' => "This product is out of stock!"]);
+                        }
+                        return back()->with('error', "This product is out of stock!");
+                    }
+                    if ($newQty > $product->quantity) {
+                        if ($request->ajax()) {
+                            return response()->json(['success' => false, 'error' => true, 'message' => "Only {$product->quantity} items available."]);
+                        }
+                        return back()->with('error', "Only {$product->quantity} items available.");
+                    }
+                }
+            }
+
             if ($newQty <= 0) {
                 unset($cart[$request->product_id]);
             } else {
@@ -153,6 +190,18 @@ class CartController extends Controller
 
         $cart = Session::get('cart', []);
         $quantity = $request->quantity ?? 1;
+
+        if ($product->with_storehouse_management == 1 && $product->allow_checkout_when_out_of_stock == 0) {
+            $currentCartQty = isset($cart[$product->id]) ? $cart[$product->id]['quantity'] : 0;
+            $requestedQty = $currentCartQty + $quantity;
+
+            if ($product->quantity <= 0 || $product->stock_status === 'out_of_stock') {
+                return back()->with('error', "{$product->name} is out of stock!");
+            }
+            if ($requestedQty > $product->quantity) {
+                return back()->with('error', "Only {$product->quantity} items available for {$product->name}.");
+            }
+        }
 
         if (isset($cart[$product->id])) {
             $cart[$product->id]['quantity'] += $quantity;

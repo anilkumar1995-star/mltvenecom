@@ -388,8 +388,9 @@
                                                     <select name="unit_type" class="form-select form-select-sm border-0 bg-light-subtle fw-bold">
                                                         <option value="pcs" {{ $product->unit_type == 'pcs' ? 'selected' : '' }}>Pcs</option>
                                                         <option value="kg" {{ $product->unit_type == 'kg' ? 'selected' : '' }}>Kg</option>
-                                                        <option value="g" {{ $product->unit_type == 'g' ? 'selected' : '' }}>Gram</option>
-                                                        <option value="l" {{ $product->unit_type == 'l' ? 'selected' : '' }}>Litre</option>
+                                                        <option value="gram" {{ $product->unit_type == 'gram' ? 'selected' : '' }}>Gram</option>
+                                                        <option value="ml" {{ $product->unit_type == 'ml' ? 'selected' : '' }}>Ml</option>
+                                                        <option value="L" {{ $product->unit_type == 'L' ? 'selected' : '' }}>Litre</option>
                                                         <option value="pvt" {{ $product->unit_type == 'pvt' ? 'selected' : '' }}>PVT</option>
                                                     </select>
                                                 </div>

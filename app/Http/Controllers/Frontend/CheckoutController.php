@@ -146,6 +146,21 @@ class CheckoutController extends Controller
 
         DB::beginTransaction();
         try {
+            // Verify stock before proceeding
+            foreach ($cart as $item) {
+                $product = EcProduct::find($item['id']);
+                if ($product && $product->with_storehouse_management == 1 && $product->allow_checkout_when_out_of_stock == 0) {
+                    if ($product->quantity <= 0 || $product->stock_status === 'out_of_stock') {
+                        DB::rollBack();
+                        return back()->with('error', 'Sorry, the product "' . $product->name . '" is out of stock.')->withInput();
+                    }
+                    if ($product->quantity < $item['quantity']) {
+                        DB::rollBack();
+                        return back()->with('error', 'Sorry, only ' . $product->quantity . ' items available for "' . $product->name . '".')->withInput();
+                    }
+                }
+            }
+
             $subtotal = 0;
             foreach ($cart as $item) {
                 $subtotal += $item['price'] * $item['quantity'];

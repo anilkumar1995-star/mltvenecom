@@ -601,7 +601,7 @@
         }
 
         .cartmini__checkout {
-            padding: 25px;
+            padding: 20px;
             background: #fff;
             border-top: 1px solid #f0f0f0;
             box-shadow: 0 -5px 20px rgba(0,0,0,0.02);
@@ -695,6 +695,11 @@
         @media (max-width: 480px) {
             .cartmini__area {
                 width: 100%;
+            }
+        }
+         @media (max-width: 991px) {
+            .cartmini__checkout {
+                padding-bottom: 70px;
             }
         }
 
@@ -1357,6 +1362,10 @@
         <a href="{{ route('frontend.categories.index') }}" class="mobile-bottom-nav-item {{ request()->is('categories*') ? 'active' : '' }}">
             <i class="fas fa-th-large"></i>
             <span>Categories</span>
+        </a>
+        <a href="{{ route('frontend.products.index') }}" class="mobile-bottom-nav-item {{ request()->is('products*') ? 'active' : '' }}">
+            <i class="fas fa-box"></i>
+            <span>All Products</span>
         </a>
         <a href="{{ route('frontend.cart.index') }}" class="mobile-bottom-nav-item {{ request()->is('cart*') ? 'active' : '' }}">
             <div class="position-relative">
