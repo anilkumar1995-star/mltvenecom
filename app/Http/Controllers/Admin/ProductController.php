@@ -165,6 +165,10 @@ class ProductController extends Controller
 
         try {
             $data = $request->except(['image_file', 'images', 'video_file', 'options', 'related_products', 'up_selling_products', 'cross_selling_products', 'selected_existing_faqs']);
+            $data['with_storehouse_management'] = $request->has('with_storehouse_management') ? 1 : 0;
+            $data['allow_checkout_when_out_of_stock'] = $request->has('allow_checkout_when_out_of_stock') ? 1 : 0;
+            $data['price_includes_tax'] = $request->has('price_includes_tax') ? 1 : 0;
+            $data['is_featured'] = $request->has('is_featured') ? 1 : 0;
 
             $data['slug'] = \Illuminate\Support\Str::slug($request->name);
 
@@ -267,6 +271,8 @@ class ProductController extends Controller
             'sale_price' => 'nullable|numeric|min:0',
             'quantity' => 'nullable|numeric|min:0',
             'weight' => 'nullable|numeric|min:0',
+            'minimum_order_quantity' => 'nullable|numeric|min:1',
+            'maximum_order_quantity' => 'nullable|numeric|min:0',
             'status' => 'required|string|max:60',
             'store_id' => 'required|exists:mp_stores,id',
             'image_file' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -277,6 +283,10 @@ class ProductController extends Controller
 
         try {
             $data = $request->except(['image_file', 'images', 'video_file', 'options', 'related_products', 'up_selling_products', 'cross_selling_products', 'selected_existing_faqs']);
+            $data['with_storehouse_management'] = $request->has('with_storehouse_management') ? 1 : 0;
+            $data['allow_checkout_when_out_of_stock'] = $request->has('allow_checkout_when_out_of_stock') ? 1 : 0;
+            $data['price_includes_tax'] = $request->has('price_includes_tax') ? 1 : 0;
+            $data['is_featured'] = $request->has('is_featured') ? 1 : 0;
 
             // $data['slug'] = \Illuminate\Support\Str::slug($request->name);
 

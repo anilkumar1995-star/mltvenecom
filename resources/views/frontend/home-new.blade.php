@@ -95,12 +95,23 @@
         margin-bottom: 20px;
         padding: 0 30px;
     }
+    
+    /* Pre-initialization fix to prevent vertical stacking */
+    .premium-cat-slider:not(.slick-initialized) {
+        display: flex !important;
+        overflow-x: hidden !important;
+        flex-wrap: nowrap !important;
+    }
+    .premium-cat-slider:not(.slick-initialized) .cat-card-premium {
+        flex: 0 0 auto !important;
+    }
     .cat-card-premium {
         text-align: center;
         padding: 5px;
         width: 125px; /* Fixed width for packed alignment */
         outline: none !important;
         transition: transform 0.3s;
+        margin-right: 10px;
     }
     .cat-card-premium:hover {
         transform: translateY(-3px);
@@ -160,6 +171,26 @@
     .cat-slider-btn:hover { background: #333; transform: translateY(-50%) scale(1.1); }
     .cat-prev { left: 0; }
     .cat-next { right: 0; }
+    
+    @media (max-width: 768px) {
+        .premium-cat-slider-wrap {
+            padding: 0 10px;
+            margin-bottom: 10px;
+        }
+        .cat-card-premium {
+            width: 100px;
+            margin-right: 8px;
+        }
+        .cat-card-inner {
+            width: 90px;
+            height: 90px;
+        }
+        .cat-prev { left: -5px; }
+        .cat-next { right: -5px; }
+        .cat-card-premium:last-of-type {
+            margin-right: 20px; /* Extra space for the last card */
+        }
+    }
 </style>
 @endpush
 
@@ -296,86 +327,6 @@
                 }
             ]
         });
-
-        // Universal Add to Cart AJAX
-        $(document).on('click', '.tp-add-to-cart-zepto-card', function(e) {
-            e.preventDefault();
-            let btn = $(this);
-            let id = btn.data('id');
-            let url = btn.data('url');
-            let container = btn.closest('.tp-product-action-zepto');
-
-            btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i>');
-
-            $.ajax({
-                url: url,
-                method: 'POST',
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    product_id: id,
-                    qty: 1
-                },
-                success: function(res) {
-                    if (res.status === 'success') {
-                        btn.addClass('d-none');
-                        container.find('.tp-qty-selector-zepto').removeClass('d-none');
-                        container.find('.qty-count-zepto').text(1);
-                        updateHeaderCartCount();
-                    }
-                },
-                complete: () => btn.prop('disabled', false).html('ADD')
-            });
-        });
-
-        // Quantity Controls
-        $(document).on('click', '.qty-btn-zepto', function() {
-            let btn = $(this);
-            let container = btn.closest('.tp-product-action-zepto');
-            let id = container.data('id');
-            let countSpan = container.find('.qty-count-zepto');
-            let currentQty = parseInt(countSpan.text());
-            let isPlus = btn.hasClass('plus');
-            let newQty = isPlus ? currentQty + 1 : currentQty - 1;
-
-            if (newQty < 1) {
-                updateCartQty(id, 0, () => {
-                    container.find('.tp-qty-selector-zepto').addClass('d-none');
-                    container.find('.tp-add-to-cart-zepto-card').removeClass('d-none');
-                });
-            } else {
-                updateCartQty(id, newQty, () => {
-                    countSpan.text(newQty);
-                });
-            }
-        });
-
-        function updateCartQty(id, qty, callback) {
-            $.ajax({
-                url: "{{ route('frontend.cart.add') }}",
-                method: 'POST',
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    product_id: id,
-                    qty: qty,
-                    update: 1
-                },
-                success: function(res) {
-                    if(res.status === 'success') {
-                        callback();
-                        updateHeaderCartCount();
-                    }
-                }
-            });
-        }
-
-        function updateHeaderCartCount() {
-            let badge = $('.cart-badge-zepto');
-            if(badge.length) {
-                $.get("{{ url('/cart-count') }}", function(data) {
-                    badge.text(data.count);
-                });
-            }
-        }
     });
 </script>
 @endpush

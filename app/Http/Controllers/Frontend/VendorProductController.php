@@ -193,6 +193,9 @@ class VendorProductController extends Controller
 
         try {
             $data = $request->except(['image_file', 'images', 'video_file', 'options', 'related_products', 'up_selling_products', 'cross_selling_products', 'selected_existing_faqs', 'categories']);
+            $data['with_storehouse_management'] = $request->has('with_storehouse_management') ? 1 : 0;
+            $data['allow_checkout_when_out_of_stock'] = $request->has('allow_checkout_when_out_of_stock') ? 1 : 0;
+            $data['price_includes_tax'] = $request->has('price_includes_tax') ? 1 : 0;
 
             $data['slug'] = Str::slug($request->name) . '-' . time();
             $data['status'] = 'pending';
@@ -341,6 +344,9 @@ class VendorProductController extends Controller
 
         try {
             $data = $request->except(['image_file', 'images', 'video_file', 'options', 'related_products', 'up_selling_products', 'cross_selling_products', 'selected_existing_faqs', 'categories']);
+            $data['with_storehouse_management'] = $request->has('with_storehouse_management') ? 1 : 0;
+            $data['allow_checkout_when_out_of_stock'] = $request->has('allow_checkout_when_out_of_stock') ? 1 : 0;
+            $data['price_includes_tax'] = $request->has('price_includes_tax') ? 1 : 0;
 
             $data['slug'] = Str::slug($request->name) . '-' . time();
             $data['status'] = 'pending'; // Force pending on update too? Or keep current? Admin might want to re-approve.

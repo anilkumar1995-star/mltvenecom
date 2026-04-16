@@ -65,6 +65,15 @@
                                                     @endif
                                                     <div class="flex-fill">
                                                         <div class="font-weight-medium text-dark">{{ $item->product_name }}</div>
+                                                        @if($item->product)
+                                                            <div class="text-muted small">
+                                                                @if($item->product->weight > 0)
+                                                                    1 pack ({{ (float)$item->product->weight }} {{ $item->product->unit_type ?: 'kg' }})
+                                                                @else
+                                                                    1 unit
+                                                                @endif
+                                                            </div>
+                                                        @endif
                                                         @if($item->options)
                                                             <div class="text-muted small">
                                                                 @foreach($item->options as $key => $value)

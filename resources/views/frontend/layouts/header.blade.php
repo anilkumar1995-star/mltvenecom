@@ -429,6 +429,9 @@
                                         <span class="zepto-user-email">{{ $currentUser->email }}</span>
                                     </div>
                                 </div>
+                                <a href="{{ $dashboardRoute }}" class="zepto-dropdown-item">
+                                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                                </a>
                                 <a href="{{ route('frontend.customer.profile') }}" class="zepto-dropdown-item">
                                     <i class="far fa-user-circle"></i> My Profile
                                 </a>

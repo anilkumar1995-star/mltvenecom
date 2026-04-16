@@ -83,6 +83,13 @@
                                                                     <span class="avatar avatar-sm me-2" style="background-image: url({{ $imageUrl }})"></span>
                                                                     <div class="flex-fill">
                                                                         <div class="fw-medium">{{ $product->name }}</div>
+                                                                        <div class="text-muted small">
+                                                                            @if($product->weight > 0)
+                                                                                1 pack ({{ (float)$product->weight }} {{ $product->unit_type ?: 'kg' }})
+                                                                            @else
+                                                                                1 unit
+                                                                            @endif
+                                                                        </div>
                                                                         <input type="hidden" name="products[{{ $product->id }}][id]" value="{{ $product->id }}">
                                                                         <input type="hidden" name="products[{{ $product->id }}][name]" value="{{ $product->name }}">
                                                                         <input type="hidden" name="products[{{ $product->id }}][price]" value="{{ $product->price }}">
@@ -388,6 +395,8 @@
                                                 data-id="${product.id}"
                                                 data-name="${product.name}"
                                                 data-price="${product.price}"
+                                                data-weight="${product.weight}"
+                                                data-unit="${product.unit_type || 'kg'}"
                                                 data-image="${product.image_url || ''}">
                                                 <div class="d-flex align-items-center">
                                                     <span class="avatar avatar-sm me-2" style="background-image: url(${product.image_url || ''})"></span>
@@ -414,6 +423,8 @@
             let name = $(this).data('name');
             let price = parseFloat($(this).data('price'));
             let image = $(this).data('image');
+            let rowWeight = $(this).data('weight');
+            let rowUnit = $(this).data('unit');
 
             $('#no-products-row').hide();
 
@@ -428,6 +439,9 @@
                                         <span class="avatar avatar-sm me-2" style="background-image: url(${image})"></span>
                                         <div class="flex-fill">
                                             <div class="fw-medium">${name}</div>
+                                            <div class="text-muted small">
+                                                ${parseFloat(rowWeight) > 0 ? `1 pack (${parseFloat(rowWeight)} ${rowUnit})` : '1 unit'}
+                                            </div>
                                             <input type="hidden" name="products[${id}][id]" value="${id}">
                                             <input type="hidden" name="products[${id}][name]" value="${name}">
                                             <input type="hidden" name="products[${id}][price]" value="${price}">

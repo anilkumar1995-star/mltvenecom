@@ -1,16 +1,26 @@
 <div class="tp-product-item-2 mb-20" style="background: #fff; border-radius: 12px; height: 100%; border: 1px solid #f0f0f0; overflow: hidden; position: relative; transition: all 0.3s ease;">
     <div class="tp-product-thumb-2 p-relative z-index-1 fix w-img" style="background: #fff; position: relative; padding: 6px;">
+        @php
+            $isOutOfStock = $product->isOutOfStock();
+        @endphp
+        
+        @if($isOutOfStock)
+            <div style="position: absolute; top: 8px; left: 8px; background: rgba(242, 238, 238, 0.95); color: #333; font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 4px; z-index: 5; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                Sold out
+            </div>
+        @endif
+
         <a href="{{ route('frontend.products.show', $product->slug ?: $product->id) }}" style="display:block; width:100%; height:90px;">
             <div style="width:100%; height:90px; display: flex; align-items: center; justify-content: center;">
                 <img src="{{ $product->image_url }}" alt="{{ $product->name }}" 
                      onerror="this.src='{{ asset('home/placeholder.png') }}'"
-                     style="max-width:90%; max-height:90px; object-fit:contain;">
+                     style="max-width:90%; max-height:90px; object-fit:contain; {{ $isOutOfStock ? 'filter: grayscale(0.6) opacity(0.7);' : '' }}">
             </div>
         </a>
         
         {{-- Save Label --}}
         @if($product->is_on_sale && $product->price > $product->final_price)
-            <div style="position: absolute; top: 10px; left: 10px; background: #34a853; color: #fff; font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; z-index: 2;">
+            <div style="position: absolute; top: 10px; left: 10px; background: #34a853; color: #fff; font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; z-index: 2; {{ $isOutOfStock ? 'opacity: 0.8;' : '' }}">
                 @php
                     $discount = round((($product->price - $product->final_price) / $product->price) * 100);
                 @endphp
@@ -24,21 +34,30 @@
             $cartItem = $cart[$product->id] ?? null;
         @endphp
         <div class="tp-product-action-zepto" data-id="{{ $product->id }}" style="position: absolute; bottom: 8px; right: 8px; z-index: 3;">
-            {{-- ADD Button --}}
-            <button type="button"
-                class="tp-add-to-cart-zepto-card {{ $cartItem ? 'd-none' : '' }}"
-                data-id="{{ $product->id }}"
-                data-url="{{ route('frontend.cart.add') }}"
-                style="background: #fff; color: #ff3269; border: 1px solid #ff3269; border-radius: 8px; font-weight: 800; font-size: 11px; height: 26px; min-width: 55px; text-transform: uppercase; padding: 0 6px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: all 0.2s ease;">
-                ADD
-            </button>
+            @if($isOutOfStock)
+                {{-- Notify Button --}}
+                <button type="button" class="tp-notify-btn-zepto" 
+                    onclick="if(typeof notify === 'function') notify('We will notify you when this product is back in stock!', 'success');"
+                    style="background: #fff; color: #ff3269; border: 1.5px solid #ff3269; border-radius: 12px; font-weight: 800; font-size: 10px; height: 26px; min-width: 70px; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 0 12px; box-shadow: 0 4px 12px rgba(255, 50, 105, 0.15); transition: all 0.2s ease;">
+                    <i class="far fa-bell"></i> Notify
+                </button>
+            @else
+                {{-- ADD Button --}}
+                <button type="button"
+                    class="tp-add-to-cart-zepto-card {{ $cartItem ? 'd-none' : '' }}"
+                    data-id="{{ $product->id }}"
+                    data-url="{{ route('frontend.cart.add') }}"
+                    style="background: #fff; color: #ff3269; border: 1px solid #ff3269; border-radius: 8px; font-weight: 800; font-size: 11px; height: 26px; min-width: 55px; text-transform: uppercase; padding: 0 6px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: all 0.2s ease;">
+                    ADD
+                </button>
 
-            {{-- Quantity Selector --}}
-            <div class="tp-qty-selector-zepto {{ $cartItem ? '' : 'd-none' }}" style="background: #ff3269; color: #fff; border-radius: 8px; display: flex; align-items: center; height: 26px; min-width: 70px; justify-content: space-between; font-weight: 800; font-size: 12px; box-shadow: 0 4px 10px rgba(255, 50, 105, 0.3); overflow: hidden;">
-                <button type="button" class="qty-btn-zepto minus" style="background: none; border: none; color: #fff; cursor: pointer; padding: 0 12px; height: 100%; display: flex; align-items: center; font-size: 18px; outline: none !important;">-</button>
-                <span class="qty-count-zepto">{{ $cartItem ? $cartItem['quantity'] : 1 }}</span>
-                <button type="button" class="qty-btn-zepto plus" style="background: none; border: none; color: #fff; cursor: pointer; padding: 0 12px; height: 100%; display: flex; align-items: center; font-size: 18px; outline: none !important;">+</button>
-            </div>
+                {{-- Quantity Selector --}}
+                <div class="tp-qty-selector-zepto {{ $cartItem ? '' : 'd-none' }}" style="background: #ff3269; color: #fff; border-radius: 8px; display: flex; align-items: center; height: 26px; min-width: 70px; justify-content: space-between; font-weight: 800; font-size: 12px; box-shadow: 0 4px 10px rgba(255, 50, 105, 0.3); overflow: hidden;">
+                    <button type="button" class="qty-btn-zepto minus" style="background: none; border: none; color: #fff; cursor: pointer; padding: 0 12px; height: 100%; display: flex; align-items: center; font-size: 18px; outline: none !important;">-</button>
+                    <span class="qty-count-zepto">{{ isset($cartItem['quantity']) ? $cartItem['quantity'] : 1 }}</span>
+                    <button type="button" class="qty-btn-zepto plus" style="background: none; border: none; color: #fff; cursor: pointer; padding: 0 12px; height: 100%; display: flex; align-items: center; font-size: 18px; outline: none !important;">+</button>
+                </div>
+            @endif
         </div>
     </div>
     

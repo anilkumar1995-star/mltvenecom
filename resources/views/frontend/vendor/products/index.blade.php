@@ -76,6 +76,7 @@
                                         <th title="Image" width="50" class="text-uppercase">Image</th>
                                         <th title="Name" class="text-uppercase">Products</th>
                                         <th title="Price" class="text-uppercase text-nowrap">Price</th>
+                                        <th title="Sale Price" class="text-uppercase text-nowrap">Sale Price</th>
                                         <th title="Stock Status" class="text-uppercase text-nowrap">Stock Status</th>
                                         <th title="Status" class="text-uppercase text-center text-nowrap">Status</th>
                                         <th title="Quantity" class="text-uppercase text-center">Quantity</th>
@@ -98,7 +99,18 @@
                                         <td class="fw-medium">
                                             <div class="font-weight-medium text-dark">{{ $product->name }}</div>
                                         </td>
-                                        <td>₹{{ number_format($product->price, 2) }}</td>
+                                        <td>
+                                            <span class="{{ $product->sale_price ? 'text-decoration-line-through text-muted small' : 'fw-bold' }}">
+                                                ₹{{ number_format($product->price ?? 0, 2) }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            @if($product->sale_price)
+                                                <span class="badge bg-info-lt text-info fw-bold">₹{{ number_format($product->sale_price, 2) }}</span>
+                                            @else
+                                                <span class="text-muted small">N/A</span>
+                                            @endif
+                                        </td>
                                         <td>
                                             @php
                                                 $stockClass = match($product->stock_status) {
@@ -136,7 +148,7 @@
                                     </tr>
                                     @empty
                                     <tr>
-                                        <td colspan="9" class="text-center text-muted py-4">No products found</td>
+                                        <td colspan="13" class="text-center text-muted py-4">No products found</td>
                                     </tr>
                                     @endforelse
                                 </tbody>

@@ -514,6 +514,16 @@
                 $(document).on('click', '.remove-existing-img', function() {
                     $(this).closest('.existing-image-item').remove();
                 });
+
+                // Auto-sync Stock Status with Quantity
+                $(document).on('input', 'input[name="quantity"]', function() {
+                    let qty = parseInt($(this).val()) || 0;
+                    if (qty > 0) {
+                        $('input[name="stock_status"][value="in_stock"]').prop('checked', true);
+                    } else if (qty <= 0) {
+                        $('input[name="stock_status"][value="out_of_stock"]').prop('checked', true);
+                    }
+                });
             });
 
             // Copy-Paste of Scripts from Create Page (Attributes, Options, Relations, FAQs)

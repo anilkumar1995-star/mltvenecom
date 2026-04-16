@@ -41,7 +41,6 @@
             <tr>
                 <td class="footer">
                     &copy; {{ date('Y') }} iPaymnt Tech. All rights reserved.<br>
-                    Plot-852, 2nd Floor, Udyog Vihar Phase-V, Gurugram, HR - 122016
                 </td>
             </tr>
         </table>

@@ -52,6 +52,7 @@
                             <li class="mb-10"><a href="{{ route('frontend.our-story') }}" style="color: #666; font-size: 13px; text-decoration: none;">Our Story</a></li>
                             <li class="mb-10"><a href="{{ route('frontend.careers') }}" style="color: #666; font-size: 13px; text-decoration: none;">Careers</a></li>
                             <li class="mb-10"><a href="{{ route('frontend.cookie-policy') }}" style="color: #666; font-size: 13px; text-decoration: none;">Cookie Policy</a></li>
+                            <li class="mb-10"><a href="{{ route('frontend.faqs.index') }}" style="color: #666; font-size: 13px; text-decoration: none;">FAQs</a></li>
                             <li class="mb-10"><a href="{{ route('frontend.blog.index') }}" style="color: #666; font-size: 13px; text-decoration: none;">Latest News</a></li>
                             <li class="mb-10"><a href="{{ route('frontend.contact.index') }}" style="color: #666; font-size: 13px; text-decoration: none;">Contact Us</a></li>
                         </ul>

@@ -257,7 +257,7 @@
                                                     <path d="M1 1H11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                                 </svg>
                                             </span>
-                                            <input class="tp-cart-input" type="text" name="quantity" id="qty" value="1" readonly>
+                                            <input class="tp-cart-input" type="text" name="quantity" id="qty" value="{{ $product->minimum_order_quantity > 0 ? $product->minimum_order_quantity : 1 }}" readonly>
                                             <span class="tp-cart-plus" onclick="incrementValue()">
                                                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <path d="M6 1V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -829,11 +829,26 @@
             if (!qtyInput) return;
             let value = parseInt(qtyInput.value, 10);
             value = isNaN(value) ? 1 : value;
+            
             const max = parseInt('{{ $product->quantity ?? 0 }}', 10);
-            if(value < max) {
-                value++;
-                qtyInput.value = value;
+            const maxOrder = parseInt('{{ $product->maximum_order_quantity ?? 0 }}', 10);
+            const withManagement = '{{ $product->with_storehouse_management }}' == '1';
+            const allowCheckout = '{{ $product->allow_checkout_when_out_of_stock }}' == '1';
+
+            // Check stock management limit
+            if (withManagement && !allowCheckout && value >= max) {
+                if(typeof notify === 'function') notify('Only ' + max + ' items available in stock.', 'error');
+                return;
             }
+
+            // Check maximum order quantity limit
+            if (maxOrder > 0 && value >= maxOrder) {
+                if(typeof notify === 'function') notify('Maximum order quantity is ' + maxOrder + '.', 'error');
+                return;
+            }
+
+            value++;
+            qtyInput.value = value;
         }
 
         function decrementValue() {
@@ -841,9 +856,14 @@
             if (!qtyInput) return;
             let value = parseInt(qtyInput.value, 10);
             value = isNaN(value) ? 1 : value;
-            if(value > 1) {
+
+            const minOrder = parseInt('{{ $product->minimum_order_quantity ?? 1 }}', 10) || 1;
+
+            if (value > minOrder) {
                 value--;
                 qtyInput.value = value;
+            } else {
+                if(typeof notify === 'function') notify('Minimum order quantity is ' + minOrder + '.', 'error');
             }
         }
 

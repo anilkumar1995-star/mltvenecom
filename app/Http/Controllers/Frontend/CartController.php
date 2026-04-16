@@ -14,9 +14,24 @@ class CartController extends Controller
         Session::forget('applied_coupon');
         $cart = Session::get('cart', []);
         $total = 0;
+        $updated = false;
 
-        foreach ($cart as $item) {
+        foreach ($cart as $id => $item) {
             $total += $item['price'] * $item['quantity'];
+            
+            // Ensure weight and unit_type are present for older session items
+            if (!isset($item['weight']) || !isset($item['unit_type'])) {
+                $product = EcProduct::find($id);
+                if ($product) {
+                    $cart[$id]['weight'] = $product->weight;
+                    $cart[$id]['unit_type'] = $product->unit_type;
+                    $updated = true;
+                }
+            }
+        }
+
+        if ($updated) {
+            Session::put('cart', $cart);
         }
 
         return view('frontend.cart.index', compact('cart', 'total'));
@@ -57,6 +72,18 @@ class CartController extends Controller
                 }
             }
 
+            // Min/Max Order Quantity Check
+            if ($product->minimum_order_quantity > 0 && $requestedQty < $product->minimum_order_quantity) {
+                $msg = "Minimum order quantity for {$product->name} is {$product->minimum_order_quantity}.";
+                if ($request->ajax()) return response()->json(['success' => false, 'error' => true, 'message' => $msg]);
+                return back()->with('error', $msg);
+            }
+            if ($product->maximum_order_quantity > 0 && $requestedQty > $product->maximum_order_quantity) {
+                $msg = "Maximum order quantity for {$product->name} is {$product->maximum_order_quantity}.";
+                if ($request->ajax()) return response()->json(['success' => false, 'error' => true, 'message' => $msg]);
+                return back()->with('error', $msg);
+            }
+
             if (isset($cart[$product->id])) {
                 $cart[$product->id]['quantity'] += $quantity;
             } else {
@@ -67,6 +94,11 @@ class CartController extends Controller
                     'quantity' => $quantity,
                     'image' => $product->image,
                     'slug' => $product->slug ?: $product->id,
+                    'min_qty' => $product->minimum_order_quantity,
+                    'max_qty' => $product->maximum_order_quantity,
+                    'stock_qty' => $product->quantity,
+                    'with_storehouse' => $product->with_storehouse_management,
+                    'allow_checkout' => $product->allow_checkout_when_out_of_stock,
                 ];
             }
             $added_count++;
@@ -101,6 +133,8 @@ class CartController extends Controller
                     'count' => count($cart),
                     'subtotal' => $total,
                     'cart_mini' => view('frontend.partials.mini-cart')->render(),
+                    'product_id' => $product_ids[0] ?? null,
+                    'quantity' => isset($cart[$product_ids[0]]) ? $cart[$product_ids[0]]['quantity'] : 0,
                 ],
             ]);
         }
@@ -131,6 +165,18 @@ class CartController extends Controller
                         return back()->with('error', "Only {$product->quantity} items available.");
                     }
                 }
+
+                // Min/Max Order Quantity Check
+                if ($product->minimum_order_quantity > 0 && $newQty < $product->minimum_order_quantity) {
+                    $msg = "Minimum order quantity is {$product->minimum_order_quantity}.";
+                    if ($request->ajax()) return response()->json(['success' => false, 'error' => true, 'message' => $msg]);
+                    return back()->with('error', $msg);
+                }
+                if ($product->maximum_order_quantity > 0 && $newQty > $product->maximum_order_quantity) {
+                    $msg = "Maximum order quantity is {$product->maximum_order_quantity}.";
+                    if ($request->ajax()) return response()->json(['success' => false, 'error' => true, 'message' => $msg]);
+                    return back()->with('error', $msg);
+                }
             }
 
             if ($newQty <= 0) {
@@ -151,6 +197,8 @@ class CartController extends Controller
                 'message' => 'Cart updated!',
                 'count' => count($cart),
                 'subtotal' => $total,
+                'product_id' => $request->product_id,
+                'quantity' => isset($cart[$request->product_id]) ? $cart[$request->product_id]['quantity'] : 0,
                 'html' => view('frontend.partials.mini-cart')->render(),
             ]);
         }
@@ -203,6 +251,14 @@ class CartController extends Controller
             }
         }
 
+        $calcQty = (isset($cart[$product->id]) ? $cart[$product->id]['quantity'] : 0) + $quantity;
+        if ($product->minimum_order_quantity > 0 && $calcQty < $product->minimum_order_quantity) {
+            return back()->with('error', "Minimum order quantity is {$product->minimum_order_quantity}.");
+        }
+        if ($product->maximum_order_quantity > 0 && $calcQty > $product->maximum_order_quantity) {
+            return back()->with('error', "Maximum order quantity is {$product->maximum_order_quantity}.");
+        }
+
         if (isset($cart[$product->id])) {
             $cart[$product->id]['quantity'] += $quantity;
         } else {
@@ -213,6 +269,11 @@ class CartController extends Controller
                 'quantity' => $quantity,
                 'image' => $product->image,
                 'slug' => $product->slug ?: $product->id,
+                'min_qty' => $product->minimum_order_quantity,
+                'max_qty' => $product->maximum_order_quantity,
+                'stock_qty' => $product->quantity,
+                'with_storehouse' => $product->with_storehouse_management,
+                'allow_checkout' => $product->allow_checkout_when_out_of_stock,
             ];
         }
 
