@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Currency;
 use App\Models\Order;
+use App\Models\Page;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
@@ -86,26 +87,36 @@ class PublicEcommerceController extends Controller
         }
 
 
+        if ($order) {
+            Session::now('success', 'Order record found! Scroll down for details.');
+        } else {
+            Session::now('error', 'No order found with the provided details.');
+        }
+
         return view('frontend.order-tracking', compact('order'));
     }
 
     public function ourStory()
     {
-        return view('frontend.our-story');
+        $page = Page::where('name', 'Our Story')->where('status', 'published')->first();
+        return view('frontend.our-story', compact('page'));
     }
 
     public function shipping()
     {
-        return view('frontend.shipping');
+        $page = Page::where('name', 'Shipping')->where('status', 'published')->first();
+        return view('frontend.shipping', compact('page'));
     }
 
     public function careers()
     {
-        return view('frontend.careers');
+        $page = Page::where('name', 'Careers')->where('status', 'published')->first();
+        return view('frontend.careers', compact('page'));
     }
 
     public function cookiePolicy()
     {
-        return view('frontend.cookie-policy');
+        $page = Page::where('name', 'Cookie Policy')->where('status', 'published')->first();
+        return view('frontend.cookie-policy', compact('page'));
     }
 }

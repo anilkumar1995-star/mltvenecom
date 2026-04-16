@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\AppFaq;
+use App\Models\Page;
 use Illuminate\Http\Request;
 
 class FaqController extends Controller
@@ -17,6 +18,8 @@ class FaqController extends Controller
             ->orderBy('order', 'ASC')
             ->get();
 
-        return view('frontend.faqs.index', compact('faqs'));
+        $page = Page::where('name', 'FAQs')->where('status', 'published')->first();
+
+        return view('frontend.faqs.index', compact('faqs', 'page'));
     }
 }

@@ -12,6 +12,36 @@ use App\Helpers\ImageHelper;
 class EcProduct extends Model
 {
     protected $table = 'ec_products';
+    
+    protected static function booted()
+    {
+        static::saving(function ($product) {
+            // Automatically update stock_status based on quantity
+            if ($product->with_storehouse_management) {
+                // If quantity is positive, it's always in stock
+                if ($product->quantity > 0) {
+                    if ($product->stock_status === 'out_of_stock') {
+                        $product->stock_status = 'in_stock';
+                    }
+                } 
+                // If quantity is 0 or less
+                else {
+                    // Only force out_of_stock if backorders are NOT allowed
+                    if (!$product->allow_checkout_when_out_of_stock) {
+                        if ($product->stock_status === 'in_stock') {
+                            $product->stock_status = 'out_of_stock';
+                        }
+                    } else {
+                        // If backorders ARE allowed, and it's out_of_stock, maybe move to in_stock or stay
+                        // Usually, if allow_checkout is true, we want it to be 'in_stock' or 'on_backorder'
+                        if ($product->stock_status === 'out_of_stock') {
+                            $product->stock_status = 'in_stock';
+                        }
+                    }
+                }
+            }
+        });
+    }
 
     protected $fillable = [
         'name',

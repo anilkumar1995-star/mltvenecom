@@ -97,6 +97,7 @@
                                             <th title="Image" width="50" class=" column-key-1">Image</th>
                                             <th title="Products" class="text-start  column-key-2">Products</th>
                                             <th title="Price" class="text-start  column-key-3">Price</th>
+                                            <th title="Sale Price" class="text-start column-key-sale">Sale Price</th>
                                             <th title="Stock status" class=" column-key-4">Stock status</th>
                                             <th title="Quantity" class="text-start  column-key-5">Quantity</th>
                                             <th title="SKU" class="text-start  column-key-6">SKU</th>
@@ -130,7 +131,18 @@
                                             </a>
                                         </td>
                                         <td>{{ $product->name }}</td>
-                                        <td>₹{{ number_format($product->price ?? 0, 2) }}</td>
+                                        <td>
+                                            <span class="{{ $product->sale_price ? 'text-decoration-line-through text-muted small' : 'fw-bold' }}">
+                                                ₹{{ number_format($product->price ?? 0, 2) }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            @if($product->sale_price)
+                                                <span class="badge bg-info-lt text-info fw-bold">₹{{ number_format($product->sale_price, 2) }}</span>
+                                            @else
+                                                <span class="text-muted small">N/A</span>
+                                            @endif
+                                        </td>
                                         <td>{{ $product->stock_status  }}</td>
                                         <td>{{ $product->quantity   }}</td>
                                         <td>{{ $product->sku }}</td>

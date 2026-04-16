@@ -330,7 +330,7 @@ class OrderController extends Controller
         $query = $request->get('q');
         $products = \App\Models\EcProduct::where('name', 'LIKE', "%{$query}%")
             ->orWhere('sku', 'LIKE', "%{$query}%")
-            ->select('id', 'name', 'price', 'image', 'images', 'sku')
+            ->select('id', 'name', 'price', 'image', 'images', 'sku', 'weight', 'unit_type')
             ->limit(10)
             ->get();
 

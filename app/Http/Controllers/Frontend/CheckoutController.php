@@ -261,7 +261,6 @@ class CheckoutController extends Controller
             $payment->update(['order_id' => $order->id]);
 
             foreach ($cart as $item) {
-                // Calculate item-level tax proportionally (optional, but good for reporting)
                 $itemSubtotal = $item['price'] * $item['quantity'];
                 $itemTax = 0;
                 if ($subtotal > 0) {
@@ -280,8 +279,12 @@ class CheckoutController extends Controller
 
                 $product = EcProduct::find($item['id']);
                 if ($product && isset($product->quantity)) {
+                    // Decrement stock quantity
                     $newQty = max(0, (int)$product->quantity - (int)$item['quantity']);
                     $product->quantity = $newQty;
+                    
+
+                    $product->order = (int)$product->order + (int)$item['quantity'];
                     
                     if ($newQty <= 0) {
                         $product->stock_status = 'out_of_stock';

@@ -146,20 +146,7 @@
                                             <span class="form-check-label fw-bold">Track Stock Quantity</span>
                                         </label>
 
-                                        <div class="storehouse-info bg-light p-3 rounded" style="display: none;">
-                                            <div class="row g-3">
-                                                <div class="col-md-6">
-                                                    <label class="form-label fw-bold">Initial Stock Level</label>
-                                                    <input class="form-control shadow-none" type="number" name="quantity" value="0">
-                                                </div>
-                                                <div class="col-md-6 d-flex align-items-end">
-                                                    <label class="form-check mb-0 cursor-pointer">
-                                                        <input type="checkbox" name="allow_checkout_when_out_of_stock" class="form-check-input" value="1">
-                                                        <span class="form-check-label small">Oversell Allowed (Backorders)</span>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <!-- Order limits removed from here, moved to sidebar -->
 
                                         <div class="stock-status-wrapper mt-2">
                                             <div class="d-flex gap-4">
@@ -432,12 +419,36 @@
                                     </div>
                                 </div>
 
-                                <div class="card shadow-sm border-0 border-start border-3 border-info">
+                                <div class="card shadow-sm border-0 border-start border-3 border-info mb-3">
                                     <div class="card-header py-2 bg-white shadow-none">
                                         <h4 class="card-title mb-0 small fw-bold text-muted">TAGS FOR DISCOVERY</h4>
                                     </div>
                                     <div class="card-body p-3">
                                         <input class="form-control form-control-sm shadow-none border-0 bg-light" name="tag" id="tag" data-url="{{ route('frontend.vendor.product-tags.all') }}" placeholder="SEO Tags...">
+                                    </div>
+                                </div>
+
+                                <div class="card shadow-sm border-0 border-top border-3 border-danger">
+                                    <div class="card-header py-2 bg-white shadow-none">
+                                        <h4 class="card-title mb-0 small fw-bold text-danger">ORDER LIMITS</h4>
+                                    </div>
+                                    <div class="card-body p-3">
+                                        <div class="mb-3">
+                                            <label class="x-small fw-bold opacity-50 mb-1">MIN ORDER QTY</label>
+                                            <input type="number" name="minimum_order_quantity" class="form-control form-control-sm border-0 bg-light-subtle fw-bold" value="1" min="1">
+                                            <small class="text-muted" style="font-size: 9px;">Minimum required in cart.</small>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="x-small fw-bold opacity-50 mb-1">MAX ORDER QTY</label>
+                                            <input type="number" name="maximum_order_quantity" class="form-control form-control-sm border-0 bg-light-subtle fw-bold" value="0" min="0">
+                                            <small class="text-muted" style="font-size: 9px;">0 = No maximum limit.</small>
+                                        </div>
+                                        <div class="pt-2 border-top">
+                                            <label class="form-check form-switch mb-0 cursor-pointer">
+                                                <input type="checkbox" name="allow_checkout_when_out_of_stock" class="form-check-input" value="1">
+                                                <span class="form-check-label x-small fw-bold text-secondary">ALLOW BACKORDERS</span>
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -466,6 +477,7 @@
 @endpush
 
 @push('scripts')
+<script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     function previewImages(input) {
@@ -495,6 +507,11 @@
     }
 
     $(document).ready(function() {
+        // CKEditor Initialization
+        $('.editor-ckeditor').each(function() {
+            CKEDITOR.replace($(this).attr('id'));
+        });
+
         // Tagify Initialization
         var tagInput = document.querySelector('#tag');
         if (tagInput) {

@@ -8,10 +8,10 @@
     <section class="breadcrumb__area include-bg mb-30 text-start pt-30 pb-30">
         <div class="container">
             <div class="breadcrumb__content p-relative z-index-1">
-                <h3 class="breadcrumb__title">Reset Password</h3>
+                <h3 class="breadcrumb__title">Create New Password</h3>
                 <div class="breadcrumb__list">
                     <span><a class="d-inline-block" href="{{ route('frontend.home') }}">Home</a></span>
-                    <span> Reset Password </span>
+                    <span> Create New Password </span>
                 </div>
             </div>
         </div>
@@ -75,7 +75,7 @@
                                 
                                 <div class="d-grid mb-3">
                                     <button class="btn btn-primary py-2 fw-bold" type="submit">
-                                        Reset Password
+                                        Create New Password
                                     </button>
                                 </div>
                                 

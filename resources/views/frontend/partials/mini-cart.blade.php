@@ -35,23 +35,29 @@
                         <div class="cartmini__content">
                             <h5><a href="{{ route('frontend.products.show', $item['slug'] ?: $id) }}">{{ $item['name'] }}</a></h5>
                             <div class="product-quantity mt-10 mb-10">
-                                <span class="cart-minus" data-id="{{ $id }}">
+                                <button type="button" class="cart-minus" data-id="{{ $id }}" style="background:none; border:none; padding: 0 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; height: 100%;">
                                     <svg width="10" height="2" viewBox="0 0 10 2" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M1 1H9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                     </svg>
-                                </span>
-                                <input class="cart-input" type="text" value="{{ $item['quantity'] }}" readonly>
-                                <span class="cart-plus" data-id="{{ $id }}">
+                                </button>
+                                <input class="cart-input" type="text" data-id="{{ $id }}" 
+                                    data-min="{{ $item['min_qty'] ?? 0 }}" 
+                                    data-max="{{ $item['max_qty'] ?? 0 }}" 
+                                    data-stock="{{ $item['stock_qty'] ?? 0 }}"
+                                    data-with-storehouse="{{ $item['with_storehouse'] ?? 0 }}"
+                                    data-allow-checkout="{{ $item['allow_checkout'] ?? 0 }}"
+                                    value="{{ $item['quantity'] }}" readonly>
+                                <button type="button" class="cart-plus" data-id="{{ $id }}" style="background:none; border:none; padding: 0 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; height: 100%;">
                                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M5 1V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                         <path d="M1 5H9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                     </svg>
-                                </span>
+                                </button>
                             </div>
                             <div class="product__sm-price-wrapper">
                                 <span class="product__sm-price" style="color: #678E61; font-weight: 600;">₹{{ number_format($item['price'] * $item['quantity'], 2) }}</span>
                             </div>
-                            <a href="#" class="cartmini__del" data-id="{{ $id }}"><i class="fas fa-times"></i></a>
+                            <a href="javascript:void(0)" class="cartmini__del" data-id="{{ $id }}"><i class="fas fa-trash"></i></a>
                         </div>
                     </li>
                     @endforeach

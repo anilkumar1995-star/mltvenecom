@@ -828,6 +828,31 @@
             }
         }
 
+        function syncProductQuantities(productId, quantity) {
+            // Find all wrappers for this product ID
+            var $wrappers = $('.tp-product-action-zepto[data-id="' + productId + '"]');
+            
+            $wrappers.each(function() {
+                var $wrapper = $(this);
+                var $btn = $wrapper.find('.tp-add-to-cart-zepto-card');
+                var $selector = $wrapper.find('.tp-qty-selector-zepto');
+                var $count = $wrapper.find('.qty-count-zepto');
+
+                if (quantity > 0) {
+                    $btn.addClass('d-none');
+                    $selector.removeClass('d-none');
+                    $count.text(quantity);
+                } else {
+                    $btn.removeClass('d-none').prop('disabled', false).css('opacity', '1');
+                    $selector.addClass('d-none');
+                }
+            });
+
+            // Also sync any other quantity displays if needed
+            $('.cart-input[data-id="' + productId + '"]').val(quantity);
+            $('.page-cart-qty-input[data-id="' + productId + '"]').val(quantity);
+        }
+
         function openMiniCart() {
             $('.cartmini__area').addClass('cartmini-opened');
             $('.body-overlay').addClass('opened');
@@ -871,8 +896,10 @@
                         if (res.success) {
                             updateCartBadge(res.count);
                             refreshMiniCart(res.html);
-                            notify(res.message, 'success');
-                            openMiniCart();
+                            if(typeof notify === 'function') notify(res.message, 'success');
+                            // openMiniCart(); suppressed
+                        } else {
+                            notify(res.message || 'Failed to add product.', 'error');
                         }
                     },
                     error: function() { notify('Failed to add product.', 'error'); },
@@ -899,6 +926,8 @@
                             refreshMiniCart(res.html);
                             notify(res.message, 'success');
                             openMiniCart();
+                        } else {
+                            notify(res.message || 'Failed to add product.', 'error');
                         }
                     },
                     error: function() { notify('Failed to add product.', 'error'); },
@@ -937,10 +966,35 @@
                 e.stopPropagation();
                 var $btn = $(this);
                 var id = $btn.data('id');
-                var $input = $btn.siblings('.cart-input');
+                var $input = $btn.closest('.product-quantity').find('.cart-input');
                 var currentQty = parseInt($input.val()) || 1;
                 var isPlus = $btn.hasClass('cart-plus');
+                
+                var minQty = parseInt($input.data('min')) || 0;
+                var maxQty = parseInt($input.data('max')) || 0;
+                var stockQty = parseInt($input.data('stock')) || 0;
+                var withStorehouse = $input.data('with-storehouse') == '1';
+                var allowCheckout = $input.data('allow-checkout') == '1';
+
                 var newQty = isPlus ? currentQty + 1 : currentQty - 1;
+
+                // Max Order Qty Check
+                if (isPlus && maxQty > 0 && newQty > maxQty) {
+                    if(typeof notify === 'function') notify('Maximum order quantity is ' + maxQty, 'error');
+                    return;
+                }
+                
+                // Stock Availability Check
+                if (isPlus && withStorehouse && !allowCheckout && newQty > stockQty) {
+                    if(typeof notify === 'function') notify('Only ' + stockQty + ' items available in stock.', 'error');
+                    return;
+                }
+
+                // Min Order Qty Check
+                if (!isPlus && minQty > 0 && currentQty <= minQty) {
+                    if(typeof notify === 'function') notify('Minimum order quantity is ' + minQty, 'error');
+                    return;
+                }
 
                 if (newQty <= 0) {
                     removeItem(id);
@@ -959,7 +1013,20 @@
                         if (res.success) {
                             updateCartBadge(res.count);
                             refreshMiniCart(res.html);
+                            // Sync quantities if product_id is returned
+                            if (res.product_id) {
+                                syncProductQuantities(res.product_id, res.quantity);
+                            }
+                        } else {
+                            notify(res.message || 'Stock limit reached!', 'error');
+                            // Reset displayed quantity to what was in the input before
+                            if (res.product_id) {
+                                syncProductQuantities(res.product_id, res.quantity || qty - 1);
+                            }
                         }
+                    },
+                    error: function() {
+                        notify('Failed to update cart.', 'error');
                     }
                 });
             }
@@ -974,6 +1041,7 @@
                             updateCartBadge(res.count);
                             refreshMiniCart(res.html);
                             notify('Product removed!', 'success');
+                            syncProductQuantities(id, 0);
                         }
                     }
                 });
@@ -1001,12 +1069,24 @@
             $(document).on('click', '#qv-add-to-cart-btn', function() {
                 var id = $(this).data('id');
                 $('#quickViewModal').modal('hide');
-                var $target = $('.tp-add-to-cart-zepto-card[data-id="' + id + '"], .tp-add-cart-btn[data-id="' + id + '"]').first();
+                
+                var $target = $('.tp-add-to-cart-zepto-card[data-id="' + id + '"]').first();
                 if ($target.length) {
                     $target.trigger('click');
                 } else {
-                    // Fallback to global handler if no button on page
-                    $('.tp-add-cart-btn').first().data('id', id).trigger('click');
+                    $.ajax({
+                        url: '{{ route("frontend.cart.add") }}',
+                        method: 'POST',
+                        data: { _token: csrfToken, product_id: id, quantity: 1 },
+                        success: function(res) {
+                            if (res.success) {
+                                updateCartBadge(res.count);
+                                refreshMiniCart(res.html);
+                                if(typeof notify === 'function') notify(res.message, 'success');
+                                syncProductQuantities(id, 1);
+                            }
+                        }
+                    });
                 }
             });
 
@@ -1210,21 +1290,21 @@
                             notify(response.message, 'error');
                             $btn.prop('disabled', false).css('opacity', '1');
                         } else {
-                            // Update UI
-                            $btn.addClass('d-none');
-                            $wrapper.find('.tp-qty-selector-zepto').removeClass('d-none');
-                            $wrapper.find('.qty-count-zepto').text(1);
-                            
                             // Update Mini Cart
                             let cartMiniHtml = response.html || (response.data ? response.data.cart_mini : '');
                             let count = response.count || (response.data ? response.data.count : 0);
+                            let newQty = response.quantity || (response.data ? response.data.quantity : 1);
                             
                             if (cartMiniHtml) {
                                 $('.cartmini__area').html(cartMiniHtml);
                                 $('[data-bb-value="cart-count"]').text(count);
                             }
-                            notify("Added to cart", 'success');
-                            openMiniCart();
+
+                            // Global Sync
+                            syncProductQuantities(id, newQty);
+
+                            if(typeof notify === 'function') notify("Added to cart", 'success');
+                            // openMiniCart(); suppressed
                         }
                     },
                     error: function() {
@@ -1262,12 +1342,8 @@
                         if (response.error) {
                             notify(response.message, 'error');
                         } else {
-                            if (newQty <= 0) {
-                                $wrapper.find('.tp-qty-selector-zepto').addClass('d-none');
-                                $wrapper.find('.tp-add-to-cart-zepto-card').removeClass('d-none').prop('disabled', false).css('opacity', '1');
-                            } else {
-                                $countSpan.text(newQty);
-                            }
+                            // Sync all displays of this product on the page
+                            syncProductQuantities(id, response.quantity || newQty);
 
                             // Update Mini Cart & Badges
                             let count = response.count || (response.data ? response.data.count : 0);

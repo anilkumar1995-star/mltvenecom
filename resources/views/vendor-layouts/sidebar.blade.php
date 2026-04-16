@@ -7,6 +7,19 @@
                     document.getElementById('sidebar-menu-main').classList.add('navbar-minimal');
                 }
             })();
+
+            // Add listener to save minimal state preference
+            document.addEventListener('click', function(e) {
+                const button = e.target.closest('[data-bb-toggle="navbar-minimal"]');
+                if (button) {
+                    setTimeout(() => {
+                        const sidebar = document.getElementById('sidebar-menu-main');
+                        if (sidebar) {
+                            localStorage.setItem('vendor_sidebar_minimal', sidebar.classList.contains('navbar-minimal'));
+                        }
+                    }, 100);
+                }
+            });
         </script>
         <div class="container-xl">
             {{-- Hide individual toggler as we have a main toggle in header --}}
@@ -26,7 +39,7 @@
                 <ul class="navbar-nav pt-lg-3">
 
                     {{-- Dashboard --}}
-                    <li class="nav-item">
+                    <li class="nav-item {{ request()->routeIs('frontend.vendor.dashboard') ? 'active' : '' }}">
                         <a class="nav-link {{ request()->routeIs('frontend.vendor.dashboard') ? 'active' : '' }}"
                             href="{{ route('frontend.vendor.dashboard') }}" data-title="Dashboard">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -41,7 +54,7 @@
                     </li>
 
                     {{-- Products --}}
-                    <li class="nav-item">
+                    <li class="nav-item {{ request()->routeIs('frontend.vendor.products.*') ? 'active' : '' }}">
                         <a class="nav-link {{ request()->routeIs('frontend.vendor.products.*') ? 'active' : '' }}"
                             href="{{ route('frontend.vendor.products.index') }}" data-title="Products">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -57,7 +70,7 @@
                     </li>
 
                     {{-- Orders --}}
-                    <li class="nav-item">
+                    <li class="nav-item {{ request()->routeIs('frontend.vendor.orders.*') ? 'active' : '' }}">
                         <a class="nav-link {{ request()->routeIs('frontend.vendor.orders.*') ? 'active' : '' }}" 
                             href="{{ route('frontend.vendor.orders.index') }}" data-title="Orders">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -73,7 +86,7 @@
                     </li>
 
                     {{-- Order Returns --}}
-                    <li class="nav-item">
+                    <li class="nav-item {{ request()->routeIs('frontend.vendor.order-returns.*') ? 'active' : '' }}">
                         <a class="nav-link {{ request()->routeIs('frontend.vendor.order-returns.*') ? 'active' : '' }}" 
                             href="{{ route('frontend.vendor.order-returns.index') }}" data-title="Order Returns">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -86,7 +99,7 @@
                     </li>
 
                     {{-- Discounts --}}
-                    <li class="nav-item">
+                    <li class="nav-item {{ request()->routeIs('frontend.vendor.discounts.*') ? 'active' : '' }}">
                         <a class="nav-link {{ request()->routeIs('frontend.vendor.discounts.*') ? 'active' : '' }}" 
                             href="{{ route('frontend.vendor.discounts.index') }}" data-title="Discounts">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -102,7 +115,7 @@
                     </li>
 
                     {{-- Withdrawals --}}
-                    <li class="nav-item">
+                    <li class="nav-item {{ request()->routeIs('frontend.vendor.withdrawals.*') ? 'active' : '' }}">
                         <a class="nav-link {{ request()->routeIs('frontend.vendor.withdrawals.*') ? 'active' : '' }}" 
                             href="{{ route('frontend.vendor.withdrawals.index') }}" data-title="Withdrawals">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -116,7 +129,7 @@
                     </li>
 
                     {{-- Reviews --}}
-                    <li class="nav-item">
+                    <li class="nav-item {{ request()->routeIs('frontend.vendor.reviews.*') ? 'active' : '' }}">
                         <a class="nav-link {{ request()->routeIs('frontend.vendor.reviews.*') ? 'active' : '' }}" 
                             href="{{ route('frontend.vendor.reviews.index') }}" data-title="Reviews">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -129,7 +142,7 @@
                     </li>
 
                     {{-- Revenues --}}
-                    <li class="nav-item">
+                    <li class="nav-item {{ request()->routeIs('frontend.vendor.revenues.*') ? 'active' : '' }}">
                         <a class="nav-link {{ request()->routeIs('frontend.vendor.revenues.*') ? 'active' : '' }}" 
                             href="{{ route('frontend.vendor.revenues.index') }}" data-title="Revenues">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -143,7 +156,7 @@
                     </li>
 
                     {{-- Messages --}}
-                    <li class="nav-item">
+                    <li class="nav-item {{ request()->routeIs('frontend.vendor.messages.*') ? 'active' : '' }}">
                         <a class="nav-link {{ request()->routeIs('frontend.vendor.messages.*') ? 'active' : '' }}" 
                             href="{{ route('frontend.vendor.messages.index') }}" data-title="Messages">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -157,7 +170,7 @@
                     </li>
 
                     {{-- Product Specification (Dropdown) --}}
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown {{ request()->routeIs('frontend.vendor.specifications.*') ? 'active' : '' }}">
                         <a class="nav-link dropdown-toggle {{ request()->routeIs('frontend.vendor.specifications.*') ? 'show' : '' }}" href="#navbar-specification" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="{{ request()->routeIs('frontend.vendor.specifications.*') ? 'true' : 'false' }}">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
                                 <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -179,7 +192,7 @@
                     </li>
 
                     {{-- KYC Verification --}}
-                    <li class="nav-item">
+                    <li class="nav-item {{ request()->routeIs('frontend.vendor.kyc.*') ? 'active' : '' }}">
                         <a class="nav-link {{ request()->routeIs('frontend.vendor.kyc.*') ? 'active' : '' }}" 
                             href="{{ route('frontend.vendor.kyc.index') }}" data-title="KYC Verification">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -193,7 +206,7 @@
                     </li>
 
                     {{-- Settings --}}
-                    <li class="nav-item">
+                    <li class="nav-item {{ request()->routeIs('frontend.vendor.settings.*') ? 'active' : '' }}">
                         <a class="nav-link {{ request()->routeIs('frontend.vendor.settings.*') ? 'active' : '' }}" 
                             href="{{ route('frontend.vendor.settings.index') }}" data-title="Settings">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">

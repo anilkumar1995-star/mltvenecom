@@ -65,17 +65,21 @@
             <div class="row justify-content-center">
                 <div class="col-xl-9">
                     <div class="ck-content">
-                        <h3>EU Cookie Consent</h3>
-                        <p>To use this website we are using Cookies and collecting some Data. To be compliant with the EU GDPR we give you to choose if you allow us to use certain Cookies and to collect some Data.</p>
-                        
-                        <div class="cookie-info-card">
-                            <h4>Essential Data</h4>
-                            <p>The Essential Data is needed to run the Site you are visiting technically. You can not deactivate them.</p>
-                            <p><strong>Session Cookie</strong>: PHP uses a Cookie to identify user sessions. Without this Cookie the Website is not working.</p>
-                            <p><strong>XSRF-Token Cookie</strong>: Laravel automatically generates a CSRF "token" for each active user session managed by the application. This token is used to verify that the authenticated user is the one actually making the requests to the application.</p>
-                        </div>
+                        @if($page)
+                            {!! $page->content !!}
+                        @else
+                            <h3>EU Cookie Consent</h3>
+                            <p>To use this website we are using Cookies and collecting some Data. To be compliant with the EU GDPR we give you to choose if you allow us to use certain Cookies and to collect some Data.</p>
+                            
+                            <div class="cookie-info-card">
+                                <h4>Essential Data</h4>
+                                <p>The Essential Data is needed to run the Site you are visiting technically. You can not deactivate them.</p>
+                                <p><strong>Session Cookie</strong>: PHP uses a Cookie to identify user sessions. Without this Cookie the Website is not working.</p>
+                                <p><strong>XSRF-Token Cookie</strong>: Laravel automatically generates a CSRF "token" for each active user session managed by the application. This token is used to verify that the authenticated user is the one actually making the requests to the application.</p>
+                            </div>
 
-                        <p class="text-muted small">This policy is subject to change at any time. We encourage visitors to frequently check this page for any changes to stay informed about how we are helping to protect the personal information we collect.</p>
+                            <p class="text-muted small">This policy is subject to change at any time. We encourage visitors to frequently check this page for any changes to stay informed about how we are helping to protect the personal information we collect.</p>
+                        @endif
                     </div>
                 </div>
             </div>

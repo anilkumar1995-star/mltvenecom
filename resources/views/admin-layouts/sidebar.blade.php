@@ -1,5 +1,26 @@
 <div class="d-block d-lg-flex">
     <aside class="navbar navbar-vertical navbar-expand-lg flex-auto" data-bs-theme="dark" id="sidebar-menu-main">
+        <script>
+            (function() {
+                const isMinimal = localStorage.getItem('admin_sidebar_minimal');
+                if (isMinimal === null || isMinimal === 'true') {
+                    document.getElementById('sidebar-menu-main').classList.add('navbar-minimal');
+                }
+            })();
+
+            // Add listener to save minimal state preference
+            document.addEventListener('click', function(e) {
+                const button = e.target.closest('[data-bb-toggle="navbar-minimal"]');
+                if (button) {
+                    setTimeout(() => {
+                        const sidebar = document.getElementById('sidebar-menu-main');
+                        if (sidebar) {
+                            localStorage.setItem('admin_sidebar_minimal', sidebar.classList.contains('navbar-minimal'));
+                        }
+                    }, 100);
+                }
+            });
+        </script>
         <div class="container-xl"><button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#sidebar-menu" aria-controls="sidebar-menu" aria-expanded="false"
                 aria-label="Toggle navigation"><svg class="icon svg-icon-ti-ti-menu-2"

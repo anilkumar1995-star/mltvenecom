@@ -1211,7 +1211,17 @@
 
     @push('scripts')
         <script>
-            // ... existing scripts ...
+            $(document).ready(function() {
+                // Auto-sync Stock Status with Quantity
+                $(document).on('input', 'input[name="quantity"]', function() {
+                    let qty = parseInt($(this).val()) || 0;
+                    if (qty > 0) {
+                        $('input[name="stock_status"][value="in_stock"]').prop('checked', true);
+                    } else if (qty <= 0) {
+                        $('input[name="stock_status"][value="out_of_stock"]').prop('checked', true);
+                    }
+                });
+            });
 
             // AJAX Form Submission
             $(document).ready(function() {

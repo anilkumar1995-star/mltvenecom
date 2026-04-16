@@ -27,6 +27,36 @@
     .breadcrumb__list span a {
         color: #010f1c;
     }
+
+    /* Grid Cart Styling */
+    .cart-item-row:hover {
+        background-color: #fcfcfc;
+    }
+    .btn-ghost-danger {
+        color: #dc3545;
+        background: transparent;
+        transition: 0.2s;
+    }
+    .btn-ghost-danger:hover {
+        background: #fff5f5;
+        color: #c82333;
+    }
+    
+    @media (max-width: 768px) {
+        .breadcrumb__title { font-size: 24px !important; }
+        .product-name-responsive { font-size: 13px !important; }
+        .product-sku-responsive { font-size: 10px !important; }
+        .fs-responsive { font-size: 13px !important; }
+        
+        .tp-product-quantity {
+            width: 85px !important;
+            height: 30px !important;
+        }
+        .page-cart-qty-input {
+            width: 25px !important;
+            font-size: 13px !important;
+        }
+    }
 </style>
 @endpush
 
@@ -74,65 +104,92 @@
             </a>
         </div>
         <div id="cart-content" class="row">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-body">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Product</th>
-                                    <th>Price</th>
-                                    <th>Quantity</th>
-                                    <th>Subtotal</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($cart as $id => $item)
-                                <tr class="cart-item-row" data-product-id="{{ $id }}" data-price="{{ $item['price'] }}">
-                                    <td>
+            <div class="col-lg-8">
+                <div class="card mb-4 border-0 shadow-sm">
+                    <div class="card-body p-0">
+                        {{-- Header - Hidden on mobile --}}
+                        <div class="d-none d-md-flex row align-items-center fw-bold text-muted border-bottom py-3 px-4" style="font-size: 13px; background: #fafafa; border-radius: 8px 8px 0 0;">
+                            <div class="col-6">PRODUCT</div>
+                            <div class="col-2 text-center">PRICE</div>
+                            <div class="col-2 text-center">QUANTITY</div>
+                            <div class="col-2 text-end">SUBTOTAL</div>
+                        </div>
+
+                        {{-- Product Rows --}}
+                        <div id="cart-items-container">
+                            @foreach($cart as $id => $item)
+                            <div class="cart-item-row p-3 p-md-4 border-bottom position-relative" 
+                                data-product-id="{{ $id }}" data-price="{{ $item['price'] }}" 
+                                data-min="{{ $item['min_qty'] ?? 0 }}" 
+                                data-max="{{ $item['max_qty'] ?? 0 }}"
+                                data-stock="{{ $item['stock_qty'] ?? 0 }}"
+                                data-with-storehouse="{{ $item['with_storehouse'] ?? 0 }}"
+                                data-allow-checkout="{{ $item['allow_checkout'] ?? 0 }}">
+                                
+                                <div class="row align-items-center g-3">
+                                    {{-- Product Image & Name --}}
+                                    <div class="col-12 col-md-6">
                                         <div class="d-flex align-items-center">
-                                            @if($item['image'])
-                                                <img src="{{ \App\Helpers\ImageHelper::getImageUrl() . $item['image'] }}" alt="{{ $item['name'] }}" style="width: 60px; height: 60px; object-fit: cover;" class="me-3">
-                                            @else
-                                                <img src="https://via.placeholder.com/60" alt="{{ $item['name'] }}" class="me-3">
-                                            @endif
-                                            <div>
-                                                <strong>{{ $item['name'] }}</strong>
-                                                <br>
-                                                <small class="text-muted">SKU: {{ $item['slug'] }}</small>
+                                            <div class="position-relative">
+                                                @if($item['image'])
+                                                    <img src="{{ \App\Helpers\ImageHelper::getImageUrl() . $item['image'] }}" alt="{{ $item['name'] }}" class="rounded shadow-sm" style="width: 70px; height: 70px; object-fit: cover;">
+                                                @else
+                                                    <img src="https://via.placeholder.com/70" alt="{{ $item['name'] }}" class="rounded shadow-sm">
+                                                @endif
+                                            </div>
+                                            <div class="ms-3 pe-4">
+                                                <h6 class="mb-1 fw-bold text-dark product-name-responsive" style="font-size: 14px;">{{ $item['name'] }}</h6>
+                                                <div class="text-muted product-sku-responsive" style="font-size: 11px;">Slug: {{ $item['slug'] }}</div>
+                                                <div style="font-size: 10px; color: #666;">
+                                                    @if(isset($item['weight']) && (float)$item['weight'] > 0)
+                                                        1 pack ({{ (float)$item['weight'] }} {{ $item['unit_type'] ?? 'kg' }})
+                                                    @else
+                                                        1 unit
+                                                    @endif
+                                                </div>
                                             </div>
                                         </div>
-                                    </td>
-                                    <td>₹{{ number_format($item['price'], 2) }}</td>
-                                    <td>
-                                        <div class="tp-product-quantity d-inline-flex align-items-center justify-content-between" style="background-color: #F3F5F6; height: 38px; border-radius: 4px; width: 110px; padding: 0 10px;">
-                                            <span class="d-flex align-items-center justify-content-center page-cart-qty-btn text-decoration-none" data-action="minus" style="cursor:pointer; width:30px; height:100%; color: #010F1C;">
+                                    </div>
+
+                                    {{-- Price --}}
+                                    <div class="col-4 col-md-2 text-md-center">
+                                        <div class="d-md-none small text-muted mb-1">Price</div>
+                                        <div class="fw-bold fs-responsive text-muted">₹{{ number_format($item['price'], 2) }}</div>
+                                    </div>
+
+                                    {{-- Quantity --}}
+                                    <div class="col-4 col-md-2 text-center">
+                                        <div class="d-md-none small text-muted mb-1">Quantity</div>
+                                        <div class="tp-product-quantity d-inline-flex align-items-center justify-content-between mx-auto" style="background-color: #F3F5F6; height: 34px; border-radius: 6px; width: 95px; padding: 0 8px;">
+                                            <span class="d-flex align-items-center justify-content-center page-cart-qty-btn" data-action="minus" style="cursor:pointer; width:25px; height:100%;">
                                                 <svg width="10" height="2" viewBox="0 0 10 2" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <path d="M1 1H9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                                 </svg>
                                             </span>
-                                            
-                                            <input type="text" value="{{ $item['quantity'] }}" class="page-cart-qty-input text-center m-0 bg-transparent border-0 fw-medium text-dark" style="width: 40px; height: 100%; outline: none; font-size: 15px; padding: 0;" readonly>
-                                            
-                                            <span class="d-flex align-items-center justify-content-center page-cart-qty-btn text-decoration-none" data-action="plus" style="cursor:pointer; width:30px; height:100%; color: #010F1C;">
+                                            <input type="text" value="{{ $item['quantity'] }}" data-id="{{ $id }}" class="page-cart-qty-input text-center m-0 bg-transparent border-0 fw-bold" style="width: 35px; outline: none; font-size: 14px;" readonly>
+                                            <span class="d-flex align-items-center justify-content-center page-cart-qty-btn" data-action="plus" style="cursor:pointer; width:25px; height:100%;">
                                                 <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <path d="M5 1V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                                     <path d="M1 5H9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                                 </svg>
                                             </span>
                                         </div>
-                                    </td>
-                                    <td class="item-subtotal"><strong>₹{{ number_format($item['price'] * $item['quantity'], 2) }}</strong></td>
-                                    <td>
-                                        <button type="button" class="btn btn-sm btn-danger page-cart-remove-btn">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                    </div>
+
+                                    {{-- Subtotal --}}
+                                    <div class="col-4 col-md-2 text-end">
+                                        <div class="d-md-none small text-muted mb-1">Subtotal</div>
+                                        <div class="item-subtotal text-primary fw-bold fs-responsive">₹{{ number_format($item['price'] * $item['quantity'], 2) }}</div>
+                                    </div>
+                                </div>
+
+                                {{-- Remove Button --}}
+                                <button type="button" class="btn btn-sm btn-ghost-danger page-cart-remove-btn position-absolute" style="top: 15px; right: 15px; border-radius: 50%; width: 32px; height: 32px; padding: 0;">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
             </div>
@@ -230,7 +287,31 @@ $(document).ready(function() {
         var $input = $row.find('.page-cart-qty-input');
         
         var currentQty = parseInt($input.val()) || 1;
+        var minQty = parseInt($row.data('min')) || 0;
+        var maxQty = parseInt($row.data('max')) || 0;
+        var stockQty = parseInt($row.data('stock')) || 0;
+        var withStorehouse = $row.data('with-storehouse') == '1';
+        var allowCheckout = $row.data('allow-checkout') == '1';
+        
         var newQty = action === 'plus' ? currentQty + 1 : currentQty - 1;
+
+        // Max Check
+        if (action === 'plus' && maxQty > 0 && newQty > maxQty) {
+            if(typeof notify === 'function') notify('Maximum order quantity is ' + maxQty, 'error');
+            return;
+        }
+
+        // Stock Check
+        if (action === 'plus' && withStorehouse && !allowCheckout && newQty > stockQty) {
+            if(typeof notify === 'function') notify('Only ' + stockQty + ' items available in stock.', 'error');
+            return;
+        }
+
+        // Min Check
+        if (action === 'minus' && minQty > 0 && currentQty <= minQty) {
+            if(typeof notify === 'function') notify('Minimum order quantity is ' + minQty, 'error');
+            return;
+        }
 
         if (newQty <= 0) {
             // Remove item
@@ -261,9 +342,14 @@ $(document).ready(function() {
                         if(typeof refreshMiniCart === 'function') refreshMiniCart(res.html);
                         
                         $input.val(newQty);
-                        $row.find('.item-subtotal strong').text(formatCurrency(price * newQty));
+                        $row.find('.item-subtotal').text(formatCurrency(price * newQty));
                         updateSummary(parseFloat(res.subtotal || 0));
+                    } else {
+                        if(typeof notify === 'function') notify(res.message || 'Stock limit reached!', 'error');
                     }
+                },
+                error: function() {
+                    if(typeof notify === 'function') notify('Failed to update cart.', 'error');
                 }
             });
         }
