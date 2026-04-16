@@ -55,6 +55,7 @@
         .page-cart-qty-input {
             width: 25px !important;
             font-size: 13px !important;
+            color: #010f1c !important;
         }
     }
 </style>
@@ -166,7 +167,7 @@
                                                     <path d="M1 1H9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                                 </svg>
                                             </span>
-                                            <input type="text" value="{{ $item['quantity'] }}" data-id="{{ $id }}" class="page-cart-qty-input text-center m-0 bg-transparent border-0 fw-bold" style="width: 35px; outline: none; font-size: 14px;" readonly>
+                                            <input type="text" value="{{ $item['quantity'] }}" data-id="{{ $id }}" class="page-cart-qty-input text-center m-0 bg-transparent border-0 fw-bold" style="flex-grow: 1; min-width: 0; width: 30px; outline: none; font-size: 14px; color: #010f1c; height: 100%; padding: 0;" readonly>
                                             <span class="d-flex align-items-center justify-content-center page-cart-qty-btn" data-action="plus" style="cursor:pointer; width:25px; height:100%;">
                                                 <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <path d="M5 1V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
