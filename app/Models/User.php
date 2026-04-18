@@ -46,6 +46,7 @@ class User extends Authenticatable
         'kyc_kid',
         'kyc_url',
         'kyc_status',
+        'avatar',
     ];
 
     /**

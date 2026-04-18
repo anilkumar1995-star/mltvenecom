@@ -213,6 +213,26 @@ class VendorController extends Controller
         ]);
     }
 
+    public function manualVerifyKyc($id)
+    {
+        try {
+            $vendor = Customer::findOrFail($id);
+            $vendor->kyc_status = 'verified';
+            $vendor->save();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'KYC status verified manually.',
+                'reload' => true
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Something went wrong: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
     public function update(Request $request, $id)
     {
         $user = Customer::findOrFail($id);

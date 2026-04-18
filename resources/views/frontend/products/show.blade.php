@@ -204,7 +204,15 @@
                             <a href="#" class="product-brand">{{ $product->brand->name }}</a>
                         @endif
 
-                        <h3 class="product__details-title">{{ $product->name }} @if($product->weight) <small class="text-muted" style="font-size: 18px; font-weight: 400;"></small> @endif</h3>
+                        <h3 class="product__details-title">{{ $product->name }}</h3>
+
+                        <div style="font-size: 16px; color: #666; margin-bottom: 15px; font-weight: 500;">
+                            @if($product->weight > 0)
+                                1 pack ({{ (float)$product->weight }} {{ $product->unit_type ?: 'kg' }})
+                            @else
+                                1 unit
+                            @endif
+                        </div>
                         
                         <div class="product__details-rating d-flex align-items-center mb-3">
                             <div class="rating-star me-2">
@@ -243,108 +251,98 @@
 
 
 
-                        <form action="{{ route('frontend.cart.add') }}" method="POST" class="product-form add-to-cart-form">
-                            @csrf
-                            <input type="hidden" name="product_id" value="{{ $product->id }}">
-                            
-                            <div class="tp-product-details-action-wrapper">
-                                <!-- Quantity Row -->
-                                <div class="mb-3">
-                                    <div class="tp-product-details-quantity" style="width: 100%;">
-                                        <div class="tp-product-quantity d-flex align-items-center">
-                                            <span class="tp-cart-minus" onclick="decrementValue()">
-                                                <svg width="12" height="2" viewBox="0 0 12 2" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M1 1H11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                                </svg>
-                                            </span>
-                                            <input class="tp-cart-input" type="text" name="quantity" id="qty" value="{{ $product->minimum_order_quantity > 0 ? $product->minimum_order_quantity : 1 }}" readonly>
-                                            <span class="tp-cart-plus" onclick="incrementValue()">
-                                                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M6 1V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                                    <path d="M1 6H11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                                </svg>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
+                        <div class="tp-product-details-action-wrapper mb-4">
+                            @php
+                                $cart = session()->get('cart', []);
+                                $qtyInCart = isset($cart[$product->id]) ? $cart[$product->id]['quantity'] : 0;
+                            @endphp
 
-                                <!-- Buttons Row: 50/50 -->
-                                <div class="d-flex gap-3">
-                                    <button type="submit" class="tp-product-details-add-to-cart-btn flex-grow-1">Add To Cart</button>
-                                    <button type="button" 
-                                        onclick="var form = this.closest('form'); form.action = '{{ route('frontend.cart.buyNow') }}'; form.submit();" 
-                                        class="tp-product-details-buy-now-btn flex-grow-1">
-                                        Buy Now
+                            <div class="action-state-container" data-product-id="{{ $product->id }}">
+                                <!-- ADD Button State -->
+                                <div class="add-btn-state {{ $qtyInCart > 0 ? 'd-none' : '' }}">
+                                    <button type="button" class="tp-product-details-add-btn" onclick="handleInitialAdd(this)">
+                                        ADD
                                     </button>
                                 </div>
+
+                                <!-- Quantity Selector State -->
+                                <div class="qty-selector-state {{ $qtyInCart > 0 ? '' : 'd-none' }}">
+                                    <div class="tp-product-details-quantity-box">
+                                        <span class="qty-control minus" onclick="updateDetailedQty(-1)">-</span>
+                                        <input type="text" class="qty-input" id="detailed-qty-input" value="{{ $qtyInCart > 0 ? $qtyInCart : ($product->minimum_order_quantity > 0 ? $product->minimum_order_quantity : 1) }}" readonly>
+                                        <span class="qty-control plus" onclick="updateDetailedQty(1)">+</span>
+                                    </div>
+                                </div>
                             </div>
-                        </form>
+                        </div>
 
                         <style>
-                            /* Quantity */
-                            .tp-product-details-quantity {
-                                width: 140px;
-                                flex-shrink: 0;
+                            .action-state-container {
+                                max-width: 180px;
                             }
-                            .tp-product-quantity {
-                                background-color: #F3F5F6;
-                                border-radius: 0;
-                                height: 46px;
-                                justify-content: space-between;
-                                padding: 0 15px;
-                            }
-                            .tp-cart-input {
-                                height: 46px;
-                                background-color: transparent;
-                                border: none;
-                                text-align: center;
-                                font-size: 16px;
-                                font-weight: 500;
-                                color: #010F1C;
+                            
+                            /* Initial ADD Button - Matches Homepage Card */
+                            .tp-product-details-add-btn {
                                 width: 100%;
-                            }
-                            .tp-cart-minus, .tp-cart-plus {
+                                height: 46px;
+                                background: #fff;
+                                border: 1.5px solid #ff3269;
+                                color: #ff3269;
+                                font-weight: 800;
+                                font-size: 16px;
+                                border-radius: 10px;
                                 cursor: pointer;
-                                color: #010F1C;
+                                transition: all 0.2s ease;
                                 display: flex;
                                 align-items: center;
                                 justify-content: center;
+                                text-transform: uppercase;
+                                box-shadow: 0 4px 10px rgba(255, 50, 105, 0.1);
+                            }
+                            .tp-product-details-add-btn:hover {
+                                background: #fff5f7;
+                                transform: translateY(-1px);
+                                box-shadow: 0 6px 15px rgba(255, 50, 105, 0.15);
                             }
 
-                            /* Add to Cart */
-                            .tp-product-details-add-to-cart-btn {
+                            /* Quantity Selector Box - Matches Homepage Card */
+                            .tp-product-details-quantity-box {
+                                display: flex;
+                                align-items: center;
+                                justify-content: space-between;
+                                background: #ff3269;
+                                border-radius: 10px;
                                 height: 46px;
-                                background-color: transparent;
-                                border: 1px solid #E0E2E3;
-                                color: #010F1C;
-                                font-family: 'Jost', sans-serif;
-                                font-size: 16px;
-                                font-weight: 400;
-                                padding: 0 30px;
+                                padding: 0 5px;
+                                color: #fff;
                                 transition: all 0.3s ease;
+                                box-shadow: 0 4px 12px rgba(255, 50, 105, 0.3);
                             }
-                            .tp-product-details-add-to-cart-btn:hover {
-                                background-color: #010F1C;
-                                border-color: #010F1C;
-                                color: #ffffff;
+                            .qty-control {
+                                width: 40px;
+                                height: 100%;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                cursor: pointer;
+                                color: #fff;
+                                font-size: 20px;
+                                font-weight: 700;
+                                transition: background 0.2s;
                             }
-
-                            /* Buy Now */
-                            .tp-product-details-buy-now-btn {
-                                height: 46px;
-                                background-color: #678E61; /* Exact Shofy Green */
+                            .qty-control:hover {
+                                background: rgba(255, 255, 255, 0.15);
+                            }
+                            .qty-input {
+                                background: transparent;
                                 border: none;
-                                color: #ffffff;
-                                font-family: 'Jost', sans-serif;
-                                font-size: 16px;
-                                font-weight: 500;
-                                letter-spacing: 0;
-                                transition: all 0.3s ease;
+                                color: #fff;
+                                width: 50px;
+                                text-align: center;
+                                font-weight: 800;
+                                font-size: 20px;
                             }
-                            .tp-product-details-buy-now-btn:hover {
-                                background-color: #010F1C;
-                                color: #ffffff;
-                            }
+                            .qty-input:focus { outline: none; }
                         </style>
 
 
@@ -582,7 +580,7 @@
                                         @if($product->weight)
                                         <tr>
                                             <th>Weight</th>
-                                            <td>{{ $product->weight }} {{ $product->weight > 999 ? 'kg' : 'g' }}</td>
+                                            <td>{{ (float)$product->weight }} {{ $product->unit_type ?: 'g' }}</td>
                                         </tr>
                                         @endif
                                         @if($product->sku)
@@ -824,47 +822,107 @@
             if (element) element.classList.add('active');
         }
 
-        function incrementValue() {
-            const qtyInput = document.getElementById('qty');
-            if (!qtyInput) return;
-            let value = parseInt(qtyInput.value, 10);
-            value = isNaN(value) ? 1 : value;
+        // New Zepto-style Cart Handlers
+        function handleInitialAdd(btn) {
+            const container = btn.closest('.action-state-container');
+            const productId = container.dataset.productId;
+            const minQty = parseInt('{{ $product->minimum_order_quantity > 0 ? $product->minimum_order_quantity : 1 }}', 10);
             
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            btn.disabled = true;
+
+            $.post("{{ route('frontend.cart.add') }}", {
+                _token: '{{ csrf_token() }}',
+                product_id: productId,
+                quantity: minQty
+            }, function(res) {
+                if(res.success) {
+                    $('.add-btn-state').addClass('d-none');
+                    $('.qty-selector-state').removeClass('d-none');
+                    $('#detailed-qty-input').val(minQty);
+                    
+                    if(typeof notify === 'function') notify(res.message, 'success');
+                    
+                    // Global cart sync
+                    $('[data-bb-value="cart-count"]').text(res.count);
+                    if(typeof refreshCartArea === 'function') refreshCartArea();
+                } else {
+                    btn.innerHTML = 'ADD';
+                    btn.disabled = false;
+                    if(typeof notify === 'function') notify(res.message || 'Error adding to cart', 'error');
+                }
+            }).fail(function() {
+                btn.innerHTML = 'ADD';
+                btn.disabled = false;
+            });
+        }
+
+        function updateDetailedQty(change) {
+            const input = $('#detailed-qty-input');
+            let currentVal = parseInt(input.val(), 10);
+            let newVal = currentVal + change;
+            const productId = '{{ $product->id }}';
+            const minQty = parseInt('{{ $product->minimum_order_quantity > 0 ? $product->minimum_order_quantity : 1 }}', 10);
+
+            if (newVal < minQty && change < 0) {
+                // Remove from cart if it goes below min
+                handleRemoveItem(productId);
+                return;
+            }
+
+            // Check stock
             const max = parseInt('{{ $product->quantity ?? 0 }}', 10);
-            const maxOrder = parseInt('{{ $product->maximum_order_quantity ?? 0 }}', 10);
             const withManagement = '{{ $product->with_storehouse_management }}' == '1';
             const allowCheckout = '{{ $product->allow_checkout_when_out_of_stock }}' == '1';
 
-            // Check stock management limit
-            if (withManagement && !allowCheckout && value >= max) {
-                if(typeof notify === 'function') notify('Only ' + max + ' items available in stock.', 'error');
+            if (withManagement && !allowCheckout && newVal > max) {
+                if(typeof notify === 'function') notify('Only ' + max + ' items available.', 'error');
                 return;
             }
 
-            // Check maximum order quantity limit
-            if (maxOrder > 0 && value >= maxOrder) {
-                if(typeof notify === 'function') notify('Maximum order quantity is ' + maxOrder + '.', 'error');
-                return;
-            }
+            input.val(newVal);
 
-            value++;
-            qtyInput.value = value;
+            // AJAX Update
+            $.post("{{ route('frontend.cart.update') }}", {
+                _token: '{{ csrf_token() }}',
+                product_id: productId,
+                quantity: newVal
+            }, function(res) {
+                if(!res.success) {
+                    input.val(currentVal);
+                    if(typeof notify === 'function') notify(res.message, 'error');
+                } else {
+                    $('[data-bb-value="cart-count"]').text(res.count);
+                }
+            });
+        }
+
+        function handleRemoveItem(productId) {
+            $.post("{{ route('frontend.cart.remove', ['id' => $product->id]) }}", {
+                _token: '{{ csrf_token() }}',
+                _method: 'DELETE',
+                product_id: productId
+            }, function(res) {
+                if(res.success) {
+                    $('.add-btn-state').removeClass('d-none');
+                    $('.qty-selector-state').addClass('d-none');
+                    $('.tp-product-details-add-btn').text('ADD').prop('disabled', false);
+                    
+                    if(typeof notify === 'function') notify(res.message, 'success');
+                    
+                    $('[data-bb-value="cart-count"]').text(res.count);
+                }
+            });
+        }
+
+        function incrementValue() {
+            // ... legacy support if needed by sticky bar ...
+            updateDetailedQty(1);
         }
 
         function decrementValue() {
-            const qtyInput = document.getElementById('qty');
-            if (!qtyInput) return;
-            let value = parseInt(qtyInput.value, 10);
-            value = isNaN(value) ? 1 : value;
-
-            const minOrder = parseInt('{{ $product->minimum_order_quantity ?? 1 }}', 10) || 1;
-
-            if (value > minOrder) {
-                value--;
-                qtyInput.value = value;
-            } else {
-                if(typeof notify === 'function') notify('Minimum order quantity is ' + minOrder + '.', 'error');
-            }
+            // ... legacy support if needed by sticky bar ...
+            updateDetailedQty(-1);
         }
 
         document.addEventListener('DOMContentLoaded', function() {
