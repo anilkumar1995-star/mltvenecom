@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AnnouncementController;
+use App\Http\Controllers\Admin\FooterSettingController;
 use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\PaymentTransactionController;
 use App\Http\Controllers\Admin\PaymentLogController;
@@ -41,13 +42,17 @@ use App\Http\Controllers\Admin\TaxController;
 use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\VendorController;
 use App\Http\Controllers\Admin\WithdrawlsController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Frontend\AccountDeletionController;
+use App\Http\Controllers\Frontend\BlogController;
 use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\Frontend\CheckoutController;
+use App\Http\Controllers\Frontend\CouponController;
 use App\Http\Controllers\Frontend\CustomerController;
 use App\Http\Controllers\Frontend\HomeController as FrontendHomeController;
 use App\Http\Controllers\Frontend\ProductController as FrontendProductController;
@@ -85,10 +90,10 @@ Route::get('/register', [RegisterController::class , 'showRegistrationForm'])->n
 Route::post('/register', [RegisterController::class , 'register']);
 Route::match (['get', 'post'], '/logout', [LoginController::class , 'logout'])->name('logout');
 // Password Reset Routes
-Route::get('password/reset', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
-Route::post('password/email', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
-Route::get('password/reset/{token}', [App\Http\Controllers\Auth\ResetPasswordController::class, 'showResetForm'])->name('password.reset');
-Route::post('password/reset', [App\Http\Controllers\Auth\ResetPasswordController::class, 'reset'])->name('password.update');
+Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+Route::get('password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::post('password/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
 
 // Vendor KYC Pending Page
 Route::get('/v/kyc-pending', function (\Illuminate\Http\Request $request) {
@@ -207,24 +212,24 @@ Route::name('frontend.')->group(function () {
         Route::get('/brands/{slug}', [FrontendProductController::class , 'brand'])->name('brands.show');
 
         // Categories
-        Route::get('/categories', [App\Http\Controllers\Frontend\CategoryController::class , 'index'])->name('categories.index');
+        Route::get('/categories', [CategoryController::class , 'index'])->name('categories.index');
 
         // Brands
-        Route::get('/brands', [App\Http\Controllers\Frontend\BrandController::class , 'index'])->name('brands.index');
+        Route::get('/brands', [BrandController::class , 'index'])->name('brands.index');
 
         // Coupons
-        Route::get('/coupons', [App\Http\Controllers\Frontend\CouponController::class , 'index'])->name('coupons.index');
+        Route::get('/coupons', [CouponController::class , 'index'])->name('coupons.index');
 
         // FAQs
-        Route::get('/faqs', [App\Http\Controllers\Frontend\FaqController::class , 'index'])->name('faqs.index');
+        Route::get('/faqs', [FaqController::class , 'index'])->name('faqs.index');
 
         // Blog
-        Route::get('/blog', [App\Http\Controllers\Frontend\BlogController::class , 'index'])->name('blog.index');
-        Route::get('/blog/{slug}', [App\Http\Controllers\Frontend\BlogController::class , 'show'])->name('blog.show');
+        Route::get('/blog', [BlogController::class , 'index'])->name('blog.index');
+        Route::get('/blog/{slug}', [BlogController::class , 'show'])->name('blog.show');
 
         // Contact
-        Route::get('/contact', [App\Http\Controllers\Frontend\ContactController::class , 'index'])->name('contact.index');
-        Route::post('/contact/send', [App\Http\Controllers\Frontend\ContactController::class , 'send'])->name('contact.send');
+        Route::get('/contact', [ContactController::class , 'index'])->name('contact.index');
+        Route::post('/contact/send', [ContactController::class , 'send'])->name('contact.send');
 
         // Stores
         Route::get('/stores', [StoreController::class , 'index'])->name('stores.index');
@@ -243,8 +248,8 @@ Route::name('frontend.')->group(function () {
         Route::get('/wishlist', [WishlistController::class , 'index'])->name('wishlist.index');
 
         // Reviews
-        Route::post('/reviews', [\App\Http\Controllers\Frontend\ReviewController::class , 'store'])->name('reviews.store');
-        Route::get('/reviews/ajax/{productId}', [\App\Http\Controllers\Frontend\ReviewController::class , 'ajaxReviews'])->name('reviews.ajax');
+        Route::post('/reviews', [ReviewController::class , 'store'])->name('reviews.store');
+        Route::get('/reviews/ajax/{productId}', [ReviewController::class , 'ajaxReviews'])->name('reviews.ajax');
 
         // Checkout
         Route::get('/checkout', [CheckoutController::class , 'index'])->name('checkout.index');
@@ -254,7 +259,7 @@ Route::name('frontend.')->group(function () {
         Route::get('/checkout/success', [CheckoutController::class , 'success'])->name('checkout.success');
         
         // Flash Sale
-        Route::get('/flash-sale/{id}', [App\Http\Controllers\Frontend\FlashSaleController::class, 'show'])->name('flash-sale.show');
+        Route::get('/flash-sale/{id}', [FlashSaleController::class, 'show'])->name('flash-sale.show');
 
         // Order Tracking
         Route::get('/orders/tracking', [PublicEcommerceController::class, 'orderTracking'])->name('orders.tracking');
@@ -761,7 +766,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
         Route::get('/menu-items-count', [MenuCountController::class , 'getCounts'])->name('menu-items-count');
 
         // Footer Settings (Summary & All-in-One Edit)
-        Route::get('/footer-settings', [\App\Http\Controllers\Admin\FooterSettingController::class, 'index'])->name('footer-settings.index');
-        Route::get('/footer-settings/edit', [\App\Http\Controllers\Admin\FooterSettingController::class, 'edit'])->name('footer-settings.edit');
-        Route::post('/footer-settings/update', [\App\Http\Controllers\Admin\FooterSettingController::class, 'update'])->name('footer-settings.update');
+        Route::get('/footer-settings', [FooterSettingController::class, 'index'])->name('footer-settings.index');
+        Route::get('/footer-settings/edit', [FooterSettingController::class, 'edit'])->name('footer-settings.edit');
+        Route::post('/footer-settings/update', [FooterSettingController::class, 'update'])->name('footer-settings.update');
     });

@@ -26,7 +26,7 @@ class HomeController extends Controller
                     ->with(['brand', 'categories', 'store'])
                     ->select('ec_products.*')
                     ->latest()
-                    ->paginate(12);
+                    ->paginate(20);
             }
         }
 
@@ -74,7 +74,7 @@ class HomeController extends Controller
         $trending_products = EcProduct::published()
             ->with(['brand', 'categories', 'store'])
             ->orderBy('views', 'desc')
-            ->take(8)
+            ->take(20)
             ->get();
 
         // Top Rated Products (Best Reviews)

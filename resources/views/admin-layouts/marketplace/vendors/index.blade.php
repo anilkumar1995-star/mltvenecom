@@ -70,6 +70,7 @@
                                             <th>Products</th>
                                             <th>Total Revenue</th>
                                             <th>Balance</th>
+                                            <th class="text-center">Status</th>
                                             <th class="text-center">Operations</th>
                                         </tr>
                                     </thead>
@@ -91,6 +92,15 @@
                                             <td>₹{{ number_format($vendor->total_revenue_sum ?? 0, 2) }}</td>
                                             <td><span class="badge bg-cyan text-cyan-fg">₹{{ number_format(($vendor->total_revenue_sum ?? 0) - ($vendor->total_withdrawn ?? 0), 2) }}</span></td>
                                             <td class="text-center">
+                                                @if($vendor->is_approved == 1)
+                                                    <span class="badge bg-success text-success-fg">Approved</span>
+                                                @elseif($vendor->is_approved == 2)
+                                                    <span class="badge bg-danger text-danger-fg">Rejected</span>
+                                                @else
+                                                    <span class="badge bg-warning text-warning-fg">Pending</span>
+                                                @endif
+                                            </td>
+                                            <td class="text-center">
                                                 <div class="btn-group">
                                                     <a href="{{ route('admin.marketplace.vendors.show', $vendor->id) }}" class="btn btn-sm btn-outline-info" title="View Detail">
                                                         <i class="fa fa-eye"></i>
@@ -106,7 +116,7 @@
                                         </tr>
                                         @empty
                                         <tr>
-                                            <td colspan="11" class="text-center py-4 text-muted">No vendors found.</td>
+                                            <td colspan="12" class="text-center py-4 text-muted">No vendors found.</td>
                                         </tr>
                                         @endforelse
                                     </tbody>

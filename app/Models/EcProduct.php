@@ -229,7 +229,14 @@ class EcProduct extends Model
 
     public function scopePublished(Builder $query): Builder
     {
-        return $query->where('status', 'published');
+        return $query->where('status', 'published')
+            ->where(function ($q) {
+                $q->whereNull('store_id')
+                    ->orWhere('store_id', 0)
+                    ->orWhereHas('store.customer', function ($sub) {
+                        $sub->where('status', 'activated');
+                    });
+            });
     }
 
     public function scopeFeatured(Builder $query): Builder

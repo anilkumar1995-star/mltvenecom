@@ -32,18 +32,12 @@
                                     <label class="form-label required">Answer</label>
                                     <textarea name="answer" class="form-control" rows="5" required placeholder="Enter the answer..."></textarea>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Order</label>
-                                        <input type="number" name="order" class="form-control" value="0">
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Status</label>
-                                        <select name="status" class="form-select">
-                                            <option value="published">Published</option>
-                                            <option value="draft">Draft</option>
-                                        </select>
-                                    </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Status</label>
+                                    <select name="status" class="form-select">
+                                        <option value="published">Published</option>
+                                        <option value="draft">Draft</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>

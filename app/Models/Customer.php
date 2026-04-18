@@ -28,6 +28,7 @@ class Customer extends Authenticatable
         'kyc_kid',
         'kyc_url',
         'kyc_status',
+        'is_approved',
     ];
 
     protected $hidden = [
@@ -39,6 +40,7 @@ class Customer extends Authenticatable
         'email_verified_at' => 'datetime',
         'dob' => 'date',
         'is_vendor' => 'boolean',
+        'is_approved' => 'integer',
     ];
 
     // Relationships

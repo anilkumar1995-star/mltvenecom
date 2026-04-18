@@ -216,17 +216,7 @@
                                 <h3 class="fs-4 mb-3">Email {{ $store->name }}</h3>
                                 <p class="small text-muted mb-4">All messages are recorded and spam is not tolerated. Your email address will be shown to the recipient.</p>
                                 
-                                @if(session('success'))
-                                    <div class="alert alert-success border-0 shadow-sm mb-4">
-                                        <i class="fas fa-check-circle me-2"></i> {{ session('success') }}
-                                    </div>
-                                @endif
 
-                                @if(session('error'))
-                                    <div class="alert alert-danger border-0 shadow-sm mb-4">
-                                        <i class="fas fa-exclamation-circle me-2"></i> {{ session('error') }}
-                                    </div>
-                                @endif
 
                                 <form action="{{ route('frontend.stores.message', $store->slug) }}" method="POST" id="contact-store-form">
                                     @csrf

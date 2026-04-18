@@ -38,6 +38,7 @@ class User extends Authenticatable
         'shop_name',
         'website',
         'mobile',
+        'phone',
         'status',
         'pan_number',
         'aadhar_number',

@@ -60,10 +60,9 @@
                                         <input type="checkbox" class="form-check-input" id="check-all">
                                     </th>
                                     <th width="50">ID</th>
-                                    <th>Question / Answer Preview</th>
-                                    <th width="80" class="text-center">Order</th>
-                                    <th width="120" class="text-center">Status</th>
+                                    <th>Question</th>
                                     <th width="150" class="text-center">Created At</th>
+                                    <th width="120" class="text-center">Status</th>
                                     <th width="100" class="text-center">Operations</th>
                                 </tr>
                             </thead>
@@ -75,16 +74,13 @@
                                     </td>
                                     <td class="text-muted small">{{ $row->id }}</td>
                                     <td>
-                                        <div class="d-flex flex-column">
-                                            <a href="{{ route('admin.faqs.edit', $row->id) }}" class="fw-bold text-dark text-decoration-none">
-                                                {{ Str::limit($row->question, 80) }}
-                                            </a>
-                                            <div class="small text-muted text-truncate" style="max-width: 400px;">
-                                                {{ strip_tags($row->answer) }}
-                                            </div>
-                                        </div>
+                                        <a href="{{ route('admin.faqs.edit', $row->id) }}" class="text-primary text-decoration-none">
+                                            {{ $row->question }}
+                                        </a>
                                     </td>
-                                    <td class="text-center text-muted small">{{ $row->order }}</td>
+                                    <td class="text-center text-muted small">
+                                        {{ $row->created_at ? $row->created_at->format('Y-M-d') : 'N/A' }}
+                                    </td>
                                     <td class="text-center">
                                         @php
                                             $statusClass = match(strtolower($row->status ?? '')) {
@@ -97,16 +93,13 @@
                                             {{ ucwords($row->status ?? 'N/A') }}
                                         </span>
                                     </td>
-                                    <td class="text-center text-muted small">
-                                        {{ $row->created_at ? $row->created_at->format('M d, Y') : 'N/A' }}
-                                    </td>
                                     <td class="text-center">
                                         <div class="btn-group">
                                             <a href="{{ route('admin.faqs.edit', $row->id) }}" class="btn btn-sm btn-outline-info" title="Edit">
                                                 <i class="fas fa-edit"></i>
                                             </a>
                                             <button type="button" class="btn btn-sm btn-outline-danger delete-confirm-btn" 
-                                                data-url="{{ route('admin.faqs.delete') }}"
+                                                data-url="{{ route('admin.faqs.destroy', $row->id) }}"
                                                 data-id="{{ $row->id }}"
                                                 title="Delete">
                                                 <i class="fas fa-trash"></i>

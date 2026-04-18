@@ -138,7 +138,7 @@
 
                                         <div class="mb-3 position-relative">
                                             <label class="form-label" for="phone">Phone</label>
-                                            <input class="form-control" name="mobile" type="text" value="{{ old('mobile', Auth::user()->mobile) }}" placeholder="Phone">
+                                            <input class="form-control" name="phone" type="text" value="{{ old('phone', Auth::user()->phone) }}" placeholder="Phone">
                                         </div>
 
                                         <div class="mb-3 position-relative">

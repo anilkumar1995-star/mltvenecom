@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Models\Shipment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Helpers\TableHelpers;
@@ -168,6 +169,19 @@ class OrderController extends Controller
         // Generate Invoice
         \App\Services\InvoiceService::createInvoiceFromOrder($order);
 
+        // Auto-create Shipment if order is processed
+        if (in_array($order->status, ['processing', 'shipped', 'completed'])) {
+            Shipment::create([
+                'order_id' => $order->id,
+                'user_id' => $order->user_id,
+                'status' => $order->status == 'completed' ? 'delivered' : 'pending',
+                'cod_amount' => $request->payment_method == 'cod' ? $order->amount : 0,
+                'cod_status' => 'pending',
+                'price' => $order->shipping_amount,
+                'store_id' => $order->store_id ?? 1,
+            ]);
+        }
+
         return redirect()->route('admin.orders.index')->with('success', 'Order created successfully!');
     }
 
@@ -307,6 +321,27 @@ class OrderController extends Controller
 
         // Generate Invoice (or update if status changed)
         \App\Services\InvoiceService::createInvoiceFromOrder($order);
+
+        // Auto-manage Shipment if order is processed
+        if (in_array($order->status, ['processing', 'shipped', 'completed'])) {
+            $shipment = Shipment::where('order_id', $order->id)->first();
+            if (!$shipment) {
+                Shipment::create([
+                    'order_id' => $order->id,
+                    'user_id' => $order->user_id,
+                    'status' => $order->status == 'completed' ? 'delivered' : 'pending',
+                    'cod_amount' => $request->payment_method == 'cod' ? $order->amount : 0,
+                    'cod_status' => 'pending',
+                    'price' => $order->shipping_amount,
+                    'store_id' => $order->store_id ?? 1,
+                ]);
+            } else {
+                // Update status if order is marked as completed
+                if ($order->status == 'completed' && $shipment->status != 'delivered') {
+                    $shipment->update(['status' => 'delivered']);
+                }
+            }
+        }
 
         return redirect()->route('admin.orders.index')->with('success', 'Order updated successfully!');
     }

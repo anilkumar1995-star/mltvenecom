@@ -591,6 +591,17 @@
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                             </div>
+
+                                            <label class="form-label mt-3" for="is_approved">
+                                                Approval Status
+                                            </label>
+                                            <div class="mb-3">
+                                                <select name="is_approved" class="form-select">
+                                                    <option value="0" {{ old('is_approved', $vendor->is_approved) == 0 ? 'selected' : '' }}>Pending</option>
+                                                    <option value="1" {{ old('is_approved', $vendor->is_approved) == 1 ? 'selected' : '' }}>Approved</option>
+                                                    <option value="2" {{ old('is_approved', $vendor->is_approved) == 2 ? 'selected' : '' }}>Rejected</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="card meta-boxes">

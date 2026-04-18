@@ -32,9 +32,7 @@
         gap: 15px;
         padding: 5px 0;
         overflow-x: auto;
-        scrollbar-width: none;
     }
-    .embla__container::-webkit-scrollbar { display: none; }
 
     .__8pvtm {
         background: none;
@@ -191,6 +189,53 @@
             margin-right: 20px; /* Extra space for the last card */
         }
     }
+
+    /* AGGRESSIVE SCROLLBAR HIDE */
+    .premium-product-row, 
+    .embla__container, 
+    .no-scrollbar {
+        -ms-overflow-style: none !important;
+        scrollbar-width: none !important;
+    }
+
+    .premium-product-row::-webkit-scrollbar, 
+    .embla__container::-webkit-scrollbar, 
+    .no-scrollbar::-webkit-scrollbar {
+        display: none !important;
+        width: 0 !important;
+        height: 0 !important;
+        background: transparent !important;
+        -webkit-appearance: none !important;
+    }
+
+    /* Horizontal Product Scrolling */
+    .premium-product-row {
+        display: flex;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        gap: 15px;
+        padding: 5px 2px 10px 2px;
+        -webkit-overflow-scrolling: touch;
+    }
+    .premium-product-row .product-col {
+        flex: 0 0 200px;
+        width: 200px;
+        max-width: 200px;
+    }
+    @media (max-width: 768px) {
+        .premium-product-row {
+            gap: 10px;
+            padding-left: 10px;
+            padding-right: 10px;
+            margin-left: -15px;
+            margin-right: -15px;
+        }
+        .premium-product-row .product-col {
+            flex: 0 0 160px;
+            width: 160px;
+            max-width: 160px;
+        }
+    }
 </style>
 @endpush
 
@@ -255,22 +300,53 @@
             <button class="cat-slider-btn cat-next"><i class="fas fa-chevron-right"></i></button>
         </div>
 
-        <h3 class="section-title-premium">Trending Now</h3>
-        <div class="row row-cols-2 row-cols-md-4 row-cols-lg-6 g-4">
-            @foreach(($trending_products ?? []) as $product)
-            <div class="col">
+        <div class="d-flex align-items-center justify-content-between mb-15">
+            <h3 class="section-title-premium mb-0">Trending Now</h3>
+            <a href="{{ url('/products') }}" style="color: #ff3269; font-weight: 800; font-size: 14px; text-decoration: none;">See all <i class="fas fa-chevron-right" style="font-size: 10px; margin-left: 4px;"></i></a>
+        </div>
+        <div class="premium-product-row mb-30">
+            @foreach(($trending_products ?? [])->take(20) as $product)
+            <div class="product-col">
                 @include('frontend.partials.product-card-grid', ['product' => $product])
             </div>
             @endforeach
         </div>
+
+        @if(isset($new_arrivals) && $new_arrivals->count() > 0)
+        <div class="d-flex align-items-center justify-content-between mb-15">
+            <h3 class="section-title-premium mb-0">New Arrivals</h3>
+            <a href="{{ url('/products') }}" style="color: #ff3269; font-weight: 800; font-size: 14px; text-decoration: none;">See all <i class="fas fa-chevron-right" style="font-size: 10px; margin-left: 4px;"></i></a>
+        </div>
+        <div class="premium-product-row mb-30">
+            @foreach($new_arrivals as $product)
+            <div class="product-col">
+                @include('frontend.partials.product-card-grid', ['product' => $product])
+            </div>
+            @endforeach
+        </div>
+        @endif
+
+        @if(isset($on_sale) && $on_sale->count() > 0)
+        <div class="d-flex align-items-center justify-content-between mb-15">
+            <h3 class="section-title-premium mb-0">Deals for You</h3>
+            <a href="{{ url('/products') }}" style="color: #ff3269; font-weight: 800; font-size: 14px; text-decoration: none;">See all <i class="fas fa-chevron-right" style="font-size: 10px; margin-left: 4px;"></i></a>
+        </div>
+        <div class="premium-product-row mb-30">
+            @foreach($on_sale as $product)
+            <div class="product-col">
+                @include('frontend.partials.product-card-grid', ['product' => $product])
+            </div>
+            @endforeach
+        </div>
+        @endif
     @else
         {{-- Category View --}}
         <h3 class="section-title-premium">{{ $active_category->name ?? 'Category' }}</h3>
         
         @if($category_products && $category_products->count() > 0)
-            <div class="row row-cols-2 row-cols-md-4 row-cols-lg-6 g-4">
+            <div class="premium-product-row">
                 @foreach($category_products as $product)
-                <div class="col">
+                <div class="product-col">
                     @include('frontend.partials.product-card-grid', ['product' => $product])
                 </div>
                 @endforeach

@@ -113,8 +113,9 @@
                                         <path d="M17 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
                                         <path d="M17 17h-11v-14h-2"></path>
                                         <path d="M6 5l14 1l-1 7h-13"></path>
-                                    </svg></span><span class="nav-link-title text-truncate"> Orders
-                                </span>
+                                    </svg></span><span class="nav-link-title text-truncate"> Orders <span
+                                        class="badge badge-sm bg-primary text-primary-fg badge-pill menu-item-count pending-orders"
+                                        style="display: none;"></span></span>
                             </a>
                             <a class="dropdown-item nav-priority-60" href="{{ route('admin.incomplete-orders.index') }}"
                                 id="cms-plugins-ecommerce-incomplete-order" title="Incomplete Orders"><span
@@ -138,8 +139,9 @@
                                         width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M9 13l-4 -4l4 -4m-4 4h11a4 4 0 0 1 0 8h-1"></path>
-                                    </svg></span><span class="nav-link-title text-truncate"> Order Returns
-                                </span>
+                                    </svg></span><span class="nav-link-title text-truncate"> Order Returns <span
+                                        class="badge badge-sm bg-primary text-primary-fg badge-pill menu-item-count pending-order-returns"
+                                        style="display: none;"></span></span>
                             </a>
                              <a class="dropdown-item nav-priority-80" href="{{ route('admin.shipments.index') }}"
                                 id="cms-plugins-ecommerce-shipment" title="Shipments"><span
@@ -1428,9 +1430,9 @@
                                         <path d="M18 15l-3 3l3 3"></path>
                                     </svg></span><span class="nav-link-title text-truncate"> Export/Import Data
                                 </span></a></div>
-                    </li>
-                    <li class="nav-item"><a class="nav-link nav-priority-10000" --}} {{-- href="{{ url("/")
-                            }}/admin/system" id="cms-core-system" title="Platform Administration"><span
+                    </li>--}}
+                    <li class="nav-item"><a class="nav-link nav-priority-10000"  href="{{ url("/")
+                            }}/admin/profile" id="cms-core-system" title="Platform Administration"><span
                                 class="nav-link-icon d-md-none d-lg-inline-block" title="Platform Administration"><svg
                                     class="icon svg-icon-ti-ti-user-shield" xmlns="http://www.w3.org/2000/svg"
                                     width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -1441,7 +1443,7 @@
                                     </path>
                                     <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path>
                                 </svg></span><span class="nav-link-title text-truncate"> Platform Administration
-                            </span></a></li> --}}
+                            </span></a></li> 
                 </ul>
             </div>
         </div>
