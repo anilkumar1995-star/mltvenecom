@@ -92,10 +92,18 @@
                                     <div class="datagrid-content text-muted">{{ $vendor->created_at->format('Y-m-d H:i:s') }}</div>
                                 </div>
                                 <div class="datagrid-item">
+                                    <div class="datagrid-title">KYC Status</div>
+                                    <div class="datagrid-content">
+                                        <span class="badge bg-{{ ($vendor->kyc_status == 'verified' || $vendor->kyc_status == 'approved') ? 'success' : 'warning' }}-lt px-2 py-1">
+                                            {{ ucfirst($vendor->kyc_status ?? 'pending') }}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="datagrid-item">
                                     <div class="datagrid-title">Current Status</div>
                                     <div class="datagrid-content">
-                                        <span class="badge bg-{{ $vendor->vendor_verified_at ? 'success' : 'warning' }}-lt px-2 py-1">
-                                            {{ $vendor->vendor_verified_at ? 'Approved' : 'Pending' }}
+                                        <span class="badge bg-{{ $vendor->is_approved ? 'success' : 'warning' }}-lt px-2 py-1">
+                                            {{ $vendor->is_approved ? 'Approved' : 'Pending' }}
                                         </span>
                                     </div>
                                 </div>
@@ -111,6 +119,16 @@
                                         </svg>
                                         Reject
                                     </button>
+                                    @if($vendor->kyc_status !== 'verified' && $vendor->kyc_status !== 'approved')
+                                     <button class="btn btn-outline-info px-4 manual-kyc-verify-btn" type="button" data-url="{{ route('admin.marketplace.vendors.manual-verify-kyc', $vendor->id) }}">
+                                        <svg class="icon icon-left svg-icon-ti-ti-user-check" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path>
+                                            <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
+                                            <path d="M16 11l2 2l4 -4"></path>
+                                        </svg>
+                                        Manual KYC Verify
+                                    </button>
+                                    @endif
                                     <button class="btn btn-primary px-4 approve-vendor-btn" type="button" data-url="{{ route('admin.marketplace.vendors.approve', $vendor->id) }}">
                                         <svg class="icon icon-left svg-icon-ti-ti-check" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                             <path d="M5 12l5 5l10 -10"></path>
@@ -181,6 +199,35 @@
             if (result.isConfirmed && result.value && result.value.status) {
                 Swal.fire('Rejected!', 'Vendor has been rejected.', 'success').then(() => {
                     window.location.href = "{{ route('admin.marketplace.unverified-vendors') }}";
+                });
+            } else if (result.value) {
+                Swal.fire('Error!', result.value.message || 'Action failed.', 'error');
+            }
+        });
+    });
+
+    $(document).on('click', '.manual-kyc-verify-btn', function() {
+        let url = $(this).data('url');
+        Swal.fire({
+            title: 'Verify KYC Manually?',
+            text: "Are you sure you want to manually verify this vendor's KYC?",
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonColor: '#1b80d1',
+            confirmButtonText: 'Yes, Verify KYC!',
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                return $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: { _token: '{{ csrf_token() }}' },
+                    success: function(res) { return res; }
+                });
+            }
+        }).then((result) => {
+            if (result.isConfirmed && result.value && result.value.status) {
+                Swal.fire('Verified!', 'KYC status has been updated.', 'success').then(() => {
+                    location.reload();
                 });
             } else if (result.value) {
                 Swal.fire('Error!', result.value.message || 'Action failed.', 'error');

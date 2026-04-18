@@ -69,6 +69,10 @@ use App\Http\Controllers\Frontend\VendorKycController;
 use App\Http\Controllers\Frontend\VendorSettingsController;
 use App\Http\Controllers\Frontend\WishlistController;
 use App\Http\Controllers\Frontend\PublicEcommerceController;
+use App\Http\Controllers\Frontend\CategoryController as FrontendCategoryController;
+use App\Http\Controllers\Frontend\BrandController as FrontendBrandController;
+use App\Http\Controllers\Frontend\FaqController as FrontendFaqController;
+use App\Http\Controllers\Frontend\ContactController as FrontendContactController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\StoreController;
 use Illuminate\Support\Facades\Auth;
@@ -212,24 +216,24 @@ Route::name('frontend.')->group(function () {
         Route::get('/brands/{slug}', [FrontendProductController::class , 'brand'])->name('brands.show');
 
         // Categories
-        Route::get('/categories', [CategoryController::class , 'index'])->name('categories.index');
+        Route::get('/categories', [FrontendCategoryController::class , 'index'])->name('categories.index');
 
         // Brands
-        Route::get('/brands', [BrandController::class , 'index'])->name('brands.index');
+        Route::get('/brands', [FrontendBrandController::class , 'index'])->name('brands.index');
 
         // Coupons
         Route::get('/coupons', [CouponController::class , 'index'])->name('coupons.index');
 
         // FAQs
-        Route::get('/faqs', [FaqController::class , 'index'])->name('faqs.index');
+        Route::get('/faqs', [FrontendFaqController::class , 'index'])->name('faqs.index');
 
         // Blog
         Route::get('/blog', [BlogController::class , 'index'])->name('blog.index');
         Route::get('/blog/{slug}', [BlogController::class , 'show'])->name('blog.show');
 
         // Contact
-        Route::get('/contact', [ContactController::class , 'index'])->name('contact.index');
-        Route::post('/contact/send', [ContactController::class , 'send'])->name('contact.send');
+        Route::get('/contact', [FrontendContactController::class , 'index'])->name('contact.index');
+        Route::post('/contact/send', [FrontendContactController::class , 'send'])->name('contact.send');
 
         // Stores
         Route::get('/stores', [StoreController::class , 'index'])->name('stores.index');
@@ -646,6 +650,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
             Route::post('vendors/{id}/approve', [VendorController::class , 'approve'])->name('marketplace.vendors.approve');
             Route::post('vendors/{id}/reject', [VendorController::class , 'reject'])->name('marketplace.vendors.reject');
             Route::post('vendors/{id}/check-kyc', [VendorController::class , 'checkKycStatus'])->name('marketplace.vendors.check-kyc');
+            Route::post('vendors/{id}/manual-verify-kyc', [VendorController::class , 'manualVerifyKyc'])->name('marketplace.vendors.manual-verify-kyc');
             Route::get('unverified-vendors', [VendorController::class , 'unverifiedVendors'])->name('marketplace.unverified-vendors');
             Route::get('unverified-vendors/{id}/verify', [VendorController::class , 'verify'])->name('marketplace.unverified-vendors.verify');
             Route::get('messages', [VendorController::class , 'messages'])->name('marketplace.messages');

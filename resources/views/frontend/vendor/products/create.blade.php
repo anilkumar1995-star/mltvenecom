@@ -435,8 +435,8 @@
                                     <div class="card-body p-3">
                                         <div class="mb-3">
                                             <label class="x-small fw-bold opacity-50 mb-1">MIN ORDER QTY</label>
-                                            <input type="number" name="minimum_order_quantity" class="form-control form-control-sm border-0 bg-light-subtle fw-bold" value="1" min="1">
-                                            <small class="text-muted" style="font-size: 9px;">Minimum required in cart.</small>
+                                            <input type="number" name="minimum_order_quantity" class="form-control form-control-sm border-0 bg-light-subtle fw-bold" value="0" min="0">
+                                            <small class="text-muted" style="font-size: 9px;">0 = No minimum limit.</small>
                                         </div>
                                         <div class="mb-3">
                                             <label class="x-small fw-bold opacity-50 mb-1">MAX ORDER QTY</label>
