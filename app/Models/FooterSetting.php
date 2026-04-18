@@ -18,6 +18,7 @@ class FooterSetting extends Model
         'twitter_url', 
         'youtube_url', 
         'linkedin_url', 
+        'instagram_url', 
         'footer_logo', 
         'site_name', 
         'contact_map_iframe'

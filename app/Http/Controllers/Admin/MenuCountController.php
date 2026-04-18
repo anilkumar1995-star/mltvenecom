@@ -14,24 +14,28 @@ class MenuCountController extends Controller
 {
     public function getCounts()
     {
-        $unverifiedVendors = Customer::where('is_vendor', 1)->where('status', 'pending')->count();
-        $pendingOrders = Order::whereIn('status', ['pending', 'processing'])->count();
+        $unverifiedVendors = Customer::where('is_vendor', 1)
+            ->where(function($q) {
+                $q->where('is_approved', '!=', 1)->orWhereNull('is_approved');
+            })
+            ->count();
+        $pendingOrders = Order::whereIn('status', ['pending'])->count();
         $unreadContacts = \App\Models\Contact::where('status', 'unread')->count();
 
         $data = [
-            ['key' => 'pending-orders', 'value' => $pendingOrders],
-            ['key' => 'pending-order-returns', 'value' => OrderReturn::whereIn('return_status', ['pending', 'processing'])->count()],
-            ['key' => 'pending-products', 'value' => Product::where('status', 'pending')->count()],
-            ['key' => 'marketplace-notifications-count', 'value' => $unverifiedVendors],
-            ['key' => 'pending-withdrawals', 'value' => Withdrawal::where('status', 'pending')->count()],
-            ['key' => 'unverified-vendors', 'value' => $unverifiedVendors],
-            ['key' => 'unread-contacts', 'value' => $unreadContacts],
-            ['key' => 'contact-count', 'value' => $unreadContacts],
-            ['key' => 'payment-count', 'value' => \App\Models\Payment::where('status', 'pending')->count()],
-            ['key' => 'pending-payments', 'value' => \App\Models\Payment::where('status', 'pending')->count()],
-            ['key' => 'ecommerce-count', 'value' => $pendingOrders], // Linking ecommerce to pending orders
+            'pending-orders' => $pendingOrders,
+            'pending-order-returns' => OrderReturn::whereIn('return_status', ['pending', 'processing'])->count(),
+            'pending-products' => Product::where('status', 'pending')->count(),
+            'marketplace-notifications-count' => $unverifiedVendors,
+            'pending-withdrawals' => Withdrawal::where('status', 'pending')->count(),
+            'unverified-vendors' => $unverifiedVendors,
+            'unread-contacts' => $unreadContacts,
+            'contact-count' => $unreadContacts,
+            'payment-count' => \App\Models\Payment::where('status', 'pending')->count(),
+            'pending-payments' => \App\Models\Payment::where('status', 'pending')->count(),
+            'ecommerce-count' => $pendingOrders,
         ];
 
-        return response()->json(['data' => $data]);
+        return response()->json($data);
     }
 }

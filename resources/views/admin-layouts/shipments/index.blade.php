@@ -88,7 +88,7 @@
                                             <td>
                                                 @if($shipment->order && $shipment->order->user)
                                                     <div class="mb-1 text-dark">{{ $shipment->order->user->name }}</div>
-                                                    <div class="mb-1"><a href="mailto:{{ $shipment->order->user->email }}" class="text-primary text-decoration-none">{{ $shipment->order->user->email }}</a></div>
+                                                    <div class="mb-1 text-muted small">{{ $shipment->order->user->email }}</div>
                                                     @if($shipment->order->user->phone)
                                                     <div class="text-muted small">{{ $shipment->order->user->phone }}</div>
                                                     @endif

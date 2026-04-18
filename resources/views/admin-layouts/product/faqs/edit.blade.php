@@ -32,18 +32,12 @@
                                     <label class="form-label required">Answer</label>
                                     <textarea name="answer" class="form-control" rows="5" required>{{ $faq->answer }}</textarea>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Order</label>
-                                        <input type="number" name="order" class="form-control" value="{{ $faq->order }}">
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Status</label>
-                                        <select name="status" class="form-select">
-                                            <option value="published" {{ $faq->status == 'published' ? 'selected' : '' }}>Published</option>
-                                            <option value="draft" {{ $faq->status == 'draft' ? 'selected' : '' }}>Draft</option>
-                                        </select>
-                                    </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Status</label>
+                                    <select name="status" class="form-select">
+                                        <option value="published" {{ $faq->status == 'published' ? 'selected' : '' }}>Published</option>
+                                        <option value="draft" {{ $faq->status == 'draft' ? 'selected' : '' }}>Draft</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>

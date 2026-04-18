@@ -52,6 +52,7 @@ class VendorController extends Controller
 
             $vendor->status = 'activated';
             $vendor->vendor_verified_at = now();
+            $vendor->is_approved = 1; // Approved
             $vendor->save();
 
             if ($vendor->store) {
@@ -84,8 +85,8 @@ class VendorController extends Controller
             DB::beginTransaction();
             $vendor = Customer::findOrFail($id);
 
-            $vendor->status = 'disabled';
-            $vendor->kyc_status = 'rejected';
+            $vendor->status = 'rejected';
+            $vendor->is_approved = 2; // Rejected
             $vendor->save();
 
             if ($vendor->store) {
@@ -153,13 +154,13 @@ class VendorController extends Controller
         return TableHelpers::performBulkDelete($request, Message::class , 'Messages');
     }
 
-    // Maintain old route signature methods to avoid errors if linked
     public function unverifiedVendors(Request $request)
     {
         $query = Customer::where('is_vendor', 1)
-                 ->whereHas('store', function ($q) {
-                     $q->where('is_verified', 0);
-                 })->with(['store', 'vendorInfo'])->withCount('products')->withSum('vendorOrders as total_revenue_sum', 'amount')->withSum(['withdrawals as total_withdrawn' => function($q) { $q->whereIn('status', ['completed', 'pending', 'processing']); }], 'amount');
+                 ->where(function($q) {
+                     $q->where('is_approved', '!=', 1)->orWhereNull('is_approved');
+                 })
+                 ->with(['store', 'vendorInfo'])->withCount('products')->withSum('vendorOrders as total_revenue_sum', 'amount')->withSum(['withdrawals as total_withdrawn' => function($q) { $q->whereIn('status', ['completed', 'pending', 'processing']); }], 'amount');
 
         TableHelpers::applyTableLogic($query, $request,
         ['id', 'name', 'email', 'phone'], // searchable
@@ -175,7 +176,7 @@ class VendorController extends Controller
             'status' => 'Status',
             'created_at' => 'Created At',
         ];
-
+// dd($vendors);
         return view('admin-layouts.marketplace.unverified.index', compact('vendors', 'filterColumns'));
     }
 
@@ -227,7 +228,7 @@ class VendorController extends Controller
         try {
             DB::beginTransaction();
 
-            $data = $request->only(['name', 'email', 'status', 'pan_number', 'aadhar_number']);
+            $data = $request->only(['name', 'email', 'status', 'pan_number', 'aadhar_number', 'is_approved']);
             
             // Handle 'phone' vs 'mobile' from the form
             if ($request->has('mobile')) {

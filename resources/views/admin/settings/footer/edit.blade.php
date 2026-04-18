@@ -88,6 +88,10 @@
                                         <label class="form-label fw-bold">LinkedIn URL</label>
                                         <input type="text" name="linkedin_url" class="form-control" value="{{ $settings->linkedin_url ?? '#' }}">
                                     </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label fw-bold">Instagram URL</label>
+                                        <input type="text" name="instagram_url" class="form-control" value="{{ $settings->instagram_url ?? '#' }}">
+                                    </div>
                                 </div>
                                 
                                 <div class="mt-4 mb-2">

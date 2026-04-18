@@ -90,17 +90,20 @@
 
                 <div class="card-footer bg-light-subtle">
                     <div class="row text-center text-md-start small py-2">
-                        <div class="col-md-3 mb-2 mb-md-0">
+                        <div class="col-md-2 mb-2 mb-md-0">
                             <strong>Facebook:</strong> <span class="text-muted small">{{ $settings->facebook_url ?? '#' }}</span>
                         </div>
-                        <div class="col-md-3 mb-2 mb-md-0">
+                        <div class="col-md-2 mb-2 mb-md-0">
                             <strong>Twitter:</strong> <span class="text-muted small">{{ $settings->twitter_url ?? '#' }}</span>
                         </div>
                         <div class="col-md-3 mb-2 mb-md-0">
                             <strong>YouTube:</strong> <span class="text-muted small">{{ $settings->youtube_url ?? '#' }}</span>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <strong>LinkedIn:</strong> <span class="text-muted small">{{ $settings->linkedin_url ?? '#' }}</span>
+                        </div>
+                         <div class="col-md-3">
+                            <strong>Instagram:</strong> <span class="text-muted small">{{ $settings->instagram_url ?? '#' }}</span>
                         </div>
                     </div>
                 </div>

@@ -91,7 +91,7 @@
                             <div style="width: 20px; display: flex; justify-content: center; margin-top: 4px;">
                                 <i class="fas fa-map-marker-alt" style="color: #1a1a1a; font-size: 16px;"></i>
                             </div>
-                            <span style="color: #1a1a1a; font-size: 15px; line-height: 1.4;">{{ $footer_settings->footer_address ?? 'c 90 3rd floor vibhuti khand lucknow' }}</span>
+                            <span style="color: #1a1a1a; font-size: 15px; line-height: 1.4;">{{ $footer_settings->footer_address ?? 'c 90 3rd floor vibhuti khand lucknow UP' }}</span>
                         </div>
                     </div>
                 </div>
