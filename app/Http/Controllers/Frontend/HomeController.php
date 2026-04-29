@@ -16,15 +16,31 @@ class HomeController extends Controller
         // Category filtering logic for Dynamic Home
         $active_category = null;
         $category_products = null;
+        $parent_category = null;
 
         if ($request->has('category')) {
             $active_category = EcProductCategory::where('slug', $request->category)->first();
             if ($active_category) {
+                $parent_category = $active_category; // Default to current as parent
+                $category_ids = [$active_category->id];
+
+                // If subcategory is provided and NOT 'all'
+                if ($request->has('subcategory') && $request->subcategory != 'all') {
+                    $sub_cat = EcProductCategory::where('slug', $request->subcategory)->where('parent_id', $active_category->id)->first();
+                    if ($sub_cat) {
+                        $category_ids = [$sub_cat->id];
+                    }
+                } else {
+                    $child_ids = EcProductCategory::where('parent_id', $active_category->id)->pluck('id')->toArray();
+                    $category_ids = array_merge($category_ids, $child_ids);
+                }
+
                 $category_products = EcProduct::published()
                     ->join('ec_product_category_product', 'ec_products.id', '=', 'ec_product_category_product.product_id')
-                    ->where('ec_product_category_product.category_id', $active_category->id)
+                    ->whereIn('ec_product_category_product.category_id', $category_ids)
                     ->with(['brand', 'categories', 'store'])
                     ->select('ec_products.*')
+                    ->distinct()
                     ->latest()
                     ->paginate(20);
             }
@@ -111,6 +127,7 @@ class HomeController extends Controller
             'flash_sale',
             'testimonials',
             'active_category',
+            'parent_category',
             'category_products'
         ));
     }

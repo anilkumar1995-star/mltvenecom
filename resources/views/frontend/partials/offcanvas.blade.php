@@ -98,7 +98,7 @@
                         <a href="{{ $footer_settings->facebook_url }}" class="text-dark"><i class="fab fa-facebook-f"></i></a>
                     @endif
                     @if(isset($footer_settings->twitter_url))
-                        <a href="{{ $footer_settings->twitter_url }}" class="text-dark"><i class="fab fa-twitter"></i></a>
+                        <a href="{{ $footer_settings->twitter_url }}" class="text-dark"><i class="fab fa-x-twitter"></i></a>
                     @endif
                     @if(isset($footer_settings->instagram_url))
                         <a href="{{ $footer_settings->instagram_url }}" class="text-dark"><i class="fab fa-instagram"></i></a>

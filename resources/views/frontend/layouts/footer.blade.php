@@ -19,7 +19,7 @@
                         </p>
                         <div class="d-flex gap-3 mt-4 justify-content-center justify-content-lg-start">
                              <a href="{{ $footer_settings->facebook_url ?? '#' }}" class="zepto-social-link zepto-facebook"><i class="fab fa-facebook-f"></i></a>
-                             <a href="{{ $footer_settings->twitter_url ?? '#' }}" class="zepto-social-link zepto-twitter"><i class="fab fa-twitter"></i></a>
+                             <a href="{{ $footer_settings->twitter_url ?? '#' }}" class="zepto-social-link zepto-twitter"><i class="fab fa-x-twitter"></i></a>
                              <a href="{{ $footer_settings->instagram_url ?? '#' }}" class="zepto-social-link zepto-instagram"><i class="fab fa-instagram"></i></a>
                              @if(isset($footer_settings->youtube_url))
                                 <a href="{{ $footer_settings->youtube_url }}" class="zepto-social-link zepto-youtube"><i class="fab fa-youtube"></i></a>
