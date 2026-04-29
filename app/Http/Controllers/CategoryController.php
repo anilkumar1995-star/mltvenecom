@@ -79,7 +79,7 @@ class CategoryController extends Controller
             if ($res['status']) $icon_image = $res['data']['target_file'];
         }
         
-        EcProductCategory::create([
+        $category = EcProductCategory::create([
             "name" => ucwords($post->name),
             "parent_id" => $post->parent_id ?? 0,
             "description" => $post->description,
@@ -90,6 +90,21 @@ class CategoryController extends Controller
             "icon_image" => $icon_image,
             "is_featured" => $post->is_featured ? 1 : 0
         ]);
+
+        // Handle Sub Categories
+        if ($post->has('sub_category_names')) {
+            foreach ($post->sub_category_names as $name) {
+                if (empty($name)) continue;
+                
+                EcProductCategory::create([
+                    'name' => ucwords($name),
+                    'parent_id' => $category->id,
+                    'status' => $category->status,
+                    'description' => $category->description,
+                    'slug' => Str::slug($name) . '-' . rand(100, 999)
+                ]);
+            }
+        }
 
         return response()->json(['status' => true, 'message' => "Record Created Successfully...!"]);
     }
@@ -153,6 +168,36 @@ class CategoryController extends Controller
             "icon_image" => $icon_image,
             "is_featured" => $post->is_featured ? 1 : 0
         ]);
+
+        // Handle Sub Categories
+        if ($post->has('sub_category_names')) {
+            foreach ($post->sub_category_names as $index => $name) {
+                if (empty($name)) continue;
+
+                $subId = $post->sub_category_ids[$index] ?? null;
+                $subData = [
+                    'name' => ucwords($name),
+                    'parent_id' => $category->id,
+                    'status' => $category->status,
+                    'description' => $category->description, // Or empty
+                ];
+
+                if ($subId) {
+                    $subCat = EcProductCategory::find($subId);
+                    if ($subCat) {
+                        $subCat->update($subData);
+                    }
+                } else {
+                    $subData['slug'] = Str::slug($name) . '-' . rand(100, 999);
+                    EcProductCategory::create($subData);
+                }
+            }
+        }
+
+        // Handle Removals
+        if ($post->has('remove_sub_category_ids')) {
+            EcProductCategory::whereIn('id', $post->remove_sub_category_ids)->delete();
+        }
 
         return response()->json(['status' => true, 'message' => "Record Updated Successfully...!"]);
     }

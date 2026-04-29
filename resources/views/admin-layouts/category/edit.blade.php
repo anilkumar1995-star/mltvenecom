@@ -125,6 +125,42 @@
                                     <div class="text-danger" id="status_errors"></div>
                                 </div>
                             </div>
+                            
+                            <div class="card mb-3">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h4 class="card-title">Sub Categories</h4>
+                                    <button type="button" class="btn btn-sm btn-outline-primary" onclick="addSubCategory()">
+                                        <i class="ti ti-plus me-1"></i> Add More
+                                    </button>
+                                </div>
+                                <div class="card-body">
+                                    <div id="sub_categories_container">
+                                        @php $children = $category->children; @endphp
+                                        @if($children->count() > 0)
+                                            @foreach($children as $child)
+                                                <div class="input-group mb-2 sub-category-row">
+                                                    <input type="hidden" name="sub_category_ids[]" value="{{ $child->id }}">
+                                                    <input type="text" name="sub_category_names[]" value="{{ $child->name }}" class="form-control" placeholder="Subcategory Name">
+                                                    <button type="button" class="btn btn-outline-danger" onclick="removeSubCategory(this, {{ $child->id }})">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            @endforeach
+                                        @endif
+                                        @for($i = 0; $i < max(0, 2 - $children->count()); $i++)
+                                            <div class="input-group mb-2 sub-category-row">
+                                                <input type="hidden" name="sub_category_ids[]" value="">
+                                                <input type="text" name="sub_category_names[]" value="" class="form-control" placeholder="Subcategory Name">
+                                                <button type="button" class="btn btn-outline-danger" onclick="removeSubCategory(this)">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        @endfor
+                                    </div>
+                                    <div id="removed_sub_categories"></div>
+                                    <div class="text-danger" id="sub_categories_errors"></div>
+                                </div>
+                            </div>
 
                             <div class="card">
                                 <div class="card-header">
@@ -147,6 +183,25 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
+            window.addSubCategory = function() {
+                let html = `
+                    <div class="input-group mb-2 sub-category-row">
+                        <input type="hidden" name="sub_category_ids[]" value="">
+                        <input type="text" name="sub_category_names[]" value="" class="form-control" placeholder="Subcategory Name">
+                        <button type="button" class="btn btn-outline-danger" onclick="removeSubCategory(this)">
+                            <i class="ti ti-trash"></i>
+                        </button>
+                    </div>`;
+                $('#sub_categories_container').append(html);
+            }
+
+            window.removeSubCategory = function(btn, id = null) {
+                if (id) {
+                    $('#removed_sub_categories').append(`<input type="hidden" name="remove_sub_category_ids[]" value="${id}">`);
+                }
+                $(btn).closest('.sub-category-row').remove();
+            }
+
             $("#editcategoryForm").on('submit', function(e) {
                 e.preventDefault();
                 let form = $(this);

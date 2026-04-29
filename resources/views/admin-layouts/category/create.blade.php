@@ -117,12 +117,32 @@
                                 </div>
                             </div>
 
-                            <div class="card">
+                            <div class="card mb-3">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h4 class="card-title">Sub Categories</h4>
+                                    <button type="button" class="btn btn-sm btn-outline-primary" onclick="addSubCategory()">
+                                        <i class="ti ti-plus me-1"></i> Add More
+                                    </button>
+                                </div>
+                                <div class="card-body">
+                                    <div id="sub_categories_container">
+                                        <div class="input-group mb-3 sub-category-row">
+                                            <input type="text" name="sub_category_names[]" class="form-control" placeholder="Subcategory Name">
+                                            <button type="button" class="btn btn-outline-danger" onclick="removeSubCategory(this)">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="text-danger" id="sub_categories_errors"></div>
+                                </div>
+                            </div>
+
+                            <div class="card mb-3">
                                 <div class="card-header">
                                     <h4 class="card-title">Publish</h4>
                                 </div>
                                 <div class="card-body text-end">
-                                    <button class="btn btn-primary w-100" type="submit">
+                                    <button class="btn btn-primary w-100 py-2 fw-bold" type="submit">
                                         <i class="fa fa-save me-2"></i> Save Changes
                                     </button>
                                 </div>
@@ -138,6 +158,21 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
+            window.addSubCategory = function() {
+                let html = `
+                    <div class="input-group mb-3 sub-category-row">
+                        <input type="text" name="sub_category_names[]" class="form-control" placeholder="Subcategory Name">
+                        <button type="button" class="btn-trash-premium" onclick="removeSubCategory(this)">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </div>`;
+                $('#sub_categories_container').append(html);
+            }
+
+            window.removeSubCategory = function(btn) {
+                $(btn).closest('.sub-category-row').remove();
+            }
+
             $("#categoryForm").on('submit', function(e) {
                 e.preventDefault();
                 let form = $(this);

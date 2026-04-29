@@ -63,6 +63,7 @@
                                             <th title="ID" width="50">ID</th>
                                             <th title="Image" width="70">Image</th>
                                             <th title="Name">Name</th>
+                                            <th title="Subcategories">Subcategories</th>
                                             <th title="Description">Description</th>
                                             <th title="Featured" width="80" class="text-center">Featured</th>
                                             <th title="Status" width="100">Status</th>
@@ -88,6 +89,18 @@
                                                     <a href="{{ route('admin.category.edit', $category->id) }}" class="text-primary font-weight-bold text-decoration-none">
                                                         {{ $category->name }}
                                                     </a>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex flex-wrap gap-1">
+                                                    @php $children = $category->children; @endphp
+                                                    @if($children->count() > 0)
+                                                        @foreach($children as $child)
+                                                            <span class="badge bg-blue-lt border">{{ $child->name }}</span>
+                                                        @endforeach
+                                                    @else
+                                                        <span class="text-muted small">No subcategories</span>
+                                                    @endif
                                                 </div>
                                             </td>
                                             <td class="text-muted small">

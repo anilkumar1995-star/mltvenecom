@@ -120,7 +120,7 @@
                                     <h4 class="fs-6 fw-bold mb-2">Find on Social Media</h4>
                                     <div class="d-flex gap-2">
                                         <a href="{{ $footer_settings->facebook_url ?? '#' }}" class="btn btn-sm btn-outline-secondary rounded-circle" style="width: 32px; height: 32px; padding: 0; line-height: 30px;"><i class="fab fa-facebook-f"></i></a>
-                                        <a href="{{ $footer_settings->twitter_url ?? '#' }}" class="btn btn-sm btn-outline-secondary rounded-circle" style="width: 32px; height: 32px; padding: 0; line-height: 30px;"><i class="fab fa-twitter"></i></a>
+                                        <a href="{{ $footer_settings->twitter_url ?? '#' }}" class="btn btn-sm btn-outline-secondary rounded-circle" style="width: 32px; height: 32px; padding: 0; line-height: 30px;"><i class="fab fa-x-twitter"></i></a>
                                         <a href="{{ $footer_settings->linkedin_url ?? '#' }}" class="btn btn-sm btn-outline-secondary rounded-circle" style="width: 32px; height: 32px; padding: 0; line-height: 30px;"><i class="fab fa-linkedin-in"></i></a>
                                         <a href="{{ $footer_settings->youtube_url ?? '#' }}" class="btn btn-sm btn-outline-secondary rounded-circle" style="width: 32px; height: 32px; padding: 0; line-height: 30px;"><i class="fab fa-youtube"></i></a>
                                     </div>
