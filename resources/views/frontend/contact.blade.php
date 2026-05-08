@@ -4,7 +4,7 @@
 
 <main>
     {{-- Breadcrumb --}}
-    <section class="breadcrumb__area pt-40 pb-40 mb-30 text-start">
+    <section class="breadcrumb__area pb-20 mb-20 pt-20 text-start">
         <div class="container">
             <div class="breadcrumb__content p-relative z-index-1">
                 <h3 class="breadcrumb__title">Contact</h3>
@@ -16,7 +16,7 @@
         </div>
     </section>
 
-    <section class="tp-contact-area pb-100">
+    <section class="tp-contact-area pb-40">
         <div class="container">
             <div class="tp-contact-inner">
                 <div class="row">

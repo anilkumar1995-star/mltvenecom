@@ -107,12 +107,21 @@ class CheckoutController extends Controller
 
         $availableDiscounts = Discount::active()->available()->where('display_at_checkout', 1)->get();
 
-        return view('frontend.checkout.index', compact('cart', 'subtotal', 'tax', 'shipping', 'total', 'discountAmount', 'couponCode', 'taxPercentage', 'taxTitle', 'availableDiscounts'));
+        $customerId = $this->getUserId();
+        $defaultAddress = null;
+        if ($customerId) {
+            $customer = Customer::find($customerId);
+            if ($customer) {
+                $defaultAddress = $customer->addresses()->where('is_default', 1)->first() 
+                    ?? $customer->addresses()->first();
+            }
+        }
+
+        return view('frontend.checkout.index', compact('cart', 'subtotal', 'tax', 'shipping', 'total', 'discountAmount', 'couponCode', 'taxPercentage', 'taxTitle', 'availableDiscounts', 'defaultAddress'));
     }
 
     public function process(Request $request)
     {
-        \Illuminate\Support\Facades\Log::info('Checkout process started');
         if (!auth('customer')->check() && !auth('web')->check()) {
             session(['url.intended' => route('frontend.checkout.index')]);
             return redirect()->route('login')->with('error', 'Please login to proceed to checkout.');

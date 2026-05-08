@@ -3,7 +3,7 @@
 @section('content')
 
 <main>
-    <section class="breadcrumb__area include-bg pt-40 pb-40 mb-40 mb-20 text-start pt-20 page_speed_272179630">
+    <section class="breadcrumb__area include-bg pb-20 mb-20 text-start pt-20 page_speed_272179630">
         <div class="container">
             <div class="breadcrumb__content p-relative z-index-1">
                 <h3 class="breadcrumb__title">Stores</h3>
@@ -15,7 +15,7 @@
         </div>
     </section>
 
-    <div class="tp-page-area pt-30 pb-120">
+    <div class="tp-page-area">
         <div class="container">
             <div class="tp-shop-top mb-45">
                 <div class="tp-shop-top-left d-flex flex-wrap gap-3 justify-content-between align-items-center">

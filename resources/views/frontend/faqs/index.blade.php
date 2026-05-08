@@ -4,7 +4,7 @@
 
 <main>
     {{-- Breadcrumb --}}
-    <section class="breadcrumb__area include-bg pt-60 pb-60 mb-50 mb-30 text-start pt-30 page_speed_482623375">
+    <section class="breadcrumb__area include-bg pb-20 mb-20 pt-20 text-start page_speed_482623375">
         <div class="container">
             <div class="breadcrumb__content p-relative z-index-1">
                 <h3 class="breadcrumb__title">FAQs</h3>
@@ -16,7 +16,7 @@
         </div>
     </section>
 
-    <section class="tp-page-area pb-80 pt-50">
+    <section class="tp-page-area pb-40 pt-20">
         <div class="container">
             <div class="ck-content">
                 <section data-block-id="faqs" class="mb-60">

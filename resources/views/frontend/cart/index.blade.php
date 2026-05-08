@@ -63,7 +63,7 @@
 
 @section('content')
 <main>
-    <section class="breadcrumb__area pt-40 pb-40 mb-30">
+    <section class="breadcrumb__area pb-20 mb-20 pt-20">
         <div class="container">
             <div class="row">
                 <div class="col-xxl-12">
@@ -79,7 +79,7 @@
         </div>
     </section>
 
-    <div class="container pb-100">
+    <div class="container pb-40 pt-20">
 
     @if(empty($cart) || count($cart) == 0)
         <div id="empty-cart-message" class="text-center py-5">

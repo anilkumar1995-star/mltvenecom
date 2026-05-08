@@ -153,14 +153,15 @@
                                                             <h6 class="fw-bold text-dark mb-2 small text-uppercase" style="letter-spacing: 1px;">Status:</h6>
                                                             @php
                                                                 $statusClass = match($invoice->status) {
-                                                                    'paid' => 'bg-success',
+                                                                    'paid', 'completed' => 'bg-success',
                                                                     'pending' => 'bg-warning text-dark',
-                                                                    'cancelled' => 'bg-danger',
-                                                                    default => 'bg-secondary'
+                                                                    'processing' => 'bg-info text-white',
+                                                                    'cancelled', 'failed' => 'bg-danger',
+                                                                    default => 'bg-secondary text-white'
                                                                 };
                                                             @endphp
-                                                            <span class="badge rounded-pill {{ $statusClass }} px-3 py-2 text-uppercase" style="font-size: 10px;">
-                                                                {{ $invoice->status }}
+                                                            <span class="badge rounded-pill {{ $statusClass }} px-3 py-2 text-uppercase" style="font-size: 11px; font-weight: 700; letter-spacing: 0.5px;">
+                                                                {{ $invoice->status ?? 'N/A' }}
                                                             </span>
                                                         </div>
                                                     </td>
@@ -238,7 +239,8 @@
         .tp-header-action-item-5, .tp-header-action-badge-5,
         .bb-customer-sidebar-wrapper, .d-lg-none, .d-print-none, 
         .bb-profile-header, .btn, .breadcrumb, .tp-offcanvas-area, 
-        .tp-search-area, .tp-cart-area, #dashboard-logout-form {
+        .tp-search-area, .tp-cart-area, #dashboard-logout-form,
+        .mobile-bottom-nav, #ipayment-global-loader {
             display: none !important;
             visibility: hidden !important;
             opacity: 0 !important;
@@ -248,7 +250,16 @@
             padding: 0 !important;
         }
         
-        body { background-color: #fff !important; margin: 0 !important; padding: 0 !important; }
+        @page {
+            margin: 0;
+            size: auto;
+        }
+
+        body { 
+            background-color: #fff !important; 
+            margin: 0 !important; 
+            padding: 20mm !important; /* Add some padding for the content when margins are 0 */
+        }
         .container { max-width: 100% !important; width: 100% !important; padding: 0 !important; margin: 0 !important; }
         .customer-body { border: none !important; box-shadow: none !important; margin: 0 !important; padding: 0 !important; background: #fff !important; }
         .row { margin-right: 0 !important; margin-left: 0 !important; }

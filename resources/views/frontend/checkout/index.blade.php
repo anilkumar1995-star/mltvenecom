@@ -120,19 +120,19 @@
                             <div class="col-md-12">
                                 <div class="checkout-form-list">
                                     <label>Full Name <span class="required">*</span></label>
-                                    <input type="text" name="address[name]" placeholder="Enter your full name" required value="{{ auth('customer')->user()->name ?? (auth('web')->user()->name ?? '') }}">
+                                    <input type="text" name="address[name]" placeholder="Enter your full name" required value="{{ old('address.name', $defaultAddress->name ?? (auth('customer')->user()->name ?? (auth('web')->user()->name ?? ''))) }}">
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="checkout-form-list">
                                     <label>Email <span class="required">*</span></label>
-                                    <input type="email" name="address[email]" placeholder="Enter your email" required value="{{ auth('customer')->user()->email ?? (auth('web')->user()->email ?? '') }}">
+                                    <input type="email" name="address[email]" placeholder="Enter your email" required value="{{ old('address.email', $defaultAddress->email ?? (auth('customer')->user()->email ?? (auth('web')->user()->email ?? ''))) }}">
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="checkout-form-list">
                                     <label>Phone number</label>
-                                    <input type="tel" name="address[phone_display]" placeholder="Enter phone number" value="{{ auth('customer')->user()->phone ?? (auth('web')->user()->phone ?? '') }}">
+                                    <input type="tel" name="address[phone_display]" placeholder="Enter phone number" value="{{ old('address.phone_display', $defaultAddress->phone ?? (auth('customer')->user()->phone ?? (auth('web')->user()->phone ?? ''))) }}">
                                 </div>
                             </div>
                             
@@ -140,11 +140,11 @@
                                 <div class="country-select">
                                     <label>Country <span class="required">*</span></label>
                                     <select name="address[country]" required>
-                                        <option value="US">United States</option>
-                                        <option value="UK">United Kingdom</option>
-                                        <option value="CA">Canada</option>
-                                        <option value="AU">Australia</option>
-                                        <!-- Add more countries as needed -->
+                                        <option value="IN" {{ (old('address.country', $defaultAddress->country ?? '') == 'IN') ? 'selected' : '' }}>India</option>
+                                        <option value="US" {{ (old('address.country', $defaultAddress->country ?? '') == 'US') ? 'selected' : '' }}>United States</option>
+                                        <option value="UK" {{ (old('address.country', $defaultAddress->country ?? '') == 'UK') ? 'selected' : '' }}>United Kingdom</option>
+                                        <option value="CA" {{ (old('address.country', $defaultAddress->country ?? '') == 'CA') ? 'selected' : '' }}>Canada</option>
+                                        <option value="AU" {{ (old('address.country', $defaultAddress->country ?? '') == 'AU') ? 'selected' : '' }}>Australia</option>
                                     </select>
                                 </div>
                             </div>
@@ -152,21 +152,21 @@
                             <div class="col-md-12">
                                 <div class="checkout-form-list">
                                     <label>State / Province <span class="required">*</span></label>
-                                    <input type="text" name="address[state]" placeholder="State" required>
+                                    <input type="text" name="address[state]" placeholder="State" required value="{{ old('address.state', $defaultAddress->state ?? '') }}">
                                 </div>
                             </div>
                             
                             <div class="col-md-12">
                                 <div class="checkout-form-list">
                                     <label>Town / City <span class="required">*</span></label>
-                                    <input type="text" name="address[city]" placeholder="City" required>
+                                    <input type="text" name="address[city]" placeholder="City" required value="{{ old('address.city', $defaultAddress->city ?? '') }}">
                                 </div>
                             </div>
                             
                             <div class="col-md-12">
                                 <div class="checkout-form-list">
                                     <label>Address <span class="required">*</span></label>
-                                    <input type="text" name="address[address]" placeholder="Street address" required>
+                                    <input type="text" name="address[address]" placeholder="Street address" required value="{{ old('address.address', $defaultAddress->address ?? '') }}">
                                 </div>
                             </div>
 
@@ -195,7 +195,7 @@
                             @endif
                         </div>
                         
-                        <!-- Different Address / Billing Logic -->
+                        <!-- Different Address / Billing Logic 
                         <div class="different-address">
                             <div class="ship-different-title">
                                 <h3>
@@ -235,7 +235,7 @@
                                             <select name="billing_address[country]">
                                                 <option value="US">United States</option>
                                                 <option value="UK">United Kingdom</option>
-                                                <!-- ... -->
+                                               
                                             </select>
                                         </div>
                                     </div>
@@ -259,9 +259,9 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>   -->
 
-                        <!-- Notes and Tax -->
+                        <!-- Notes and Tax 
                         <div class="order-notes">
                             <div class="checkout-form-list">
                                 <label>Order notes</label>
@@ -300,7 +300,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>  -->
                     </div>
                 </div>
 
@@ -412,6 +412,18 @@
                                     <div id="bankTwo" class="accordion-collapse collapse" aria-labelledby="paymentTwo" data-bs-parent="#accordionPayment">
                                         <div class="accordion-body">
                                             Pay with cash upon delivery.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="paymentPG">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#bankPG" aria-expanded="false" aria-controls="bankPG">
+                                            Online Payment
+                                        </button>
+                                    </h2>
+                                    <div id="bankPG" class="accordion-collapse collapse" aria-labelledby="paymentPG" data-bs-parent="#accordionPayment">
+                                        <div class="accordion-body">
+                                            Pay securely via our online payment gateway. All major credit/debit cards and UPI accepted.
                                         </div>
                                     </div>
                                 </div>
@@ -553,6 +565,7 @@
         var paymentMethods = {
             'bankOne': 'bank_transfer',
             'bankTwo': 'cod',
+            'bankPG': 'online_payment',
             'bankThree': 'paypal'
         };
         $('.payment-accordion .accordion-button').on('click', function() {

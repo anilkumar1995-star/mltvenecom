@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 
-    <section class="tp-page-area pb-80 pt-50" style="background-color: #f3f5f7;">
+    <section class="tp-page-area" style="background-color: #f3f5f7;">
         <div class="container">
             <div class="row justify-content-center py-5">
                 <div class="col-lg-10">

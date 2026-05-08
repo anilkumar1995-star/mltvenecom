@@ -179,16 +179,36 @@ class CategoryController extends Controller
                     'name' => ucwords($name),
                     'parent_id' => $category->id,
                     'status' => $category->status,
-                    'description' => $category->description, // Or empty
+                    'description' => $category->description,
                 ];
 
                 if ($subId) {
                     $subCat = EcProductCategory::find($subId);
                     if ($subCat) {
+                        // FORCE SLUG UPDATE if name is different or slug is completely wrong (like 'fish' for 'Dry Fruits')
+                        $newName = ucwords($name);
+                        $expectedSlugPart = Str::slug($name);
+                        
+                        if ($newName !== $subCat->name || !Str::contains($subCat->slug, $expectedSlugPart)) {
+                            $newSlug = $expectedSlugPart;
+                            $originalSlug = $newSlug;
+                            $counter = 1;
+                            while (EcProductCategory::where('slug', $newSlug)->where('id', '!=', $subCat->id)->exists()) {
+                                $newSlug = $originalSlug . '-' . $counter++;
+                            }
+                            $subData['slug'] = $newSlug;
+                        }
+                        
                         $subCat->update($subData);
                     }
                 } else {
-                    $subData['slug'] = Str::slug($name) . '-' . rand(100, 999);
+                    $newSlug = Str::slug($name);
+                    $originalSlug = $newSlug;
+                    $counter = 1;
+                    while (EcProductCategory::where('slug', $newSlug)->exists()) {
+                        $newSlug = $originalSlug . '-' . $counter++;
+                    }
+                    $subData['slug'] = $newSlug;
                     EcProductCategory::create($subData);
                 }
             }

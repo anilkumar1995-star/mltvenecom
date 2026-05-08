@@ -48,7 +48,7 @@
 
 @section('content')
 <main>
-    <section class="breadcrumb__area pt-40 pb-40 mb-30 text-start">
+    <section class="breadcrumb__area pb-20 mb-20 pt-20 text-start">
         <div class="container">
             <div class="breadcrumb__content p-relative z-index-1">
                 <h3 class="breadcrumb__title">Cookie Policy</h3>
@@ -60,7 +60,7 @@
         </div>
     </section>
 
-    <section class="tp-page-area pb-80 pt-20">
+    <section class="tp-page-area pb-40 pt-20">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-xl-9">

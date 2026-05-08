@@ -103,15 +103,15 @@
                                                     <div class="row g-3">
                                                         <div class="col-md-6">
                                                             <label class="form-label">Full Name</label>
-                                                            <input type="text" class="form-control" name="name" value="{{ $address->name }}" required>
+                                                            <input type="text" class="form-control" name="name" value="{{ $address->name }}" required {{ !empty($customer->name) ? 'readonly' : '' }}>
                                                         </div>
                                                         <div class="col-md-6">
                                                             <label class="form-label">Email</label>
-                                                            <input type="email" class="form-control" name="email" value="{{ $address->email }}" required>
+                                                            <input type="email" class="form-control" name="email" value="{{ $address->email }}" required {{ !empty($customer->email) ? 'readonly' : '' }}>
                                                         </div>
                                                         <div class="col-md-6">
                                                             <label class="form-label">Phone</label>
-                                                            <input type="text" class="form-control" name="phone" value="{{ $address->phone }}" required>
+                                                            <input type="text" class="form-control" name="phone" value="{{ $address->phone }}" required {{ !empty($customer->phone) ? 'readonly' : '' }}>
                                                         </div>
                                                         <div class="col-md-6">
                                                             <label class="form-label">Address</label>
@@ -219,15 +219,15 @@
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label class="form-label">Full Name</label>
-                            <input type="text" class="form-control" name="name" required placeholder="John Doe">
+                            <input type="text" class="form-control" name="name" required placeholder="John Doe" value="{{ $customer->name ?? '' }}" {{ !empty($customer->name) ? 'readonly' : '' }}>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Email</label>
-                            <input type="email" class="form-control" name="email" required placeholder="example@domain.com">
+                            <input type="email" class="form-control" name="email" required placeholder="example@domain.com" value="{{ $customer->email ?? '' }}" {{ !empty($customer->email) ? 'readonly' : '' }}>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Phone</label>
-                            <input type="text" class="form-control" name="phone" required placeholder="123-456-7890">
+                            <input type="text" class="form-control" name="phone" required placeholder="123-456-7890" value="{{ $customer->phone ?? '' }}" {{ !empty($customer->phone) ? 'readonly' : '' }}>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Address</label>

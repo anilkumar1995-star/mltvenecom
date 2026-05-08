@@ -1,5 +1,5 @@
 <div id="app" data-v-app="">
-    <header class="navbar navbar-expand-md d-none d-lg-flex d-print-none" data-bs-theme="dark">
+    <header class="navbar navbar-expand-md sticky-top d-none d-lg-flex d-print-none" style="z-index: 1040 !important; background: #182433 !important;" data-bs-theme="dark">
         <div class="container-fluid"><button class="navbar-toggler d-none d-lg-block me-2 ms-n1" type="button"
                 data-bb-toggle="navbar-minimal" data-bb-target="#sidebar-menu-main" aria-controls="navbar-menu"
                 aria-expanded="false" aria-label="Toggle navigation"

@@ -57,20 +57,88 @@
                                     <h1 class="bb-profile-header-title h3 mb-0"> Product Reviews </h1>
                                 </div>
                                 <div class="bb-profile-main">
-                                    <div class="card border-0 shadow-sm rounded-3">
-                                        <div class="card-body p-4 p-md-5 text-center">
-                                            <div class="mb-4">
-                                                <svg class="icon text-muted" style="width: 64px; height: 64px;" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                                                    <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873l-6.158 -3.245" />
-                                                </svg>
+                                    @if($reviews->isNotEmpty())
+                                        <div class="card border-0 shadow-sm rounded-3">
+                                            <div class="card-body p-0">
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover align-middle mb-0">
+                                                        <thead class="bg-light">
+                                                            <tr>
+                                                                <th class="ps-4 py-3 text-uppercase small fw-bold text-muted border-0">Product</th>
+                                                                <th class="py-3 text-uppercase small fw-bold text-muted border-0 text-center">Rating</th>
+                                                                <th class="py-3 text-uppercase small fw-bold text-muted border-0">Comment</th>
+                                                                <th class="py-3 text-uppercase small fw-bold text-muted border-0 text-center">Status</th>
+                                                                <th class="pe-4 py-3 text-uppercase small fw-bold text-muted border-0 text-end">Date</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach($reviews as $review)
+                                                                <tr>
+                                                                    <td class="ps-4 py-3">
+                                                                        @if($review->product)
+                                                                            <div class="d-flex align-items-center gap-3">
+                                                                                <img src="{{ \App\Helpers\ImageHelper::getImageUrl() }}{{ $review->product->image }}" alt="{{ $review->product->name }}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 6px;">
+                                                                                <a href="{{ route('frontend.products.show', $review->product->slug) }}" class="fw-semibold text-dark text-truncate" style="max-width: 150px;">{{ $review->product->name }}</a>
+                                                                            </div>
+                                                                        @else
+                                                                            <span class="text-muted italic">Product Deleted</span>
+                                                                        @endif
+                                                                    </td>
+                                                                    <td class="py-3 text-center">
+                                                                        <div class="text-warning small">
+                                                                            @for($i = 1; $i <= 5; $i++)
+                                                                                <i class="fa{{ $i <= $review->star ? 's' : 'r' }} fa-star"></i>
+                                                                            @endfor
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class="py-3">
+                                                                        <div class="text-muted small text-truncate" style="max-width: 200px;" title="{{ $review->comment }}">
+                                                                            {{ $review->comment }}
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class="py-3 text-center">
+                                                                        @php
+                                                                            $statusClass = match($review->status) {
+                                                                                'published' => 'bg-success text-white',
+                                                                                'pending' => 'bg-warning text-white',
+                                                                                default => 'bg-secondary text-white'
+                                                                            };
+                                                                        @endphp
+                                                                        <span class="badge rounded-pill {{ $statusClass }} px-3 py-2 text-uppercase fw-bold" style="letter-spacing: 0.5px; font-size: 10px;">
+                                                                            {{ $review->status }}
+                                                                        </span>
+                                                                    </td>
+                                                                    <td class="pe-4 py-3 text-end text-muted small">
+                                                                        {{ $review->created_at->format('M d, Y') }}
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             </div>
-                                            <h4 class="fw-semibold text-dark">No reviews found</h4>
-                                            <p class="text-muted mb-4">You have not submitted any product reviews yet.</p>
-                                            <a href="{{ route('frontend.products.index') }}" class="btn btn-primary px-4">
-                                                Start shopping now
-                                            </a>
+                                            @if($reviews->hasPages())
+                                                <div class="card-footer bg-white border-0 py-4">
+                                                    {{ $reviews->links() }}
+                                                </div>
+                                            @endif
                                         </div>
-                                    </div>
+                                    @else
+                                        <div class="card border-0 shadow-sm rounded-3">
+                                            <div class="card-body p-4 p-md-5 text-center">
+                                                <div class="mb-4">
+                                                    <svg class="icon text-muted" style="width: 64px; height: 64px;" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                                        <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873l-6.158 -3.245" />
+                                                    </svg>
+                                                </div>
+                                                <h4 class="fw-semibold text-dark">No reviews found</h4>
+                                                <p class="text-muted mb-4">You have not submitted any product reviews yet.</p>
+                                                <a href="{{ route('frontend.products.index') }}" class="btn btn-primary px-4">
+                                                    Start shopping now
+                                                </a>
+                                            </div>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>

@@ -64,11 +64,11 @@
                     <div class="tp-footer-widget">
                         <h4 style="font-size: 15px; font-weight: 800; margin-bottom: 20px; color: #1a1a1a;">Account</h4>
                         <ul style="list-style: none; padding: 0; margin: 0;">
-                            <li class="mb-10"><a href="{{ route('frontend.customer.dashboard') }}" style="color: #666; font-size: 13px; text-decoration: none;">My Account</a></li>
-                            <li class="mb-10"><a href="{{ route('frontend.wishlist.index') }}" style="color: #666; font-size: 13px; text-decoration: none;">My Wishlist</a></li>
-                            <li class="mb-10"><a href="{{ route('frontend.cart.index') }}" style="color: #666; font-size: 13px; text-decoration: none;">Shopping Cart</a></li>
-                            <li class="mb-10"><a href="{{ route('frontend.orders.tracking') }}" style="color: #666; font-size: 13px; text-decoration: none;">Track Order</a></li>
-                            <li class="mb-10"><a href="{{ route('frontend.stores.index') }}" style="color: #666; font-size: 13px; text-decoration: none;">Vendor Stores</a></li>
+                            <li class="mb-10"><a href="{{ route('frontend.customer.dashboard') }}" style="color: #666;">My Account</a></li>
+                            <li class="mb-10"><a href="{{ route('frontend.wishlist.index') }}" style="color: #666;">My Wishlist</a></li>
+                            <li class="mb-10"><a href="{{ route('frontend.cart.index') }}" style="color: #666;">Shopping Cart</a></li>
+                            <li class="mb-10"><a href="{{ route('frontend.orders.tracking') }}" style="color: #666;">Track Order</a></li>
+                            <li class="mb-10"><a href="{{ route('frontend.stores.index') }}" style="color: #666;">Vendor Stores</a></li>
                         </ul>
                     </div>
                 </div>
@@ -79,13 +79,13 @@
                         <h4 style="font-size: 18px; font-weight: 800; margin-bottom: 20px; color: #1a1a1a;">Talk To Us</h4>
                         <div class="mb-25">
                             <p style="font-size: 14px; color: #333; margin-bottom: 5px; font-weight: 600;">Got Questions? Call us</p>
-                            <h4 style="margin: 0;"><a href="tel:{{ $footer_settings->footer_phone ?? '1234567890' }}" style="color: #1a1a1a; font-weight: 900; text-decoration: none; font-size: 24px;">{{ $footer_settings->footer_phone ?? '1234567890' }}</a></h4>
+                            <h4 style="margin: 0;"><a href="#" style="color: #1a1a1a; font-weight: 900; text-decoration: none; font-size: 24px;">{{ $footer_settings->footer_phone ?? '1234567890' }}</a></h4>
                         </div>
                         <div class="mb-20" style="display: flex; align-items: center; gap: 12px;">
                             <div style="width: 20px; display: flex; justify-content: center;">
                                 <i class="far fa-envelope" style="color: #1a1a1a; font-size: 16px;"></i>
                             </div>
-                            <a href="mailto:{{ $footer_settings->footer_email ?? 'support@mltve.com' }}" style="color: #1a1a1a; font-size: 15px; text-decoration: none;">{{ $footer_settings->footer_email ?? 'support@mltve.com' }}</a>
+                            <a href="#" style="color: #1a1a1a; font-size: 15px; text-decoration: none;">{{ $footer_settings->footer_email ?? 'support@mltve.com' }}</a>
                         </div>
                         <div class="mb-25" style="display: flex; align-items: flex-start; gap: 12px;">
                             <div style="width: 20px; display: flex; justify-content: center; margin-top: 4px;">

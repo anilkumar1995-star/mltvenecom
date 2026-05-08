@@ -67,6 +67,7 @@ use App\Http\Controllers\Frontend\VendorMessageController;
 use App\Http\Controllers\Frontend\VendorSpecificationController;
 use App\Http\Controllers\Frontend\VendorKycController;
 use App\Http\Controllers\Frontend\VendorSettingsController;
+use App\Http\Controllers\Frontend\ReviewController as FrontendReviewController;
 use App\Http\Controllers\Frontend\WishlistController;
 use App\Http\Controllers\Frontend\PublicEcommerceController;
 use App\Http\Controllers\Frontend\CategoryController as FrontendCategoryController;
@@ -252,8 +253,8 @@ Route::name('frontend.')->group(function () {
         Route::get('/wishlist', [WishlistController::class , 'index'])->name('wishlist.index');
 
         // Reviews
-        Route::post('/reviews', [ReviewController::class , 'store'])->name('reviews.store');
-        Route::get('/reviews/ajax/{productId}', [ReviewController::class , 'ajaxReviews'])->name('reviews.ajax');
+        Route::post('/reviews', [FrontendReviewController::class , 'store'])->name('reviews.store');
+        Route::get('/reviews/ajax/{productId}', [FrontendReviewController::class , 'ajaxReviews'])->name('reviews.ajax');
 
         // Checkout
         Route::get('/checkout', [CheckoutController::class , 'index'])->name('checkout.index');

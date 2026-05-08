@@ -477,7 +477,7 @@
         @if($subcategories->count() > 0)
             <div class="embla__container no-scrollbar mb-4 mt-2" style="gap: 10px; border-bottom: none;">
                 {{-- Show All link as the first badge --}}
-                <a href="{{ url('/') }}?category={{ $active_category->slug }}&subcategory=all" style="text-decoration:none">
+                <a href="{{ url('/') }}?category={{ $active_category->slug }}&subcategory=all">
                     <button class="btn btn-sm rounded-pill px-3 py-1 border {{ $current_sub == 'all' ? 'bg-zepto-purple text-white border-zepto-purple' : 'bg-white text-muted border-light-subtle' }}" 
                             style="font-weight: 700; font-size: 13px; white-space: nowrap;">
                         All
@@ -485,7 +485,7 @@
                 </a>
 
                 @foreach($subcategories as $sub)
-                    <a href="{{ url('/') }}?category={{ $active_category->slug }}&subcategory={{ $sub->slug }}" style="text-decoration:none">
+                    <a href="{{ url('/') }}?category={{ $active_category->slug }}&subcategory={{ $sub->slug }}">
                         <button class="btn btn-sm rounded-pill px-3 py-1 border {{ $current_sub == $sub->slug ? 'bg-zepto-purple text-white border-zepto-purple' : 'bg-white text-muted border-light-subtle' }}" 
                                 style="font-weight: 700; font-size: 13px; white-space: nowrap;">
                             {{ $sub->name }}

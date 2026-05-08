@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\Address;
 use App\Models\Store;
 use App\Models\Vendor;
+use App\Models\Review;
 use App\Helpers\ImageHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -259,7 +260,14 @@ class CustomerController extends Controller
     public function reviews()
     {
         $customer = $this->getCustomer();
-        return view('frontend.customer.reviews', compact('customer'));
+        $customerId = $this->getCustomerId();
+        
+        $reviews = Review::where('customer_id', $customerId)
+            ->with('product')
+            ->latest()
+            ->paginate(10);
+            
+        return view('frontend.customer.reviews', compact('customer', 'reviews'));
     }
 
     public function downloads()
