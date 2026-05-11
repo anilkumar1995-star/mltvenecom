@@ -447,6 +447,17 @@
                             <i class="far fa-user d-md-none" style="font-size: 16px;"></i>
                         </a>
                     @endif
+                    
+                    <a href="{{ route('frontend.wishlist.index') }}" class="zepto-action-item">
+                        <div class="position-relative">
+                            <i class="far fa-heart" style="font-size: 18px;"></i>
+                            <span class="position-absolute translate-middle badge rounded-pill bg-danger" 
+                                  style="top: 0; left: 100%; font-size: 9px; padding: 3px 5px; min-width: 16px; color: #fff !important;"
+                                  data-bb-value="wishlist-count">
+                                {{ count(session('wishlist', [])) }}
+                            </span>
+                        </div>
+                    </a>
 
                     <a href="{{ route('frontend.cart.index') }}" class="zepto-action-item cart-btn-zepto">
                         <i class="fas fa-shopping-cart"></i>

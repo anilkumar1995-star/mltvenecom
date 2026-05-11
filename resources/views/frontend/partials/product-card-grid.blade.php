@@ -11,6 +11,14 @@
             </div>
         @endif
 
+        {{-- Wishlist Button --}}
+        <div style="position: absolute; top: 8px; right: {{ $isOutOfStock ? '75px' : '8px' }}; z-index: 5;">
+            <button type="button" class="tp-wishlist-btn" data-id="{{ $product->id }}" 
+                style="background: rgba(255,255,255,0.9); border: none; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); cursor: pointer; transition: 0.2s;">
+                <i class="{{ isset(session('wishlist', [])[$product->id]) ? 'fas text-danger' : 'far' }} fa-heart" style="font-size: 14px;"></i>
+            </button>
+        </div>
+
         <a href="{{ route('frontend.products.show', $product->slug ?: $product->id) }}" style="display:block; width:100%; height:80px;">
             <div style="width:100%; height:80px; display: flex; align-items: center; justify-content: center;">
                 <img src="{{ $product->image_url }}" alt="{{ $product->name }}" 

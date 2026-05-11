@@ -30,8 +30,8 @@
                         <span class="tp-product-tooltip tp-product-tooltip-right">Buy Now</span>
                     </button>
                 </form>
-                <button type="button" class="tp-product-action-btn-2" title="Add To Wishlist">
-                    <i class="far fa-heart"></i>
+                <button type="button" class="tp-product-action-btn-2 tp-wishlist-btn" title="Add To Wishlist" data-id="{{ $product->id }}">
+                    <i class="{{ isset(session('wishlist', [])[$product->id]) ? 'fas text-danger' : 'far' }} fa-heart"></i>
                     <span class="tp-product-tooltip tp-product-tooltip-right">Add To Wishlist</span>
                 </button>
             </div>

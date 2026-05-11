@@ -154,13 +154,13 @@
                                                             @php
                                                                 $statusClass = match($invoice->status) {
                                                                     'paid', 'completed' => 'bg-success',
-                                                                    'pending' => 'bg-warning text-dark',
+                                                                    'pending' => 'bg-warning',
                                                                     'processing' => 'bg-info text-white',
                                                                     'cancelled', 'failed' => 'bg-danger',
-                                                                    default => 'bg-secondary text-white'
+                                                                    default => 'bg-secondary'
                                                                 };
                                                             @endphp
-                                                            <span class="badge rounded-pill {{ $statusClass }} px-3 py-2 text-uppercase" style="font-size: 11px; font-weight: 700; letter-spacing: 0.5px;">
+                                                            <span class="badge text-white rounded-pill {{ $statusClass }} px-3 py-2 text-uppercase" style="font-size: 11px; font-weight: 700; letter-spacing: 0.5px;">
                                                                 {{ $invoice->status ?? 'N/A' }}
                                                             </span>
                                                         </div>

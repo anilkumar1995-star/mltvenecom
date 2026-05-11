@@ -109,7 +109,7 @@
 <!-- Checkout Area -->
 <section class="checkout-area">
     <div class="container">
-        <form action="{{ route('frontend.checkout.process') }}" method="POST">
+        <form action="{{ route('frontend.checkout.process') }}" method="POST" id="checkout-form">
             @csrf
             <div class="row">
                 <!-- Left Column: Billing/Shipping Details -->
@@ -533,6 +533,25 @@
 
 @push('scripts')
 <script>
+    // Premium Notification Helper
+    function showNotify(status, title, text) {
+        if (typeof Notify !== 'undefined') {
+            new Notify({
+                status: status,
+                title: title,
+                text: text,
+                effect: 'fade',
+                speed: 300,
+                showIcon: true,
+                autoclose: true,
+                autotimeout: 5000,
+                position: 'right top'
+            });
+        } else {
+            alert(title + ": " + text);
+        }
+    }
+
     $(document).ready(function() {
         // Create Account Toggle
         $('#create_account').on('change', function() {
@@ -575,11 +594,52 @@
             }
         });
 
-        // Place Order - loading state
-        $('form').on('submit', function() {
+        // Place Order - AJAX submission
+        $('#checkout-form').on('submit', function(e) {
+            e.preventDefault();
+            var form = $(this);
             var btn = $('#place-order-btn');
+            
             btn.prop('disabled', true);
             btn.html('<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Processing...');
+
+            $.ajax({
+                url: form.attr('action'),
+                type: 'POST',
+                data: form.serialize(),
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        if (response.redirect_url) {
+                            showNotify('success', 'Order Initiated', 'Redirecting to payment...');
+                            setTimeout(function() {
+                                window.location.href = response.redirect_url;
+                            }, 1000);
+                        } else {
+                            showNotify('success', 'Success', 'Order placed successfully!');
+                            window.location.href = '{{ route("frontend.checkout.success") }}';
+                        }
+                    } else {
+                        btn.prop('disabled', false).html('Place Order');
+                        showNotify('error', 'Order Failed', response.message || 'Something went wrong.');
+                    }
+                },
+                error: function(xhr) {
+                    btn.prop('disabled', false).html('Place Order');
+                    var errorMsg = '';
+                    if (xhr.status === 422 && xhr.responseJSON.errors) {
+                        errorMsg = '<ul class="text-start mb-0">';
+                        $.each(xhr.responseJSON.errors, function(key, value) {
+                            errorMsg += '<li>' + value[0] + '</li>';
+                        });
+                        errorMsg += '</ul>';
+                        showNotify('error', 'Validation Error', errorMsg);
+                    } else {
+                        errorMsg = (xhr.responseJSON && xhr.responseJSON.message) ? xhr.responseJSON.message : 'Validation failed or server error.';
+                        showNotify('error', 'System Error', errorMsg);
+                    }
+                }
+            });
         });
 
         // Apply Coupon

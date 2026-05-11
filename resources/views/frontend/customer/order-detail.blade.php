@@ -126,7 +126,7 @@
                                             </div>
                                             <div>
                                                 <h6 class="text-muted mb-1">Order Status</h6>
-                                                <span class="badge bg-{{ $order->status == 'completed' ? 'success' : ($order->status == 'cancelled' ? 'danger' : 'warning') }}">
+                                                <span class="badge text-white bg-{{ $order->status == 'completed' ? 'success' : ($order->status == 'cancelled' ? 'danger' : 'warning') }}">
                                                     {{ ucfirst($order->status) }}
                                                 </span>
                                             </div>

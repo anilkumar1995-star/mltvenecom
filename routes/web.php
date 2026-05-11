@@ -261,6 +261,8 @@ Route::name('frontend.')->group(function () {
         Route::post('/checkout/apply-coupon', [CheckoutController::class , 'applyCoupon'])->name('checkout.apply-coupon');
         Route::get('/checkout/remove-coupon', [CheckoutController::class , 'removeCoupon'])->name('checkout.remove-coupon');
         Route::post('/checkout/process', [CheckoutController::class , 'process'])->name('checkout.process');
+        Route::get('/checkout/payment/callback', [CheckoutController::class , 'paymentCallback'])->name('checkout.payment.callback');
+        Route::post('/checkout/payment/callback', [CheckoutController::class , 'paymentCallback']);
         Route::get('/checkout/success', [CheckoutController::class , 'success'])->name('checkout.success');
         
         // Flash Sale

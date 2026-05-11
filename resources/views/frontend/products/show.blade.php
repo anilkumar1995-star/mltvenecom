@@ -349,7 +349,14 @@
 
                         <div class="product-details-action-sm">
                             <a href="#"><i class="fal fa-exchange"></i> Compare</a>
-                            <a href="#"><i class="fal fa-heart"></i> Add Wishlist</a>
+                            @php
+                                $wishlist = session('wishlist', []);
+                                $inWishlist = isset($wishlist[$product->id]);
+                            @endphp
+                            <a href="#" class="tp-wishlist-btn" data-id="{{ $product->id }}">
+                                <i class="{{ $inWishlist ? 'fas text-danger' : 'far' }} fa-heart"></i> 
+                                <span class="wishlist-text">{{ $inWishlist ? 'Wishlisted' : 'Add Wishlist' }}</span>
+                            </a>
                         </div>
 
                         <div class="product__details-meta">

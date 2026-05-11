@@ -10,6 +10,7 @@ use App\Models\OrderAddress;
 use App\Models\Customer;
 use App\Models\Payment;
 use App\Services\InvoiceService;
+use App\Services\EcommercePaymentService;
 use App\Helpers\CommonHelper;
 use App\Models\Discount;
 use App\Models\Tax;
@@ -123,6 +124,13 @@ class CheckoutController extends Controller
     public function process(Request $request)
     {
         if (!auth('customer')->check() && !auth('web')->check()) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Please login to proceed to checkout.',
+                    'redirect_url' => route('login')
+                ]);
+            }
             session(['url.intended' => route('frontend.checkout.index')]);
             return redirect()->route('login')->with('error', 'Please login to proceed to checkout.');
         }
@@ -140,6 +148,13 @@ class CheckoutController extends Controller
                 'description' => 'nullable|string',
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Validation failed',
+                    'errors' => $e->errors()
+                ], 422);
+            }
             \Illuminate\Support\Facades\Log::warning('Checkout Validation Failed', $e->errors());
             throw $e;
         }
@@ -147,6 +162,12 @@ class CheckoutController extends Controller
         $cart = Session::get('cart', []);
 
         if (empty($cart)) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Your cart is empty!'
+                ]);
+            }
             return redirect()->route('frontend.cart.index')
                 ->with('error', 'Your cart is empty!');
         }
@@ -161,11 +182,15 @@ class CheckoutController extends Controller
                 if ($product && $product->with_storehouse_management == 1 && $product->allow_checkout_when_out_of_stock == 0) {
                     if ($product->quantity <= 0 || $product->stock_status === 'out_of_stock') {
                         DB::rollBack();
-                        return back()->with('error', 'Sorry, the product "' . $product->name . '" is out of stock.')->withInput();
+                        $errMsg = 'Sorry, the product "' . $product->name . '" is out of stock.';
+                        if ($request->ajax()) return response()->json(['success' => false, 'message' => $errMsg]);
+                        return back()->with('error', $errMsg)->withInput();
                     }
                     if ($product->quantity < $item['quantity']) {
                         DB::rollBack();
-                        return back()->with('error', 'Sorry, only ' . $product->quantity . ' items available for "' . $product->name . '".')->withInput();
+                        $errMsg = 'Sorry, only ' . $product->quantity . ' items available for "' . $product->name . '".';
+                        if ($request->ajax()) return response()->json(['success' => false, 'message' => $errMsg]);
+                        return back()->with('error', $errMsg)->withInput();
                     }
                 }
             }
@@ -188,15 +213,9 @@ class CheckoutController extends Controller
                         $discountAmount = $discount->value;
                     }
 
-                    // Safety Cap: Discount cannot exceed subtotal
-                    if ($discountAmount > $subtotal) {
-                        $discountAmount = $subtotal;
-                    }
+                    if ($discountAmount > $subtotal) $discountAmount = $subtotal;
 
-                    // Increment usage count
                     $discount->increment('total_used');
-                    
-                    // Log usage for current customer
                     if ($this->getUserId()) {
                         DB::table('ec_discount_customers')->insertOrIgnore([
                             'discount_id' => $discount->id,
@@ -220,7 +239,6 @@ class CheckoutController extends Controller
 
             $token = \Illuminate\Support\Str::random(32);
 
-            // Identify store for the order (scanning all items for parent store)
             $storeId = null;
             foreach ($cart as $cartItem) {
                 $product = EcProduct::find($cartItem['id']);
@@ -229,9 +247,7 @@ class CheckoutController extends Controller
                         $storeId = $product->store_id;
                     } elseif ($product->is_variation) {
                         $parent = \App\Models\ProductVariation::getParentOfVariation($product->id);
-                        if ($parent && $parent->store_id) {
-                            $storeId = $parent->store_id;
-                        }
+                        if ($parent && $parent->store_id) $storeId = $parent->store_id;
                     }
                 }
                 if ($storeId) break;
@@ -272,9 +288,7 @@ class CheckoutController extends Controller
             foreach ($cart as $item) {
                 $itemSubtotal = $item['price'] * $item['quantity'];
                 $itemTax = 0;
-                if ($subtotal > 0) {
-                    $itemTax = ($itemSubtotal / $subtotal) * $tax;
-                }
+                if ($subtotal > 0) $itemTax = ($itemSubtotal / $subtotal) * $tax;
 
                 OrderProduct::create([
                     'order_id' => $order->id,
@@ -288,17 +302,10 @@ class CheckoutController extends Controller
 
                 $product = EcProduct::find($item['id']);
                 if ($product && isset($product->quantity)) {
-                    // Decrement stock quantity
                     $newQty = max(0, (int)$product->quantity - (int)$item['quantity']);
                     $product->quantity = $newQty;
-                    
-
                     $product->order = (int)$product->order + (int)$item['quantity'];
-                    
-                    if ($newQty <= 0) {
-                        $product->stock_status = 'out_of_stock';
-                    }
-                    
+                    if ($newQty <= 0) $product->stock_status = 'out_of_stock';
                     $product->save();
                 }
             }
@@ -334,12 +341,43 @@ class CheckoutController extends Controller
                 }
             }
 
+            // Handle Online Payment Gateway
+            if ($request->input('payment_method') === 'online_payment') {
+                $paymentService = new EcommercePaymentService();
+                $result = $paymentService->initiatePayment(auth('customer')->user() ?? auth('web')->user(), $total, $order->code);
+                
+                if ($result['response'] != '') {
+                    $responseStatus = json_decode($result['response']);
+                    if (isset($responseStatus->code) && $responseStatus->code == "0x0200") {
+                        DB::commit();
+                        session(['order_id' => $order->id]);
+                        if (isset($responseStatus->data->url)) {
+                             if ($request->ajax()) {
+                                 return response()->json([
+                                     'success' => true,
+                                     'redirect_url' => $responseStatus->data->url
+                                 ]);
+                             }
+                             return redirect($responseStatus->data->url);
+                        }
+                    }
+                }
+                
+                DB::rollBack();
+                $errMsg = 'Online payment initiation failed. Please try again or choose another method.';
+                if ($request->ajax()) return response()->json(['success' => false, 'message' => $errMsg]);
+                return back()->with('error', $errMsg)->withInput();
+            }
+
+            // Finalize order for COD/Bank Transfer
+            $order->is_finished = 1;
+            $order->save();
+
             DB::commit();
-            $order->update(['is_finished' => 1]);
 
             InvoiceService::createInvoiceFromOrder($order);
 
-            // Notify Vendor about new order
+            // Notify Vendor
             if ($order->store_id) {
                 $store = Store::find($order->store_id);
                 if ($store && !empty($store->email)) {
@@ -353,7 +391,7 @@ class CheckoutController extends Controller
                 }
             }
 
-
+            // Notify Customer
             if (!empty($addressData['email'])) {
                 try {
                     $order->load(['items', 'payment', 'address']);
@@ -365,17 +403,28 @@ class CheckoutController extends Controller
             }
 
             Session::forget(['cart', 'applied_coupon']);
+            session(['order_id' => $order->id]);
 
-            return redirect()->route('frontend.checkout.success')
-                ->with('order_id', $order->id);
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Order placed successfully!',
+                    'redirect_url' => route('frontend.checkout.success')
+                ]);
+            }
+
+            return redirect()->route('frontend.checkout.success');
 
         } catch (\Exception $e) {
             DB::rollBack();
-            \Illuminate\Support\Facades\Log::error('Order Placement Failed: ' . $e->getMessage(), [
-                'exception' => $e,
-                'cart' => Session::get('cart'),
-                'request' => $request->all()
-            ]);
+            \Illuminate\Support\Facades\Log::error('Order Placement Failed: ' . $e->getMessage());
+            
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Order failed: ' . $e->getMessage()
+                ]);
+            }
             return back()->with('error', 'Order failed: ' . $e->getMessage())->withInput();
         }
     }
@@ -388,6 +437,59 @@ class CheckoutController extends Controller
             $order = Order::find($order_id);
         }
         return view('frontend.checkout.success', compact('order_id', 'order'));
+    }
+
+    /**
+     * Handle payment gateway callback/return
+     */
+    public function paymentCallback(Request $request)
+    {
+        $clientRefId = $request->query('clientRefId') ?? $request->input('clientRefId');
+        
+        if (!$clientRefId) {
+            return redirect()->route('frontend.checkout.index')->with('error', 'Invalid payment response.');
+        }
+
+        $paymentService = new EcommercePaymentService();
+        $result = $paymentService->checkPaymentStatus($clientRefId);
+
+        if ($result['response'] != '') {
+            $responseStatus = json_decode($result['response']);
+            
+            if (isset($responseStatus->code) && $responseStatus->code == "0x0200" && isset($responseStatus->data->status) && $responseStatus->data->status == "success") {
+                $order = Order::where('code', $clientRefId)->first();
+                
+                if ($order && !$order->is_finished) {
+                    $order->is_finished = 1;
+                    $order->status = 'processing';
+                    $order->save();
+
+                    // Update payment record
+                    if ($order->payment) {
+                        $order->payment->update([
+                            'status' => 'completed',
+                            'payment_type' => 'confirm'
+                        ]);
+                    }
+
+                    // Clear cart and session
+                    session()->forget('cart');
+                    session()->forget('applied_coupon');
+                    session(['order_id' => $order->id]);
+
+                    // Send notification/Invoice
+                    try {
+                        InvoiceService::createInvoiceFromOrder($order);
+                    } catch (\Exception $e) {
+                        \Log::error('Invoice generation failed: ' . $e->getMessage());
+                    }
+
+                    return redirect()->route('frontend.checkout.success')->with('success', 'Payment successful and order placed!');
+                }
+            }
+        }
+
+        return redirect()->route('frontend.checkout.index')->with('error', 'Payment verification failed or was cancelled.');
     }
 
     public function applyCoupon(Request $request)

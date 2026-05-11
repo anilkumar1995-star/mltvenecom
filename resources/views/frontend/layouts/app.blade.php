@@ -949,10 +949,27 @@
                     success: function(res) {
                         if (res.success) {
                             notify(res.message, 'success');
+                            var $allBtns = $('.tp-wishlist-btn[data-id="' + id + '"]');
                             if (res.in_wishlist) {
-                                $btn.find('i').removeClass('far').addClass('fas text-danger');
+                                $allBtns.find('i').removeClass('far fal').addClass('fas text-danger');
+                                $allBtns.find('.wishlist-text').text('Wishlisted');
+                                $allBtns.find('.tp-product-tooltip').text('Wishlisted');
+                                $allBtns.attr('title', 'Wishlisted');
                             } else {
-                                $btn.find('i').removeClass('fas text-danger').addClass('far');
+                                $allBtns.find('i').removeClass('fas text-danger').addClass('far');
+                                $allBtns.find('.wishlist-text').text('Add Wishlist');
+                                $allBtns.find('.tp-product-tooltip').text('Add To Wishlist');
+                                $allBtns.attr('title', 'Add To Wishlist');
+                                
+                                // If on wishlist page, remove the item from view
+                                if (window.location.pathname.includes('/wishlist')) {
+                                    $allBtns.closest('.col-md-3, .col-sm-6, .product-item, .tp-product-item-2').fadeOut(300, function() {
+                                        $(this).remove();
+                                        if ($('.row.g-4').children().length === 0) {
+                                            location.reload();
+                                        }
+                                    });
+                                }
                             }
                             $('[data-bb-value="wishlist-count"]').text(res.count);
                         }

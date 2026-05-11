@@ -84,13 +84,17 @@
                                 @csrf
                                 <div class="mb-4 position-relative">
                                     <label class="form-label required" for="order_id">Order ID</label>
-                                    <input class="form-control" placeholder="Enter the order ID (e.g. 1)" required="required" name="order_id" type="text" id="order_id" value="{{ request('order_id') }}">
+                                    <input class="form-control" placeholder="Enter the order ID (e.g. 1)" required="required" name="order_id" type="text" id="order_id" value="{{ request('order_id') }}" {{ (isset($order) && $order) ? 'readonly' : '' }}>
                                 </div>
                                 <div class="mb-4 position-relative">
                                     <label class="form-label required" for="email">Email</label>
-                                    <input class="form-control" placeholder="Enter your billing email" required="required" name="email" type="email" id="email" value="{{ request('email') }}">
+                                    <input class="form-control" placeholder="Enter your billing email" required="required" name="email" type="email" id="email" value="{{ request('email') }}" {{ (isset($order) && $order) ? 'readonly' : '' }}>
                                 </div>
-                                <button class="w-100 btn btn-primary" type="submit">Track Now</button>
+                                @if(isset($order) && $order)
+                                    <a href="{{ route('frontend.orders.tracking') }}" class="w-100 btn btn-secondary">Track Another Order</a>
+                                @else
+                                    <button class="w-100 btn btn-primary" type="submit">Track Now</button>
+                                @endif
                             </form>
                         </div>
                     </div>
@@ -99,7 +103,7 @@
                         <div class="card mt-5 order-details-card">
                             <div class="card-header bg-white border-bottom py-4 px-4">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <h5 class="mb-0 fw-bold">Order <span class="text-primary">#{{ $order->code }}</span> details</h5>
+                                    <h5 class="mb-0 fw-bold me-3">Order <span class="text-primary">#{{ $order->code }}</span> details</h5>
                                     <span class="badge-status bg-{{ $order->status == 'completed' ? 'success' : ($order->status == 'pending' ? 'warning' : 'info') }} text-{{ $order->status == 'pending' ? 'dark' : 'white' }}">
                                         {{ ucfirst($order->status) }}
                                     </span>
@@ -135,11 +139,17 @@
                                                 <tr class="border-bottom-faint">
                                                     <td class="py-3">
                                                         <div class="d-flex align-items-center">
-                                                            @if($item->product && $item->product->image)
-                                                                <div class="product-thumb me-3">
-                                                                    <img src="{{ \App\Helpers\ImageHelper::getImageUrl() }}{{ $item->product->image }}" alt="" style="width: 60px; height: 60px; object-fit: cover; border-radius: 12px; border: 1px solid #f0f0f0;">
-                                                                </div>
-                                                            @endif
+                                                            <div class="product-thumb me-3">
+                                                                @php
+                                                                    $imageUrl = asset('home/placeholder.png');
+                                                                    if($item->product && $item->product->image) {
+                                                                        $imageUrl = \App\Helpers\ImageHelper::getImageUrl() . $item->product->image;
+                                                                    } elseif($item->product_image) {
+                                                                        $imageUrl = \App\Helpers\ImageHelper::getImageUrl() . $item->product_image;
+                                                                    }
+                                                                @endphp
+                                                                <img src="{{ $imageUrl }}" alt="{{ $item->product_name }}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 12px; border: 1px solid #f0f0f0;" onerror="this.onerror=null;this.src='{{ asset('placeholder.png') }}'">
+                                                            </div>
                                                             <div>
                                                                 <span class="fw-bold d-block">{{ $item->product_name }}</span>
                                                                 @if($item->options)
